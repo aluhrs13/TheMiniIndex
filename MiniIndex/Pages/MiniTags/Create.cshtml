@@ -1,0 +1,45 @@
+﻿@page
+@model MiniIndex.Pages.MiniTags.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>MiniTag</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MiniTag.MiniID" class="control-label"></label>
+                <select asp-for="MiniTag.MiniID" class ="form-control" asp-items="ViewBag.MiniID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MiniTag.TagID" class="control-label"></label>
+                <select asp-for="MiniTag.TagID" class ="form-control" asp-items="ViewBag.TagID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MiniTag.Status" class="control-label"></label>
+                <span asp-validation-for="MiniTag.Status" class="text-danger"></span>
+
+                <select asp-for="MiniTag.Status" asp-items="Html.GetEnumSelectList<MiniIndex.Models.Status>()" class="form-control">
+                    <option selected="selected" value=""></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

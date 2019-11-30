@@ -1,0 +1,7 @@
+﻿@page
+@model MiniIndex.Pages.Tags.JSONTagListModel
+@{
+    Layout = null;
+}
+
+@Html.Raw(Json.Serialize(Model.Tag))

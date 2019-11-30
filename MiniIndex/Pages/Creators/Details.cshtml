@@ -1,0 +1,93 @@
+﻿@page
+@model MiniIndex.Pages.Creators.DetailsModel
+
+@{
+    ViewData["Title"] = Model.Creator.Name+" Details";
+}
+
+<h1>@Html.DisplayFor(model => model.Creator.Name)</h1>
+
+@if (!string.IsNullOrEmpty(Model.Creator.PatreonURL))
+{
+    <a href="@Html.DisplayFor(model => model.Creator.PatreonURL)" class="btn btn-primary">Patreon</a>
+}
+
+@if (!string.IsNullOrEmpty(Model.Creator.WebsiteURL))
+{
+    <a href="@Html.DisplayFor(model => model.Creator.WebsiteURL)" class="btn btn-primary">Website</a>
+}
+
+@if (!string.IsNullOrEmpty(Model.Creator.ShapewaysURL))
+{
+    <a href="@Html.DisplayFor(model => model.Creator.ShapewaysURL)" class="btn btn-primary">Shapeways</a>
+}
+@if (!string.IsNullOrEmpty(Model.Creator.ThingiverseURL))
+{
+    <a href="@Html.DisplayFor(model => model.Creator.ThingiverseURL)" class="btn btn-primary">Thingiverse</a>
+}
+
+<hr />
+
+@if (!string.IsNullOrEmpty(Model.Creator.ThingiverseURL))
+{
+    <h2>Quick add Thingiverse models</h2>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model.MiniList)
+                {
+
+                    <div class="col-md-4">
+                        @if (item.Status == Models.Status.Unindexed)
+                        {
+                            @:<div class="card mb-4 shadow-sm">
+                            }
+                        else
+                        {
+                                @:<div class="card mb-4 shadow-sm" style="opacity:.5;">
+                                }
+
+
+                        <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
+                        <div class="card-body @item.Status" align="center">
+                            <p class="card-title">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </p>
+                            <hr />
+                            @if (item.Status == Models.Status.Approved)
+                            {
+                                <a asp-page="/Minis/Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Already indexed</a>
+                            }
+                            else if (item.Status == Models.Status.Pending)
+                            {
+                                <p><b>Pending admin approval</b></p>
+                            }
+                            else if (item.Status == Models.Status.Rejected)
+                            {
+                                <p><b>Rejected by admin</b></p>
+                            }
+                            else if (item.Status == Models.Status.Unindexed)
+                            {
+                                <a asp-page="/Minis/Create" asp-route-URL="@item.Link" class="btn btn-sm btn-success">Submit to index!</a>
+                                <a href="@Html.DisplayFor(modelItem => item.Link)" class="btn btn-sm btn-primary">View on Thingiverse</a>
+                            }
+                        </div>
+                    </div>
+                @: </div>
+            }
+            </div>
+        </div>
+        <div align="center">
+            @{
+                var prevDisabled = Model.ParsedPageNumber == 0 || Model.ParsedPageNumber == 1 ? "disabled" : "";
+                var nextDisabled = Model.MiniList.Count < 30 ? "disabled" : "";
+
+                int prevPageNubmer = Model.ParsedPageNumber - 1;
+                int nextPageNumber = Model.ParsedPageNumber + 1;
+            }
+            <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@prevPageNubmer" class="btn btn-primary @prevDisabled">&lt;&lt; Previous Page</a>
+            <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@nextPageNumber" class="btn btn-primary @nextDisabled">Next Page &gt;&gt;</a>
+        </div>
+
+    </div>
+}

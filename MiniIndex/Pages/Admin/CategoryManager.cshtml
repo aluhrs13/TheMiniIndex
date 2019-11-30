@@ -1,0 +1,44 @@
+﻿@page
+@model MiniIndex.Pages.Admin.CategoryManagerModel
+
+@{
+    ViewData["Title"] = "Tag Manager";
+    ViewData["ActivePage"] = ManageNavPages.Tags;
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h4>Uncategorized Tags</h4>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tag Name</th>
+                <th>Tag Category</th>
+                <th>ID</th>
+                <th>View Tagged Minis</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tag)
+            {
+                <tr id="@item.ID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TagName)
+                    </td>
+                    <td>
+                        <select asp-for="@item.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
+                            <option selected="selected" value=""></option>
+                        </select>
+                    </td>
+                    <td>
+                        @item.ID
+                    </td>
+                    <td>
+                        <a href="/Minis/Index/?SearchString=@item.TagName">View Minis</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

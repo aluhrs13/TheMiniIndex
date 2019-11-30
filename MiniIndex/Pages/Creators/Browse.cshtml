@@ -1,0 +1,33 @@
+﻿@page
+@model MiniIndex.Pages.Creators.BrowseModel
+
+@{
+    ViewData["Title"] = "Browse Creators";
+}
+
+<h1>All Creators</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Creator[0].Name)
+            </th>
+            <th>
+                Number of Minis
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Creator)
+        {
+        <tr>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a>
+            </td>
+            <td>
+                @Model.NumberMinis[item.Name]
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

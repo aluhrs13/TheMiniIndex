@@ -1,0 +1,253 @@
+﻿@page
+@model MiniIndex.Pages.Minis.IndexModel
+
+@inject SignInManager<IdentityUser> SignInManager
+
+
+@{
+    ViewData["Title"] = "Browse Minis";
+}
+<h1>Browse Minis</h1>
+
+<div class="container" style="padding:25px;">
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>
+                    @* TODO - I'm not super happy with Selectized, should look at options here*@
+                    <select multiple asp-for="SearchString" asp-items="Model.TagsList" id="selectizedinput"></select>
+                </h1>
+
+                <input asp-for="FreeOnly" id="inputcheckbox" value="true" /> <label for="inputcheckbox">Free models only</label>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Genre</h4>
+                @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Genre"))
+                {
+                    <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                }
+            </div>
+
+            <div class="col-md-8">
+                <h4>Use</h4>
+                @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Use"))
+                {
+                    <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                }
+            </div>
+        </div>
+        <hr />
+        <a data-toggle="collapse" href="#BrowseMiniTags" role="button" aria-expanded="false" aria-controls="BrowseMiniTags">Browse player and NPC tags</a><br />
+
+        <div class="collapse" id="BrowseMiniTags">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Gender</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Gender"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+
+                    <h4>Race</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Race"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+
+                    <h4>Class</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Class"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+
+                    <h4>Armor</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Armor"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+
+                    <h4>Weapons</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Weapon"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+
+                    <h4>Clothing</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Clothing"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <a data-toggle="collapse" href="#BrowsecreatureTags" role="button" aria-expanded="false" aria-controls="BrowsecreatureTags">Browse creature tags</a><br />
+
+        <div class="collapse" id="BrowsecreatureTags">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Creature Name</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "CreatureName"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+
+                    <h4>Creature Type</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "CreatureType"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <a data-toggle="collapse" href="#BrowseTerrainTags" role="button" aria-expanded="false" aria-controls="BrowseTerrainTags">Browse terrain, scatter, and accessory tags</a><br />
+
+        <div class="collapse" id="BrowseTerrainTags">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Purpose</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "Purpose"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <a data-toggle="collapse" href="#BrowseOtherTags" role="button" aria-expanded="false" aria-controls="BrowseOtherTags">Browse other tags</a><br />
+
+        <div class="collapse" id="BrowseOtherTags">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Other Tags</h4>
+                    @foreach (var Tag in Model.Tags.Where(m => m.Category.ToString() == "OtherDescription" || m.Category.ToString() == ""))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-to-filters" style="margin-top:5px;">@Tag.TagName</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6 filters">
+                <input type="submit" class="btn btn-primary my-2" value="Filter" style="width:100%;" />
+            </div>
+            <div class="col-md-2 filters">
+            </div>
+            <div class="col-md-4 filters">
+                <a class="btn btn-success my-2" href="/Minis/Create" style="width:100%;">Submit a mini</a>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            @if (Model.Mini.Count() == 0)
+            {
+                <div align="center">
+                    <h1>No Minis found. Try adjusting your filters.</h1>
+                    <hr/>
+                    <h2>If you find a mini that matches on Thingiverse or elsewhere, come back and <a href="/Minis/Create">add it here</a> so that the next person can find it easier :)</h2>
+                </div>
+            }
+            @foreach (var item in Model.Mini)
+            {
+
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <a asp-page="./Details" asp-route-id="@item.ID">
+                            <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
+                        </a>
+                        <div class="card-body @item.Status" align="center">
+                            <p class="card-title">
+                                @Html.DisplayFor(modelItem => item.Name)
+
+                                <small class="text-muted">
+                                    <a href="/Creators/Details/?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
+                                </small>
+                            @if (item.Status == Models.Status.Approved)
+                            {
+
+                            }
+                            else if (item.Status == Models.Status.Pending)
+                            {
+                                <p><b>Pending admin approval</b></p>
+                            }
+                            else if (item.Status == Models.Status.Rejected)
+                            {
+                                <p><b>Rejected by admin</b></p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div align="center">
+    @{
+        var prevDisabled = !Model.Mini.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Mini.HasNextPage ? "disabled" : "";
+
+        var parms = new Dictionary<string, string>();
+
+        int x = 0;
+        parms.Add("pageIndex", (Model.Mini.PageIndex - 1).ToString());
+        foreach (string item in Model.SearchString)
+        {
+            parms.Add("SearchString" + x, item);
+            x++;
+        }
+        parms.Add("FreeOnly", Model.FreeOnly.ToString());
+    }
+
+    <a asp-page="./Index"
+       asp-all-route-data="parms"
+       class="btn @prevDisabled">
+        &lt;&lt; Previous
+    </a>
+    @for (int y = 1; y <= Model.Mini.TotalPages; y++)
+    {
+        if (y == Model.Mini.PageIndex)
+        {
+            <a asp-page="./Index"
+               asp-all-route-data="parms"
+               class="btn disabled">
+                <b><u>@y</u></b>
+            </a>
+        }
+        else
+        {
+            parms.Remove("pageIndex");
+            parms.Add("pageIndex", y.ToString());
+
+            <a asp-page="./Index"
+               asp-all-route-data="parms"
+               class="btn">
+                @y
+            </a>
+        }
+    }
+    @{
+        parms.Remove("pageIndex");
+        parms.Add("pageIndex", (Model.Mini.PageIndex + 1).ToString());
+    }
+
+    <a asp-page="./Index"
+       asp-all-route-data="parms"
+       class="btn @nextDisabled">
+        Next &gt;&gt;
+    </a>
+</div>

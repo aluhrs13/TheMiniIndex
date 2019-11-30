@@ -1,0 +1,192 @@
+﻿@page
+@model MiniIndex.Pages.Minis.DetailsModel
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    @if (User.IsInRole("Moderator"))
+    {
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Moderate</h2>
+                @if (User.IsInRole("Administrator"))
+                {
+                    <small>Submitted by @Model.Mini.User.Email</small>
+                }
+
+                <p><b>Current Status - </b>@Model.Mini.Status</p>
+                <hr />
+
+                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Approved" class="btn btn-success">
+                    Approve
+                </a>
+                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Rejected" class="btn btn-danger">
+                    Reject
+                </a>
+                <a asp-page="./FixThumbnail" asp-route-id="@Model.Mini.ID" class="btn btn-primary">
+                    Fix Thumbnail
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+<div class="container">
+    <p id="miniid" style="display:none;">@Model.Mini.ID</p>
+    <h2>@Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details/?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a></h2>
+    <hr />
+
+
+
+    <div class="row">
+        <div class="col-md-6" align="center">
+            @if (Model.Mini.Link.Contains("thingiverse"))
+            {
+                <a href="@Model.Mini.Link" class="btn btn-block btn-primary">View On Thingiverse</a>
+            }
+            else if (Model.Mini.Link.Contains("shapeways"))
+            {
+                <a href="@Model.Mini.Link" class="btn btn-block" style="background-color:#FF4B5A; color:white">View On Shapeways</a>
+            }
+            else if (Model.Mini.Link.Contains("gumroad"))
+            {
+                <a href="@Model.Mini.Link" class="btn btn-block" style="background-color:#198C8C; color:white">View On Gumroad</a>
+            }
+            else
+            {
+                <a href="@Html.DisplayFor(modelItem => Model.Mini.Link)" class="btn btn-block btn-primary">View at source</a>
+            }
+
+            <hr />
+
+            <img src="@Model.Mini.Thumbnail" class="img-fluid rounded" />
+        </div>
+
+        <div class="col-md-6">
+            <h3>Tags</h3>
+            <div id="UsedTags">
+                @foreach (var MiniTag in Model.Mini.MiniTags)
+                {
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
+                        {
+                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <b>@MiniTag.Tag.TagName</b></a>
+                        }
+                        else
+                        {
+                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <small>@MiniTag.Tag.Category:</small> <b>@MiniTag.Tag.TagName</b></a>
+                        }
+
+                    }
+                    else
+                    {
+                        @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
+                        {
+                            <span class="badge badge-primary">
+                                @MiniTag.Tag.TagName
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-primary">
+                                <small>@MiniTag.Tag.Category:</small> @MiniTag.Tag.TagName
+                            </span>
+                        }
+                    }
+                }
+            </div>
+            <div id="AddedTags">
+
+            </div>
+        </div>
+    </div>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <hr />
+
+                <h2>Add Tags</h2>
+                Filter <input id="tagSearch" type="text" />
+
+                <hr />
+
+                <div id="UnusedTags">
+
+                    <div class="add-tag-div">
+                        <h3 class="add-tag-header">Genre</h3>
+                        @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Genre"))
+                        {
+                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                        }
+                    </div>
+
+                    <div class="add-tag-div">
+                        <h3 class="add-tag-header">Use</h3>
+                        @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Use"))
+                        {
+                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                        }
+                    </div>
+
+                    @{var PreviousCategory = "";}
+                    <div class="add-tag-div">
+
+
+                        @foreach (var Tag in Model.UnusedTags.Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                                                                     && m.Category.ToString() != "Genre"
+                                                                     && m.Category.ToString() != "OtherDescription"
+                                                                     && m.Category.ToString() != "CreatureName"
+                                                                      && m.Category.ToString() != "Use"))
+                        {
+                            @if (Tag.Category.ToString() != PreviousCategory)
+                            {
+                            @:</div>
+                            @:<div class="add-tag-div">
+                                if (string.IsNullOrEmpty(Tag.Category.ToString()))
+                                {
+                                    <hr />
+                                }
+                                else
+                                {
+                                    <h3 class="add-tag-header">@Tag.Category</h3>
+                                }
+
+                            }
+                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                            PreviousCategory = Tag.Category.ToString();
+                        }
+                    </div>
+                    <div class="add-tag-div">
+                        <h3 class="add-tag-header">Creature Name</h3>
+                        @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "CreatureName"))
+                        {
+                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                        }
+                    </div>
+                    <hr />
+                    <h3>Other Tags</h3>
+                    @foreach (var Tag in Model.UnusedTags.Where(m => string.IsNullOrEmpty(m.Category.ToString()) || m.Category.ToString() == "OtherDescription"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                    }
+                </div>
+                <a href="#" id="AddNewTag" class="btn btn-success" style="margin-top:5px;">+ Add as new tag</a>
+
+            </div>
+        </div>
+    }
+
+
+</div>

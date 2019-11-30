@@ -1,0 +1,130 @@
+﻿@page
+@model MiniIndex.Pages.Minis.CreateModel
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    @if (string.IsNullOrEmpty(Model.URL))
+    {
+
+        <div class="container" style="padding:50px;">
+            <div class="row">
+                <div class="colo-md-12">
+                    <h1>
+                        Add a mini
+                    </h1>
+                    <p font-size="smaller">
+                        Thank you for submitting a mini! Just paste a link to a Thingiverse, Shapeways, or Gumroad model below to get started. Please make sure you take a few seconds once completed to add some useful tags.
+                    </p>
+                </div>
+            </div>
+            <form action="/Minis/Create" method="get">
+                <div class="row" align="center">
+                    <div class="col-md-8">
+                        <h3><input type="text" name="URL" style="width:100%;" placeholder="Paste Thingiverse, Shapeways, or Gumroad URL here" /></h3>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" class="btn btn-primary" value="Add Mini" style="width:100%;" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <small>@*TODO Note about opening GitHub issue or Reddit post to request new sites.*@</small>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+    else
+    {
+        <h2>Add Mini</h2>
+        <h3>Does this look right?</h3>
+        <hr />
+        <div class="row">
+            <div class="col-md-12" align="center">
+                <h4>@Model.Mini.Name</h4>
+                <img src="@Model.Mini.Thumbnail" class="img-fluid rounded" />
+            </div>
+        </div>
+
+        <div class="row" align="center">
+            <div class="col-md-12">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group" style="display:none;">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input asp-for="Mini.Name" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="Mini.Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+
+                    <div class="form-group" style="display:none;">
+                        <label asp-for="Mini.Creator.ThingiverseURL" class="control-label"></label>
+                        <input asp-for="Mini.Creator.ThingiverseURL" class="form-control" />
+                        <span asp-validation-for="Mini.Creator.ThingiverseURL" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" style="display:none;">
+                        <label asp-for="Mini.Creator.ShapewaysURL" class="control-label"></label>
+                        <input asp-for="Mini.Creator.ShapewaysURL" class="form-control" />
+                        <span asp-validation-for="Mini.Creator.ShapewaysURL" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" style="display:none;">
+                        <label asp-for="Mini.Creator.PatreonURL" class="control-label"></label>
+                        <input asp-for="Mini.Creator.PatreonURL" class="form-control" />
+                        <span asp-validation-for="Mini.Creator.PatreonURL" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" style="display:none;">
+                        <label asp-for="Mini.Link" class="control-label"></label>
+                        <input asp-for="Mini.Link" class="form-control" />
+                        <span asp-validation-for="Mini.Link" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" style="display:none;">
+                        <label asp-for="Mini.Thumbnail" class="control-label"></label>
+                        <input asp-for="Mini.Thumbnail" class="form-control" />
+                        <span asp-validation-for="Mini.Thumbnail" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" style="display:none;">
+                        <label asp-for="Mini.Cost" class="control-label"></label>
+                        <input asp-for="Mini.Cost" class="form-control" />
+                        <span asp-validation-for="Mini.Cost" class="text-danger"></span>
+                    </div>
+
+                    <hr />
+                    Once you've submitted it, you'll have an opportunity to add some tags.<br /><br />
+                    @if (Model.Mini.Link.Contains("thingiverse"))
+                    {
+                        <a href="@Model.Mini.Link" class="btn btn-lg btn-outline-primary">View On Thingiverse</a>
+                    }
+                    else if (Model.Mini.Link.Contains("shapeways"))
+                    {
+                        <a href="@Model.Mini.Link" class="btn btn-lg" style="background-color:#FF4B5A; color:white">View On Shapeways</a>
+                    }
+                    else
+                    {
+                        <a href="@Model.Mini.Link" class="btn btn-lg" style="background-color:#198C8C; color:white">View On Gumroad</a>
+                    }
+
+                    <input type="submit" value="Looks good, add it!" class="btn btn-lg btn-success" />
+                </form>
+            </div>
+            <hr />
+        </div>
+    }
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h1>Moderator Dashboard</h1>
+
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                <partial name="_ManageNav" />
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

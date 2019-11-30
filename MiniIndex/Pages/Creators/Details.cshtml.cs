@@ -1,0 +1,94 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using MiniIndex.Models;
+using Newtonsoft.Json;
+
+namespace MiniIndex.Pages.Creators
+{
+    public class DetailsModel : PageModel
+    {
+        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly IConfiguration _configuration;
+        public Creator Creator { get; set; }
+        public List<Mini> MiniList { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string PageNumber { get; set; }
+        public int ParsedPageNumber { get; set; }
+
+        public DetailsModel(MiniIndex.Models.MiniIndexContext context, IConfiguration configuration)
+        {
+            _context = context;
+            _configuration = configuration;
+        }
+
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Creator = await _context.Creator.FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Creator == null)
+            {
+                return NotFound();
+            }
+
+            if (!string.IsNullOrEmpty(Creator.ThingiverseURL)){
+                MiniList = new List<Mini>();
+                var client = new HttpClient();
+
+                if (string.IsNullOrEmpty(PageNumber))
+                {
+                    ParsedPageNumber = 1;
+                }
+                else
+                {
+                    ParsedPageNumber = Int32.Parse(PageNumber);
+                }
+
+                string ThingiverseUserName = Creator.ThingiverseURL.Split('/').Last();
+                HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/users/" + ThingiverseUserName + "/things?access_token="+ _configuration["ThingiverseToken"] + "&page=" + ParsedPageNumber);
+                HttpContent responseContent = response.Content;
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    using (var reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                    {
+                        String result = await reader.ReadToEndAsync();
+                        dynamic returnList = JsonConvert.DeserializeObject(result);
+
+                        foreach (var CurrentMini in returnList)
+                        {
+                            Mini NewMini = new Mini();
+                            string CurrentLink = CurrentMini["public_url"].ToString();
+
+                            if (_context.Mini.Any(m => m.Link == CurrentLink))
+                            {
+                                NewMini = _context.Mini.Where(m => m.Link == CurrentLink).FirstOrDefault();
+                            }
+                            else
+                            {
+                                NewMini.Name = CurrentMini["name"].ToString();
+                                NewMini.Link = CurrentLink;
+                                NewMini.Thumbnail = CurrentMini["thumbnail"].ToString();
+                                NewMini.Status = Status.Unindexed;
+                            }
+
+                            MiniList.Add(NewMini);
+                        }
+                    }
+                }
+            }
+            return Page();
+        }
+    }
+}

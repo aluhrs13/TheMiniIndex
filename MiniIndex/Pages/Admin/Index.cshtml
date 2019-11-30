@@ -1,0 +1,81 @@
+﻿@page
+@model MiniIndex.Pages.Admin.AdminModel
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Approve Minis";
+    ViewData["ActivePage"] = ManageNavPages.Minis;
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h4>Approve Minis</h4>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mini[0].Thumbnail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mini[0].Name)
+                </th>
+                <th>
+                    Moderate
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mini[0].Status)
+                </th>
+                <th>
+                    Tags
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Mini.Count > 0)
+            {
+                @foreach (var item in Model.Mini)
+                {
+                    <tr>
+                        <td>
+                            <img src="@Html.DisplayFor(modelItem => item.Thumbnail)" width="64" />
+                        </td>
+                        <td>
+                            <a asp-page="/Minis/Details" asp-route-id="@item.ID">
+                                @item.Name
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-page="/Minis/UpdateStatus" asp-route-MiniID="@item.ID" asp-route-NewStatus="Approved" class="btn btn-success">
+                                Approve
+                            </a>
+                            <a asp-page="/Minis/UpdateStatus" asp-route-MiniID="@item.ID" asp-route-NewStatus="Rejected" class="btn btn-danger">
+                                Reject
+                            </a>
+                        </td>
+                        <td>
+                            @item.Status
+                        </td>
+                        <td>
+                            @foreach (var miniTag in item.MiniTags)
+                            {
+                                <span class="badge badge-primary">@miniTag.Tag.Category - @miniTag.Tag.TagName</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" align="center">
+                        <h1 style="color:slategray">
+                            All submissions have been moderated!
+                        </h1>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+}

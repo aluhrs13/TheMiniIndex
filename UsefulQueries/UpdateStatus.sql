@@ -1,0 +1,1 @@
+﻿UPDATE dbo.Mini SET Status=1
