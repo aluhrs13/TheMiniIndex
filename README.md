@@ -17,7 +17,3 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.MD) for details on the process for ge
 Thanks to everyone who made it possible to learn ASP.NET Core so quickly and easily.
 
 See also the list of [contributors](https://github.com/aluhrs13/TheMiniIndex/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
