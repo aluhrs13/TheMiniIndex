@@ -13,7 +13,6 @@ INSERT INTO [dbo].[Creator] ([ID], [Name], [PatreonURL], [ThingiverseURL], [Webs
 INSERT INTO [dbo].[Creator] ([ID], [Name], [PatreonURL], [ThingiverseURL], [WebsiteURL], [ShapewaysURL]) VALUES (2007, N'Curufin', NULL, N'https://www.thingiverse.com/Curufin', NULL, NULL)
 INSERT INTO [dbo].[Creator] ([ID], [Name], [PatreonURL], [ThingiverseURL], [WebsiteURL], [ShapewaysURL]) VALUES (4011, N'M3DM', NULL, N'https://www.thingiverse.com/M3DM', NULL, NULL)
 SET IDENTITY_INSERT [dbo].[Creator] OFF
-
                                                                                           
 SET IDENTITY_INSERT [dbo].[Mini] ON
 INSERT INTO [dbo].[Mini] ([ID], [Name], [Link], [CreatorID], [Thumbnail], [Status], [UserId], [Cost]) VALUES (13060, N'28mm Modular Bar OpenLOCK', N'https://www.thingiverse.com/thing:3543559', 2007, N'https://cdn.thingiverse.com/assets/88/23/25/7a/8d/IMG_20190405_152118.jpg', 1, N'f916b068-d810-4107-b379-322601d51aa8', 0)
