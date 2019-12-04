@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/TheMiniIndex/TheMiniIndex/_apis/build/status/aluhrs13.TheMiniIndex?branchName=master)](https://dev.azure.com/TheMiniIndex/TheMiniIndex/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/TheMiniIndex/TheMiniIndex/_apis/build/status/Continuous%20Integration?branchName=master)](https://dev.azure.com/TheMiniIndex/TheMiniIndex/_build/latest?definitionId=1&branchName=master)
 
 # The Mini Index - https://www.TheMiniIndex.com/
 
