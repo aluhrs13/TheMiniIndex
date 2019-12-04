@@ -108,7 +108,15 @@ namespace MiniIndex.Pages.Minis
 
             //Parse out cost
             var CostNode = htmlDoc.DocumentNode.Descendants("strong").First();
-            Mini.Cost = (int)Math.Ceiling(double.Parse(CostNode.InnerText.Substring(1)));
+
+            if (CostNode.InnerText == "$0+")
+            {
+                Mini.Cost = 0;
+            }
+            else
+            {
+                Mini.Cost = (int)Math.Ceiling(double.Parse(CostNode.InnerText.Substring(1)));
+            }
 
             //Check if it exists
             if (_context.Mini.Any(m => m.Link == Mini.Link))
