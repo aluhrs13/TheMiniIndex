@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,7 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MiniIndex.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MiniIndex.Pages.Admin
 {
@@ -16,12 +20,16 @@ namespace MiniIndex.Pages.Admin
     public class _404FinderModel : PageModel
     {
         private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly IConfiguration _configuration;
+
         public IList<Mini> Mini { get; set; }
+        public IList<Creator> Creator { get; set; }
         public List<Mini> MissingMinis { get; set; }
 
-        public _404FinderModel(MiniIndex.Models.MiniIndexContext context)
+        public _404FinderModel(MiniIndex.Models.MiniIndexContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
         public async Task OnGetAsync()
         {
@@ -44,7 +52,32 @@ namespace MiniIndex.Pages.Admin
                     {
                         MissingMinis.Add(item);
                     }
+
+                    if (item.Link.Contains("thingiverse"))
+                    {
+                        string[] SplitURL = item.Link.Split(":");
+
+                        HttpResponseMessage response2 = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
+                        HttpContent responseContent2 = response2.Content;
+                        if (response2.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            using (var reader = new StreamReader(await responseContent2.ReadAsStreamAsync()))
+                            {
+                                string result = await reader.ReadToEndAsync();
+                                JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
+
+                                if (item.Creator.ThingiverseURL != currentMini["creator"]["public_url"].ToString())
+                                {
+                                    item.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
+                                    _context.Attach(item.Creator).State = EntityState.Modified;
+                                }
+                            }
+                        }
+                    }
                 }
+
+                await _context.SaveChangesAsync();
+
             }
         }
     }
