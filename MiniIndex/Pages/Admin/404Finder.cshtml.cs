@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,10 +22,13 @@ namespace MiniIndex.Pages.Admin
     {
         private readonly MiniIndex.Models.MiniIndexContext _context;
         private readonly IConfiguration _configuration;
+        private TelemetryClient telemetry = new TelemetryClient();
+
 
         public IList<Mini> Mini { get; set; }
         public IList<Creator> Creator { get; set; }
         public List<Mini> MissingMinis { get; set; }
+        public List<int> ChangedCreators { get; set; }
 
         public _404FinderModel(MiniIndex.Models.MiniIndexContext context, IConfiguration configuration)
         {
@@ -37,10 +41,12 @@ namespace MiniIndex.Pages.Admin
             {
                 Mini = await _context.Mini
                         .Where(m=>m.Status==Status.Approved)
+                        .Include(m => m.Creator)
                         .AsNoTracking()
                         .ToListAsync();
 
                 MissingMinis = new List<Mini>();
+                ChangedCreators = new List<int>();
 
                 var client = new HttpClient();
 
@@ -53,7 +59,7 @@ namespace MiniIndex.Pages.Admin
                         MissingMinis.Add(item);
                     }
 
-                    if (item.Link.Contains("thingiverse"))
+                    if (item.Link.Contains("thingiverse") && !ChangedCreators.Contains(item.Creator.ID))
                     {
                         string[] SplitURL = item.Link.Split(":");
 
@@ -68,7 +74,9 @@ namespace MiniIndex.Pages.Admin
 
                                 if (item.Creator.ThingiverseURL != currentMini["creator"]["public_url"].ToString())
                                 {
+                                    telemetry.TrackEvent("Changing URL for "+item.Creator.Name+" from " + item.Creator.ThingiverseURL + " to " + currentMini["creator"]["public_url"].ToString());
                                     item.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
+                                    ChangedCreators.Add(item.Creator.ID);
                                     _context.Attach(item.Creator).State = EntityState.Modified;
                                 }
                             }
