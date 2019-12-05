@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MiniIndex.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MiniIndex.Pages.Admin
 {
@@ -16,12 +21,19 @@ namespace MiniIndex.Pages.Admin
     public class _404FinderModel : PageModel
     {
         private readonly MiniIndex.Models.MiniIndexContext _context;
-        public IList<Mini> Mini { get; set; }
-        public List<Mini> MissingMinis { get; set; }
+        private readonly IConfiguration _configuration;
+        private TelemetryClient telemetry = new TelemetryClient();
 
-        public _404FinderModel(MiniIndex.Models.MiniIndexContext context)
+
+        public IList<Mini> Mini { get; set; }
+        public IList<Creator> Creator { get; set; }
+        public List<Mini> MissingMinis { get; set; }
+        public List<int> ChangedCreators { get; set; }
+
+        public _404FinderModel(MiniIndex.Models.MiniIndexContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
         public async Task OnGetAsync()
         {
@@ -29,10 +41,12 @@ namespace MiniIndex.Pages.Admin
             {
                 Mini = await _context.Mini
                         .Where(m=>m.Status==Status.Approved)
+                        .Include(m => m.Creator)
                         .AsNoTracking()
                         .ToListAsync();
 
                 MissingMinis = new List<Mini>();
+                ChangedCreators = new List<int>();
 
                 var client = new HttpClient();
 
@@ -44,7 +58,34 @@ namespace MiniIndex.Pages.Admin
                     {
                         MissingMinis.Add(item);
                     }
+
+                    if (item.Link.Contains("thingiverse") && !ChangedCreators.Contains(item.Creator.ID))
+                    {
+                        string[] SplitURL = item.Link.Split(":");
+
+                        HttpResponseMessage response2 = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
+                        HttpContent responseContent2 = response2.Content;
+                        if (response2.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            using (var reader = new StreamReader(await responseContent2.ReadAsStreamAsync()))
+                            {
+                                string result = await reader.ReadToEndAsync();
+                                JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
+
+                                if (item.Creator.ThingiverseURL != currentMini["creator"]["public_url"].ToString())
+                                {
+                                    telemetry.TrackEvent("Changing URL for "+item.Creator.Name+" from " + item.Creator.ThingiverseURL + " to " + currentMini["creator"]["public_url"].ToString());
+                                    item.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
+                                    ChangedCreators.Add(item.Creator.ID);
+                                    _context.Attach(item.Creator).State = EntityState.Modified;
+                                }
+                            }
+                        }
+                    }
                 }
+
+                await _context.SaveChangesAsync();
+
             }
         }
     }
