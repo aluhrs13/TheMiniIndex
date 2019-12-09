@@ -46,7 +46,7 @@ namespace MiniIndex.Pages.Minis
         public async Task<IActionResult> OnGetAsync()
         {
             Mini = new Mini();
-            int ret = -1;
+            int? id = null;
 
             //No URL passed, render normal page.
             if (string.IsNullOrEmpty(URL))
@@ -63,22 +63,22 @@ namespace MiniIndex.Pages.Minis
                 //Add more conditions here for new sources. Move to switch statement...
                 if (URL.Contains("thingiverse.com"))
                 {
-                    ret = await ParseThingiverse(Mini, URL);
+                    id = await ParseThingiverse(Mini, URL);
                 }
                 else if (URL.Contains("shapeways.com"))
                 {
-                    ret = await ParseShapeways(Mini, URL);
+                    id = await ParseShapeways(Mini, URL);
                 }
                 else if (URL.Contains("gumroad.com"))
                 {
-                    ret = await ParseGumroad(Mini, originalURL);
+                    id = await ParseGumroad(Mini, originalURL);
                 }
             }
 
             //Mini is already indexed, redirect to the existing page.
-            if (ret > 0)
+            if (id.HasValue)
             {
-                return RedirectToPage("./Details", new { id = ret });
+                return RedirectToPage("./Details", new { id });
             }
 
             //Invalid URL. Need to give a good error.
@@ -144,9 +144,10 @@ namespace MiniIndex.Pages.Minis
 
             return RedirectToPage("./Details", new { id = _context.Mini.First(m => m.Link == Mini.Link).ID });
         }
+
         //TODO - Refactor this out for re-use purposes
         //If you change thumbnail logic, change it in FixThumbnail.cshtml.cs also
-        private async Task<int> ParseThingiverse(Mini Mini, string URL)
+        private async Task<int?> ParseThingiverse(Mini Mini, string URL)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -180,11 +181,11 @@ namespace MiniIndex.Pages.Minis
                         }
                     }
                 }
-                return -1;
+                return null;
             }
         }
 
-        private async Task<int> ParseGumroad(Mini mini, string URL)
+        private async Task<int?> ParseGumroad(Mini mini, string URL)
         {
             string parsedURL = "https://gumroad.com/products/" + URL.Split('#')[1] + "/display";
 
@@ -227,10 +228,10 @@ namespace MiniIndex.Pages.Minis
                 return _context.Mini.First(m => m.Link == Mini.Link).ID;
             }
 
-            return -1;
+            return null;
         }
 
-        private async Task<int> ParseShapeways(Mini mini, string URL)
+        private async Task<int?> ParseShapeways(Mini mini, string URL)
         {
             //Initialize HTML Agility Pack variables
             string html = URL;
@@ -266,11 +267,11 @@ namespace MiniIndex.Pages.Minis
                 return _context.Mini.First(m => m.Link == Mini.Link).ID;
             }
 
-            return -1;
+            return null;
         }
 
         //TODO - Patreon currently disabled due to thumbnail expiring. Need to add caching of thumbnails somewhere to fix it.
-        private async Task<int> ParsePatreon(Mini mini, string URL)
+        private async Task<int?> ParsePatreon(Mini mini, string URL)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -303,7 +304,7 @@ namespace MiniIndex.Pages.Minis
                         }
                     }
                 }
-                return -1;
+                return null;
             }
         }
 
