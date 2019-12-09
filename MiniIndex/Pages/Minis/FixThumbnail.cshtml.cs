@@ -18,7 +18,7 @@ namespace MiniIndex.Pages.Minis
     [Authorize]
     public class FixThumbnailModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         private readonly IConfiguration _configuration;
 
         [BindProperty(SupportsGet = true)]
@@ -26,7 +26,7 @@ namespace MiniIndex.Pages.Minis
         [BindProperty]
         public Mini Mini { get; set; }
 
-        public FixThumbnailModel (MiniIndex.Models.MiniIndexContext context,
+        public FixThumbnailModel (MiniIndexContext context,
             IConfiguration configuration)
         {
             _context = context;

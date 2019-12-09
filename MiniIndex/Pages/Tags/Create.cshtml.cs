@@ -14,9 +14,9 @@ namespace MiniIndex.Pages.Tags
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
 
-        public CreateModel(MiniIndex.Models.MiniIndexContext context)
+        public CreateModel(MiniIndexContext context)
         {
             _context = context;
         }

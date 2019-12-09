@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,30 +15,31 @@ using Newtonsoft.Json.Linq;
 namespace MiniIndex.Pages.Admin
 {
     [Authorize]
-
     public class _404FinderModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
-        private readonly IConfiguration _configuration;
-        private TelemetryClient telemetry = new TelemetryClient();
+        public _404FinderModel(MiniIndexContext context, IConfiguration configuration)
+        {
+            _context = context;
+            _configuration = configuration;
 
+            _telemetry = new TelemetryClient();
+        }
+
+        private readonly MiniIndexContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly TelemetryClient _telemetry;
 
         public IList<Mini> Mini { get; set; }
         public IList<Creator> Creator { get; set; }
         public List<Mini> MissingMinis { get; set; }
         public List<int> CheckedCreators { get; set; }
 
-        public _404FinderModel(MiniIndex.Models.MiniIndexContext context, IConfiguration configuration)
-        {
-            _context = context;
-            _configuration = configuration;
-        }
         public async Task OnGetAsync()
         {
             if (User.IsInRole("Moderator"))
             {
                 Mini = await _context.Mini
-                        .Where(m=>m.Status==Status.Approved)
+                        .Where(m => m.Status == Status.Approved)
                         .Include(m => m.Creator)
                         .AsNoTracking()
                         .ToListAsync();
@@ -74,7 +73,7 @@ namespace MiniIndex.Pages.Admin
 
                                 if (item.Creator.ThingiverseURL != currentMini["creator"]["public_url"].ToString())
                                 {
-                                    telemetry.TrackEvent("Changing URL for "+item.Creator.Name+" from " + item.Creator.ThingiverseURL + " to " + currentMini["creator"]["public_url"].ToString());
+                                    _telemetry.TrackEvent("Changing URL for " + item.Creator.Name + " from " + item.Creator.ThingiverseURL + " to " + currentMini["creator"]["public_url"].ToString());
                                     item.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
                                     _context.Attach(item.Creator).State = EntityState.Modified;
                                 }
@@ -85,10 +84,7 @@ namespace MiniIndex.Pages.Admin
                 }
 
                 await _context.SaveChangesAsync();
-
             }
         }
     }
-
-
 }

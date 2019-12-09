@@ -21,7 +21,7 @@ namespace MiniIndex.Pages.Minis
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         private readonly IConfiguration _configuration;
         public SelectList CreatorSL { get; set; }
         [BindProperty]
@@ -32,7 +32,7 @@ namespace MiniIndex.Pages.Minis
         public CreateModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
-                MiniIndex.Models.MiniIndexContext context,
+                MiniIndexContext context,
                 IConfiguration configuration)
         {
             _userManager = userManager;

@@ -11,9 +11,9 @@ namespace MiniIndex.Pages.Tags
 {
     public class JSONTagListModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
 
-        public JSONTagListModel(MiniIndex.Models.MiniIndexContext context)
+        public JSONTagListModel(MiniIndexContext context)
         {
             _context = context;
         }

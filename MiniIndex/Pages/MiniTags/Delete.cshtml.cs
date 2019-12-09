@@ -13,7 +13,7 @@ namespace MiniIndex.Pages.MiniTags
     [Authorize]
     public class DeleteModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         [BindProperty]
         public MiniTag MiniTag { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -21,7 +21,7 @@ namespace MiniIndex.Pages.MiniTags
         [BindProperty(SupportsGet = true)]
         public string tag { get; set; }
 
-        public DeleteModel(MiniIndex.Models.MiniIndexContext context)
+        public DeleteModel(MiniIndexContext context)
         {
             _context = context;
         }

@@ -13,10 +13,10 @@ namespace MiniIndex.Pages.Admin
     [Authorize]
     public class ThumbnailCorrectionModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         public IList<Mini> Mini { get; set; }
 
-        public ThumbnailCorrectionModel(MiniIndex.Models.MiniIndexContext context)
+        public ThumbnailCorrectionModel(MiniIndexContext context)
         {
             _context = context;
         }

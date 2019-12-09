@@ -14,7 +14,7 @@ namespace MiniIndex.Pages.Minis
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         [BindProperty(SupportsGet = true)]
         public int MiniID { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -25,7 +25,7 @@ namespace MiniIndex.Pages.Minis
         public UpdateStatusModel(
         UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
-        MiniIndex.Models.MiniIndexContext context)
+        MiniIndexContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;

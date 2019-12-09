@@ -16,7 +16,7 @@ namespace MiniIndex.Pages.Minis
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         [BindProperty(SupportsGet = true)]
         public string[] SearchString { get; set; }
         public SelectList TagsList { get; set; }
@@ -27,8 +27,8 @@ namespace MiniIndex.Pages.Minis
 
         public IndexModel(
                 UserManager<IdentityUser> userManager,
-                SignInManager<IdentityUser> signInManager, 
-                MiniIndex.Models.MiniIndexContext context)
+                SignInManager<IdentityUser> signInManager,
+                MiniIndexContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;

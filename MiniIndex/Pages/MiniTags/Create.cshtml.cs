@@ -12,12 +12,12 @@ namespace MiniIndex.Pages.MiniTags
     [Authorize]
     public class CreateModel : PageModel
     {
-        public CreateModel(MiniIndex.Models.MiniIndexContext context)
+        public CreateModel(MiniIndexContext context)
         {
             _context = context;
         }
 
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
 
         [BindProperty(SupportsGet = true)]
         public string mini { get; set; }

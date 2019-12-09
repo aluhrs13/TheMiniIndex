@@ -16,7 +16,7 @@ namespace MiniIndex.Pages.Tags
         public EditModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
-                MiniIndex.Models.MiniIndexContext context)
+                MiniIndexContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -25,7 +25,7 @@ namespace MiniIndex.Pages.Tags
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
 
         [BindProperty]
         public Tag Tag { get; set; }

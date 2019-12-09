@@ -16,14 +16,14 @@ namespace MiniIndex.Pages.Minis
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         [BindProperty]
         public Mini Mini { get; set; }
 
         public EditModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
-                MiniIndex.Models.MiniIndexContext context)
+                MiniIndexContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;

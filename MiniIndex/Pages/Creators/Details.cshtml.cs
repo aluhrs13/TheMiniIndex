@@ -15,7 +15,7 @@ namespace MiniIndex.Pages.Creators
 {
     public class DetailsModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         private readonly IConfiguration _configuration;
         public Creator Creator { get; set; }
         public List<Mini> MiniList { get; set; }
@@ -23,7 +23,7 @@ namespace MiniIndex.Pages.Creators
         public string PageNumber { get; set; }
         public int ParsedPageNumber { get; set; }
 
-        public DetailsModel(MiniIndex.Models.MiniIndexContext context, IConfiguration configuration)
+        public DetailsModel(MiniIndexContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
