@@ -23,7 +23,7 @@ namespace MiniIndex
         {
             get
             {
-                return (PageIndex > 1);
+                return PageIndex > 1;
             }
         }
 
@@ -31,7 +31,7 @@ namespace MiniIndex
         {
             get
             {
-                return (PageIndex < TotalPages);
+                return PageIndex < TotalPages;
             }
         }
 
