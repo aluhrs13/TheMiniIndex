@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -11,20 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
 
 namespace MiniIndex.Pages.Minis
-{                                           
+{
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndexContext _context;
-        [BindProperty(SupportsGet = true)]
-        public string[] SearchString { get; set; }
-        public SelectList TagsList { get; set; }
-        public PaginatedList<Mini> Mini { get; set; }
-        public List<Tag> Tags { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public bool FreeOnly { get; set; }
-
         public IndexModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
@@ -34,6 +21,20 @@ namespace MiniIndex.Pages.Minis
             _signInManager = signInManager;
             _context = context;
         }
+
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly MiniIndexContext _context;
+
+        [BindProperty(SupportsGet = true)]
+        public string[] SearchString { get; set; }
+
+        public SelectList TagsList { get; set; }
+        public PaginatedList<Mini> Mini { get; set; }
+        public List<Tag> Tags { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public bool FreeOnly { get; set; }
 
         public async Task OnGetAsync(int? pageIndex)
         {
@@ -51,11 +52,11 @@ namespace MiniIndex.Pages.Minis
                 minis = minis.Where(m => m.Cost == 0);
             }
 
-            if (SearchString!=null && SearchString.Count()>0)
+            if (SearchString != null && SearchString.Any())
             {
-                foreach(string IndividualTag in SearchString)
+                foreach (string IndividualTag in SearchString)
                 {
-                    minis=minis.Where(t => t.MiniTags.Any(mt=> mt.Tag.TagName== IndividualTag));
+                    minis = minis.Where(t => t.MiniTags.Any(mt => mt.Tag.TagName == IndividualTag));
                 }
             }
             else
@@ -74,7 +75,7 @@ namespace MiniIndex.Pages.Minis
 
                 SearchString = SearchList.ToArray();
             }
-            
+
             //If the user is logged in, we should show them their submitted minis too even if they aren't approved.
             int pageSize = 21;
             if (user != null)
@@ -84,8 +85,8 @@ namespace MiniIndex.Pages.Minis
                     .Include(m => m.MiniTags)
                         .ThenInclude(mt => mt.Tag)
                     .Include(m => m.Creator)
-                    .Where(m=>m.Status==Status.Approved||m.User==user)
-                    .OrderByDescending(m=>m.ID)
+                    .Where(m => m.Status == Status.Approved || m.User == user)
+                    .OrderByDescending(m => m.ID)
                     .AsNoTracking(),
                     pageIndex ?? 1, pageSize);
             }
@@ -104,10 +105,10 @@ namespace MiniIndex.Pages.Minis
 
             //Pull together tag list for the search box
             IQueryable<Tag> tagsQuery = from m in _context.Tag
-                                              orderby m.TagName
-                                              select m;
+                                        orderby m.TagName
+                                        select m;
 
-            TagsList = new SelectList(await tagsQuery.Distinct().ToListAsync(),"TagName","TagName",null,"Category");
+            TagsList = new SelectList(await tagsQuery.Distinct().ToListAsync(), "TagName", "TagName", null, "Category");
 
             Tags = _context
                         .Tag

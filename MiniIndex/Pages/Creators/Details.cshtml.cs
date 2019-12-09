@@ -73,7 +73,7 @@ namespace MiniIndex.Pages.Creators
 
                             if (_context.Mini.Any(m => m.Link == CurrentLink))
                             {
-                                NewMini = _context.Mini.Where(m => m.Link == CurrentLink).FirstOrDefault();
+                                NewMini = _context.Mini.FirstOrDefault(m => m.Link == CurrentLink);
                             }
                             else
                             {
