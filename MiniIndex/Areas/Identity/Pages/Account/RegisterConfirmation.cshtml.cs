@@ -51,7 +51,7 @@ namespace MiniIndex.Areas.Identity.Pages.Account
                 EmailConfirmationUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code },
+                    values: new { area = "Identity", userId, code },
                     protocol: Request.Scheme);
             }
 
