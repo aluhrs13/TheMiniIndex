@@ -15,19 +15,21 @@ namespace MiniIndex.Pages.Creators
 {
     public class DetailsModel : PageModel
     {
-        private readonly MiniIndexContext _context;
-        private readonly IConfiguration _configuration;
-        public Creator Creator { get; set; }
-        public List<Mini> MiniList { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public string PageNumber { get; set; }
-        public int ParsedPageNumber { get; set; }
-
         public DetailsModel(MiniIndexContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
+
+        private readonly MiniIndexContext _context;
+        private readonly IConfiguration _configuration;
+        public Creator Creator { get; set; }
+        public List<Mini> MiniList { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string PageNumber { get; set; }
+
+        public int ParsedPageNumber { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -43,47 +45,49 @@ namespace MiniIndex.Pages.Creators
                 return NotFound();
             }
 
-            if (!string.IsNullOrEmpty(Creator.ThingiverseURL)){
+            if (!string.IsNullOrEmpty(Creator.ThingiverseURL))
+            {
                 MiniList = new List<Mini>();
-                HttpClient client = new HttpClient();
-
-                if (string.IsNullOrEmpty(PageNumber))
+                using (HttpClient client = new HttpClient())
                 {
-                    ParsedPageNumber = 1;
-                }
-                else
-                {
-                    ParsedPageNumber = Int32.Parse(PageNumber);
-                }
-
-                string ThingiverseUserName = Creator.ThingiverseURL.Split('/').Last();
-                HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/users/" + ThingiverseUserName + "/things?access_token="+ _configuration["ThingiverseToken"] + "&page=" + ParsedPageNumber);
-                HttpContent responseContent = response.Content;
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                    if (string.IsNullOrEmpty(PageNumber))
                     {
-                        String result = await reader.ReadToEndAsync();
-                        dynamic returnList = JsonConvert.DeserializeObject(result);
+                        ParsedPageNumber = 1;
+                    }
+                    else
+                    {
+                        ParsedPageNumber = Int32.Parse(PageNumber);
+                    }
 
-                        foreach (dynamic CurrentMini in returnList)
+                    string ThingiverseUserName = Creator.ThingiverseURL.Split('/').Last();
+                    HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/users/" + ThingiverseUserName + "/things?access_token=" + _configuration["ThingiverseToken"] + "&page=" + ParsedPageNumber);
+                    HttpContent responseContent = response.Content;
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                         {
-                            Mini NewMini = new Mini();
-                            string CurrentLink = CurrentMini["public_url"].ToString();
+                            String result = await reader.ReadToEndAsync();
+                            dynamic returnList = JsonConvert.DeserializeObject(result);
 
-                            if (_context.Mini.Any(m => m.Link == CurrentLink))
+                            foreach (dynamic CurrentMini in returnList)
                             {
-                                NewMini = _context.Mini.FirstOrDefault(m => m.Link == CurrentLink);
-                            }
-                            else
-                            {
-                                NewMini.Name = CurrentMini["name"].ToString();
-                                NewMini.Link = CurrentLink;
-                                NewMini.Thumbnail = CurrentMini["thumbnail"].ToString();
-                                NewMini.Status = Status.Unindexed;
-                            }
+                                Mini NewMini = new Mini();
+                                string CurrentLink = CurrentMini["public_url"].ToString();
 
-                            MiniList.Add(NewMini);
+                                if (_context.Mini.Any(m => m.Link == CurrentLink))
+                                {
+                                    NewMini = _context.Mini.FirstOrDefault(m => m.Link == CurrentLink);
+                                }
+                                else
+                                {
+                                    NewMini.Name = CurrentMini["name"].ToString();
+                                    NewMini.Link = CurrentLink;
+                                    NewMini.Thumbnail = CurrentMini["thumbnail"].ToString();
+                                    NewMini.Status = Status.Unindexed;
+                                }
+
+                                MiniList.Add(NewMini);
+                            }
                         }
                     }
                 }

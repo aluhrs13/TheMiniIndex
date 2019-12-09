@@ -144,81 +144,44 @@ namespace MiniIndex.Pages.Minis
 
             return RedirectToPage("./Details", new { id = _context.Mini.First(m => m.Link == Mini.Link).ID });
         }
-
         //TODO - Refactor this out for re-use purposes
         //If you change thumbnail logic, change it in FixThumbnail.cshtml.cs also
-        public async Task<int> ParseThingiverse(Mini Mini, string URL)
+        private async Task<int> ParseThingiverse(Mini Mini, string URL)
         {
-            HttpClient client = new HttpClient();
-            string[] SplitURL = URL.Split(":");
-
-            HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
-            HttpContent responseContent = response.Content;
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            using (HttpClient client = new HttpClient())
             {
-                using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                string[] SplitURL = URL.Split(":");
+
+                HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
+                HttpContent responseContent = response.Content;
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    string result = await reader.ReadToEndAsync();
-                    JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
-
-                    Mini.Name = currentMini["name"].ToString();
-                    Mini.Link = currentMini["public_url"].ToString();
-                    Mini.Thumbnail = currentMini["default_image"]["url"].ToString();
-
-                    if (Mini.Thumbnail.EndsWith(".stl") || Mini.Thumbnail.EndsWith(".obj"))
+                    using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                     {
-                        Mini.Thumbnail = currentMini["default_image"]["sizes"][4]["url"].ToString();
+                        string result = await reader.ReadToEndAsync();
+                        JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
+
+                        Mini.Name = currentMini["name"].ToString();
+                        Mini.Link = currentMini["public_url"].ToString();
+                        Mini.Thumbnail = currentMini["default_image"]["url"].ToString();
+
+                        if (Mini.Thumbnail.EndsWith(".stl") || Mini.Thumbnail.EndsWith(".obj"))
+                        {
+                            Mini.Thumbnail = currentMini["default_image"]["sizes"][4]["url"].ToString();
+                        }
+
+                        Creator creator = new Creator();
+                        Mini.Creator = creator;
+                        Mini.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
+
+                        if (_context.Mini.Any(m => m.Link == Mini.Link))
+                        {
+                            return _context.Mini.First(m => m.Link == Mini.Link).ID;
+                        }
                     }
-
-                    Creator creator = new Creator();
-                    Mini.Creator = creator;
-                    Mini.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
-
-                    if (_context.Mini.Any(m => m.Link == Mini.Link))
-                    {
-                        return _context.Mini.First(m => m.Link == Mini.Link).ID;
-                    }
                 }
+                return -1;
             }
-            return -1;
-        }
-
-        public Creator LastChanceFindCreator(string source, string URL)
-        {
-            Creator foundCreator = null;
-
-            if (source == "Thingiverse" || source == "Shapeways" || source == "Patreon")
-            {
-                string URLName = URL.Split("/").Last();
-                foundCreator = _context.Creator.FirstOrDefault(c => c.Name == URLName);
-
-                if (foundCreator == null)
-                {
-                    Mini.Creator.Name = URLName;
-                }
-                else
-                {
-                    Mini.Creator = foundCreator;
-                }
-            }
-
-            if (source == "Gumroad")
-            {
-                string URLName = URL.Split('/').Last().Split('?')[0].Split('#')[0];
-                foundCreator = _context.Creator.FirstOrDefault(c => c.Name == URLName);
-
-                if (foundCreator == null)
-                {
-                    Mini.Creator.Name = URLName;
-                    Mini.Creator.WebsiteURL = URL.Split('?')[0].Split('#')[0];
-                }
-                else
-                {
-                    Mini.Creator = foundCreator;
-                }
-            }
-
-            return foundCreator;
         }
 
         private async Task<int> ParseGumroad(Mini mini, string URL)
@@ -309,37 +272,77 @@ namespace MiniIndex.Pages.Minis
         //TODO - Patreon currently disabled due to thumbnail expiring. Need to add caching of thumbnails somewhere to fix it.
         private async Task<int> ParsePatreon(Mini mini, string URL)
         {
-            HttpClient client = new HttpClient();
-            string[] SplitURL = URL.Split('/', '-');
-
-            HttpResponseMessage response = await client.GetAsync("https://www.patreon.com/api/posts/" + SplitURL.Last());
-            HttpContent responseContent = response.Content;
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            using (HttpClient client = new HttpClient())
             {
-                using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                string[] SplitURL = URL.Split('/', '-');
+
+                HttpResponseMessage response = await client.GetAsync("https://www.patreon.com/api/posts/" + SplitURL.Last());
+                HttpContent responseContent = response.Content;
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    String result = await reader.ReadToEndAsync();
-                    JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
-
-                    Mini.Name = currentMini["data"]["attributes"]["title"].ToString();
-                    Mini.Link = currentMini["data"]["attributes"]["url"].ToString();
-
-                    //TODO - Returned URL has a token time, may expire. Might have to rehost images.
-                    Mini.Thumbnail = currentMini["data"]["attributes"]["image"]["large_url"].ToString();
-
-                    Creator creator = new Creator();
-                    Mini.Creator = creator;
-                    Mini.Creator.PatreonURL = currentMini["included"][0]["attributes"]["url"].ToString();
-
-                    Mini.Cost = 1;
-
-                    if (_context.Mini.Any(m => m.Link == Mini.Link))
+                    using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                     {
-                        return _context.Mini.First(m => m.Link == Mini.Link).ID;
+                        String result = await reader.ReadToEndAsync();
+                        JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
+
+                        Mini.Name = currentMini["data"]["attributes"]["title"].ToString();
+                        Mini.Link = currentMini["data"]["attributes"]["url"].ToString();
+
+                        //TODO - Returned URL has a token time, may expire. Might have to rehost images.
+                        Mini.Thumbnail = currentMini["data"]["attributes"]["image"]["large_url"].ToString();
+
+                        Creator creator = new Creator();
+                        Mini.Creator = creator;
+                        Mini.Creator.PatreonURL = currentMini["included"][0]["attributes"]["url"].ToString();
+
+                        Mini.Cost = 1;
+
+                        if (_context.Mini.Any(m => m.Link == Mini.Link))
+                        {
+                            return _context.Mini.First(m => m.Link == Mini.Link).ID;
+                        }
                     }
                 }
+                return -1;
             }
-            return -1;
+        }
+
+        private Creator LastChanceFindCreator(string source, string URL)
+        {
+            Creator foundCreator = null;
+
+            if (source == "Thingiverse" || source == "Shapeways" || source == "Patreon")
+            {
+                string URLName = URL.Split("/").Last();
+                foundCreator = _context.Creator.FirstOrDefault(c => c.Name == URLName);
+
+                if (foundCreator == null)
+                {
+                    Mini.Creator.Name = URLName;
+                }
+                else
+                {
+                    Mini.Creator = foundCreator;
+                }
+            }
+
+            if (source == "Gumroad")
+            {
+                string URLName = URL.Split('/').Last().Split('?')[0].Split('#')[0];
+                foundCreator = _context.Creator.FirstOrDefault(c => c.Name == URLName);
+
+                if (foundCreator == null)
+                {
+                    Mini.Creator.Name = URLName;
+                    Mini.Creator.WebsiteURL = URL.Split('?')[0].Split('#')[0];
+                }
+                else
+                {
+                    Mini.Creator = foundCreator;
+                }
+            }
+
+            return foundCreator;
         }
     }
 }

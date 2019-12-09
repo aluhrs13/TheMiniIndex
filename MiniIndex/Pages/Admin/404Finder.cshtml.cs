@@ -47,43 +47,44 @@ namespace MiniIndex.Pages.Admin
                 MissingMinis = new List<Mini>();
                 CheckedCreators = new List<int>();
 
-                HttpClient client = new HttpClient();
-
-                foreach (Mini item in Mini)
+                using (HttpClient client = new HttpClient())
                 {
-                    HttpResponseMessage response = await client.GetAsync(item.Thumbnail);
-                    HttpContent responseContent = response.Content;
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    foreach (Mini item in Mini)
                     {
-                        MissingMinis.Add(item);
-                    }
-
-                    if (item.Link.Contains("thingiverse") && !CheckedCreators.Contains(item.Creator.ID))
-                    {
-                        string[] SplitURL = item.Link.Split(":");
-
-                        HttpResponseMessage response2 = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
-                        HttpContent responseContent2 = response2.Content;
-                        if (response2.StatusCode == System.Net.HttpStatusCode.OK)
+                        HttpResponseMessage response = await client.GetAsync(item.Thumbnail);
+                        HttpContent responseContent = response.Content;
+                        if (response.StatusCode != System.Net.HttpStatusCode.OK)
                         {
-                            using (StreamReader reader = new StreamReader(await responseContent2.ReadAsStreamAsync()))
-                            {
-                                string result = await reader.ReadToEndAsync();
-                                JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
+                            MissingMinis.Add(item);
+                        }
 
-                                if (item.Creator.ThingiverseURL != currentMini["creator"]["public_url"].ToString())
+                        if (item.Link.Contains("thingiverse") && !CheckedCreators.Contains(item.Creator.ID))
+                        {
+                            string[] SplitURL = item.Link.Split(":");
+
+                            HttpResponseMessage response2 = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
+                            HttpContent responseContent2 = response2.Content;
+                            if (response2.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                using (StreamReader reader = new StreamReader(await responseContent2.ReadAsStreamAsync()))
                                 {
-                                    _telemetry.TrackEvent("Changing URL for " + item.Creator.Name + " from " + item.Creator.ThingiverseURL + " to " + currentMini["creator"]["public_url"].ToString());
-                                    item.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
-                                    _context.Attach(item.Creator).State = EntityState.Modified;
+                                    string result = await reader.ReadToEndAsync();
+                                    JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
+
+                                    if (item.Creator.ThingiverseURL != currentMini["creator"]["public_url"].ToString())
+                                    {
+                                        _telemetry.TrackEvent("Changing URL for " + item.Creator.Name + " from " + item.Creator.ThingiverseURL + " to " + currentMini["creator"]["public_url"].ToString());
+                                        item.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
+                                        _context.Attach(item.Creator).State = EntityState.Modified;
+                                    }
                                 }
+                                CheckedCreators.Add(item.Creator.ID);
                             }
-                            CheckedCreators.Add(item.Creator.ID);
                         }
                     }
-                }
 
-                await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
+                }
             }
         }
     }
