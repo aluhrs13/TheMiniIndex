@@ -103,7 +103,7 @@ namespace MiniIndex.Areas.Identity.Pages.Account
                 }
                 foreach (IdentityError error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(String.Empty, error.Description);
                 }
             }
 

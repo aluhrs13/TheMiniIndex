@@ -61,7 +61,7 @@ namespace MiniIndex.Areas.Identity.Pages.Account.Manage
             {
                 if (!await _userManager.CheckPasswordAsync(user, Input.Password))
                 {
-                    ModelState.AddModelError(string.Empty, "Incorrect password.");
+                    ModelState.AddModelError(String.Empty, "Incorrect password.");
                     return Page();
                 }
             }

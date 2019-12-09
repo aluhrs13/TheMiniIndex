@@ -28,7 +28,7 @@ namespace MiniIndex.Pages.MiniTags
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (!ModelState.IsValid || string.IsNullOrEmpty(mini) || string.IsNullOrEmpty(tag))
+            if (!ModelState.IsValid || String.IsNullOrEmpty(mini) || String.IsNullOrEmpty(tag))
             {
                 return Page();
             }

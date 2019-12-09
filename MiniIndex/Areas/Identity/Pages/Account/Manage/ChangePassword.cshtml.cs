@@ -85,7 +85,7 @@ namespace MiniIndex.Areas.Identity.Pages.Account.Manage
             {
                 foreach (IdentityError error in changePasswordResult.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(String.Empty, error.Description);
                 }
                 return Page();
             }

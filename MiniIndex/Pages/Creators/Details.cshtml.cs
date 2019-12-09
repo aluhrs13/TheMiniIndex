@@ -45,12 +45,12 @@ namespace MiniIndex.Pages.Creators
                 return NotFound();
             }
 
-            if (!string.IsNullOrEmpty(Creator.ThingiverseURL))
+            if (!String.IsNullOrEmpty(Creator.ThingiverseURL))
             {
                 MiniList = new List<Mini>();
                 using (HttpClient client = new HttpClient())
                 {
-                    if (string.IsNullOrEmpty(PageNumber))
+                    if (String.IsNullOrEmpty(PageNumber))
                     {
                         ParsedPageNumber = 1;
                     }
@@ -66,7 +66,7 @@ namespace MiniIndex.Pages.Creators
                     {
                         using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                         {
-                            String result = await reader.ReadToEndAsync();
+                            string result = await reader.ReadToEndAsync();
                             dynamic returnList = JsonConvert.DeserializeObject(result);
 
                             foreach (dynamic CurrentMini in returnList)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -44,9 +45,9 @@ namespace MiniIndex.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!string.IsNullOrEmpty(ErrorMessage))
+            if (!String.IsNullOrEmpty(ErrorMessage))
             {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
+                ModelState.AddModelError(String.Empty, ErrorMessage);
             }
 
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -84,7 +85,7 @@ namespace MiniIndex.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(String.Empty, "Invalid login attempt.");
                     return Page();
                 }
             }
@@ -103,7 +104,7 @@ namespace MiniIndex.Areas.Identity.Pages.Account
             IdentityUser user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(String.Empty, "Verification email sent. Please check your email.");
             }
 
             string userId = await _userManager.GetUserIdAsync(user);
@@ -118,7 +119,7 @@ namespace MiniIndex.Areas.Identity.Pages.Account
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            ModelState.AddModelError(String.Empty, "Verification email sent. Please check your email.");
             return Page();
         }
 

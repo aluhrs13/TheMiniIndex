@@ -49,7 +49,7 @@ namespace MiniIndex.Pages.Minis
             int? id = null;
 
             //No URL passed, render normal page.
-            if (string.IsNullOrEmpty(URL))
+            if (String.IsNullOrEmpty(URL))
             {
                 return Page();
             }
@@ -97,7 +97,7 @@ namespace MiniIndex.Pages.Minis
             }
 
             Creator foundCreator = null;
-            if (!string.IsNullOrEmpty(Mini.Creator.ThingiverseURL))
+            if (!String.IsNullOrEmpty(Mini.Creator.ThingiverseURL))
             {
                 foundCreator = _context.Creator.FirstOrDefault(c => c.ThingiverseURL == Mini.Creator.ThingiverseURL);
 
@@ -110,7 +110,7 @@ namespace MiniIndex.Pages.Minis
                     foundCreator = LastChanceFindCreator("Thingiverse", Mini.Creator.ThingiverseURL);
                 }
             }
-            else if (!string.IsNullOrEmpty(Mini.Creator.ShapewaysURL))
+            else if (!String.IsNullOrEmpty(Mini.Creator.ShapewaysURL))
             {
                 foundCreator = _context.Creator.FirstOrDefault(c => c.ShapewaysURL == Mini.Creator.ShapewaysURL);
 
@@ -123,7 +123,7 @@ namespace MiniIndex.Pages.Minis
                     foundCreator = LastChanceFindCreator("Shapeways", Mini.Creator.ShapewaysURL);
                 }
             }
-            else if (!string.IsNullOrEmpty(Mini.Creator.PatreonURL))
+            else if (!String.IsNullOrEmpty(Mini.Creator.PatreonURL))
             {
                 foundCreator = _context.Creator.FirstOrDefault(c => c.PatreonURL == Mini.Creator.PatreonURL);
 
@@ -223,7 +223,7 @@ namespace MiniIndex.Pages.Minis
             }
             else
             {
-                Mini.Cost = (int)Math.Ceiling(double.Parse(CostNode.InnerText.Substring(1)));
+                Mini.Cost = (int)Math.Ceiling(Double.Parse(CostNode.InnerText.Substring(1)));
             }
 
             //Check if it exists
@@ -287,7 +287,7 @@ namespace MiniIndex.Pages.Minis
                 {
                     using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                     {
-                        String result = await reader.ReadToEndAsync();
+                        string result = await reader.ReadToEndAsync();
                         JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
 
                         Mini.Name = currentMini["data"]["attributes"]["title"].ToString();

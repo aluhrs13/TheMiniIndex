@@ -33,12 +33,12 @@ namespace MiniIndex.Pages.MiniTags
 
         public async Task<IActionResult> OnGet()
         {
-            if (!ModelState.IsValid || string.IsNullOrEmpty(mini))
+            if (!ModelState.IsValid || String.IsNullOrEmpty(mini))
             {
                 return Page();
             }
 
-            if (string.IsNullOrEmpty(tag) && string.IsNullOrEmpty(tagName))
+            if (String.IsNullOrEmpty(tag) && String.IsNullOrEmpty(tagName))
             {
                 return Page();
             }
@@ -46,7 +46,7 @@ namespace MiniIndex.Pages.MiniTags
             MiniTag newMiniTag = new MiniTag();
             Tag newTag = new Tag();
 
-            if (!string.IsNullOrEmpty(tagName))
+            if (!String.IsNullOrEmpty(tagName))
             {
                 //Need to make a new tag, go by name.
                 Tag newNewTag = new Tag
