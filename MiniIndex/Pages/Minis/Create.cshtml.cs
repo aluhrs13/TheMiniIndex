@@ -55,30 +55,34 @@ namespace MiniIndex.Pages.Minis
             }
             else
             {
-                //Parse out the URL and process it
-                string originalURL = URL;
-                URL = URL.ToLower();
-                URL = URL.Split("?")[0];
+                var uri = new Uri(URL);
 
-                //Add more conditions here for new sources. Move to switch statement...
-                if (URL.Contains("thingiverse.com"))
+                //TODO: switch is nice, but polymorphism is nicer. Refactor this.
+                switch (uri.Host.Replace("www.", ""))
                 {
-                    id = await ParseThingiverse(Mini, URL);
-                }
-                else if (URL.Contains("shapeways.com"))
-                {
-                    id = await ParseShapeways(Mini, URL);
-                }
-                else if (URL.Contains("gumroad.com"))
-                {
-                    id = await ParseGumroad(Mini, originalURL);
+                    case "thingiverse.com":
+                        id = await ParseThingiverse(Mini, URL);
+                        break;
+
+                    case "shapeways.com":
+                        id = await ParseShapeways(Mini, URL);
+                        break;
+
+                    case "gumroad.com":
+                        id = await ParseGumroad(Mini, URL);
+                        break;
+
+                    default:
+                        //valid URL, but not currently supported
+                        //TODO: log when this happens?
+                        break;
                 }
             }
 
             //Mini is already indexed, redirect to the existing page.
             if (id.HasValue)
             {
-                return RedirectToPage("./Details", new { id });
+                return RedirectToPage("./Details", new { id.Value });
             }
 
             //Invalid URL. Need to give a good error.
