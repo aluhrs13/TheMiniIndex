@@ -47,33 +47,32 @@ namespace MiniIndex.Pages.Tags
 
                 Tag = await _context.Tag.FirstOrDefaultAsync(m => m.ID == id);
 
-                Enum.TryParse(category, out TagCategory newCategory);
-
-                Tag.Category = newCategory;
-
-                _context.Attach(Tag).State = EntityState.Modified;
-
-                try
+                if (Enum.TryParse(category, out TagCategory newCategory))
                 {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TagExists(Tag.ID))
+                    Tag.Category = newCategory;
+
+                    _context.Attach(Tag).State = EntityState.Modified;
+
+                    try
                     {
-                        return NotFound();
+                        await _context.SaveChangesAsync();
+                        return Page();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!TagExists(Tag.ID))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
             }
-            else
-            {
-                return NotFound();
-            }
-            return Page();
+
+            return NotFound();
         }
 
         public async Task<IActionResult> OnPostAsync()
