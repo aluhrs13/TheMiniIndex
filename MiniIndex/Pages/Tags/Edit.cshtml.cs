@@ -13,12 +13,6 @@ namespace MiniIndex.Pages.Tags
     [Authorize]
     public class EditModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
-        [BindProperty]
-        public Tag Tag { get; set; }
-
         public EditModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
@@ -28,6 +22,13 @@ namespace MiniIndex.Pages.Tags
             _signInManager = signInManager;
             _context = context;
         }
+
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly MiniIndex.Models.MiniIndexContext _context;
+
+        [BindProperty]
+        public Tag Tag { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id, string category)
         {
@@ -46,8 +47,7 @@ namespace MiniIndex.Pages.Tags
 
                 Tag = await _context.Tag.FirstOrDefaultAsync(m => m.ID == id);
 
-                TagCategory newCategory;
-                Enum.TryParse(category, out newCategory);
+                Enum.TryParse(category, out TagCategory newCategory);
 
                 Tag.Category = newCategory;
 

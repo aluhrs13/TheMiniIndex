@@ -12,42 +12,47 @@ namespace MiniIndex.Pages.MiniTags
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
-        [BindProperty(SupportsGet = true)]
-        public string mini { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public string tag { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public string tagName { get; set; }
-        [BindProperty]
-        public MiniTag MiniTag { get; set; }
-
         public CreateModel(MiniIndex.Models.MiniIndexContext context)
         {
             _context = context;
         }
 
+        private readonly MiniIndex.Models.MiniIndexContext _context;
+
+        [BindProperty(SupportsGet = true)]
+        public string mini { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string tag { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string tagName { get; set; }
+
+        [BindProperty]
+        public MiniTag MiniTag { get; set; }
+
         public async Task<IActionResult> OnGet()
         {
-
             if (!ModelState.IsValid || string.IsNullOrEmpty(mini))
             {
                 return Page();
             }
 
-            if(string.IsNullOrEmpty(tag) && string.IsNullOrEmpty(tagName))
+            if (string.IsNullOrEmpty(tag) && string.IsNullOrEmpty(tagName))
             {
                 return Page();
             }
 
             MiniTag newMiniTag = new MiniTag();
             Tag newTag = new Tag();
-            
+
             if (!string.IsNullOrEmpty(tagName))
             {
                 //Need to make a new tag, go by name.
-                Tag newNewTag = new Tag();
-                newNewTag.TagName = tagName;
+                Tag newNewTag = new Tag
+                {
+                    TagName = tagName
+                };
 
                 if (!_context.Tag.Any(m => m.TagName == newNewTag.TagName))
                 {
@@ -74,15 +79,15 @@ namespace MiniIndex.Pages.MiniTags
             newMiniTag.MiniID = Int32.Parse(mini);
 
             Mini newMini = _context.Mini.Where(m => m.ID == newMiniTag.MiniID)
-                .Include(m=>m.Creator)
-                .Include(m=>m.MiniTags)
-                    .ThenInclude(mt=>mt.Tag)
+                .Include(m => m.Creator)
+                .Include(m => m.MiniTags)
+                    .ThenInclude(mt => mt.Tag)
                 .First();
 
             newMiniTag.Mini = newMini;
             newTag.MiniTags.Add(newMiniTag);
 
-            if (!newMini.MiniTags.Where(mt=>mt.Tag.TagName==newTag.TagName).Any())
+            if (!newMini.MiniTags.Where(mt => mt.Tag.TagName == newTag.TagName).Any())
             {
                 newMini.MiniTags.Add(newMiniTag);
                 _context.MiniTag.Add(newMiniTag);
