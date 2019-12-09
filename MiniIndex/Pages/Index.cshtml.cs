@@ -22,7 +22,7 @@ namespace MiniIndex.Pages
         }
         public void OnGet()
         {
-            var minis = from m in _context.Mini select m;
+            IQueryable<Mini> minis = from m in _context.Mini select m;
 
             Mini = minis
                 .Include(m => m.Creator)

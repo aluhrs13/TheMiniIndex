@@ -29,10 +29,10 @@ namespace MiniIndex
                 {
                     if (context.HostingEnvironment.IsProduction())
                     {
-                        var builtConfig = config.Build();
+                        IConfigurationRoot builtConfig = config.Build();
 
-                        var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                        var keyVaultClient = new KeyVaultClient(
+                        AzureServiceTokenProvider azureServiceTokenProvider = new AzureServiceTokenProvider();
+                        KeyVaultClient keyVaultClient = new KeyVaultClient(
                             new KeyVaultClient.AuthenticationCallback(
                                 azureServiceTokenProvider.KeyVaultTokenCallback));
 

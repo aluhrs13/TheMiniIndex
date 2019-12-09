@@ -45,7 +45,7 @@ namespace MiniIndex.Pages.Creators
 
             if (!string.IsNullOrEmpty(Creator.ThingiverseURL)){
                 MiniList = new List<Mini>();
-                var client = new HttpClient();
+                HttpClient client = new HttpClient();
 
                 if (string.IsNullOrEmpty(PageNumber))
                 {
@@ -61,12 +61,12 @@ namespace MiniIndex.Pages.Creators
                 HttpContent responseContent = response.Content;
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    using (var reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                    using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                     {
                         String result = await reader.ReadToEndAsync();
                         dynamic returnList = JsonConvert.DeserializeObject(result);
 
-                        foreach (var CurrentMini in returnList)
+                        foreach (dynamic CurrentMini in returnList)
                         {
                             Mini NewMini = new Mini();
                             string CurrentLink = CurrentMini["public_url"].ToString();

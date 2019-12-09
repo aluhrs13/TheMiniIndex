@@ -48,7 +48,7 @@ namespace MiniIndex.Pages.Admin
                 MissingMinis = new List<Mini>();
                 CheckedCreators = new List<int>();
 
-                var client = new HttpClient();
+                HttpClient client = new HttpClient();
 
                 foreach (Mini item in Mini)
                 {
@@ -67,7 +67,7 @@ namespace MiniIndex.Pages.Admin
                         HttpContent responseContent2 = response2.Content;
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            using (var reader = new StreamReader(await responseContent2.ReadAsStreamAsync()))
+                            using (StreamReader reader = new StreamReader(await responseContent2.ReadAsStreamAsync()))
                             {
                                 string result = await reader.ReadToEndAsync();
                                 JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);

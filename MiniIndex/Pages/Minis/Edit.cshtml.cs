@@ -108,7 +108,7 @@ namespace MiniIndex.Pages.Minis
         public SelectList CreatorSL { get; set; }
         public void PopulateCreatorsDropDownList(MiniIndexContext _context, object selectedCreator = null)
         {
-            var creatorsQuery = from c in _context.Mini
+            IQueryable<Creator> creatorsQuery = from c in _context.Mini
                                 orderby c.Creator.Name
                                 select c.Creator;
 

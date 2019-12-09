@@ -37,14 +37,14 @@ namespace MiniIndex.Pages.Minis
 
         public async Task OnGetAsync(int? pageIndex)
         {
-            var user = await _userManager.GetUserAsync(User);
+            IdentityUser user = await _userManager.GetUserAsync(User);
 
             if (pageIndex <= 0)
             {
                 pageIndex = 1;
             }
-            
-            var minis = from m in _context.Mini select m;
+
+            IQueryable<Mini> minis = from m in _context.Mini select m;
 
             if (FreeOnly)
             {
@@ -62,7 +62,7 @@ namespace MiniIndex.Pages.Minis
             {
                 List<string> SearchList = new List<string>();
 
-                foreach (var key in HttpContext.Request.Query)
+                foreach (KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> key in HttpContext.Request.Query)
                 {
                     if (key.Key.Contains("SearchString"))
                     {

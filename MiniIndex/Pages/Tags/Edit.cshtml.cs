@@ -31,7 +31,7 @@ namespace MiniIndex.Pages.Tags
 
         public async Task<IActionResult> OnGetAsync(int? id, string category)
         {
-            var CurrentUser = await _userManager.GetUserAsync(User);
+            IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
             if (User.IsInRole("Moderator"))
             {
                 if (id == null)
@@ -78,7 +78,7 @@ namespace MiniIndex.Pages.Tags
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var CurrentUser = await _userManager.GetUserAsync(User);
+            IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
             if (User.IsInRole("Moderator"))
             {

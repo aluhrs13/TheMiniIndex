@@ -52,14 +52,14 @@ namespace MiniIndex.Pages.Minis
                 //Fix Thumbnail
                 if (Mini.Link.Contains("thingiverse"))
                 {
-                    var client = new HttpClient();
+                    HttpClient client = new HttpClient();
                     string[] SplitURL = Mini.Link.Split(":");
 
                     HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
                     HttpContent responseContent = response.Content;
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        using (var reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                        using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                         {
                             string result = await reader.ReadToEndAsync();
                             JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);

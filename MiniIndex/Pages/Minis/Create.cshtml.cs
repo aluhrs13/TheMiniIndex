@@ -83,19 +83,19 @@ namespace MiniIndex.Pages.Minis
 
         private async Task<int> ParseGumroad(Mini mini, string URL)
         {
-            var parsedURL = "https://gumroad.com/products/"+URL.Split('#')[1]+"/display";
+            string parsedURL = "https://gumroad.com/products/"+URL.Split('#')[1]+"/display";
 
             //Initialize HTML Agility Pack variables
-            var html = parsedURL;
+            string html = parsedURL;
             HtmlWeb web = new HtmlWeb();
-            var htmlDoc = web.Load(html);
+            HtmlDocument htmlDoc = web.Load(html);
 
             //Parse out the Thumbnail image
-            var ImageNode = htmlDoc.DocumentNode.Descendants("img").First();
+            HtmlNode ImageNode = htmlDoc.DocumentNode.Descendants("img").First();
             Mini.Thumbnail = ImageNode.GetAttributeValue("src", "");
 
             //Parse out the name
-            var TitleNode = htmlDoc.DocumentNode.Descendants("h1").First();
+            HtmlNode TitleNode = htmlDoc.DocumentNode.Descendants("h1").First();
             Mini.Name = TitleNode.InnerText;
 
             Mini.Link = URL;
@@ -107,7 +107,7 @@ namespace MiniIndex.Pages.Minis
             Mini.Creator.Name = Mini.Creator.WebsiteURL.Split('/').Last();
 
             //Parse out cost
-            var CostNode = htmlDoc.DocumentNode.Descendants("strong").First();
+            HtmlNode CostNode = htmlDoc.DocumentNode.Descendants("strong").First();
 
             if (CostNode.InnerText == "$0+")
             {
@@ -130,18 +130,18 @@ namespace MiniIndex.Pages.Minis
         private async Task<int> ParseShapeways(Mini mini, string URL)
         {
             //Initialize HTML Agility Pack variables
-            var html = URL;
+            string html = URL;
             HtmlWeb web = new HtmlWeb();
-            var htmlDoc = web.Load(html);
+            HtmlDocument htmlDoc = web.Load(html);
 
             //Parse out the Thumbnail image
-            var ImageDiv = htmlDoc.GetElementbyId("slideshow-big");
-            var ImageNode = ImageDiv.ChildNodes.Where(cn => cn.Name == "img").First();
+            HtmlNode ImageDiv = htmlDoc.GetElementbyId("slideshow-big");
+            HtmlNode ImageNode = ImageDiv.ChildNodes.Where(cn => cn.Name == "img").First();
             Mini.Thumbnail = ImageNode.GetAttributeValue("src", "");
 
             //Parse out the name
             string TitleString = "product-title-header";
-            foreach (var h1Node in htmlDoc.DocumentNode.SelectNodes("//body//h1[@data-coyote-locator='" + TitleString + "']"))
+            foreach (HtmlNode h1Node in htmlDoc.DocumentNode.SelectNodes("//body//h1[@data-coyote-locator='" + TitleString + "']"))
             {
                 Mini.Name = h1Node.InnerText;
             }
@@ -152,7 +152,7 @@ namespace MiniIndex.Pages.Minis
             Creator creator = new Creator();
             Mini.Creator = creator;
             string CreatorURLString = "view-profile";
-            foreach (var node in htmlDoc.DocumentNode.SelectNodes("//body//a[@data-sw-tracking-link-id='" + CreatorURLString + "']"))
+            foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//body//a[@data-sw-tracking-link-id='" + CreatorURLString + "']"))
             {
                 string RelativeShapewaysURL = node.Attributes.Where(att=>att.Name=="href").First().Value;
                 Mini.Creator.ShapewaysURL = "https://www.shapeways.com" + RelativeShapewaysURL;
@@ -170,14 +170,14 @@ namespace MiniIndex.Pages.Minis
         //If you change thumbnail logic, change it in FixThumbnail.cshtml.cs also
         public async Task<int> ParseThingiverse(Mini Mini, string URL)
         {
-            var client = new HttpClient();
+            HttpClient client = new HttpClient();
             string[] SplitURL = URL.Split(":");
 
             HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
             HttpContent responseContent = response.Content;
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                using (var reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                 {
                     string result = await reader.ReadToEndAsync();
                     JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
@@ -208,14 +208,14 @@ namespace MiniIndex.Pages.Minis
         //TODO - Patreon currently disabled due to thumbnail expiring. Need to add caching of thumbnails somewhere to fix it.
         private async Task<int> ParsePatreon(Mini mini, string URL)
         {
-            var client = new HttpClient();
+            HttpClient client = new HttpClient();
             string[] SplitURL = URL.Split('/', '-');
 
             HttpResponseMessage response = await client.GetAsync("https://www.patreon.com/api/posts/"+SplitURL.Last());
             HttpContent responseContent = response.Content;
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                using (var reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                 {
                     String result = await reader.ReadToEndAsync();
                     JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);

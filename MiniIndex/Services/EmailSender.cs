@@ -23,8 +23,8 @@ namespace WebPWrecover.Services
 
         public Task Execute(string apiKey, string subject, string message, string email)
         {
-            var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            SendGridClient client = new SendGridClient(apiKey);
+            SendGridMessage msg = new SendGridMessage()
             {
                 From = new EmailAddress("admin@TheMiniIndex.com", Options.SendGridUser),
                 Subject = subject,
