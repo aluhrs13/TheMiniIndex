@@ -3,8 +3,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MiniIndex.Models
 {
-    public class Mini
+    public class Mini : IEntity
     {
+        public Mini()
+        {
+            MiniTags = new List<MiniTag>();
+        }
+
         public int ID { get; set; }
         public string Name { get; set; }
         public string Link { get; set; }
@@ -14,12 +19,5 @@ namespace MiniIndex.Models
         public List<MiniTag> MiniTags { get; set; }
         public IdentityUser User { get; set; }
         public int Cost { get; set; }
-
-        public Mini()
-        {
-            MiniTags = new List<MiniTag>();
-        }
     }
-
-
 }
