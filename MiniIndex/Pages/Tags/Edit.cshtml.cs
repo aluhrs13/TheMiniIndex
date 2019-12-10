@@ -13,25 +13,26 @@ namespace MiniIndex.Pages.Tags
     [Authorize]
     public class EditModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
-        [BindProperty]
-        public Tag Tag { get; set; }
-
         public EditModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
-                MiniIndex.Models.MiniIndexContext context)
+                MiniIndexContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
         }
 
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly MiniIndexContext _context;
+
+        [BindProperty]
+        public Tag Tag { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id, string category)
         {
-            var CurrentUser = await _userManager.GetUserAsync(User);
+            IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
             if (User.IsInRole("Moderator"))
             {
                 if (id == null)
@@ -46,39 +47,37 @@ namespace MiniIndex.Pages.Tags
 
                 Tag = await _context.Tag.FirstOrDefaultAsync(m => m.ID == id);
 
-                TagCategory newCategory;
-                Enum.TryParse(category, out newCategory);
-
-                Tag.Category = newCategory;
-
-                _context.Attach(Tag).State = EntityState.Modified;
-
-                try
+                if (Enum.TryParse(category, out TagCategory newCategory))
                 {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TagExists(Tag.ID))
+                    Tag.Category = newCategory;
+
+                    _context.Attach(Tag).State = EntityState.Modified;
+
+                    try
                     {
-                        return NotFound();
+                        await _context.SaveChangesAsync();
+                        return Page();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!TagExists(Tag.ID))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
             }
-            else
-            {
-                return NotFound();
-            }
-            return Page();
+
+            return NotFound();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var CurrentUser = await _userManager.GetUserAsync(User);
+            IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
             if (User.IsInRole("Moderator"))
             {

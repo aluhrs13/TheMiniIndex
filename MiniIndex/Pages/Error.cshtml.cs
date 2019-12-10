@@ -13,7 +13,7 @@ namespace MiniIndex.Pages
     {
         public string RequestId { get; set; }
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public bool ShowRequestId => !String.IsNullOrEmpty(RequestId);
 
         public void OnGet()
         {

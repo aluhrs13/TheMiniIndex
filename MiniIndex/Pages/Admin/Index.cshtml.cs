@@ -11,10 +11,10 @@ namespace MiniIndex.Pages.Admin
     [Authorize]
     public class AdminModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         public IList<Mini> Mini { get; set; }
 
-        public AdminModel(MiniIndex.Models.MiniIndexContext context)
+        public AdminModel(MiniIndexContext context)
         {
             _context = context;
         }

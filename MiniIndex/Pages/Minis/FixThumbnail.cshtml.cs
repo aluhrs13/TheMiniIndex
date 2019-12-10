@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -18,20 +16,22 @@ namespace MiniIndex.Pages.Minis
     [Authorize]
     public class FixThumbnailModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
-        private readonly IConfiguration _configuration;
-
-        [BindProperty(SupportsGet = true)]
-        public int? Id { get; set; }
-        [BindProperty]
-        public Mini Mini { get; set; }
-
-        public FixThumbnailModel (MiniIndex.Models.MiniIndexContext context,
+        public FixThumbnailModel(MiniIndexContext context,
             IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
+
+        private readonly MiniIndexContext _context;
+        private readonly IConfiguration _configuration;
+
+        [BindProperty(SupportsGet = true)]
+        public int? Id { get; set; }
+
+        [BindProperty]
+        public Mini Mini { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             if (User.IsInRole("Moderator"))
@@ -52,26 +52,28 @@ namespace MiniIndex.Pages.Minis
                 //Fix Thumbnail
                 if (Mini.Link.Contains("thingiverse"))
                 {
-                    var client = new HttpClient();
-                    string[] SplitURL = Mini.Link.Split(":");
-
-                    HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
-                    HttpContent responseContent = response.Content;
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    using (HttpClient client = new HttpClient())
                     {
-                        using (var reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
+                        string[] SplitURL = Mini.Link.Split(":");
+
+                        HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
+                        HttpContent responseContent = response.Content;
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            string result = await reader.ReadToEndAsync();
-                            JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
-                            if(!currentMini["default_image"]["url"].ToString().EndsWith(".stl")&& !currentMini["default_image"]["url"].ToString().EndsWith(".obj"))
+                            using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
                             {
-                                Mini.Thumbnail = currentMini["default_image"]["url"].ToString();
-                                _context.Attach(Mini).State = EntityState.Modified;
-                            }
-                            else
-                            {
-                                Mini.Thumbnail = currentMini["default_image"]["sizes"][4]["url"].ToString();
-                                _context.Attach(Mini).State = EntityState.Modified;
+                                string result = await reader.ReadToEndAsync();
+                                JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
+                                if (!currentMini["default_image"]["url"].ToString().EndsWith(".stl") && !currentMini["default_image"]["url"].ToString().EndsWith(".obj"))
+                                {
+                                    Mini.Thumbnail = currentMini["default_image"]["url"].ToString();
+                                    _context.Attach(Mini).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    Mini.Thumbnail = currentMini["default_image"]["sizes"][4]["url"].ToString();
+                                    _context.Attach(Mini).State = EntityState.Modified;
+                                }
                             }
                         }
                     }

@@ -16,14 +16,14 @@ namespace MiniIndex.Pages.Minis
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         [BindProperty]
         public Mini Mini { get; set; }
 
         public EditModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
-                MiniIndex.Models.MiniIndexContext context)
+                MiniIndexContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -108,7 +108,7 @@ namespace MiniIndex.Pages.Minis
         public SelectList CreatorSL { get; set; }
         public void PopulateCreatorsDropDownList(MiniIndexContext _context, object selectedCreator = null)
         {
-            var creatorsQuery = from c in _context.Mini
+            IQueryable<Creator> creatorsQuery = from c in _context.Mini
                                 orderby c.Creator.Name
                                 select c.Creator;
 

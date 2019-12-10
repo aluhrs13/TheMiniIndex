@@ -10,12 +10,12 @@ namespace MiniIndex.Pages.Minis
 {
     public class DetailsModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         public Mini Mini { get; set; }
         public List<Tag> UnusedTags { get; set; }
         public List<Tag> MiscTags { get; set; }
 
-        public DetailsModel(MiniIndex.Models.MiniIndexContext context)
+        public DetailsModel(MiniIndexContext context)
         {
             _context = context;
         }

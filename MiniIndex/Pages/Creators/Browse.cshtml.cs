@@ -9,12 +9,12 @@ namespace MiniIndex.Pages.Creators
 {
     public class BrowseModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
+        private readonly MiniIndexContext _context;
         public IList<Creator> Creator { get; set; }
         public Dictionary<string, int> NumberMinis { get; set; }
         public IList<Mini> MiniList { get; set; }
 
-        public BrowseModel(MiniIndex.Models.MiniIndexContext context)
+        public BrowseModel(MiniIndexContext context)
         {
             _context = context;
         }
