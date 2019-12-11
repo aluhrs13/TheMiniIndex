@@ -10,7 +10,7 @@ using MiniIndex.Models;
 namespace MiniIndex.Migrations
 {
     [DbContext(typeof(MiniIndexContext))]
-    [Migration("20191210105147_ThingiverseSourceSites")]
+    [Migration("20191211105527_ThingiverseSourceSites")]
     partial class ThingiverseSourceSites
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -313,7 +313,7 @@ namespace MiniIndex.Migrations
                     b.Property<int?>("CreatorID")
                         .HasColumnType("int");
 
-                    b.Property<string>("DisplayName")
+                    b.Property<string>("SiteName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -323,7 +323,7 @@ namespace MiniIndex.Migrations
 
                     b.ToTable("SourceSite");
 
-                    b.HasDiscriminator<string>("DisplayName").HasValue("SourceSite");
+                    b.HasDiscriminator<string>("SiteName").HasValue("SourceSite");
                 });
 
             modelBuilder.Entity("MiniIndex.Models.Tag", b =>

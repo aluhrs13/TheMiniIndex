@@ -12,7 +12,7 @@ namespace MiniIndex.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DisplayName = table.Column<string>(nullable: false),
+                    SiteName = table.Column<string>(nullable: false),
                     CreatorID = table.Column<int>(nullable: true),
                     ThingiverseUsername = table.Column<string>(nullable: true)
                 },
@@ -33,19 +33,27 @@ namespace MiniIndex.Migrations
                 column: "CreatorID");
 
             migrationBuilder.Sql(@"
-                INSERT INTO SourceSite
+                UPDATE	Creator
+	                SET	ThingiverseURL = NULL
+                WHERE	TRIM(ThingiverseURL) = ''
 
-                SELECT	
-		                'Thingiverse' AS DisplayName,
+                UPDATE	Creator 
+                SET		ThingiverseURL = 
+	                CASE
+				        WHEN CHARINDEX('/', REVERSE(ThingiverseURL) + '/') = 1
+				        THEN LEFT(ThingiverseURL, LEN(ThingiverseURL) - CHARINDEX('/', REVERSE(ThingiverseURL) + '/'))
+				        ELSE ThingiverseURL
+				    END
+                WHERE	ThingiverseURL IS NOT NULL
+
+                INSERT INTO SourceSite
+                SELECT
+		                'Thingiverse' AS SiteName,
 		                c.ID AS CreatorId,
 		                RIGHT(c.ThingiverseURL, CHARINDEX('/', REVERSE(c.ThingiverseURL) + '/') - 1) AS ThingiverseUsername
-
                 FROM	Creator c
-
                 WHERE	c.ThingiverseURL IS NOT NULL
-
-                SELECT * FROM SourceSite
-                ");
+            ");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

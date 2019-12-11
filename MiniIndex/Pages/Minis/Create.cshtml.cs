@@ -99,7 +99,7 @@ namespace MiniIndex.Pages.Minis
             Creator foundCreator = null;
             if (!String.IsNullOrEmpty(Mini.Creator.ThingiverseURL))
             {
-                foundCreator = _context.Creator.FirstOrDefault(c => c.ThingiverseURL == Mini.Creator.ThingiverseURL);
+                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.ThingiverseURL == Mini.Creator.ThingiverseURL);
 
                 if (foundCreator != null)
                 {
@@ -112,7 +112,7 @@ namespace MiniIndex.Pages.Minis
             }
             else if (!String.IsNullOrEmpty(Mini.Creator.ShapewaysURL))
             {
-                foundCreator = _context.Creator.FirstOrDefault(c => c.ShapewaysURL == Mini.Creator.ShapewaysURL);
+                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.ShapewaysURL == Mini.Creator.ShapewaysURL);
 
                 if (foundCreator != null)
                 {
@@ -125,7 +125,7 @@ namespace MiniIndex.Pages.Minis
             }
             else if (!String.IsNullOrEmpty(Mini.Creator.PatreonURL))
             {
-                foundCreator = _context.Creator.FirstOrDefault(c => c.PatreonURL == Mini.Creator.PatreonURL);
+                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.PatreonURL == Mini.Creator.PatreonURL);
 
                 if (foundCreator != null)
                 {
@@ -319,7 +319,7 @@ namespace MiniIndex.Pages.Minis
             if (source == "Thingiverse" || source == "Shapeways" || source == "Patreon")
             {
                 string URLName = URL.Split("/").Last();
-                foundCreator = _context.Creator.FirstOrDefault(c => c.Name == URLName);
+                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.Name == URLName);
 
                 if (foundCreator == null)
                 {
@@ -334,7 +334,7 @@ namespace MiniIndex.Pages.Minis
             if (source == "Gumroad")
             {
                 string URLName = URL.Split('/').Last().Split('?')[0].Split('#')[0];
-                foundCreator = _context.Creator.FirstOrDefault(c => c.Name == URLName);
+                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.Name == URLName);
 
                 if (foundCreator == null)
                 {

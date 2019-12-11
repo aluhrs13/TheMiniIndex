@@ -2,10 +2,15 @@
 @model MiniIndex.Pages.Creators.DetailsModel
 
 @{
-    ViewData["Title"] = Model.Creator.Name+" Details";
+    ViewData["Title"] = Model.Creator.Name + " Details";
 }
 
 <h1>@Html.DisplayFor(model => model.Creator.Name)</h1>
+
+@foreach (var site in Model.Creator.Sites)
+{
+    <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
+}
 
 @if (!string.IsNullOrEmpty(Model.Creator.PatreonURL))
 {
@@ -15,15 +20,6 @@
 @if (!string.IsNullOrEmpty(Model.Creator.WebsiteURL))
 {
     <a href="@Html.DisplayFor(model => model.Creator.WebsiteURL)" class="btn btn-primary">Website</a>
-}
-
-@if (!string.IsNullOrEmpty(Model.Creator.ShapewaysURL))
-{
-    <a href="@Html.DisplayFor(model => model.Creator.ShapewaysURL)" class="btn btn-primary">Shapeways</a>
-}
-@if (!string.IsNullOrEmpty(Model.Creator.ThingiverseURL))
-{
-    <a href="@Html.DisplayFor(model => model.Creator.ThingiverseURL)" class="btn btn-primary">Thingiverse</a>
 }
 
 <hr />
@@ -42,11 +38,10 @@
                         {
                             @:<div class="card mb-4 shadow-sm">
                             }
-                        else
-                        {
+                            else
+                            {
                                 @:<div class="card mb-4 shadow-sm" style="opacity:.5;">
                                 }
-
 
                         <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
                         <div class="card-body @item.Status" align="center">
@@ -88,6 +83,5 @@
             <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@prevPageNubmer" class="btn btn-primary @prevDisabled">&lt;&lt; Previous Page</a>
             <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@nextPageNumber" class="btn btn-primary @nextDisabled">Next Page &gt;&gt;</a>
         </div>
-
     </div>
 }

@@ -14,7 +14,6 @@ namespace MiniIndex.Models.SourceSites
         {
         }
 
-        public override string DisplayName { get; protected set; }
         public override Uri BaseUri => new Uri("https://www.thingiverse.com");
 
         public string ThingiverseUsername { get; protected set; }

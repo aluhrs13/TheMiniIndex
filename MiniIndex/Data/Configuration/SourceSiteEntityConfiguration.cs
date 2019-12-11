@@ -11,8 +11,10 @@ namespace MiniIndex.Data.Configuration
         {
             builder.HasKey(x => x.ID);
 
-            builder.HasDiscriminator(x => x.DisplayName)
-                .HasValue<ThingiverseSource>("Thingiverse");
+            builder.HasDiscriminator(x => x.SiteName)
+                .HasValue<ThingiverseSource>("Thingiverse")
+                .HasValue<ShapewaysSource>("Shapeways")
+                .HasValue<PatreonSource>("Patreon");
 
             builder.Ignore(x => x.BaseUri);
             builder.Ignore(x => x.CreatorPageUri);

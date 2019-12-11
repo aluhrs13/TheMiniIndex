@@ -15,11 +15,11 @@ namespace MiniIndex.Models
 
         public int ID { get; set; }
 
-        public abstract string DisplayName { get; protected set; }
+        public string SiteName { get; protected set; }
         public abstract Uri BaseUri { get; }
-
-        public abstract Uri CreatorPageUri { get; }
+        public virtual string DisplayName => SiteName;
 
         public Creator Creator { get; set; }
+        public abstract Uri CreatorPageUri { get; }
     }
 }

@@ -12,7 +12,6 @@ namespace MiniIndex.Models
 
         public DbSet<Mini> Mini { get; set; }
         public DbSet<Tag> Tag { get; set; }
-        public DbSet<Creator> Creator { get; set; }
         public DbSet<MiniTag> MiniTag { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

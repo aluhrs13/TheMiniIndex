@@ -38,7 +38,10 @@ namespace MiniIndex.Pages.Creators
                 return NotFound();
             }
 
-            Creator = await _context.Creator.FirstOrDefaultAsync(m => m.ID == id);
+            Creator = await _context
+                .Set<Creator>()
+                .Include(x => x.Sites)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (Creator == null)
             {

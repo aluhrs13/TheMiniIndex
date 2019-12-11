@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniIndex.Models;
 
 namespace MiniIndex.Migrations
 {
     [DbContext(typeof(MiniIndexContext))]
-    partial class MiniIndexContextModelSnapshot : ModelSnapshot
+    [Migration("20191211105959_ShapewaysSourceSites")]
+    partial class ShapewaysSourceSites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -340,16 +342,6 @@ namespace MiniIndex.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Tag");
-                });
-
-            modelBuilder.Entity("MiniIndex.Models.SourceSites.PatreonSource", b =>
-                {
-                    b.HasBaseType("MiniIndex.Models.SourceSite");
-
-                    b.Property<string>("PatreonUsername")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Patreon");
                 });
 
             modelBuilder.Entity("MiniIndex.Models.SourceSites.ShapewaysSource", b =>
