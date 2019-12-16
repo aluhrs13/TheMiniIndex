@@ -82,7 +82,7 @@ namespace MiniIndex.Pages.Minis
             //Mini is already indexed, redirect to the existing page.
             if (id.HasValue)
             {
-                return RedirectToPage("./Details", new { id.Value });
+                return RedirectToPage("./Details", new { id = id.Value });
             }
 
             //Invalid URL. Need to give a good error.
