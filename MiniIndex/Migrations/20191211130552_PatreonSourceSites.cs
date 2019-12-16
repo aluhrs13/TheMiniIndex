@@ -16,22 +16,24 @@ namespace MiniIndex.Migrations
 	                SET	PatreonURL = NULL
                 WHERE	TRIM(PatreonURL) = ''
 
-                UPDATE Creator
-                SET PatreonURL = 
+                UPDATE  Creator
+                    SET PatreonURL =
 	                CASE
 		                WHEN CHARINDEX('/', REVERSE(PatreonURL) + '/') = 1
 		                THEN LEFT(PatreonURL, LEN(PatreonURL) - CHARINDEX('/', REVERSE(PatreonURL) + '/'))
 		                ELSE PatreonURL
 	                END
-                FROM Creator
                 WHERE	PatreonURL IS NOT NULL
 
                 INSERT INTO SourceSite
+                (
+	                SiteName,
+	                CreatorID,
+	                PatreonUsername
+                )
                 SELECT
 		                'Patreon' AS SiteName,
                         c.ID AS CreatorId,
-                        NULL AS ThingiverseUsername,
-		                NULL AS ShapewaysUsername,
 		                RIGHT(c.PatreonURL, CHARINDEX('/', REVERSE(c.PatreonURL) + '/') - 1) AS PatreonUsername
                 FROM	Creator c
                 WHERE	c.PatreonURL IS NOT NULL

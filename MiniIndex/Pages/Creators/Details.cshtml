@@ -12,16 +12,6 @@
     <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
 }
 
-@if (!string.IsNullOrEmpty(Model.Creator.PatreonURL))
-{
-    <a href="@Html.DisplayFor(model => model.Creator.PatreonURL)" class="btn btn-primary">Patreon</a>
-}
-
-@if (!string.IsNullOrEmpty(Model.Creator.WebsiteURL))
-{
-    <a href="@Html.DisplayFor(model => model.Creator.WebsiteURL)" class="btn btn-primary">Website</a>
-}
-
 <hr />
 
 @if (!string.IsNullOrEmpty(Model.Creator.ThingiverseURL))

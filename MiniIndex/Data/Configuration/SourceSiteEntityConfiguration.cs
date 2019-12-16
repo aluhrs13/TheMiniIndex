@@ -14,7 +14,8 @@ namespace MiniIndex.Data.Configuration
             builder.HasDiscriminator(x => x.SiteName)
                 .HasValue<ThingiverseSource>("Thingiverse")
                 .HasValue<ShapewaysSource>("Shapeways")
-                .HasValue<PatreonSource>("Patreon");
+                .HasValue<PatreonSource>("Patreon")
+                .HasValue<WebsiteSource>("Website");
 
             builder.Ignore(x => x.BaseUri);
             builder.Ignore(x => x.CreatorPageUri);

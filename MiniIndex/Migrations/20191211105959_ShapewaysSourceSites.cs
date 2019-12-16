@@ -17,7 +17,7 @@ namespace MiniIndex.Migrations
                 WHERE	TRIM(ShapewaysURL) = ''
 
                 UPDATE	Creator
-                SET		ShapewaysURL =
+                    SET ShapewaysURL =
 	                CASE
 				        WHEN CHARINDEX('/', REVERSE(ShapewaysURL) + '/') = 1
 				        THEN LEFT(ShapewaysURL, LEN(ShapewaysURL) - CHARINDEX('/', REVERSE(ShapewaysURL) + '/'))
@@ -26,10 +26,14 @@ namespace MiniIndex.Migrations
                 WHERE	ShapewaysURL IS NOT NULL
 
                 INSERT INTO SourceSite
+                (
+	                SiteName,
+	                CreatorID,
+	                ShapewaysUsername
+                )
                 SELECT
 		                'Shapeways' AS SiteName,
 		                c.ID AS CreatorId,
-                        NULL AS ThingiverseUsername,
 		                RIGHT(c.ShapewaysURL, CHARINDEX('/', REVERSE(c.ShapewaysURL) + '/') - 1) AS ShapewaysUsername
                 FROM	Creator c
                 WHERE	c.ShapewaysURL IS NOT NULL

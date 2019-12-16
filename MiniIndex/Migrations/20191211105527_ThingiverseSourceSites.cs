@@ -38,7 +38,7 @@ namespace MiniIndex.Migrations
                 WHERE	TRIM(ThingiverseURL) = ''
 
                 UPDATE	Creator 
-                SET		ThingiverseURL = 
+                    SET	ThingiverseURL = 
 	                CASE
 				        WHEN CHARINDEX('/', REVERSE(ThingiverseURL) + '/') = 1
 				        THEN LEFT(ThingiverseURL, LEN(ThingiverseURL) - CHARINDEX('/', REVERSE(ThingiverseURL) + '/'))
@@ -47,6 +47,11 @@ namespace MiniIndex.Migrations
                 WHERE	ThingiverseURL IS NOT NULL
 
                 INSERT INTO SourceSite
+                (
+	                SiteName,
+	                CreatorID,
+	                ThingiverseUsername
+                )
                 SELECT
 		                'Thingiverse' AS SiteName,
 		                c.ID AS CreatorId,
