@@ -40,6 +40,11 @@ steps:
   inputs:
     script: 'dotnet ef migrations script -i -o $(build.artifactStagingDirectory)\migrate.sql --project MiniIndex\MiniIndex.csproj --startup-project MiniIndex\MiniIndex.csproj'
 
+- task: CopyFiles@2
+  inputs:
+    Contents: 'DBInit.sql'
+    TargetFolder: '$(build.artifactstagingdirectory)''
+
 - task: PublishBuildArtifacts@1
   inputs:
      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
