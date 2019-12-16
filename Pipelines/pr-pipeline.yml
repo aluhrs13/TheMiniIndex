@@ -32,13 +32,9 @@ steps:
 #  inputs:
 #    platform: '$(buildPlatform)'
 #    configuration: '$(buildConfiguration)'
-
-- task: efcore-migration-script-generator-task@0
+- task: CmdLine@2
   inputs:
-    projectpath: 'MiniIndex/MiniIndex.csproj'
-    databasecontexts: 'MiniIndexContext'
-    targetfolder: '$(build.artifactstagingdirectory)/migrations'
-
+    script: 'dotnet ef migrations script -i -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\migrate.sql --project MiniIndex\MiniIndex.csproj --startup-project MiniIndex\MiniIndex.csproj -i -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\migrate.sql'
 - task: PublishBuildArtifacts@1
   inputs:
      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
