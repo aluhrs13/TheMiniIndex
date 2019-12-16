@@ -15,11 +15,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '3.0.x'
-
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -39,7 +34,12 @@ steps:
 #    configuration: '$(buildConfiguration)'
 - task: CmdLine@2
   inputs:
+    script: 'dotnet tool install -g dotnet-ef'
+
+- task: CmdLine@2
+  inputs:
     script: 'dotnet ef migrations script -i -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\migrate.sql --project MiniIndex\MiniIndex.csproj --startup-project MiniIndex\MiniIndex.csproj -i -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\migrate.sql'
+
 - task: PublishBuildArtifacts@1
   inputs:
      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
