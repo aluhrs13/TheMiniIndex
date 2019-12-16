@@ -43,11 +43,11 @@ namespace MiniIndex
                     options.UseSqlServer(Configuration.GetConnectionString("MiniIndexContext")));
 
             services.AddAuthentication()
-                .AddFacebook(facebookOptions =>
+                /*.AddFacebook(facebookOptions =>
                 {
                     facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                     facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                });
+                })*/;
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);

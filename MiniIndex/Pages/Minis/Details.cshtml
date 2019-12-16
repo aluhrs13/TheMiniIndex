@@ -70,43 +70,47 @@
 
         <div class="col-md-6">
             <h3>Tags</h3>
-            <div id="UsedTags">
-                @foreach (var MiniTag in Model.Mini.MiniTags)
-                {
-
-                    @if (SignInManager.IsSignedIn(User))
+            @if (!SignInManager.IsSignedIn(User))
+            {
+                    <p><strong>Register an account and login to add or remove tags.</strong></p>
+            }
+                <div id="UsedTags">
+                    @foreach (var MiniTag in Model.Mini.MiniTags)
                     {
-                        @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
+
+                        @if (SignInManager.IsSignedIn(User))
                         {
-                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <b>@MiniTag.Tag.TagName</b></a>
+                            @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
+                            {
+                                <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <b>@MiniTag.Tag.TagName</b></a>
+                            }
+                            else
+                            {
+                                <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <small>@MiniTag.Tag.Category:</small> <b>@MiniTag.Tag.TagName</b></a>
+                            }
+
                         }
                         else
                         {
-                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <small>@MiniTag.Tag.Category:</small> <b>@MiniTag.Tag.TagName</b></a>
-                        }
-
-                    }
-                    else
-                    {
-                        @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
-                        {
-                            <span class="badge badge-primary">
-                                @MiniTag.Tag.TagName
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="badge badge-primary">
-                                <small>@MiniTag.Tag.Category:</small> @MiniTag.Tag.TagName
-                            </span>
+                            @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
+                            {
+                                <span class="badge badge-primary">
+                                    @MiniTag.Tag.TagName
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-primary">
+                                    <small>@MiniTag.Tag.Category:</small> @MiniTag.Tag.TagName
+                                </span>
+                            }
                         }
                     }
-                }
-            </div>
-            <div id="AddedTags">
+                </div>
+                <div id="AddedTags">
 
+                </div>
             </div>
-        </div>
     </div>
 
     @if (SignInManager.IsSignedIn(User))

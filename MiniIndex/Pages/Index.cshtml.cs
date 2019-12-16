@@ -26,12 +26,12 @@ namespace MiniIndex.Pages
 
             Mini = minis
                 .Include(m => m.Creator)
-                .Where(m=>m.Status==Status.Approved)
+                .Where(m => m.Status==Status.Approved)
                 .OrderByDescending(m => m.ID)
                 .Take(4)
                 .ToList();
 
-            MiniCount = minis.Count();
+            MiniCount = minis.Where(m => m.Status==Status.Approved).Count();
 
         }
     }
