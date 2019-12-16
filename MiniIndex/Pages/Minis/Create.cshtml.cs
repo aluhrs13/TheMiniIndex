@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -204,7 +205,7 @@ namespace MiniIndex.Pages.Minis
 
             //Parse out the name
             HtmlNode TitleNode = htmlDoc.DocumentNode.Descendants("h1").First();
-            Mini.Name = TitleNode.InnerText;
+            Mini.Name = HttpUtility.HtmlDecode(TitleNode.InnerText);
 
             Mini.Link = URL;
 
