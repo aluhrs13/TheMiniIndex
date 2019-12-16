@@ -35,7 +35,7 @@ steps:
 
 - task: efcore-migration-script-generator-task@0
   inputs:
-    projectpath: '**/MiniIndex.csproj'
+    projectpath: 'MiniIndex/MiniIndex.csproj'
     databasecontexts: 'MiniIndexContext'
     targetfolder: '$(build.artifactstagingdirectory)/migrations'
 
