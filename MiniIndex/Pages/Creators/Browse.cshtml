@@ -15,6 +15,10 @@
             <th>
                 Number of Minis
             </th>
+            <th>
+                Links
+            </th>
+
         </tr>
     </thead>
     <tbody>
@@ -26,6 +30,29 @@
             </td>
             <td>
                 @Model.NumberMinis[item.Name]
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.ThingiverseURL))
+                {
+                    <a href="@item.ThingiverseURL" class="btn btn-primary">Thingiverse</a>
+                }
+
+                @if (!string.IsNullOrEmpty(item.PatreonURL))
+                {
+                    <a href="@item.PatreonURL" class="btn btn-primary">Patreon</a>
+                }
+
+                @if (!string.IsNullOrEmpty(item.WebsiteURL))
+                {
+                    if (item.WebsiteURL.Contains("gumroad"))
+                    {
+                        <a href="@item.WebsiteURL" class="btn btn-primary">Gumroad</a>
+                    }
+                    else
+                    {
+                        <a href="@item.WebsiteURL" class="btn btn-primary">Website</a>
+                    }
+                }
             </td>
         </tr>
         }
