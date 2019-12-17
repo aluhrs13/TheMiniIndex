@@ -192,7 +192,15 @@ namespace MiniIndex.Pages.Minis
 
         private async Task<int?> ParseGumroad(Mini mini, string URL)
         {
-            string parsedURL = "https://gumroad.com/products/" + URL.Split('#')[1] + "/display";
+            string parsedURL;
+            if (URL.Contains("/l/"))
+            {
+                parsedURL = "https://gumroad.com/products/" + URL.Split('/').Last() + "/display";
+            }
+            else
+            {
+                parsedURL = "https://gumroad.com/products/" + URL.Split('#')[1] + "/display";
+            }
 
             //Initialize HTML Agility Pack variables
             string html = parsedURL;
