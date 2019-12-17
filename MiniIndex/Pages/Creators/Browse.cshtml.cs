@@ -25,7 +25,7 @@ namespace MiniIndex.Pages.Creators
             Creator = await _context.Creator.OrderBy(c=>c.Name).ToListAsync();
             MiniList = await _context.Mini.ToListAsync();
 
-            foreach(Creator curCreator in Creator)
+            foreach (Creator curCreator in Creator)
             {
                 NumberMinis.Add(curCreator.Name, MiniList.Where(m => m.Creator == curCreator).Count());
             }

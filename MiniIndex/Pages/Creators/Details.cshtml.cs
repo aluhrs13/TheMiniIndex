@@ -24,7 +24,8 @@ namespace MiniIndex.Pages.Creators
         private readonly MiniIndexContext _context;
         private readonly IConfiguration _configuration;
         public Creator Creator { get; set; }
-        public List<Mini> MiniList { get; set; }
+        public List<Mini> ThingiverseMiniList { get; set; }
+        public List<Mini> AllCreatorsMinis { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string PageNumber { get; set; }
@@ -45,9 +46,13 @@ namespace MiniIndex.Pages.Creators
                 return NotFound();
             }
 
+            AllCreatorsMinis = new List<Mini>();
+            AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).Where(m=>m.Status == Status.Approved).ToList();
+
             if (!String.IsNullOrEmpty(Creator.ThingiverseURL))
             {
-                MiniList = new List<Mini>();
+
+                ThingiverseMiniList = new List<Mini>();
                 using (HttpClient client = new HttpClient())
                 {
                     if (String.IsNullOrEmpty(PageNumber))
@@ -86,7 +91,7 @@ namespace MiniIndex.Pages.Creators
                                     NewMini.Status = Status.Unindexed;
                                 }
 
-                                MiniList.Add(NewMini);
+                                ThingiverseMiniList.Add(NewMini);
                             }
                         }
                     }
