@@ -85,6 +85,12 @@
                     </div>
 
                     <div class="form-group" style="display:none;">
+                        <label asp-for="Mini.Creator.WebsiteURL" class="control-label"></label>
+                        <input asp-for="Mini.Creator.WebsiteURL" class="form-control" />
+                        <span asp-validation-for="Mini.Creator.WebsiteURL" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" style="display:none;">
                         <label asp-for="Mini.Link" class="control-label"></label>
                         <input asp-for="Mini.Link" class="form-control" />
                         <span asp-validation-for="Mini.Link" class="text-danger"></span>

@@ -139,7 +139,7 @@ namespace MiniIndex.Pages.Minis
             }
             else
             {
-                foundCreator = LastChanceFindCreator("Gumroad", Mini.Link);
+                foundCreator = LastChanceFindCreator("Gumroad", Mini.Creator.WebsiteURL);
             }
 
             Mini.User = await _userManager.GetUserAsync(User);
@@ -220,8 +220,19 @@ namespace MiniIndex.Pages.Minis
             //Parse out creator URL
             Creator creator = new Creator();
             Mini.Creator = creator;
-            Mini.Creator.WebsiteURL = URL.Split('?')[0];
-            Mini.Creator.Name = Mini.Creator.WebsiteURL.Split('/').Last();
+
+            if (URL.Contains("/l/"))
+            {
+                HtmlNode CreatorLinkNode = htmlDoc.DocumentNode.Descendants("a").ElementAt(1);
+                Mini.Creator.WebsiteURL = CreatorLinkNode.Attributes["href"].Value.ToLower();
+                Mini.Creator.Name = HttpUtility.HtmlDecode(CreatorLinkNode.InnerText);
+            }
+            else
+            {
+                Mini.Creator.WebsiteURL = URL.Split('?')[0];
+                Mini.Creator.Name = Mini.Creator.WebsiteURL.Split('/').Last();
+            }
+
 
             //Parse out cost
             HtmlNode CostNode = htmlDoc.DocumentNode.Descendants("strong").First();
