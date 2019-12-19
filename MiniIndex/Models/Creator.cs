@@ -4,6 +4,10 @@ namespace MiniIndex.Models
 {
     public class Creator : IEntity
     {
+        public Creator()
+        {
+        }
+
         public int ID { get; set; }
         public string Name { get; set; }
 
