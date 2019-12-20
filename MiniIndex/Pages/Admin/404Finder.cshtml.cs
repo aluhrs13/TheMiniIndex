@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MiniIndex.Models;
+using MiniIndex.Persistence;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

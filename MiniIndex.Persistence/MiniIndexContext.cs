@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MiniIndex.Models;
 
-namespace MiniIndex.Models
+namespace MiniIndex.Persistence
 {
     public class MiniIndexContext : IdentityDbContext
     {

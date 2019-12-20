@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MiniIndex.Models;
 using MiniIndex.Models.SourceSites;
 
-namespace MiniIndex.Data.Configuration
+namespace MiniIndex.Persistence.Configuration
 {
     public class SourceSiteEntityConfiguration : IEntityTypeConfiguration<SourceSite>
     {

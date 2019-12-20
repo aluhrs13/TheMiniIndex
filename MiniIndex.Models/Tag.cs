@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MiniIndex.Models
 {
@@ -24,17 +20,17 @@ namespace MiniIndex.Models
         OtherDescription,
         Purpose
     }
+
     public class Tag
     {
-        public int ID { get; set; }
-        public string TagName { get; set; }
-        public List<MiniTag> MiniTags { get; set; }
-        public TagCategory? Category { get; set; }
-
         public Tag()
         {
             MiniTags = new List<MiniTag>();
         }
-    }
 
+        public int ID { get; set; }
+        public string TagName { get; set; }
+        public List<MiniTag> MiniTags { get; set; }
+        public TagCategory? Category { get; set; }
+    }
 }

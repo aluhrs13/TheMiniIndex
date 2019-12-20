@@ -1,3 +1,4 @@
+using Lamar;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MiniIndex.Models;
+using MiniIndex.Core;
+using MiniIndex.Persistence;
 using MiniIndex.Services;
 using WebPWrecover.Services;
 
@@ -23,14 +25,14 @@ namespace MiniIndex
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureContainer(ServiceRegistry services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniIndexContext>();
@@ -52,6 +54,8 @@ namespace MiniIndex
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddApplicationInsightsTelemetry();
+
+            services.IncludeRegistry<CoreServices>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

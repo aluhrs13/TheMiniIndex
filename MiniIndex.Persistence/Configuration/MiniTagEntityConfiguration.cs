@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MiniIndex.Models;
 
-namespace MiniIndex.Data.Configuration
+namespace MiniIndex.Persistence.Configuration
 {
     public class MiniTagEntityConfiguration : IEntityTypeConfiguration<MiniTag>
     {
