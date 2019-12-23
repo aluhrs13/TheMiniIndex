@@ -18,6 +18,8 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
         private readonly ThingiverseClient _thingiverseClient;
         private readonly MiniIndexContext _persistence;
 
+        public string Site => "Thingiverse";
+
         public async Task<Mini> ParseFromUrl(Uri url)
         {
             if (!CanParse(url))
