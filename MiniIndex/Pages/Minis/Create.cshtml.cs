@@ -1,16 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Configuration;
 using MiniIndex.Core.Submissions;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Minis
 {
@@ -20,18 +18,15 @@ namespace MiniIndex.Pages.Minis
         public CreateModel(
                 UserManager<IdentityUser> userManager,
                 MiniIndexContext context,
-                IConfiguration configuration,
                 IMediator mediator)
         {
             _userManager = userManager;
             _context = context;
-            _configuration = configuration;
             _mediator = mediator;
         }
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly MiniIndexContext _context;
-        private readonly IConfiguration _configuration;
         private readonly IMediator _mediator;
 
         public SelectList CreatorSL { get; set; }
@@ -39,26 +34,12 @@ namespace MiniIndex.Pages.Minis
         [BindProperty]
         public Mini Mini { get; set; }
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public string URL { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (String.IsNullOrEmpty(URL))
-            {
-                return Page();
-            }
-
-            Mini mini = await _mediator.Send(new MiniSubmissionRequest(URL));
-
-            if (mini is null)
-            {
-                Mini = new Mini();
-                //TODO: proper error when mini submission could not be handled
-                return Page();
-            }
-
-            return RedirectToPage("./Details", new { id = mini.ID });
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -68,57 +49,16 @@ namespace MiniIndex.Pages.Minis
                 return Page();
             }
 
-            Creator foundCreator = null;
-            if (!String.IsNullOrEmpty(Mini.Creator.ThingiverseURL))
-            {
-                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.ThingiverseURL == Mini.Creator.ThingiverseURL);
+            var user = await _userManager.GetUserAsync(User);
 
-                if (foundCreator != null)
-                {
-                    Mini.Creator = foundCreator;
-                }
-                else
-                {
-                    foundCreator = LastChanceFindCreator("Thingiverse", Mini.Creator.ThingiverseURL);
-                }
-            }
-            else if (!String.IsNullOrEmpty(Mini.Creator.ShapewaysURL))
-            {
-                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.ShapewaysURL == Mini.Creator.ShapewaysURL);
+            var mini = await _mediator.Send(new MiniSubmissionRequest(URL, user));
 
-                if (foundCreator != null)
-                {
-                    Mini.Creator = foundCreator;
-                }
-                else
-                {
-                    foundCreator = LastChanceFindCreator("Shapeways", Mini.Creator.ShapewaysURL);
-                }
-            }
-            else if (!String.IsNullOrEmpty(Mini.Creator.PatreonURL))
+            if (mini is null)
             {
-                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.PatreonURL == Mini.Creator.PatreonURL);
-
-                if (foundCreator != null)
-                {
-                    Mini.Creator = foundCreator;
-                }
-                else
-                {
-                    foundCreator = LastChanceFindCreator("Patreon", Mini.Creator.PatreonURL);
-                }
-            }
-            else
-            {
-                foundCreator = LastChanceFindCreator("Gumroad", Mini.Link);
+                return Page();
             }
 
-            Mini.User = await _userManager.GetUserAsync(User);
-
-            _context.Mini.Add(Mini);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Details", new { id = _context.Mini.First(m => m.Link == Mini.Link).ID });
+            return RedirectToPage("./Details", new { id = mini.ID });
         }
 
         private Creator LastChanceFindCreator(string source, string URL)

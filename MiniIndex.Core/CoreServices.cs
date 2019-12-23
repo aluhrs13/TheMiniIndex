@@ -3,6 +3,7 @@ using Lamar;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using MiniIndex.Core.Http;
+using MiniIndex.Core.Minis;
 using MiniIndex.Core.Minis.Parsers.Thingiverse;
 
 namespace MiniIndex.Core
@@ -26,6 +27,8 @@ namespace MiniIndex.Core
 
                 scan.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
                 scan.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+
+                scan.AddAllTypesOf<IParser>();
             });
 
             For<IMediator>()

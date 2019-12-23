@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using MiniIndex.Models;
+﻿using MiniIndex.Models;
 using MiniIndex.Models.SourceSites;
 using MiniIndex.Persistence;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Core.Minis.Parsers.Thingiverse
 {
-    internal class ThingiverseParser : IParser
+    public class ThingiverseParser : IParser
     {
         public ThingiverseParser(ThingiverseClient thingiverseClient, MiniIndexContext persistence)
         {
@@ -34,24 +34,21 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
                 return null;
             }
 
-            Creator creator = new Creator
+            var creator = new Creator
             {
-                Name = thing.creator.name,
+                Name = thing.creator.name
             };
+            creator.Sites.Add(new ThingiverseSource(creator, thing.creator.public_url));
 
-            creator.Sites.Add(new ThingiverseSource(creator, thing.creator.name));
-
-            Mini mini = new Mini
+            return new Mini
             {
                 Name = thing.name,
+                Status = Status.Pending,
                 Cost = 0,
                 Link = thing.url,
-                Thumbnail = thing.thumbnail,
-                Status = Status.Pending,
+                Thumbnail = thing.default_image.sizes.FirstOrDefault(i => i.type == "preview" && i.size == "featured").url,
                 Creator = creator
             };
-
-            return mini;
         }
 
         public bool CanParse(Uri url)

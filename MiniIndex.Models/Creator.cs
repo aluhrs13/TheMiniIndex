@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MiniIndex.Models
 {
@@ -6,6 +7,7 @@ namespace MiniIndex.Models
     {
         public Creator()
         {
+            Sites = Enumerable.Empty<SourceSite>().ToList();
         }
 
         public int ID { get; set; }

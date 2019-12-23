@@ -1,101 +1,60 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using MiniIndex.Core.Minis;
+using MiniIndex.Models;
+using MiniIndex.Persistence;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
-using MediatR;
-using Microsoft.Extensions.Configuration;
-using MiniIndex.Core.Minis.Parsers.Thingiverse;
-using MiniIndex.Models;
-using MiniIndex.Persistence;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace MiniIndex.Core.Submissions
 {
     public class MiniSubmissionHandler : IRequestHandler<MiniSubmissionRequest, Mini>
     {
-        public MiniSubmissionHandler(MiniIndexContext context, IConfiguration configuration, ThingiverseClient thingiverseClient)
+        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers)
         {
             _context = context;
-            _configuration = configuration;
-            _thingiverseClient = thingiverseClient;
+            _parsers = parsers;
         }
 
         private readonly MiniIndexContext _context;
-        private readonly IConfiguration _configuration;
-        private readonly ThingiverseClient _thingiverseClient;
+        private readonly IEnumerable<IParser> _parsers;
 
-        public Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
+        public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
             Uri uri = new Uri(request.Url);
 
-            //TODO: switch is nice, but polymorphism is nicer. Refactor this.
-            switch (uri.Host.Replace("www.", ""))
+            Mini mini = await _context.Set<Mini>().SingleOrDefaultAsync(m => m.Link == request.Url, cancellationToken);
+
+            if (mini != null)
             {
-                case "thingiverse.com":
-                    return ParseThingiverse(request.Url);
-
-                case "shapeways.com":
-                    return ParseShapeways(request.Url);
-
-                case "gumroad.com":
-                    return ParseGumroad(request.Url);
-
-                default:
-                    //valid URL, but not currently supported
-                    //TODO: log when this happens?
-                    return null;
+                return mini;
             }
-        }
 
-        //TODO - Refactor this out for re-use purposes
-        //If you change thumbnail logic, change it in FixThumbnail.cshtml.cs also
-        private async Task<Mini> ParseThingiverse(string URL)
-        {
-            using (HttpClient client = new HttpClient())
+            var parser = _parsers.FirstOrDefault(p => p.CanParse(uri));
+
+            if (parser is null)
             {
-                string[] SplitURL = URL.Split(':');
-
-                ThingiverseModel.Thing test = await _thingiverseClient.GetThing(SplitURL.Last());
-
-                HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
-                HttpContent responseContent = response.Content;
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
-                    {
-                        string result = await reader.ReadToEndAsync();
-                        JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
-
-                        Creator creator = new Creator
-                        {
-                            ThingiverseURL = currentMini["creator"]["public_url"].ToString()
-                        };
-
-                        Mini mini = new Mini()
-                        {
-                            Creator = creator,
-                            Name = currentMini["name"].ToString(),
-                            Link = currentMini["public_url"].ToString(),
-                            Thumbnail = currentMini["default_image"]["url"].ToString()
-                        };
-
-                        if (mini.Thumbnail.EndsWith(".stl") || mini.Thumbnail.EndsWith(".obj"))
-                        {
-                            mini.Thumbnail = currentMini["default_image"]["sizes"][4]["url"].ToString();
-                        }
-
-                        if (_context.Mini.Any(m => m.Link == mini.Link))
-                        {
-                            return _context.Mini.First(m => m.Link == mini.Link);
-                        }
-                    }
-                }
+                //valid URL, but not currently supported
+                //TODO: log when this happens?
                 return null;
             }
+
+            mini = await parser.ParseFromUrl(uri);
+            mini.User = request.User;
+
+            _context.Add(mini);
+            await _context.SaveChangesAsync();
+
+            return mini;
         }
 
         private async Task<Mini> ParseGumroad(string URL)
