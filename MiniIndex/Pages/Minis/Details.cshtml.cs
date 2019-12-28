@@ -22,10 +22,12 @@ namespace MiniIndex.Pages.Minis
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
+
 
             Mini = await _context.Mini
                 .Include(m => m.MiniTags)
@@ -33,6 +35,9 @@ namespace MiniIndex.Pages.Minis
                 .Include(m => m.Creator)
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            bool IsStarred = await _context.Starred.Find(Mini.ID, Use);
+
 
             UnusedTags = _context
                 .Tag
