@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <a href="#" class="btn btn-block btn-success add-star" id="toggle-star" style="margin-top:10px;">
+                    <a href="#" class="btn btn-block @(Model.IsStarred? "btn-danger remove-star" : "btn-success add-star")" id="toggle-star" style="margin-top:10px;">
                         <span class="oi oi-star"></span>
                     </a>
                 </div>
@@ -138,6 +138,19 @@
 
                 <div id="UnusedTags">
 
+                    @if (User.IsInRole("Moderator") && Model.SimilarTags.Count > 0)
+                    {
+                        <div class="add-tag-div">
+                            <h3 class="add-tag-header">Recommended Tags</h3>
+                            @foreach (var Tag in Model.SimilarTags)
+                            {
+                                <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                            }
+                        </div>
+                        <hr/>
+                    }
+
+
                     <div class="add-tag-div">
                         <h3 class="add-tag-header">Genre</h3>
                         @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Genre"))
@@ -159,10 +172,10 @@
 
 
                         @foreach (var Tag in Model.UnusedTags.Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                                                                     && m.Category.ToString() != "Genre"
-                                                                     && m.Category.ToString() != "OtherDescription"
-                                                                     && m.Category.ToString() != "CreatureName"
-                                                                      && m.Category.ToString() != "Use"))
+                                                                   && m.Category.ToString() != "Genre"
+                                                                   && m.Category.ToString() != "OtherDescription"
+                                                                   && m.Category.ToString() != "CreatureName"
+                                                                    && m.Category.ToString() != "Use"))
                         {
                             @if (Tag.Category.ToString() != PreviousCategory)
                             {
