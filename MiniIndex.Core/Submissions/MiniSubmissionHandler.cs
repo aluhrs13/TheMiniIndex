@@ -60,14 +60,23 @@ namespace MiniIndex.Core.Submissions
 
         private async Task<Creator> GetCreator(Creator creator, CancellationToken cancellationToken)
         {
-            SourceSite currentSource = creator.Sites.Single();
+            var foundCreator = await _context.Set<Creator>()
+                .Include(c => c.Sites)
+                .FirstOrDefaultAsync(c => c.Name == creator.Name, cancellationToken);
 
-            SourceSite matchingSource = await _context.Set<SourceSite>()
-                .SingleOrDefaultAsync(s => s.SiteName ==  currentSource.SiteName && s.Creator.Name == creator.Name, cancellationToken);
+            if (foundCreator is null)
+            {
+                return creator;
+            }
 
-            Creator foundCreator = matchingSource?.Creator;
+            var currentSource = creator.Sites.Single();
 
-            return foundCreator ?? creator;
+            if (!foundCreator.Sites.Any(s => s.SiteName == currentSource.SiteName))
+            {
+                foundCreator.Sites.Add(currentSource);
+            }
+
+            return foundCreator;
         }
 
         private async Task<Mini> ParseGumroad(string URL)
