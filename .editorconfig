@@ -37,6 +37,7 @@ dotnet_diagnostic.CA1303.severity = silent
 # CA2227: Collection properties should be read only
 dotnet_diagnostic.CA2227.severity = silent
 
-
 dotnet_naming_symbols.local.capitalisation = camel_case
 dotnet_naming_symbols.property.capitalisation = pascal_case
+
+

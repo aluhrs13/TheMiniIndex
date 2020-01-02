@@ -1,7 +1,6 @@
 ﻿using HtmlAgilityPack;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using MiniIndex.Core.Minis;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
@@ -39,7 +38,7 @@ namespace MiniIndex.Core.Submissions
                 return mini;
             }
 
-            var parser = _parsers.FirstOrDefault(p => p.CanParse(uri));
+            IParser parser = _parsers.FirstOrDefault(p => p.CanParse(uri));
 
             if (parser is null)
             {
@@ -87,43 +86,6 @@ namespace MiniIndex.Core.Submissions
             };
 
             //Check if it exists
-            if (_context.Mini.Any(m => m.Link == mini.Link))
-            {
-                return _context.Mini.First(m => m.Link == mini.Link);
-            }
-
-            return null;
-        }
-
-        private async Task<Mini> ParseShapeways(string URL)
-        {
-            string html = URL;
-            HtmlWeb web = new HtmlWeb();
-            HtmlDocument htmlDoc = web.Load(html);
-
-            HtmlNode imageDiv = htmlDoc.GetElementbyId("slideshow-big");
-            HtmlNode imageNode = imageDiv.ChildNodes.Where(cn => cn.Name == "img").First();
-
-            string titleString = "product-title-header";
-            HtmlNode nameNode = htmlDoc.DocumentNode.SelectNodes("//body//h1[@data-coyote-locator='" + titleString + "']").Last();
-
-            string creatorURLString = "view-profile";
-            HtmlNode creatorUrlNode = htmlDoc.DocumentNode.SelectNodes("//body//a[@data-sw-tracking-link-id='" + creatorURLString + "']").Last();
-            string RelativeShapewaysURL = creatorUrlNode.Attributes.Where(att => att.Name == "href").First().Value;
-
-            Creator creator = new Creator
-            {
-                ShapewaysURL = $"https://www.shapeways.com{RelativeShapewaysURL}"
-            };
-
-            Mini mini = new Mini()
-            {
-                Creator = creator,
-                Name = nameNode.InnerText,
-                Thumbnail = imageNode.GetAttributeValue("src", ""),
-                Link = URL,
-            };
-
             if (_context.Mini.Any(m => m.Link == mini.Link))
             {
                 return _context.Mini.First(m => m.Link == mini.Link);

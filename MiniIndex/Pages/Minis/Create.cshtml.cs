@@ -49,9 +49,9 @@ namespace MiniIndex.Pages.Minis
                 return Page();
             }
 
-            var user = await _userManager.GetUserAsync(User);
+            IdentityUser user = await _userManager.GetUserAsync(User);
 
-            var mini = await _mediator.Send(new MiniSubmissionRequest(URL, user));
+            Mini mini = await _mediator.Send(new MiniSubmissionRequest(URL, user));
 
             if (mini is null)
             {

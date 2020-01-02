@@ -21,8 +21,4 @@
     <ProjectReference Include="..\MiniIndex.Persistence\MiniIndex.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Minis\Parsers\Shapeways\" />
-  </ItemGroup>
-
 </Project>

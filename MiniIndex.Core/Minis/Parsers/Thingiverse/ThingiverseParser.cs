@@ -1,6 +1,5 @@
 ﻿using MiniIndex.Models;
 using MiniIndex.Models.SourceSites;
-using MiniIndex.Persistence;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,14 +8,12 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
 {
     public class ThingiverseParser : IParser
     {
-        public ThingiverseParser(ThingiverseClient thingiverseClient, MiniIndexContext persistence)
+        public ThingiverseParser(ThingiverseClient thingiverseClient)
         {
             _thingiverseClient = thingiverseClient;
-            _persistence = persistence;
         }
 
         private readonly ThingiverseClient _thingiverseClient;
-        private readonly MiniIndexContext _persistence;
 
         public string Site => "Thingiverse";
 
@@ -36,7 +33,7 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
                 return null;
             }
 
-            var creator = new Creator
+            Creator creator = new Creator
             {
                 Name = thing.creator.name
             };
