@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,7 @@ using MiniIndex.Models;
 
 namespace MiniIndex
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -18,7 +20,6 @@ namespace MiniIndex
         public IndexModel(UserManager<IdentityUser> userManager, MiniIndex.Models.MiniIndexContext context)
         {
             _userManager = userManager;
-
             _context = context;
         }
 

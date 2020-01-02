@@ -43,7 +43,14 @@ namespace MiniIndex.Pages.Minis
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            IsStarred = _context.Starred.Any(m=>m.Mini.ID == Mini.ID && m.User.Id==CurrentUser.Id);
+            if (User.Identity.IsAuthenticated)
+            {
+                IsStarred = _context.Starred.Any(m => m.Mini.ID == Mini.ID && m.User.Id == CurrentUser.Id);
+            }
+            else
+            {
+                IsStarred = false;
+            }
 
             UnusedTags = _context
                 .Tag

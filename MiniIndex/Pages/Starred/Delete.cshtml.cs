@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,7 @@ using MiniIndex.Models;
 
 namespace MiniIndex
 {
+    [Authorize]
     public class DeleteModel : PageModel
     {
         private readonly MiniIndex.Models.MiniIndexContext _context;
@@ -36,7 +38,6 @@ namespace MiniIndex
 
             int MiniID = Int32.Parse(mini);
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
-
 
             Starred = await _context.Starred.FindAsync(MiniID, CurrentUser.Id);
 

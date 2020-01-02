@@ -67,9 +67,18 @@
                 </div>
 
                 <div class="col-md-4">
-                    <a href="#" class="btn btn-block @(Model.IsStarred? "btn-danger remove-star" : "btn-success add-star")" id="toggle-star" style="margin-top:10px;">
-                        <span class="oi oi-star"></span>
-                    </a>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a href="#" class="btn btn-block @(Model.IsStarred ? "btn-danger remove-star" : "btn-success add-star")" id="toggle-star" style="margin-top:10px;">
+                            <span class="oi oi-star"></span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString" class="btn btn-block btn-success" style="margin-top:10px;" data-toggle="tooltip" data-placement="top" title="Create an account to save your favorites">
+                            <span class="oi oi-star"></span>
+                        </a>
+                    }
                 </div>
             </div>
 

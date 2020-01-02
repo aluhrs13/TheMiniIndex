@@ -10,10 +10,10 @@
 
 <div class="album py-5 bg-light">
     <div class="container">
-        <div class="row">
+        <div class="row" align="center">
             @if (Model.Starred.Count() == 0)
             {
-                <div align="center">
+                <div class="col-md-12" align="center">
                     <h1>Your starred Minis will show up here!</h1>
                     <hr />
                     <h2>Go try starring one!</h2>
@@ -33,3 +33,4 @@
             }
         </div>
     </div>
+</div>

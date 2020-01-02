@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,7 @@ using MiniIndex.Models;
 
 namespace MiniIndex
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly MiniIndex.Models.MiniIndexContext _context;
@@ -26,9 +28,6 @@ namespace MiniIndex
 
         public async Task<IActionResult> OnGetAsync()
         {
-            ViewData["MiniID"] = new SelectList(_context.Mini, "ID", "ID");
-            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id");
-
             if (!ModelState.IsValid || String.IsNullOrEmpty(mini))
             {
                 return Page();
