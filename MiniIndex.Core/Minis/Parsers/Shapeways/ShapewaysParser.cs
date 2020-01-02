@@ -51,13 +51,12 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
                 .Where(node => !String.IsNullOrWhiteSpace(node.property))
                 .ToDictionary(k => k.property, v => v.content);
 
-            Uri baseUri = new Uri("https://www.shapeways.com");
-
             Creator creator = new Creator
             {
                 Name = creatorName
             };
-            creator.Sites.Add(new ShapewaysSource(creator, creatorName));
+            ShapewaysSource source = new ShapewaysSource(creator, creatorName);
+            creator.Sites.Add(source);
 
             mini = new Mini()
             {
@@ -66,6 +65,7 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
                 Thumbnail = miniProperties["image"],
                 Link = miniProperties["url"]
             };
+            mini.Sources.Add(new MiniSourceSite(mini, source, url));
 
             return mini;
         }

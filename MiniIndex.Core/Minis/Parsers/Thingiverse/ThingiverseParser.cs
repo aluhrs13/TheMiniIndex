@@ -37,9 +37,11 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
             {
                 Name = thing.creator.name
             };
-            creator.Sites.Add(new ThingiverseSource(creator, thing.creator.public_url));
 
-            return new Mini
+            var source = new ThingiverseSource(creator, thing.creator.public_url);
+            creator.Sites.Add(source);
+
+            var mini = new Mini
             {
                 Name = thing.name,
                 Status = Status.Pending,
@@ -48,6 +50,9 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
                 Thumbnail = thing.default_image.sizes.FirstOrDefault(i => i.type == "preview" && i.size == "featured").url,
                 Creator = creator
             };
+            mini.Sources.Add(new MiniSourceSite(mini, source, url));
+
+            return mini;
         }
 
         public bool CanParse(Uri url)
