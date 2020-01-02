@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using MiniIndex.Models;
+using MiniIndex.Models.SourceSites;
 using MiniIndex.Persistence;
 using System;
 using System.Collections.Generic;
@@ -36,12 +37,10 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
             HtmlWeb web = new HtmlWeb();
             HtmlDocument htmlDoc = await web.LoadFromWebAsync(url, null, null);
 
-            HtmlNode creatorNode = htmlDoc.DocumentNode
+            string creatorName = htmlDoc.DocumentNode
                 .SelectNodes("//a[@data-sw-tracking-link-id=\"view-profile\"]")
-                .FirstOrDefault();
-
-            string creatorPageRelativeLink = creatorNode.GetAttributeValue("href", null);
-            string creatorName = creatorNode.GetAttributeValue("data-sw-tracking-target-entity-id", null);
+                .FirstOrDefault()
+                .GetAttributeValue("data-sw-tracking-target-entity-id", null);
 
             Dictionary<string, string> miniProperties = htmlDoc.DocumentNode.SelectNodes("//div[@itemtype=\"http://schema.org/Product\"]/meta")
                 .Select(node => new
@@ -53,13 +52,12 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
                 .ToDictionary(k => k.property, v => v.content);
 
             Uri baseUri = new Uri("https://www.shapeways.com");
-            Uri creatorPageUri = new Uri(baseUri, creatorPageRelativeLink);
 
             Creator creator = new Creator
             {
-                Name = creatorName,
-                ShapewaysURL = creatorPageUri.ToString()
+                Name = creatorName
             };
+            creator.Sites.Add(new ShapewaysSource(creator, creatorName));
 
             mini = new Mini()
             {

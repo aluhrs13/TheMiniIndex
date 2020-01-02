@@ -50,10 +50,24 @@ namespace MiniIndex.Core.Submissions
             mini = await parser.ParseFromUrl(uri);
             mini.User = request.User;
 
+            mini.Creator = await GetCreator(mini.Creator, cancellationToken);
+
             _context.Add(mini);
             await _context.SaveChangesAsync();
 
             return mini;
+        }
+
+        private async Task<Creator> GetCreator(Creator creator, CancellationToken cancellationToken)
+        {
+            SourceSite currentSource = creator.Sites.Single();
+
+            SourceSite matchingSource = await _context.Set<SourceSite>()
+                .SingleOrDefaultAsync(s => s.SiteName ==  currentSource.SiteName && s.Creator.Name == creator.Name, cancellationToken);
+
+            Creator foundCreator = matchingSource?.Creator;
+
+            return foundCreator ?? creator;
         }
 
         private async Task<Mini> ParseGumroad(string URL)
