@@ -1,7 +1,6 @@
 ﻿using HtmlAgilityPack;
 using MiniIndex.Models;
 using MiniIndex.Models.SourceSites;
-using MiniIndex.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +10,9 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
 {
     public class ShapewaysParser : IParser
     {
-        public ShapewaysParser(MiniIndexContext context)
+        public ShapewaysParser()
         {
-            _context = context;
         }
-
-        private readonly MiniIndexContext _context;
 
         public string Site => "Shapeways";
 
@@ -27,13 +23,6 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
 
         public async Task<Mini> ParseFromUrl(Uri url)
         {
-            Mini mini = _context.Mini.FirstOrDefault(m => m.Link == url.ToString());
-
-            if (mini != null)
-            {
-                return mini;
-            }
-
             HtmlWeb web = new HtmlWeb();
             HtmlDocument htmlDoc = await web.LoadFromWebAsync(url, null, null);
 
@@ -58,7 +47,7 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
             ShapewaysSource source = new ShapewaysSource(creator, creatorName);
             creator.Sites.Add(source);
 
-            mini = new Mini()
+            Mini mini = new Mini()
             {
                 Creator = creator,
                 Name = miniProperties["name"],
