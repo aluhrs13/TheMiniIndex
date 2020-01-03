@@ -20,6 +20,6 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <a href="/Identity/Account/Register" class="btn btn-link navbar-btn navbar-link" style="color:white;">Register</a>
-        <a href="/Identity/Account/Login" class="btn btn-link navbar-btn navbar-link" style="color:white;">Login</a>
+        <a href="/Identity/Account/Login?ReturnUrl=@Context.Request.Path@Context.Request.QueryString" class="btn btn-link navbar-btn navbar-link" style="color:white;">Login</a>
     </ul>
 }

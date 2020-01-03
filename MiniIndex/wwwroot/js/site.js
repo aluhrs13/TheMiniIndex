@@ -124,24 +124,6 @@ $('#selectizedinput').selectize({
                 '</span>' +
                 '</div>';
         }
-    },
-    load: function (query, callback) {
-        if (!query.length) return callback();
-        $.ajax({
-            url: 'https://localhost:44386/Tags/JSONTagList',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-            },
-            error: function (req, err) {
-                console.log(err);
-                console.log("Error!");
-                callback();
-            },
-            success: function (res) {
-                callback(res);
-            }
-        });
     }
 });
 
