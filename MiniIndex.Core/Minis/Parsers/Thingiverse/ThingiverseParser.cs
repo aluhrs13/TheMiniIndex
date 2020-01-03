@@ -38,10 +38,10 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
                 Name = thing.creator.name
             };
 
-            var source = new ThingiverseSource(creator, thing.creator.public_url);
+            ThingiverseSource source = new ThingiverseSource(creator, thing.creator.public_url);
             creator.Sites.Add(source);
 
-            var mini = new Mini
+            Mini mini = new Mini
             {
                 Name = thing.name,
                 Status = Status.Pending,

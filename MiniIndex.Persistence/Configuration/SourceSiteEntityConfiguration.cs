@@ -14,6 +14,7 @@ namespace MiniIndex.Persistence.Configuration
             builder.HasDiscriminator(x => x.SiteName)
                 .HasValue<ThingiverseSource>("Thingiverse")
                 .HasValue<ShapewaysSource>("Shapeways")
+                .HasValue<GumroadSource>("Gumroad")
                 .HasValue<PatreonSource>("Patreon")
                 .HasValue<WebsiteSource>("Website");
 

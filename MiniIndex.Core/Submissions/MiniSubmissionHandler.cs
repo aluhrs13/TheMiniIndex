@@ -60,7 +60,7 @@ namespace MiniIndex.Core.Submissions
 
         private async Task<Creator> GetCreator(Creator creator, CancellationToken cancellationToken)
         {
-            var foundCreator = await _context.Set<Creator>()
+            Creator foundCreator = await _context.Set<Creator>()
                 .Include(c => c.Sites)
                 .FirstOrDefaultAsync(c => c.Name == creator.Name, cancellationToken);
 
@@ -69,7 +69,7 @@ namespace MiniIndex.Core.Submissions
                 return creator;
             }
 
-            var currentSource = creator.Sites.Single();
+            SourceSite currentSource = creator.Sites.Single();
 
             if (!foundCreator.Sites.Any(s => s.SiteName == currentSource.SiteName))
             {
