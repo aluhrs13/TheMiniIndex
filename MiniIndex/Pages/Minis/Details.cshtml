@@ -45,23 +45,42 @@
 
 
     <div class="row">
-        <div class="col-md-6" align="center">
-            @if (Model.Mini.Link.Contains("thingiverse"))
-            {
-                <a href="@Model.Mini.Link" class="btn btn-block btn-primary">View On Thingiverse</a>
-            }
-            else if (Model.Mini.Link.Contains("shapeways"))
-            {
-                <a href="@Model.Mini.Link" class="btn btn-block" style="background-color:#FF4B5A; color:white">View On Shapeways</a>
-            }
-            else if (Model.Mini.Link.Contains("gumroad"))
-            {
-                <a href="@Model.Mini.Link" class="btn btn-block" style="background-color:#198C8C; color:white">View On Gumroad</a>
-            }
-            else
-            {
-                <a href="@Html.DisplayFor(modelItem => Model.Mini.Link)" class="btn btn-block btn-primary">View at source</a>
-            }
+        <div class="col-md-4" align="center">
+            <div class="row">
+                <div class="col-md-8">
+                    @if (Model.Mini.Link.Contains("thingiverse"))
+                    {
+                        <a href="@Model.Mini.Link" class="btn btn-block btn-primary" style="margin-top:10px;">View On Thingiverse</a>
+                    }
+                    else if (Model.Mini.Link.Contains("shapeways"))
+                    {
+                        <a href="@Model.Mini.Link" class="btn btn-block" style="background-color:#FF4B5A; color:white; margin-top:10px;">View On Shapeways</a>
+                    }
+                    else if (Model.Mini.Link.Contains("gumroad"))
+                    {
+                        <a href="@Model.Mini.Link" class="btn btn-block" style="background-color:#198C8C; color:white; margin-top:10px;">View On Gumroad</a>
+                    }
+                    else
+                    {
+                        <a href="@Html.DisplayFor(modelItem => Model.Mini.Link)" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
+                    }
+                </div>
+
+                <div class="col-md-4">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a href="#" class="btn btn-block @(Model.IsStarred ? "btn-danger remove-star" : "btn-success add-star")" id="toggle-star" style="margin-top:10px;">
+                            <span class="oi oi-star"></span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString" class="btn btn-block btn-success" style="margin-top:10px;" data-toggle="tooltip" data-placement="top" title="Create an account to save your favorites">
+                            <span class="oi oi-star"></span>
+                        </a>
+                    }
+                </div>
+            </div>
 
             <hr />
 
@@ -72,45 +91,45 @@
             <h3>Tags</h3>
             @if (!SignInManager.IsSignedIn(User))
             {
-                    <p><strong>Register an account and login to add or remove tags.</strong></p>
+                <p><strong>Register an account and login to add or remove tags.</strong></p>
             }
-                <div id="UsedTags">
-                    @foreach (var MiniTag in Model.Mini.MiniTags)
+            <div id="UsedTags">
+                @foreach (var MiniTag in Model.Mini.MiniTags)
+                {
+
+                    @if (SignInManager.IsSignedIn(User))
                     {
-
-                        @if (SignInManager.IsSignedIn(User))
+                        @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
                         {
-                            @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
-                            {
-                                <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <b>@MiniTag.Tag.TagName</b></a>
-                            }
-                            else
-                            {
-                                <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <small>@MiniTag.Tag.Category:</small> <b>@MiniTag.Tag.TagName</b></a>
-                            }
-
+                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <b>@MiniTag.Tag.TagName</b></a>
                         }
                         else
                         {
-                            @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
-                            {
-                                <span class="badge badge-primary">
-                                    @MiniTag.Tag.TagName
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-primary">
-                                    <small>@MiniTag.Tag.Category:</small> @MiniTag.Tag.TagName
-                                </span>
-                            }
+                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <small>@MiniTag.Tag.Category:</small> <b>@MiniTag.Tag.TagName</b></a>
+                        }
+
+                    }
+                    else
+                    {
+                        @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
+                        {
+                            <span class="badge badge-primary">
+                                @MiniTag.Tag.TagName
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-primary">
+                                <small>@MiniTag.Tag.Category:</small> @MiniTag.Tag.TagName
+                            </span>
                         }
                     }
-                </div>
-                <div id="AddedTags">
-
-                </div>
+                }
             </div>
+            <div id="AddedTags">
+
+            </div>
+        </div>
     </div>
 
     @if (SignInManager.IsSignedIn(User))

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -14,6 +16,8 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     </environment>
+
+    <link href="~/lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
 
     <script type="text/javascript">
         var appInsights = window.appInsights || function (a) {
@@ -44,11 +48,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/Creators/Browse">Browse Creators</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis/Help">Help Tag Minis</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis/Create">Submit a mini</a>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Starred">Starred Minis</a>
+                    </li>
+                }
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Help improve TMI
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/Minis/Help">Tag Minis</a>
+                        <a class="dropdown-item" href="/Minis/Create">Add a Mini</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://github.com/aluhrs13/TheMiniIndex" target="_blank">View our GitHub</a>
+                    </div>
                 </li>
                 @if (User.IsInRole("Moderator"))
                 {

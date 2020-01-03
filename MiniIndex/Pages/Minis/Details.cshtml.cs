@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
@@ -11,20 +12,25 @@ namespace MiniIndex.Pages.Minis
 {
     public class DetailsModel : PageModel
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly MiniIndexContext _context;
         public Mini Mini { get; set; }
         public List<Tag> UnusedTags { get; set; }
         public List<Tag> MiscTags { get; set; }
         public List<Tag> WordMatchingTags { get; set; }
         public List<Tag> SimilarTags { get; set; }
+        public bool IsStarred { get; set; }
 
-        public DetailsModel(MiniIndexContext context)
+        public DetailsModel(UserManager<IdentityUser> userManager, MiniIndexContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
+
             if (id == null)
             {
                 return NotFound();
@@ -37,8 +43,14 @@ namespace MiniIndex.Pages.Minis
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-
-
+            if (User.Identity.IsAuthenticated)
+            {
+                IsStarred = _context.Starred.Any(m => m.Mini.ID == Mini.ID && m.User.Id == CurrentUser.Id);
+            }
+            else
+            {
+                IsStarred = false;
+            }
 
             UnusedTags = _context
                 .Tag
