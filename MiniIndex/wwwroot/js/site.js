@@ -1,4 +1,37 @@
-﻿$('.add-tag').click(function () {
+﻿$('#toggle-star').click(function () {
+
+    if ($(this).hasClass("add-star")) {
+        console.log("Starring " + this.innerHTML);
+
+        $.get({
+            url: "/Starred/Create/",
+            data: { mini: document.getElementById("miniid").innerHTML },
+            complete: function () {
+            },
+        });
+    } else {
+        console.log("Unstarring " + this.innerHTML);
+
+        $.get({
+            url: "/Starred/Delete/",
+            data: { mini: document.getElementById("miniid").innerHTML },
+            complete: function () {
+            },
+        });
+    }
+    $(this).toggleClass("remove-star");
+    $(this).toggleClass("add-star");
+
+    $(this).toggleClass("btn-danger");
+    $(this).toggleClass("btn-success");
+
+
+
+    return false;
+});
+
+
+$('.add-tag').click(function () {
     document.getElementById("AddedTags").innerHTML = document.getElementById("AddedTags").innerHTML.concat("<span class='badge badge-success'>" + this.innerHTML.substr(2, this.innerHTML.length) + "</span>");
     console.log("Adding " + this.innerHTML);
     $(this).fadeOut();
