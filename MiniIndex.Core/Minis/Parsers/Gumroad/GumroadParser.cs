@@ -15,12 +15,17 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
 
         public bool CanParse(Uri url)
         {
-            bool gumroadFormat1 = url.Host.Replace("www.", "").Equals("gumroad.com", StringComparison.OrdinalIgnoreCase)
-                && !String.IsNullOrWhiteSpace(url.LocalPath)
+            bool isGumroadUrl = url.Host.Replace("www.", "").Equals("gumroad.com", StringComparison.OrdinalIgnoreCase);
+
+            if (!isGumroadUrl)
+            {
+                return false;
+            }
+
+            bool gumroadFormat1 = !String.IsNullOrWhiteSpace(url.LocalPath)
                 && url.LocalPath.StartsWith("/l/");
 
-            bool gumroadFormat2 = url.Host.Replace("www.", "").Equals("gumroad.com", StringComparison.OrdinalIgnoreCase)
-                && !String.IsNullOrWhiteSpace(url.Fragment)
+            bool gumroadFormat2 = !String.IsNullOrWhiteSpace(url.Fragment)
                 && url.Fragment.StartsWith("#");
 
             return gumroadFormat1 || gumroadFormat2;
