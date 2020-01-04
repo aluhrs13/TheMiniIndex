@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ namespace MiniIndex.Pages.Minis
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            TelemetryClient telemetry = new TelemetryClient();
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
             if (id == null)
@@ -42,6 +44,13 @@ namespace MiniIndex.Pages.Minis
                 .Include(m => m.Creator)
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Mini == null)
+            {
+                return NotFound();
+            }
+
+            telemetry.TrackEvent("ViewedMini", new Dictionary<string, string> { { "MiniId", Mini.ID.ToString() } });
 
             if (User.Identity.IsAuthenticated)
             {
@@ -59,7 +68,6 @@ namespace MiniIndex.Pages.Minis
                 .OrderBy(m => m.Category.ToString())
                 .ThenBy(m => m.TagName)
                 .ToList();
-
 
             if (User.IsInRole("Moderator"))
             {
@@ -86,12 +94,6 @@ namespace MiniIndex.Pages.Minis
                 {
                     SimilarTags = new List<Tag>();
                 }
-            }
-
-
-            if (Mini == null)
-            {
-                return NotFound();
             }
 
             return Page();

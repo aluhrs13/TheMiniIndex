@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,8 @@ namespace MiniIndex.Pages.Creators
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            TelemetryClient telemetry = new TelemetryClient();
+
             if (id == null)
             {
                 return NotFound();
@@ -45,6 +48,8 @@ namespace MiniIndex.Pages.Creators
             {
                 return NotFound();
             }
+
+            telemetry.TrackEvent("ViewedCreator", new Dictionary<string, string> { { "CreatorId", Creator.ID.ToString() } });
 
             AllCreatorsMinis = new List<Mini>();
             AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).Where(m=>m.Status == Status.Approved).ToList();
