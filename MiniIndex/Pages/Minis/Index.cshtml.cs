@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -38,12 +39,14 @@ namespace MiniIndex.Pages.Minis
 
         public async Task OnGetAsync(int? pageIndex)
         {
+            TelemetryClient telemetry = new TelemetryClient();
             IdentityUser user = await _userManager.GetUserAsync(User);
 
             if (pageIndex <= 0)
             {
                 pageIndex = 1;
             }
+            telemetry.TrackEvent("SearchPage", new Dictionary<string, string> { { "PageNumber", pageIndex.ToString() } });
 
             IQueryable<Mini> minis = from m in _context.Mini select m;
 
@@ -57,6 +60,10 @@ namespace MiniIndex.Pages.Minis
                 foreach (string IndividualTag in SearchString)
                 {
                     minis = minis.Where(t => t.MiniTags.Any(mt => mt.Tag.TagName == IndividualTag));
+                    if (pageIndex == 1)
+                    {
+                        telemetry.TrackEvent("SearchedMinis", new Dictionary<string, string> { { "SearchString", IndividualTag } });
+                    }
                 }
             }
             else
@@ -70,6 +77,10 @@ namespace MiniIndex.Pages.Minis
                         SearchList.Add(key.Value);
                         string IndividualTag = key.Value;
                         minis = minis.Where(t => t.MiniTags.Any(mt => mt.Tag.TagName == IndividualTag));
+                        if (pageIndex == 1)
+                        {
+                            telemetry.TrackEvent("SearchedMinis", new Dictionary<string, string> { { "SearchString", IndividualTag } });
+                        }
                     }
                 }
 

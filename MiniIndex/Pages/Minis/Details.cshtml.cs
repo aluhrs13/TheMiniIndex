@@ -33,8 +33,6 @@ namespace MiniIndex.Pages.Minis
             TelemetryClient telemetry = new TelemetryClient();
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
-
-
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +44,11 @@ namespace MiniIndex.Pages.Minis
                 .Include(m => m.Creator)
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Mini == null)
+            {
+                return NotFound();
+            }
 
             telemetry.TrackEvent("ViewedMini", new Dictionary<string, string> { { "MiniId", Mini.ID.ToString() } });
 
@@ -65,7 +68,6 @@ namespace MiniIndex.Pages.Minis
                 .OrderBy(m => m.Category.ToString())
                 .ThenBy(m => m.TagName)
                 .ToList();
-
 
             if (User.IsInRole("Moderator"))
             {
@@ -92,12 +94,6 @@ namespace MiniIndex.Pages.Minis
                 {
                     SimilarTags = new List<Tag>();
                 }
-            }
-
-
-            if (Mini == null)
-            {
-                return NotFound();
             }
 
             return Page();
