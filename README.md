@@ -10,7 +10,7 @@ I made TMI as a side project to solve a problem I had and to learn ASP.NET, .NET
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.MD) for details on the process for getting a local build setup and the for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for getting a local build setup and the for submitting pull requests to us.
 
 ## Acknowledgments
 
