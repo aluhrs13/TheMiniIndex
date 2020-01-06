@@ -7,7 +7,7 @@ namespace MiniIndex.Models.SourceSites
         public ThingiverseSource(Creator creator, string thingiverseUsername)
             : base(creator)
         {
-            ThingiverseUsername = thingiverseUsername;
+            CreatorUserName = thingiverseUsername;
         }
 
         protected ThingiverseSource()
@@ -16,7 +16,6 @@ namespace MiniIndex.Models.SourceSites
 
         public override Uri BaseUri => new Uri("https://www.thingiverse.com");
 
-        public string ThingiverseUsername { get; protected set; }
-        public override Uri CreatorPageUri => new Uri(BaseUri, ThingiverseUsername);
+        public override Uri CreatorPageUri => new Uri(BaseUri, CreatorUserName);
     }
 }

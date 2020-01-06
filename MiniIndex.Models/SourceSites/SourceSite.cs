@@ -20,6 +20,8 @@ namespace MiniIndex.Models
         public virtual string DisplayName => SiteName;
 
         public Creator Creator { get; set; }
+
+        public string CreatorUserName { get; set; }
         public abstract Uri CreatorPageUri { get; }
     }
 }

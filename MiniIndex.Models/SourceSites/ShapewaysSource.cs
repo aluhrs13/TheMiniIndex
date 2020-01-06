@@ -7,7 +7,7 @@ namespace MiniIndex.Models.SourceSites
         public ShapewaysSource(Creator creator, string shapewaysUsername)
             : base(creator)
         {
-            ShapewaysUsername = shapewaysUsername;
+            CreatorUserName = shapewaysUsername;
         }
 
         protected ShapewaysSource()
@@ -15,8 +15,6 @@ namespace MiniIndex.Models.SourceSites
         }
 
         public override Uri BaseUri => new Uri("https://www.shapeways.com/designer/");
-        public override Uri CreatorPageUri => new Uri(BaseUri, ShapewaysUsername);
-
-        public string ShapewaysUsername { get; protected set; }
+        public override Uri CreatorPageUri => new Uri(BaseUri, CreatorUserName);
     }
 }

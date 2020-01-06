@@ -7,7 +7,7 @@ namespace MiniIndex.Models.SourceSites
         public PatreonSource(Creator creator, string patreonUsername)
             : base(creator)
         {
-            PatreonUsername = patreonUsername;
+            CreatorUserName = patreonUsername;
         }
 
         protected PatreonSource()
@@ -15,7 +15,6 @@ namespace MiniIndex.Models.SourceSites
         }
 
         public override Uri BaseUri => new Uri("https://www.patreon.com/");
-        public override Uri CreatorPageUri => new Uri(BaseUri, PatreonUsername);
-        public string PatreonUsername { get; set; }
+        public override Uri CreatorPageUri => new Uri(BaseUri, CreatorUserName);
     }
 }
