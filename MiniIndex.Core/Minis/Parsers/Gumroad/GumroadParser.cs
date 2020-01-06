@@ -11,7 +11,7 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
 {
     public class GumroadParser : IParser
     {
-        public string Site { get; }
+        public string Site => "Gumroad";
 
         public bool CanParse(Uri url)
         {
