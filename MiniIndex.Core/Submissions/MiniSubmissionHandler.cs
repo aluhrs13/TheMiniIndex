@@ -79,44 +79,6 @@ namespace MiniIndex.Core.Submissions
             return foundCreator;
         }
 
-        private async Task<Mini> ParseGumroad(string URL)
-        {
-            string parsedURL = "https://gumroad.com/products/" + URL.Split('#')[1] + "/display";
-
-            //Initialize HTML Agility Pack variables
-            string html = parsedURL;
-            HtmlWeb web = new HtmlWeb();
-            HtmlDocument htmlDoc = web.Load(html);
-
-            //Parse out creator URL
-            Creator creator = new Creator
-            {
-                WebsiteURL = URL.Split('?')[0],
-                Name = URL.Split('?')[0].Split('/').Last()
-            };
-
-            HtmlNode titleNode = htmlDoc.DocumentNode.Descendants("h1").First();
-            HtmlNode imageNode = htmlDoc.DocumentNode.Descendants("img").First();
-            HtmlNode costNode = htmlDoc.DocumentNode.Descendants("strong").First();
-
-            Mini mini = new Mini
-            {
-                Creator = creator,
-                Thumbnail = imageNode.GetAttributeValue("src", ""),
-                Name = titleNode.InnerText,
-                Link = URL,
-                Cost = (costNode.InnerText == "$0+") ? 0 : (int)Math.Ceiling(Double.Parse(costNode.InnerText.Substring(1)))
-            };
-
-            //Check if it exists
-            if (_context.Mini.Any(m => m.Link == mini.Link))
-            {
-                return _context.Mini.First(m => m.Link == mini.Link);
-            }
-
-            return null;
-        }
-
         //TODO - Patreon currently disabled due to thumbnail expiring. Need to add caching of thumbnails somewhere to fix it.
         private async Task<Mini> ParsePatreon(string URL)
         {
