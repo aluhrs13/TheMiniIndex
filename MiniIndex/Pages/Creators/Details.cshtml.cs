@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +27,8 @@ namespace MiniIndex.Pages.Creators
         private readonly MiniIndexContext _context;
         private readonly IConfiguration _configuration;
         public Creator Creator { get; set; }
-        public List<Mini> MiniList { get; set; }
+        public List<Mini> ThingiverseMiniList { get; set; }
+        public List<Mini> AllCreatorsMinis { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string PageNumber { get; set; }
@@ -35,6 +37,8 @@ namespace MiniIndex.Pages.Creators
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            TelemetryClient telemetry = new TelemetryClient();
+
             if (id == null)
             {
                 return NotFound();
@@ -50,12 +54,17 @@ namespace MiniIndex.Pages.Creators
                 return NotFound();
             }
 
+            telemetry.TrackEvent("ViewedCreator", new Dictionary<string, string> { { "CreatorId", Creator.ID.ToString() } });
+
+            AllCreatorsMinis = new List<Mini>();
+            AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).Where(m => m.Status == Status.Approved).ToList();
+
             //TODO: minor hack; review this logic.
             string thingiverseUrlString = Creator.Sites.FirstOrDefault(s => s is ThingiverseSource)?.CreatorPageUri?.ToString();
 
             if (!String.IsNullOrEmpty(thingiverseUrlString))
             {
-                MiniList = new List<Mini>();
+                ThingiverseMiniList = new List<Mini>();
                 using (HttpClient client = new HttpClient())
                 {
                     if (String.IsNullOrEmpty(PageNumber))
@@ -94,7 +103,7 @@ namespace MiniIndex.Pages.Creators
                                     NewMini.Status = Status.Unindexed;
                                 }
 
-                                MiniList.Add(NewMini);
+                                ThingiverseMiniList.Add(NewMini);
                             }
                         }
                     }

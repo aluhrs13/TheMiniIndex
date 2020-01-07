@@ -16,17 +16,17 @@ namespace MiniIndex.Pages.Creators
         }
 
         private readonly MiniIndexContext _context;
-        public IList<Creator> Creator { get; set; }
+        public IList<Creator> Creators { get; set; }
         public Dictionary<string, int> NumberMinis { get; set; }
         public IList<Mini> MiniList { get; set; }
 
         public async Task OnGetAsync()
         {
             NumberMinis = new Dictionary<string, int>();
-            Creator = await _context.Set<Creator>().OrderBy(c => c.Name).ToListAsync();
+            Creators = await _context.Set<Creator>().OrderBy(c => c.Name).ToListAsync();
             MiniList = await _context.Mini.ToListAsync();
 
-            foreach (Creator curCreator in Creator)
+            foreach (Creator curCreator in Creators)
             {
                 NumberMinis.Add(curCreator.Name, MiniList.Where(m => m.Creator == curCreator).Count());
             }

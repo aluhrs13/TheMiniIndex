@@ -1,0 +1,39 @@
+﻿@page
+@inject SignInManager<IdentityUser> SignInManager
+@model MiniIndex.Pages.Minis.HelpModel
+
+@{
+    ViewData["Title"] = "Help us Tag Minis";
+}
+<h1>Minis to Tag</h1>
+<p>
+    The Mini Index is possible because of people like you submitting and tagging Minis. 
+    This is the list of Minis that have been submitted but haven't been approved yet, either because we haven't got around to it yet, or they need more tags.
+    If you want to help out, choose any minis below and try to improve the tags!
+</p>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            @if (Model.Mini.Count() == 0)
+            {
+                <div align="center">
+                    <h1>All submitted Minis have been approved!</h1>
+                    <hr />
+                    <h2>To help you now, find a mini on Thingiverse or elsewhere, come back and <a href="/Minis/Create">add it here</a> so that the next person can find it easier!</h2>
+                </div>
+            }
+
+            @foreach (var item in Model.Mini)
+            {
+
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <a asp-page="./Details" asp-route-id="@item.ID">
+                            <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+</div>

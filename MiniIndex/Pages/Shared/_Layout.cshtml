@@ -1,9 +1,45 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - The Mini Index</title>
+
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="~/images/icons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/images/icons/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/images/icons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/images/icons/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="~/images/icons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="~/images/icons/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="~/images/icons/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="~/images/icons/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="~/images/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="~/images/icons/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="~/images/icons/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="~/images/icons/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Mini Index" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="~/images/icons/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="~/images/icons/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="~/images/icons/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="~/images/icons/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="~/images/icons/mstile-310x310.png" />
+
+    <meta property="og:site_name" content="The Mini Index" />
+    <meta property="og:image" content="https://theminiindex.com/images/icons/favicon-196x196.png">
+    <meta property="og:title" content="@ViewData["Title"] -The Mini Index" />
+    <meta property="og:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
+    <meta property="fb:app_id" content="217005809246433" />
+
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image:src" content="https://theminiindex.com/images/icons/favicon-196x196.png">
+    <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
+    <meta name="twitter:title" content="@ViewData["Title"] -The Mini Index" />
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css" />
@@ -14,6 +50,8 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     </environment>
+
+    <link href="~/lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
 
     <script type="text/javascript">
         var appInsights = window.appInsights || function (a) {
@@ -44,8 +82,23 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/Creators/Browse">Browse Creators</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis/Create">Submit a mini</a>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Starred">Starred Minis</a>
+                    </li>
+                }
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Help improve TMI
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/Minis/Help">Tag Minis</a>
+                        <a class="dropdown-item" href="/Minis/Create">Add a Mini</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://github.com/aluhrs13/TheMiniIndex" target="_blank"><span class="oi oi-code"></span> View our GitHub</a>
+                        <a class="dropdown-item" href="https://discordapp.com/invite/FDtYRDP" target="_blank"><span class="oi oi-chat"></span> Join us on Disord</a>
+                    </div>
                 </li>
                 @if (User.IsInRole("Moderator"))
                 {

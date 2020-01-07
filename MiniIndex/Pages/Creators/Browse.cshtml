@@ -10,22 +10,32 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Creator[0].Name)
+                Name
             </th>
             <th>
                 Number of Minis
             </th>
+            <th>
+                Links
+            </th>
+
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Creator)
+        @foreach (var creator in Model.Creators)
         {
         <tr>
             <td>
-                <a asp-page="./Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a>
+                <a asp-page="./Details" asp-route-id="@creator.ID">@Html.DisplayFor(modelItem => creator.Name)</a>
             </td>
             <td>
-                @Model.NumberMinis[item.Name]
+                @Model.NumberMinis[creator.Name]
+            </td>
+            <td>
+                @foreach (var site in creator.Sites)
+                {
+                    <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
+                }
             </td>
         </tr>
         }

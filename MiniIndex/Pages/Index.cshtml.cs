@@ -29,7 +29,8 @@ namespace MiniIndex.Pages
                 .Take(4)
                 .ToList();
 
-            MiniCount = _context.Set<Mini>().Count();
+            MiniCount = _context.Set<Mini>().Where(m => m.Status==Status.Approved).Count();
+
         }
     }
 }

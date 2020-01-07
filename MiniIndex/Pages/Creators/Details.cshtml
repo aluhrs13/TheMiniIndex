@@ -20,7 +20,7 @@
     <div class="album py-5 bg-light">
         <div class="container">
             <div class="row">
-                @foreach (var item in Model.MiniList)
+                @foreach (var item in Model.ThingiverseMiniList)
                 {
 
                     <div class="col-md-4">
@@ -58,14 +58,14 @@
                             }
                         </div>
                     </div>
-                @:</div>
+                @: </div>
             }
             </div>
         </div>
         <div align="center">
             @{
                 var prevDisabled = Model.ParsedPageNumber == 0 || Model.ParsedPageNumber == 1 ? "disabled" : "";
-                var nextDisabled = Model.MiniList.Count < 30 ? "disabled" : "";
+                var nextDisabled = Model.ThingiverseMiniList.Count < 30 ? "disabled" : "";
 
                 int prevPageNubmer = Model.ParsedPageNumber - 1;
                 int nextPageNumber = Model.ParsedPageNumber + 1;
@@ -75,3 +75,6 @@
         </div>
     </div>
 }
+</div>
+    </div>
+</div>
