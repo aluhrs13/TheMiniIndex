@@ -53,7 +53,7 @@ namespace MiniIndex.Pages.Admin
                 {
                     foreach (Mini item in Mini)
                     {
-                        var thingiverseSource = item.Creator.Sites.FirstOrDefault(s => s is ThingiverseSource);
+                        SourceSite thingiverseSource = item.Creator.Sites.FirstOrDefault(s => s is ThingiverseSource);
 
                         HttpResponseMessage response = await client.GetAsync(item.Thumbnail);
                         HttpContent responseContent = response.Content;

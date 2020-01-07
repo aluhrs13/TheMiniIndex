@@ -51,7 +51,7 @@ namespace MiniIndex.Pages.Creators
             }
 
             //TODO: minor hack; review this logic.
-            var thingiverseUrlString = Creator.Sites.FirstOrDefault(s => s is ThingiverseSource)?.CreatorPageUri?.ToString();
+            string thingiverseUrlString = Creator.Sites.FirstOrDefault(s => s is ThingiverseSource)?.CreatorPageUri?.ToString();
 
             if (!String.IsNullOrEmpty(thingiverseUrlString))
             {

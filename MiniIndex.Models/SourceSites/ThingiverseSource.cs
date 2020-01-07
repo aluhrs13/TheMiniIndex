@@ -7,8 +7,8 @@ namespace MiniIndex.Models.SourceSites
         public ThingiverseSource(Creator creator, string thingiverseUrl)
             : base(creator)
         {
-            var path = new Uri(thingiverseUrl).LocalPath;
-            var thingiverseUsername = path[1..];
+            string path = new Uri(thingiverseUrl).LocalPath;
+            string thingiverseUsername = path[1..];
 
             CreatorUserName = thingiverseUsername;
         }
