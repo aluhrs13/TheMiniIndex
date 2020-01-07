@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Minis
 {
@@ -15,16 +15,13 @@ namespace MiniIndex.Pages.Minis
     {
         public IndexModel(
                 UserManager<IdentityUser> userManager,
-                SignInManager<IdentityUser> signInManager,
                 MiniIndexContext context)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
         }
 
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly MiniIndexContext _context;
 
         [BindProperty(SupportsGet = true)]

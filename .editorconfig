@@ -41,3 +41,6 @@ dotnet_naming_symbols.local.capitalisation = camel_case
 dotnet_naming_symbols.property.capitalisation = pascal_case
 
 
+
+# CA1052: Static holder types should be Static or NotInheritable
+dotnet_diagnostic.CA1052.severity = silent
