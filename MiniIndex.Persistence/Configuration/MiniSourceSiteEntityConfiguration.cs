@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MiniIndex.Models.SourceSites;
+using MiniIndex.Models;
 
 namespace MiniIndex.Persistence.Configuration
 {

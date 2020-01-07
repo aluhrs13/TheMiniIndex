@@ -14,7 +14,7 @@
 
 <hr />
 
-@if (!string.IsNullOrEmpty(Model.Creator.ThingiverseURL))
+@if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource))
 {
     <h2>Quick add Thingiverse models</h2>
     <div class="album py-5 bg-light">
@@ -27,11 +27,11 @@
                         @if (item.Status == Models.Status.Unindexed)
                         {
                             @:<div class="card mb-4 shadow-sm">
-                            }
-                            else
-                            {
-                                @:<div class="card mb-4 shadow-sm" style="opacity:.5;">
-                            }
+                        }
+                        else
+                        {
+                            @:<div class="card mb-4 shadow-sm" style="opacity:.5;">
+                        }
 
                         <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
                         <div class="card-body @item.Status" align="center">
@@ -58,7 +58,7 @@
                             }
                         </div>
                     </div>
-                @: </div>
+                @:</div>
             }
             </div>
         </div>

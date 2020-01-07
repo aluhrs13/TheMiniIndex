@@ -4,9 +4,12 @@ namespace MiniIndex.Models.SourceSites
 {
     public class ThingiverseSource : SourceSite
     {
-        public ThingiverseSource(Creator creator, string thingiverseUsername)
+        public ThingiverseSource(Creator creator, string thingiverseUrl)
             : base(creator)
         {
+            var path = new Uri(thingiverseUrl).LocalPath;
+            var thingiverseUsername = path[1..];
+
             CreatorUserName = thingiverseUsername;
         }
 

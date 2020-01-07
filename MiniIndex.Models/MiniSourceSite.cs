@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MiniIndex.Models.SourceSites
+namespace MiniIndex.Models
 {
     public class MiniSourceSite : IEntity
     {

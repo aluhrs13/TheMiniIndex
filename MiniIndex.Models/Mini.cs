@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MiniIndex.Models.SourceSites;
 using System.Collections.Generic;
 
 namespace MiniIndex.Models

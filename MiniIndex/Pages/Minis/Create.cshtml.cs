@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MiniIndex.Core.Submissions;
 using MiniIndex.Models;
-using MiniIndex.Persistence;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Minis
@@ -17,16 +15,13 @@ namespace MiniIndex.Pages.Minis
     {
         public CreateModel(
                 UserManager<IdentityUser> userManager,
-                MiniIndexContext context,
                 IMediator mediator)
         {
             _userManager = userManager;
-            _context = context;
             _mediator = mediator;
         }
 
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly MiniIndexContext _context;
         private readonly IMediator _mediator;
 
         public SelectList CreatorSL { get; set; }
@@ -59,44 +54,6 @@ namespace MiniIndex.Pages.Minis
             }
 
             return RedirectToPage("./Details", new { id = mini.ID });
-        }
-
-        private Creator LastChanceFindCreator(string source, string URL)
-        {
-            Creator foundCreator = null;
-
-            if (source == "Thingiverse" || source == "Shapeways" || source == "Patreon")
-            {
-                string URLName = URL.Split("/").Last();
-                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.Name == URLName);
-
-                if (foundCreator == null)
-                {
-                    Mini.Creator.Name = URLName;
-                }
-                else
-                {
-                    Mini.Creator = foundCreator;
-                }
-            }
-
-            if (source == "Gumroad")
-            {
-                string URLName = URL.Split('/').Last().Split('?')[0].Split('#')[0];
-                foundCreator = _context.Set<Creator>().FirstOrDefault(c => c.Name == URLName);
-
-                if (foundCreator == null)
-                {
-                    Mini.Creator.Name = URLName;
-                    Mini.Creator.WebsiteURL = URL.Split('?')[0].Split('#')[0];
-                }
-                else
-                {
-                    Mini.Creator = foundCreator;
-                }
-            }
-
-            return foundCreator;
         }
     }
 }

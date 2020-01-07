@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using MiniIndex.Models;
+using MiniIndex.Models.SourceSites;
+using MiniIndex.Persistence;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using MiniIndex.Models;
-using MiniIndex.Persistence;
-using Newtonsoft.Json;
 
 namespace MiniIndex.Pages.Creators
 {
@@ -49,7 +50,10 @@ namespace MiniIndex.Pages.Creators
                 return NotFound();
             }
 
-            if (!String.IsNullOrEmpty(Creator.ThingiverseURL))
+            //TODO: minor hack; review this logic.
+            var thingiverseUrlString = Creator.Sites.FirstOrDefault(s => s is ThingiverseSource)?.CreatorPageUri?.ToString();
+
+            if (!String.IsNullOrEmpty(thingiverseUrlString))
             {
                 MiniList = new List<Mini>();
                 using (HttpClient client = new HttpClient())
@@ -63,7 +67,7 @@ namespace MiniIndex.Pages.Creators
                         ParsedPageNumber = Int32.Parse(PageNumber);
                     }
 
-                    string ThingiverseUserName = Creator.ThingiverseURL.Split('/').Last();
+                    string ThingiverseUserName = thingiverseUrlString.Split('/').Last();
                     HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/users/" + ThingiverseUserName + "/things?access_token=" + _configuration["ThingiverseToken"] + "&page=" + ParsedPageNumber);
                     HttpContent responseContent = response.Content;
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)

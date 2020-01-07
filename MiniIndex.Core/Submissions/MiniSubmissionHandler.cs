@@ -1,16 +1,11 @@
-﻿using HtmlAgilityPack;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Core.Minis;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -77,46 +72,6 @@ namespace MiniIndex.Core.Submissions
             }
 
             return foundCreator;
-        }
-
-        //TODO - Patreon currently disabled due to thumbnail expiring. Need to add caching of thumbnails somewhere to fix it.
-        private async Task<Mini> ParsePatreon(string URL)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                string[] SplitURL = URL.Split('/', '-');
-
-                HttpResponseMessage response = await client.GetAsync("https://www.patreon.com/api/posts/" + SplitURL.Last());
-                HttpContent responseContent = response.Content;
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
-                    {
-                        string result = await reader.ReadToEndAsync();
-                        JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
-
-                        Creator creator = new Creator
-                        {
-                            PatreonURL = currentMini["included"][0]["attributes"]["url"].ToString()
-                        };
-
-                        Mini mini = new Mini
-                        {
-                            Creator = creator,
-                            Name = currentMini["data"]["attributes"]["title"].ToString(),
-                            Link = currentMini["data"]["attributes"]["url"].ToString(),
-                            Thumbnail = currentMini["data"]["attributes"]["image"]["large_url"].ToString(),
-                            Cost = 1
-                        };
-
-                        if (_context.Mini.Any(m => m.Link == mini.Link))
-                        {
-                            return _context.Mini.First(m => m.Link == mini.Link);
-                        }
-                    }
-                }
-                return null;
-            }
         }
     }
 }
