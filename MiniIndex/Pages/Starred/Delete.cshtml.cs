@@ -22,26 +22,25 @@ namespace MiniIndex
         private readonly UserManager<IdentityUser> _userManager;
 
         [BindProperty(SupportsGet = true)]
-        public string mini { get; set; }
+        public int? mini { get; set; }
 
         [BindProperty]
         public Starred Starred { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (!ModelState.IsValid || String.IsNullOrEmpty(mini))
+            if (!ModelState.IsValid || !mini.HasValue)
             {
                 return Page();
             }
 
-            int MiniID = Int32.Parse(mini);
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
-            Starred = await _context.Starred.FindAsync(MiniID, CurrentUser.Id);
+            Starred = await _context.Set<Starred>().FindAsync(mini, CurrentUser.Id);
 
             if (Starred != null)
             {
-                _context.Starred.Remove(Starred);
+                _context.Set<Starred>().Remove(Starred);
                 await _context.SaveChangesAsync();
             }
             return Page();
@@ -54,11 +53,11 @@ namespace MiniIndex
                 return NotFound();
             }
 
-            Starred = await _context.Starred.FindAsync(id);
+            Starred = await _context.Set<Starred>().FindAsync(id);
 
             if (Starred != null)
             {
-                _context.Starred.Remove(Starred);
+                _context.Set<Starred>().Remove(Starred);
                 await _context.SaveChangesAsync();
             }
 

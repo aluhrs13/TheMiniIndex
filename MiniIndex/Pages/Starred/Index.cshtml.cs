@@ -27,7 +27,7 @@ namespace MiniIndex
         {
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
-            Starred = await _context.Starred
+            Starred = await _context.Set<Starred>()
                 .Include(s => s.Mini)
                 .Include(s => s.User)
                 .Where(s => s.User == CurrentUser)

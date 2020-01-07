@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniIndex.Persistence;
 
 namespace MiniIndex.Migrations
 {
     [DbContext(typeof(MiniIndexContext))]
-    partial class MiniIndexContextModelSnapshot : ModelSnapshot
+    [Migration("20200107154617_Starred")]
+    partial class Starred
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

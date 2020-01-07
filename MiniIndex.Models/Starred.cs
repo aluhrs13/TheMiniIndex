@@ -7,6 +7,6 @@ namespace MiniIndex.Models
         public int MiniID { get; set; }
         public Mini Mini { get; set; }
         public string UserID { get; set; }
-        public IdentityUser User{ get; set; }
+        public IdentityUser User { get; set; }
     }
 }

@@ -7,13 +7,18 @@ using MiniIndex.Models;
 using MiniIndex.Persistence;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Minis
 {
     public class DetailsModel : PageModel
     {
+        public DetailsModel(UserManager<IdentityUser> userManager, MiniIndexContext context)
+        {
+            _userManager = userManager;
+            _context = context;
+        }
+
         private readonly UserManager<IdentityUser> _userManager;
         private readonly MiniIndexContext _context;
         public Mini Mini { get; set; }
@@ -22,12 +27,6 @@ namespace MiniIndex.Pages.Minis
         public List<Tag> WordMatchingTags { get; set; }
         public List<Tag> SimilarTags { get; set; }
         public bool IsStarred { get; set; }
-
-        public DetailsModel(UserManager<IdentityUser> userManager, MiniIndexContext context)
-        {
-            _userManager = userManager;
-            _context = context;
-        }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -55,7 +54,7 @@ namespace MiniIndex.Pages.Minis
 
             if (User.Identity.IsAuthenticated)
             {
-                IsStarred = _context.Starred.Any(m => m.Mini.ID == Mini.ID && m.User.Id == CurrentUser.Id);
+                IsStarred = _context.Set<Models.Starred>().Any(m => m.Mini.ID == Mini.ID && m.User.Id == CurrentUser.Id);
             }
             else
             {

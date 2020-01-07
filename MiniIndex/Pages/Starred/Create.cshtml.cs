@@ -40,7 +40,7 @@ namespace MiniIndex
                 User = await _userManager.GetUserAsync(User)
             };
 
-            _context.Starred.Add(newStarred);
+            _context.Set<Starred>().Add(newStarred);
             await _context.SaveChangesAsync();
 
             return Page();
