@@ -37,7 +37,7 @@ namespace MiniIndex.Pages.Minis
 
         public async Task OnGetAsync(int? pageIndex)
         {
-            TelemetryClient telemetry = new TelemetryClient();
+            //TelemetryClient telemetry = new TelemetryClient();
             IdentityUser user = await _userManager.GetUserAsync(User);
 
             if (pageIndex <= 0)
@@ -59,7 +59,7 @@ namespace MiniIndex.Pages.Minis
                     minis = minis.Where(t => t.MiniTags.Any(mt => mt.Tag.TagName == IndividualTag));
                     if (pageIndex == null || pageIndex == 1)
                     {
-                        telemetry.TrackEvent("SearchedMinis", new Dictionary<string, string> { { "SearchString", IndividualTag } });
+                        //telemetry.TrackEvent("SearchedMinis", new Dictionary<string, string> { { "SearchString", IndividualTag } });
                     }
                 }
             }
@@ -76,7 +76,7 @@ namespace MiniIndex.Pages.Minis
                         minis = minis.Where(t => t.MiniTags.Any(mt => mt.Tag.TagName == IndividualTag));
                         if (pageIndex == null || pageIndex == 1)
                         {
-                            telemetry.TrackEvent("SearchedMinis", new Dictionary<string, string> { { "SearchString", IndividualTag } });
+                            //telemetry.TrackEvent("SearchedMinis", new Dictionary<string, string> { { "SearchString", IndividualTag } });
                         }
                     }
                 }
@@ -86,7 +86,7 @@ namespace MiniIndex.Pages.Minis
 
             if (SearchString.Length == 0)
             {
-                telemetry.TrackEvent("SearchedMinis", new Dictionary<string, string> { { "SearchString", "" } });
+                //telemetry.TrackEvent("SearchedMinis", new Dictionary<string, string> { { "SearchString", "" } });
             }
 
             //If the user is logged in, we should show them their submitted minis too even if they aren't approved.
@@ -121,10 +121,11 @@ namespace MiniIndex.Pages.Minis
                                         orderby m.TagName
                                         select m;
 
-            TagsList = new SelectList(await tagsQuery.Distinct().ToListAsync(), "TagName", "TagName", null, "Category");
+            TagsList = new SelectList(await tagsQuery.Distinct().AsNoTracking().ToListAsync(), "TagName", "TagName", null, "Category");
 
             Tags = _context
                         .Tag
+                        .AsNoTracking()
                         .AsEnumerable()
                         .OrderBy(m => m.Category.ToString())
                         .ThenBy(m => m.TagName)
