@@ -22,22 +22,22 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var creator in Model.Creators)
+        @foreach (var creatorCount in Model.CreatorCounts)
         {
-        <tr>
-            <td>
-                <a asp-page="./Details" asp-route-id="@creator.ID">@Html.DisplayFor(modelItem => creator.Name)</a>
-            </td>
-            <td>
-                @Model.NumberMinis[creator.Name]
-            </td>
-            <td>
-                @foreach (var site in creator.Sites)
-                {
-                    <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
-                }
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@creatorCount.Key.ID">@Html.DisplayFor(modelItem => creatorCount.Key.Name)</a>
+                </td>
+                <td>
+                    @creatorCount.Value
+                </td>
+                <td>
+                    @foreach (var site in creatorCount.Key.Sites)
+                    {
+                        <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>

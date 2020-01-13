@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Creators
 {
@@ -16,20 +16,18 @@ namespace MiniIndex.Pages.Creators
         }
 
         private readonly MiniIndexContext _context;
-        public IList<Creator> Creators { get; set; }
-        public Dictionary<string, int> NumberMinis { get; set; }
-        public IList<Mini> MiniList { get; set; }
+        public Dictionary<Creator, int> CreatorCounts { get; set; }
 
         public async Task OnGetAsync()
         {
-            NumberMinis = new Dictionary<string, int>();
-            Creators = await _context.Set<Creator>().OrderBy(c => c.Name).ToListAsync();
-            MiniList = await _context.Mini.ToListAsync();
+            var countQuery = await _context.Set<Mini>()
+                .Include(m => m.Creator).ThenInclude(c => c.Sites)
+                .Select(m => m.Creator)
+                .ToListAsync();
 
-            foreach (Creator curCreator in Creators)
-            {
-                NumberMinis.Add(curCreator.Name, MiniList.Where(m => m.Creator == curCreator).Count());
-            }
+            CreatorCounts = countQuery
+                .GroupBy(x => x)
+                .ToDictionary(k => k.Key, v => v.Count());
         }
     }
 }
