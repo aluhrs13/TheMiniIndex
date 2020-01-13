@@ -14,67 +14,107 @@
 
 <hr />
 
-@if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource))
-{
-    <h2>Quick add Thingiverse models</h2>
-    <div class="album py-5 bg-light">
-        <div class="container">
-            <div class="row">
-                @foreach (var item in Model.ThingiverseMiniList)
-                {
 
-                    <div class="col-md-4">
-                        @if (item.Status == Models.Status.Unindexed)
-                        {
-                            @:<div class="card mb-4 shadow-sm">
-                        }
-                        else
-                        {
-                            @:<div class="card mb-4 shadow-sm" style="opacity:.5;">
-                        }
-
-                        <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
-                        <div class="card-body @item.Status" align="center">
-                            <p class="card-title">
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </p>
-                            <hr />
-                            @if (item.Status == Models.Status.Approved)
-                            {
-                                <a asp-page="/Minis/Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Already indexed</a>
-                            }
-                            else if (item.Status == Models.Status.Pending)
-                            {
-                                <p><b>Pending admin approval</b></p>
-                            }
-                            else if (item.Status == Models.Status.Rejected)
-                            {
-                                <p><b>Rejected by admin</b></p>
-                            }
-                            else if (item.Status == Models.Status.Unindexed)
-                            {
-                                <a asp-page="/Minis/Create" asp-route-URL="@item.Link" class="btn btn-sm btn-success">Submit to index!</a>
-                                <a href="@Html.DisplayFor(modelItem => item.Link)" class="btn btn-sm btn-primary">View on Thingiverse</a>
-                            }
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+           aria-selected="true">Indexed Models</a>
+    </li>
+    @if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource))
+    {
+        <li class="nav-item">
+            <a class="nav-link" id="thingiverse-tab" data-toggle="tab" href="#thingiverse" role="tab" aria-controls="thingiverse"
+               aria-selected="false">Thingiverse Models</a>
+        </li>
+    }
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    @foreach (var item in Model.AllCreatorsMinis)
+                    {
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <a asp-page="/Minis/Details" asp-route-id="@item.ID">
+                                    <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
+                                </a>
+                                <div class="card-body @item.Status" align="center">
+                                    <p class="card-title">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                @: </div>
-            }
+                    }
+                </div>
             </div>
         </div>
-        <div align="center">
-            @{
-                var prevDisabled = Model.ParsedPageNumber == 0 || Model.ParsedPageNumber == 1 ? "disabled" : "";
-                var nextDisabled = Model.ThingiverseMiniList.Count < 30 ? "disabled" : "";
+    </div>
+    <div class="tab-pane" id="thingiverse" role="tabpanel" aria-labelledby="thingiverse-tab">
+        @if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource))
+        {
+            <div class="album py-5 bg-light">
+                <div class="container">
+                    <div class="row">
+                        @foreach (var item in Model.ThingiverseMiniList)
+                        {
 
-                int prevPageNubmer = Model.ParsedPageNumber - 1;
-                int nextPageNumber = Model.ParsedPageNumber + 1;
-            }
-            <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@prevPageNubmer" class="btn btn-primary @prevDisabled">&lt;&lt; Previous Page</a>
-            <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@nextPageNumber" class="btn btn-primary @nextDisabled">Next Page &gt;&gt;</a>
+                            <div class="col-md-4">
+                                @if (item.Status == Models.Status.Unindexed)
+                                {
+                                    @:<div class="card mb-4 shadow-sm">
+                                    }
+                                else
+                                {
+                                        @:<div class="card mb-4 shadow-sm" style="opacity:.5;">
+                                        }
+
+
+                                <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
+                                <div class="card-body @item.Status" align="center">
+                                    <p class="card-title">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </p>
+                                    <hr />
+                                    @if (item.Status == Models.Status.Approved)
+                                    {
+                                        <a asp-page="/Minis/Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Already indexed</a>
+                                    }
+                                    else if (item.Status == Models.Status.Pending)
+                                    {
+                                        <p><b>Pending admin approval</b></p>
+                                    }
+                                    else if (item.Status == Models.Status.Rejected)
+                                    {
+                                        <p><b>Rejected by admin</b></p>
+                                    }
+                                    else if (item.Status == Models.Status.Unindexed)
+                                    {
+                                        <a asp-page="/Minis/Create" asp-route-URL="@item.Link" class="btn btn-sm btn-success">Submit to index!</a>
+                                        <a href="@Html.DisplayFor(modelItem => item.Link)" class="btn btn-sm btn-primary">View on Thingiverse</a>
+                                    }
+                                </div>
+                            </div>
+                        @: </div>
+                    }
+                    </div>
+                </div>
+                <div align="center">
+                    @{
+                        var prevDisabled = Model.ParsedPageNumber == 0 || Model.ParsedPageNumber == 1 ? "disabled" : "";
+                        var nextDisabled = Model.ThingiverseMiniList.Count < 30 ? "disabled" : "";
+
+                        int prevPageNubmer = Model.ParsedPageNumber - 1;
+                        int nextPageNumber = Model.ParsedPageNumber + 1;
+                    }
+                    <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@prevPageNubmer" class="btn btn-primary @prevDisabled">&lt;&lt; Previous Page</a>
+                    <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@nextPageNumber" class="btn btn-primary @nextDisabled">Next Page &gt;&gt;</a>
+                </div>
+            </div>
+        }
         </div>
     </div>
-}
 </div>
-    </div>
-</div>
+
