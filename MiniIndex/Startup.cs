@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MiniIndex.Core;
 using MiniIndex.Persistence;
 using MiniIndex.Services;
@@ -27,6 +28,14 @@ namespace MiniIndex
 
         public void ConfigureContainer(ServiceRegistry services)
         {
+            services.AddLogging(config =>
+            {
+                config.ClearProviders();
+
+                config.AddConfiguration(Configuration.GetSection("Logging"));
+                config.AddApplicationInsights();
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
