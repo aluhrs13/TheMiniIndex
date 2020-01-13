@@ -13,7 +13,7 @@ namespace MiniIndex
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 
-            this.AddRange(items);
+            AddRange(items);
         }
 
         public int PageIndex { get; private set; }
@@ -39,8 +39,20 @@ namespace MiniIndex
         {
             int count = await source.CountAsync();
 
-            List<T> items = await source.Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize).ToListAsync();
+            List<T> items = await source
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PaginatedList<T>(items, count, pageIndex, pageSize);
+        }
+
+        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int count, int pageIndex, int pageSize)
+        {
+            List<T> items = await source
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }

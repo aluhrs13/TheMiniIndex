@@ -13,14 +13,17 @@ namespace MiniIndex.Pages.Minis
 {
     public class DetailsModel : PageModel
     {
-        public DetailsModel(UserManager<IdentityUser> userManager, MiniIndexContext context)
+        public DetailsModel(UserManager<IdentityUser> userManager, MiniIndexContext context, TelemetryClient telemetry)
         {
             _userManager = userManager;
             _context = context;
+            _telemetry = telemetry;
         }
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly MiniIndexContext _context;
+        private readonly TelemetryClient _telemetry;
+
         public Mini Mini { get; set; }
         public List<Tag> UnusedTags { get; set; }
         public List<Tag> MiscTags { get; set; }
@@ -30,7 +33,6 @@ namespace MiniIndex.Pages.Minis
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            TelemetryClient telemetry = new TelemetryClient();
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
             if (id == null)
@@ -50,7 +52,7 @@ namespace MiniIndex.Pages.Minis
                 return NotFound();
             }
 
-            telemetry.TrackEvent("ViewedMini", new Dictionary<string, string> { { "MiniId", Mini.ID.ToString() } });
+            _telemetry.TrackEvent("ViewedMini", new Dictionary<string, string> { { "MiniId", Mini.ID.ToString() } });
 
             if (User.Identity.IsAuthenticated)
             {

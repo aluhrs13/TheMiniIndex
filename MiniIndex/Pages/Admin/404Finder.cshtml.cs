@@ -19,12 +19,11 @@ namespace MiniIndex.Pages.Admin
     [Authorize]
     public class _404FinderModel : PageModel
     {
-        public _404FinderModel(MiniIndexContext context, IConfiguration configuration)
+        public _404FinderModel(MiniIndexContext context, IConfiguration configuration, TelemetryClient telemetry)
         {
             _context = context;
             _configuration = configuration;
-
-            _telemetry = new TelemetryClient();
+            _telemetry = telemetry;
         }
 
         private readonly MiniIndexContext _context;
