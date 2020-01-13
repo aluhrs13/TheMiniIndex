@@ -28,7 +28,7 @@ namespace MiniIndex.Pages.Minis
         public List<Tag> UnusedTags { get; set; }
         public List<Tag> MiscTags { get; set; }
         public List<Tag> WordMatchingTags { get; set; }
-        public List<Tag> SimilarTags { get; set; }
+        public List<Tag> RecommendedTags { get; set; }
         public bool IsStarred { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -73,29 +73,11 @@ namespace MiniIndex.Pages.Minis
 
             if (User.IsInRole("Moderator"))
             {
-                string[] NameSplit = Mini.Name.ToLower().Split(' ');
+                string[] nameSplit = Mini.Name.ToUpperInvariant().Split(' ');
 
-                WordMatchingTags = _context.Tag
-                    .Where(t => NameSplit.Contains(t.TagName.ToLower()))
+                RecommendedTags = UnusedTags
+                    .Where(t => nameSplit.Contains(t.TagName.ToUpperInvariant()))
                     .ToList();
-
-                //TODO - I'm sure someone who knows LINQ could clean this up a lot.
-                if (WordMatchingTags.Count > 0)
-                {
-                    List<Mini> SimilarMinis = _context.Mini
-                                .Include(m => m.MiniTags)
-                                    .ThenInclude(mt => mt.Tag)
-                                    .AsEnumerable()
-                                .Where(m => m.MiniTags.Select(mt => mt.Tag).Intersect(WordMatchingTags).Any())
-                                .ToList();
-
-                    List<MiniTag> SimilarMiniTags = SimilarMinis.SelectMany(m => m.MiniTags).ToList();
-                    SimilarTags = SimilarMiniTags.GroupBy(mt => mt.Tag).Select(grp => grp.First().Tag).Except(Mini.MiniTags.Select(mt => mt.Tag)).ToList();
-                }
-                else
-                {
-                    SimilarTags = new List<Tag>();
-                }
             }
 
             return Page();

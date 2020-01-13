@@ -1,4 +1,5 @@
 ﻿@page
+@using MiniIndex.Models;
 @model MiniIndex.Pages.Minis.DetailsModel
 @inject SignInManager<IdentityUser> SignInManager
 @{
@@ -41,8 +42,6 @@
     <p id="miniid" style="display:none;">@Model.Mini.ID</p>
     <h2>@Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a></h2>
     <hr />
-
-
 
     <div class="row">
         <div class="col-md-4" align="center">
@@ -127,7 +126,6 @@
                 }
             </div>
             <div id="AddedTags">
-
             </div>
         </div>
     </div>
@@ -147,18 +145,17 @@
 
                 <div id="UnusedTags">
 
-                    @if (User.IsInRole("Moderator") && Model.SimilarTags.Count > 0)
+                    @if (User.IsInRole("Moderator") && Model.RecommendedTags.Any())
                     {
                         <div class="add-tag-div">
                             <h3 class="add-tag-header">Recommended Tags</h3>
-                            @foreach (var Tag in Model.SimilarTags)
+                            @foreach (var Tag in Model.RecommendedTags)
                             {
                                 <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
                             }
                         </div>
-                        <hr/>
+                        <hr />
                     }
-
 
                     <div class="add-tag-div">
                         <h3 class="add-tag-header">Genre</h3>
@@ -179,12 +176,12 @@
                     @{var PreviousCategory = "";}
                     <div class="add-tag-div">
 
-
-                        @foreach (var Tag in Model.UnusedTags.Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                                                                   && m.Category.ToString() != "Genre"
-                                                                   && m.Category.ToString() != "OtherDescription"
-                                                                   && m.Category.ToString() != "CreatureName"
-                                                                    && m.Category.ToString() != "Use"))
+                        @foreach (var Tag in Model.UnusedTags
+                            .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                                && m.Category != TagCategory.Genre
+                                && m.Category != TagCategory.OtherDescription
+                                && m.Category != TagCategory.CreatureName
+                                && m.Category != TagCategory.Use))
                         {
                             @if (Tag.Category.ToString() != PreviousCategory)
                             {
@@ -219,10 +216,7 @@
                     }
                 </div>
                 <a href="#" id="AddNewTag" class="btn btn-success" style="margin-top:5px;">+ Add as new tag</a>
-
             </div>
         </div>
     }
-
-
 </div>
