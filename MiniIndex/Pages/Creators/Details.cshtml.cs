@@ -18,14 +18,17 @@ namespace MiniIndex.Pages.Creators
 {
     public class DetailsModel : PageModel
     {
-        public DetailsModel(MiniIndexContext context, IConfiguration configuration)
+        public DetailsModel(MiniIndexContext context, IConfiguration configuration, TelemetryClient telemetry)
         {
             _context = context;
             _configuration = configuration;
+            _telemetry = telemetry;
         }
 
         private readonly MiniIndexContext _context;
         private readonly IConfiguration _configuration;
+        private readonly TelemetryClient _telemetry;
+
         public Creator Creator { get; set; }
         public List<Mini> ThingiverseMiniList { get; set; }
         public List<Mini> AllCreatorsMinis { get; set; }
@@ -37,8 +40,6 @@ namespace MiniIndex.Pages.Creators
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            TelemetryClient telemetry = new TelemetryClient();
-
             if (id == null)
             {
                 return NotFound();
@@ -54,7 +55,7 @@ namespace MiniIndex.Pages.Creators
                 return NotFound();
             }
 
-            telemetry.TrackEvent("ViewedCreator", new Dictionary<string, string> { { "CreatorId", Creator.ID.ToString() } });
+            _telemetry.TrackEvent("ViewedCreator", new Dictionary<string, string> { { "CreatorId", Creator.ID.ToString() } });
 
             AllCreatorsMinis = new List<Mini>();
             AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).Where(m => m.Status == Status.Approved).ToList();
