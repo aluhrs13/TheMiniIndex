@@ -47,19 +47,14 @@
         <div class="col-md-4" align="center">
             <div class="row">
                 <div class="col-md-8">
-                    @if (Model.Mini.Link.Contains("thingiverse"))
+                    @if (Model.Mini.Sources.Any())
                     {
-                        <a href="@Model.Mini.Link" class="btn btn-block btn-primary" style="margin-top:10px;">View On Thingiverse</a>
+                        @foreach (var miniSource in Model.Mini.Sources)
+                        {
+                            <a href="@miniSource.Link" class="btn btn-block btn-primary" style="margin-top:10px;">View On @miniSource.Site.SiteName</a>
+                        }
                     }
-                    else if (Model.Mini.Link.Contains("shapeways"))
-                    {
-                        <a href="@Model.Mini.Link" class="btn btn-block" style="background-color:#FF4B5A; color:white; margin-top:10px;">View On Shapeways</a>
-                    }
-                    else if (Model.Mini.Link.Contains("gumroad"))
-                    {
-                        <a href="@Model.Mini.Link" class="btn btn-block" style="background-color:#198C8C; color:white; margin-top:10px;">View On Gumroad</a>
-                    }
-                    else
+                    else if (!String.IsNullOrEmpty(Model.Mini.Link))                    
                     {
                         <a href="@Html.DisplayFor(modelItem => Model.Mini.Link)" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
                     }

@@ -45,6 +45,8 @@ namespace MiniIndex.Pages.Minis
                     .ThenInclude(mt => mt.Tag)
                 .Include(m => m.Creator)
                 .Include(m => m.User)
+                .Include(m => m.Sources)
+                    .ThenInclude(s => s.Site)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
             if (Mini == null)
