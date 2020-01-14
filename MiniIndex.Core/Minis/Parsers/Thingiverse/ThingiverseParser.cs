@@ -46,7 +46,7 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
                 Name = thing.name,
                 Status = Status.Pending,
                 Cost = 0,
-                Link = thing.url,
+                Link = thing.public_url,
                 Thumbnail = thing.default_image.sizes.FirstOrDefault(i => i.type == "preview" && i.size == "featured").url,
                 Creator = creator
             };
