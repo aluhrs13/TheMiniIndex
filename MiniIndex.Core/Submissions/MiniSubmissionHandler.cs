@@ -55,9 +55,9 @@ namespace MiniIndex.Core.Submissions
 
         private async Task CorrectMiniCreator(Mini mini, CancellationToken cancellationToken)
         {
-            var currentSource = mini.Sources.Single();
+            MiniSourceSite currentSource = mini.Sources.Single();
 
-            var matchingSource = await _context.Set<SourceSite>()
+            SourceSite matchingSource = await _context.Set<SourceSite>()
                 .Include(s => s.Creator).ThenInclude(c => c.Sites)
                 .FirstOrDefaultAsync(s => s.CreatorUserName == currentSource.Site.CreatorUserName, cancellationToken);
 

@@ -22,17 +22,17 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
                 return false;
             }
 
-            bool gumroadFormat1 = !String.IsNullOrWhiteSpace(url.LocalPath)
-                && url.LocalPath.StartsWith("/l/");
-
-            bool gumroadFormat2 = !String.IsNullOrWhiteSpace(url.Fragment)
-                && url.Fragment.StartsWith("#");
-
-            return gumroadFormat1 || gumroadFormat2;
+            return IsLFormatUrl(url) || IsHashFormatUrl(url);
         }
 
         public async Task<Mini> ParseFromUrl(Uri url)
         {
+            if (IsHashFormatUrl(url))
+            {
+                string id = url.ToString().Split('#').Last();
+                url = new Uri($"https://www.gumroad.com/l/{id}");
+            }
+
             HtmlWeb web = new HtmlWeb();
             HtmlDocument htmlDoc = await web.LoadFromWebAsync(url, null, null);
 
@@ -99,6 +99,18 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
                     }
                     return node.GetAttributeValue("content", null);
             }
+        }
+
+        private static bool IsHashFormatUrl(Uri url)
+        {
+            return !String.IsNullOrWhiteSpace(url.Fragment)
+                            && url.Fragment.StartsWith("#");
+        }
+
+        private static bool IsLFormatUrl(Uri url)
+        {
+            return !String.IsNullOrWhiteSpace(url.LocalPath)
+                && url.LocalPath.StartsWith("/l/");
         }
     }
 }

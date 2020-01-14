@@ -20,7 +20,7 @@ namespace MiniIndex.Pages.Creators
 
         public async Task OnGetAsync()
         {
-            var countQuery = await _context.Set<Mini>()
+            List<Creator> countQuery = await _context.Set<Mini>()
                 .Include(m => m.Creator).ThenInclude(c => c.Sites)
                 .Select(m => m.Creator)
                 .ToListAsync();
