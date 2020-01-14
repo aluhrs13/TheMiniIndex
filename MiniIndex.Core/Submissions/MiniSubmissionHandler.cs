@@ -45,7 +45,7 @@ namespace MiniIndex.Core.Submissions
             mini = await parser.ParseFromUrl(uri);
             mini.User = request.User;
 
-            mini.Creator = await GetCreator(mini.Creator, cancellationToken);
+            await CorrectMiniCreator(mini, cancellationToken);
 
             _context.Add(mini);
             await _context.SaveChangesAsync();
@@ -53,25 +53,37 @@ namespace MiniIndex.Core.Submissions
             return mini;
         }
 
-        private async Task<Creator> GetCreator(Creator creator, CancellationToken cancellationToken)
+        private async Task CorrectMiniCreator(Mini mini, CancellationToken cancellationToken)
         {
-            Creator foundCreator = await _context.Set<Creator>()
+            var currentSource = mini.Sources.Single();
+
+            var matchingSource = await _context.Set<SourceSite>()
+                .Include(s => s.Creator).ThenInclude(c => c.Sites)
+                .FirstOrDefaultAsync(s => s.CreatorUserName == currentSource.Site.CreatorUserName, cancellationToken);
+
+            Creator foundCreator = matchingSource?.Creator;
+
+            if (foundCreator != null)
+            {
+                mini.Creator = foundCreator;
+                currentSource.Site = matchingSource;
+
+                return;
+            }
+
+            foundCreator = await _context.Set<Creator>()
                 .Include(c => c.Sites)
-                .FirstOrDefaultAsync(c => c.Name == creator.Name, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Name == mini.Creator.Name, cancellationToken);
 
-            if (foundCreator is null)
+            if (foundCreator != null)
             {
-                return creator;
+                mini.Creator = foundCreator;
+
+                if (!foundCreator.Sites.Any(s => s.SiteName == currentSource.Site.SiteName))
+                {
+                    foundCreator.Sites.Add(currentSource.Site);
+                }
             }
-
-            SourceSite currentSource = creator.Sites.Single();
-
-            if (!foundCreator.Sites.Any(s => s.SiteName == currentSource.SiteName))
-            {
-                foundCreator.Sites.Add(currentSource);
-            }
-
-            return foundCreator;
         }
     }
 }
