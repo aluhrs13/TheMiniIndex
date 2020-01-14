@@ -57,9 +57,10 @@ namespace MiniIndex.Core.Submissions
         {
             MiniSourceSite currentSource = mini.Sources.Single();
 
+            //Find a SourceSite that has both the same UserName and SiteName as the Mini's current
             SourceSite matchingSource = await _context.Set<SourceSite>()
                 .Include(s => s.Creator).ThenInclude(c => c.Sites)
-                .FirstOrDefaultAsync(s => s.CreatorUserName == currentSource.Site.CreatorUserName, cancellationToken);
+                .FirstOrDefaultAsync((s => s.CreatorUserName == currentSource.Site.CreatorUserName && s.SiteName == currentSource.Site.SiteName), cancellationToken);
 
             Creator foundCreator = matchingSource?.Creator;
 
@@ -71,6 +72,7 @@ namespace MiniIndex.Core.Submissions
                 return;
             }
 
+            //If we didn't find a "perfect" match, try matching just off of the creator's names
             foundCreator = await _context.Set<Creator>()
                 .Include(c => c.Sites)
                 .FirstOrDefaultAsync(c => c.Name == mini.Creator.Name, cancellationToken);
@@ -84,6 +86,7 @@ namespace MiniIndex.Core.Submissions
                     foundCreator.Sites.Add(currentSource.Site);
                 }
             }
+
         }
     }
 }
