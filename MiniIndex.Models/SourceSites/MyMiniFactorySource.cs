@@ -7,7 +7,7 @@ namespace MiniIndex.Models.SourceSites
         public MyMiniFactorySource(Creator creator, string myMiniFactoryUsername)
             : base(creator)
         {
-            MyMiniFactoryUsername = myMiniFactoryUsername;
+            CreatorUserName = myMiniFactoryUsername;
         }
 
         protected MyMiniFactorySource()
@@ -15,7 +15,6 @@ namespace MiniIndex.Models.SourceSites
         }
 
         public override Uri BaseUri => new Uri("https://www.myminifactory.com/users/");
-        public override Uri CreatorPageUri => new Uri(BaseUri, MyMiniFactoryUsername);
-        public string MyMiniFactoryUsername { get; protected set; }
+        public override Uri CreatorPageUri => new Uri(BaseUri, CreatorUserName);
     }
 }

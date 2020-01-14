@@ -16,6 +16,7 @@ namespace MiniIndex.Persistence.Configuration
                 .HasValue<ShapewaysSource>("Shapeways")
                 .HasValue<GumroadSource>("Gumroad")
                 .HasValue<PatreonSource>("Patreon")
+                .HasValue<MyMiniFactorySource>("MyMiniFactory")
                 .HasValue<WebsiteSource>("Website");
 
             builder.Ignore(x => x.BaseUri);

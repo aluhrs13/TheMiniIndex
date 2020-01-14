@@ -38,8 +38,6 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
 
             string creatorUrl = creatorLink.GetAttributeValue("href", null);
             string creatorName = Uri.UnescapeDataString(creatorUrl.Split('/').Last());
-            int cost = Int32.Parse(htmlDoc.DocumentNode.SelectNodes("//span[@class=\"price-title\"]").First()
-                .InnerText.Remove(0, 1).Split(".").First());
 
             Creator creator = new Creator
             {
@@ -56,7 +54,15 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
                     .Attributes.Where(a => a.Name == "content").First().Value,
                 Link = url.ToString()
             };
+
+            int cost = 0;
+            HtmlNodeCollection priceNode = htmlDoc.DocumentNode.SelectNodes("//span[@class=\"price-title\"]");
+            if (priceNode != null)
+            {
+                cost = Int32.Parse(priceNode.First().InnerText.Remove(0, 1).Split(".").First());
+            }
             mini.Cost = cost;
+
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
 
             return mini;
