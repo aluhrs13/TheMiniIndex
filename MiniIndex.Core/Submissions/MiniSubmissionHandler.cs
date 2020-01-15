@@ -45,9 +45,10 @@ namespace MiniIndex.Core.Submissions
             mini = await parser.ParseFromUrl(uri);
             mini.User = request.User;
 
+            _context.Add(mini);
+
             await CorrectMiniCreator(mini, cancellationToken);
 
-            _context.Add(mini);
             await _context.SaveChangesAsync();
 
             return mini;
@@ -86,7 +87,6 @@ namespace MiniIndex.Core.Submissions
                     foundCreator.Sites.Add(currentSource.Site);
                 }
             }
-
         }
     }
 }
