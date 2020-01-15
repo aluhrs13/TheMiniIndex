@@ -34,7 +34,7 @@ steps:
 #    configuration: '$(buildConfiguration)'
 - task: CmdLine@2
   inputs:
-    script: 'dotnet tool install -g dotnet-ef'
+    script: 'dotnet tool install -g dotnet-ef --version 3.1.0'
 
 - task: CmdLine@2
   inputs:
