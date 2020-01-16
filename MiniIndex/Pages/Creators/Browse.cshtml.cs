@@ -27,6 +27,7 @@ namespace MiniIndex.Pages.Creators
 
             CreatorCounts = countQuery
                 .GroupBy(x => x)
+                .OrderByDescending(x => x.Count())
                 .ToDictionary(k => k.Key, v => v.Count());
         }
     }
