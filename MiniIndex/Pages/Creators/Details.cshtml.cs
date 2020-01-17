@@ -1,29 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.ApplicationInsights;
+﻿using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MiniIndex.Models;
+using MiniIndex.Models.SourceSites;
+using MiniIndex.Persistence;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Creators
 {
     public class DetailsModel : PageModel
     {
-        public DetailsModel(MiniIndexContext context, IConfiguration configuration)
+        public DetailsModel(MiniIndexContext context, IConfiguration configuration, TelemetryClient telemetry)
         {
             _context = context;
             _configuration = configuration;
+            _telemetry = telemetry;
         }
 
         private readonly MiniIndexContext _context;
         private readonly IConfiguration _configuration;
+        private readonly TelemetryClient _telemetry;
+
         public Creator Creator { get; set; }
         public List<Mini> ThingiverseMiniList { get; set; }
         public List<Mini> AllCreatorsMinis { get; set; }
@@ -35,28 +40,31 @@ namespace MiniIndex.Pages.Creators
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            TelemetryClient telemetry = new TelemetryClient();
-
             if (id == null)
             {
                 return NotFound();
             }
 
-            Creator = await _context.Creator.FirstOrDefaultAsync(m => m.ID == id);
+            Creator = await _context
+                .Set<Creator>()
+                .Include(x => x.Sites)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (Creator == null)
             {
                 return NotFound();
             }
 
-            telemetry.TrackEvent("ViewedCreator", new Dictionary<string, string> { { "CreatorId", Creator.ID.ToString() } });
+            _telemetry.TrackEvent("ViewedCreator", new Dictionary<string, string> { { "CreatorId", Creator.ID.ToString() } });
 
             AllCreatorsMinis = new List<Mini>();
-            AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).Where(m=>m.Status == Status.Approved).ToList();
+            AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).Where(m => m.Status == Status.Approved).ToList();
 
-            if (!String.IsNullOrEmpty(Creator.ThingiverseURL))
+            //TODO: minor hack; review this logic.
+            string thingiverseUrlString = Creator.Sites.FirstOrDefault(s => s is ThingiverseSource)?.CreatorPageUri?.ToString();
+
+            if (!String.IsNullOrEmpty(thingiverseUrlString))
             {
-
                 ThingiverseMiniList = new List<Mini>();
                 using (HttpClient client = new HttpClient())
                 {
@@ -69,7 +77,7 @@ namespace MiniIndex.Pages.Creators
                         ParsedPageNumber = Int32.Parse(PageNumber);
                     }
 
-                    string ThingiverseUserName = Creator.ThingiverseURL.Split('/').Last();
+                    string ThingiverseUserName = thingiverseUrlString.Split('/').Last();
                     HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/users/" + ThingiverseUserName + "/things?access_token=" + _configuration["ThingiverseToken"] + "&page=" + ParsedPageNumber);
                     HttpContent responseContent = response.Content;
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)

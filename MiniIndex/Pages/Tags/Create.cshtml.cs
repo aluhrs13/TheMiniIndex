@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MiniIndex.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using MiniIndex.Persistence;
 
 namespace MiniIndex.Pages.Tags
 {

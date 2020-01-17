@@ -1,38 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
+using MiniIndex.Persistence;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex
 {
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly MiniIndex.Models.MiniIndexContext _context;
-
-        public IndexModel(UserManager<IdentityUser> userManager, MiniIndex.Models.MiniIndexContext context)
+        public IndexModel(UserManager<IdentityUser> userManager, MiniIndexContext context)
         {
             _userManager = userManager;
             _context = context;
         }
 
-        public IList<Starred> Starred { get;set; }
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly MiniIndexContext _context;
+        public IList<Starred> Starred { get; set; }
 
         public async Task OnGetAsync()
         {
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
-            Starred = await _context.Starred
+            Starred = await _context.Set<Starred>()
                 .Include(s => s.Mini)
                 .Include(s => s.User)
-                .Where(s=>s.User== CurrentUser)
+                .Where(s => s.User == CurrentUser)
                 .ToListAsync();
         }
     }

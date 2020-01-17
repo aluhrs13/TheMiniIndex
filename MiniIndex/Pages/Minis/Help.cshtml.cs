@@ -1,29 +1,25 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using MiniIndex.Models;
+using MiniIndex.Persistence;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MiniIndex.Models;
 
 namespace MiniIndex.Pages.Minis
 {
     public class HelpModel : PageModel
     {
-        public HelpModel (
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager,
-        MiniIndexContext context)
+        public HelpModel(
+            UserManager<IdentityUser> userManager,
+            MiniIndexContext context)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
         }
 
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly MiniIndexContext _context;
 
         public IList<Mini> Mini { get; set; }
@@ -40,7 +36,6 @@ namespace MiniIndex.Pages.Minis
                         .OrderBy(m => m.MiniTags.Count())
                         .AsNoTracking()
                         .ToListAsync();
-
         }
     }
 }

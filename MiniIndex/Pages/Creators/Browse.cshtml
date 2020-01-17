@@ -10,7 +10,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Creator[0].Name)
+                Name
             </th>
             <th>
                 Number of Minis
@@ -22,39 +22,22 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Creator)
+        @foreach (var creatorCount in Model.CreatorCounts)
         {
-        <tr>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a>
-            </td>
-            <td>
-                @Model.NumberMinis[item.Name]
-            </td>
-            <td>
-                @if (!string.IsNullOrEmpty(item.ThingiverseURL))
-                {
-                    <a href="@item.ThingiverseURL" class="btn btn-primary">Thingiverse</a>
-                }
-
-                @if (!string.IsNullOrEmpty(item.PatreonURL))
-                {
-                    <a href="@item.PatreonURL" class="btn btn-primary">Patreon</a>
-                }
-
-                @if (!string.IsNullOrEmpty(item.WebsiteURL))
-                {
-                    if (item.WebsiteURL.Contains("gumroad"))
+            <tr>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@creatorCount.Key.ID">@Html.DisplayFor(modelItem => creatorCount.Key.Name)</a>
+                </td>
+                <td>
+                    @creatorCount.Value
+                </td>
+                <td>
+                    @foreach (var site in creatorCount.Key.Sites)
                     {
-                        <a href="@item.WebsiteURL" class="btn btn-primary">Gumroad</a>
+                        <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
                     }
-                    else
-                    {
-                        <a href="@item.WebsiteURL" class="btn btn-primary">Website</a>
-                    }
-                }
-            </td>
-        </tr>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

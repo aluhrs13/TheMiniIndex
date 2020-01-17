@@ -1,26 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
+using MiniIndex.Persistence;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Tags
 {
     [Authorize]
     public class DeleteModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
-        public bool DisableSubmit = false;
-        public int MiniCount = 0;
-
-        public DeleteModel(MiniIndex.Models.MiniIndexContext context)
+        public DeleteModel(MiniIndexContext context)
         {
             _context = context;
+
+            DisableSubmit = false;
+            MiniCount = 0;
         }
+
+        private readonly MiniIndexContext _context;
+        public bool DisableSubmit { get; set; }
+        public int MiniCount { get; set; }
 
         [BindProperty]
         public Tag Tag { get; set; }

@@ -1,51 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MiniIndex.Models;
+using MiniIndex.Persistence;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex
 {
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly MiniIndex.Models.MiniIndexContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
-
-        [BindProperty(SupportsGet = true)]
-        public string mini { get; set; }
-
-        public CreateModel(UserManager<IdentityUser> userManager, MiniIndex.Models.MiniIndexContext context)
+        public CreateModel(UserManager<IdentityUser> userManager, MiniIndexContext context)
         {
             _userManager = userManager;
             _context = context;
         }
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            if (!ModelState.IsValid || String.IsNullOrEmpty(mini))
-            {
-                return Page();
-            }
+        private readonly MiniIndexContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-            Starred newStarred = new Starred();
-            newStarred.Mini = _context.Mini.Where(m => m.ID == Int32.Parse(mini)).First();
-            newStarred.User = await _userManager.GetUserAsync(User);
-
-            _context.Starred.Add(newStarred);
-            await _context.SaveChangesAsync();
-
-            return Page();
-        }
+        [BindProperty(SupportsGet = true)]
+        public int? mini { get; set; }
 
         [BindProperty]
         public Starred Starred { get; set; }
 
+        public async Task<IActionResult> OnGetAsync()
+        {
+            if (!ModelState.IsValid || !mini.HasValue)
+            {
+                return Page();
+            }
+
+            Starred newStarred = new Starred
+            {
+                Mini = _context.Mini.Where(m => m.ID == mini).First(),
+                User = await _userManager.GetUserAsync(User)
+            };
+
+            _context.Set<Starred>().Add(newStarred);
+            await _context.SaveChangesAsync();
+
+            return Page();
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {

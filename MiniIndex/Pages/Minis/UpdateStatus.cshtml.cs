@@ -1,48 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
+using MiniIndex.Persistence;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Minis
 {
     public class UpdateStatusModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly MiniIndexContext _context;
-        [BindProperty(SupportsGet = true)]
-        public int MiniID { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public string NewStatus { get; set; }
-        [BindProperty]
-        public Mini Mini { get; set; }
-
-        public UpdateStatusModel(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager,
-        MiniIndexContext context)
+        public UpdateStatusModel(MiniIndexContext context)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
         }
+
+        private readonly MiniIndexContext _context;
+
+        [BindProperty(SupportsGet = true)]
+        public int? MiniID { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string NewStatus { get; set; }
+
+        [BindProperty]
+        public Mini Mini { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
             if (User.IsInRole("Moderator"))
             {
-                if (MiniID == null || NewStatus==null)
+                if (MiniID == null || NewStatus == null)
                 {
                     return NotFound();
                 }
 
-                Mini = await _context.Mini
-                    .FirstOrDefaultAsync(m => m.ID == MiniID);
+                Mini = await _context.Mini.FirstOrDefaultAsync(m => m.ID == MiniID);
 
                 if (Mini == null)
                 {
@@ -52,7 +45,7 @@ namespace MiniIndex.Pages.Minis
                 if (NewStatus == "Approved")
                 {
                     Mini.Status = Status.Approved;
-                    _context.Attach(Mini).State = EntityState.Modified;
+                    _context.Attach(Mini).State = EntityState.Modified; //TODO: is this needed? Change tracking should catch this...
                 }
 
                 if (NewStatus == "Rejected")
@@ -60,7 +53,6 @@ namespace MiniIndex.Pages.Minis
                     Mini.Status = Status.Rejected;
                     _context.Attach(Mini).State = EntityState.Modified;
                 }
-
 
                 try
                 {
@@ -84,9 +76,8 @@ namespace MiniIndex.Pages.Minis
             {
                 return NotFound();
             }
-
-
         }
+
         private bool MiniExists(int id)
         {
             return _context.Mini.Any(e => e.ID == id);

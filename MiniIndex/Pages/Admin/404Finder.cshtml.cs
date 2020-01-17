@@ -1,28 +1,29 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MiniIndex.Models;
+using MiniIndex.Models.SourceSites;
+using MiniIndex.Persistence;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.Admin
 {
     [Authorize]
     public class _404FinderModel : PageModel
     {
-        public _404FinderModel(MiniIndexContext context, IConfiguration configuration)
+        public _404FinderModel(MiniIndexContext context, IConfiguration configuration, TelemetryClient telemetry)
         {
             _context = context;
             _configuration = configuration;
-
-            _telemetry = new TelemetryClient();
+            _telemetry = telemetry;
         }
 
         private readonly MiniIndexContext _context;
@@ -51,6 +52,8 @@ namespace MiniIndex.Pages.Admin
                 {
                     foreach (Mini item in Mini)
                     {
+                        SourceSite thingiverseSource = item.Creator.Sites.FirstOrDefault(s => s is ThingiverseSource);
+
                         HttpResponseMessage response = await client.GetAsync(item.Thumbnail);
                         HttpContent responseContent = response.Content;
                         if (response.StatusCode != System.Net.HttpStatusCode.OK)
@@ -71,10 +74,13 @@ namespace MiniIndex.Pages.Admin
                                     string result = await reader.ReadToEndAsync();
                                     JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
 
-                                    if (item.Creator.ThingiverseURL != currentMini["creator"]["public_url"].ToString())
+                                    if (thingiverseSource.CreatorPageUri.ToString() != currentMini["creator"]["public_url"].ToString())
                                     {
-                                        _telemetry.TrackEvent("Changing URL for " + item.Creator.Name + " from " + item.Creator.ThingiverseURL + " to " + currentMini["creator"]["public_url"].ToString());
-                                        item.Creator.ThingiverseURL = currentMini["creator"]["public_url"].ToString();
+                                        _telemetry.TrackEvent("Changing URL for " + item.Creator.Name + " from " + thingiverseSource.CreatorPageUri.ToString() + " to " + currentMini["creator"]["public_url"].ToString());
+
+                                        item.Creator.Sites.Remove(thingiverseSource);
+                                        item.Creator.Sites.Add(new ThingiverseSource(item.Creator, currentMini["creator"]["public_url"].ToString()));
+
                                         _context.Attach(item.Creator).State = EntityState.Modified;
                                     }
                                 }

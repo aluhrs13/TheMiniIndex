@@ -1,11 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
+using MiniIndex.Persistence;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Pages.MiniTags
 {
