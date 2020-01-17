@@ -33,6 +33,14 @@ steps:
 #    platform: '$(buildPlatform)'
 #    configuration: '$(buildConfiguration)'
 
+- task: CmdLine@2
+  inputs:
+    script: 'dotnet tool install -g dotnet-ef --version 3.1.0'
+
+- task: CmdLine@2
+  inputs:
+    script: 'dotnet ef migrations script -i -o $(build.artifactStagingDirectory)\migrate.sql --project MiniIndex\MiniIndex.csproj --startup-project MiniIndex\MiniIndex.csproj'
+
 - task: PublishBuildArtifacts@1
   inputs:
      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
