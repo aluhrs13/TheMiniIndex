@@ -64,7 +64,7 @@ namespace MiniIndex.Pages.Minis
                     .ToArray();
             }
 
-            if (!SearchString.Any())
+            if (SearchString.Any())
             {
                 foreach (string tag in SearchString)
                 {
