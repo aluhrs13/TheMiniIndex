@@ -47,9 +47,18 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
                 Status = Status.Pending,
                 Cost = 0,
                 Link = thing.public_url,
-                Thumbnail = thing.default_image.sizes.FirstOrDefault(i => i.type == "preview" && i.size == "featured").url,
                 Creator = creator
             };
+
+            if (thing.default_image != null)
+            {
+                mini.Thumbnail = thing.default_image.sizes.FirstOrDefault(i => i.type == "preview" && i.size == "featured").url;
+            }
+            else
+            {
+                mini.Thumbnail = thing.thumbnail;
+            }
+
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
 
             return mini;
