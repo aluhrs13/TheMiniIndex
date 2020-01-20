@@ -43,3 +43,7 @@ body {
 .Rejected {
     background-color: #dc3545;
 }
+
+.card-img-top {
+    object-fit:contain;
+}
