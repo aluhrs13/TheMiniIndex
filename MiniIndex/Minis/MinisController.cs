@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace MiniIndex.Controllers
+namespace MiniIndex.Minis
 {
-    [Route("minis")]
+    [Route("dev/minis")]
     public class MinisController : Controller
     {
-        [HttpGet("browse")]
+        [HttpGet("")]
         public async Task<IActionResult> BrowseMinis()
         {
-            return View("BrowseMinis");
+            return View("BrowseMinis", new BrowseModel());
         }
     }
 }

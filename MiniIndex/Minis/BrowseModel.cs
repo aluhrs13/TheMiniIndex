@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MiniIndex.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MiniIndex.Minis
 {
     public class BrowseModel
     {
+        public MiniSearchModel SearchModel { get; set; }
+        public IEnumerable<Mini> Minis { get; set; }
     }
 }

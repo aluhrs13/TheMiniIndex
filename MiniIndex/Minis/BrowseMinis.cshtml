@@ -9,13 +9,13 @@
         <div class="col-5">
             <div class="sidebar-item">
                 <div >
-                    @await Html.PartialAsync("MiniSearchView", Model)
+                    @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
                 </div>
             </div>
         </div>
         <div class="col-7">
             <div class="content-section">
-                @await Html.PartialAsync("MiniListView", Model)
+                @await Html.PartialAsync("MiniListView", Model.Minis)
             </div>
         </div>
     </div>
