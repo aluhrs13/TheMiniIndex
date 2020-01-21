@@ -38,9 +38,10 @@ namespace MiniIndex.Pages.Minis
 
         [BindProperty]
         public string URL { get; set; }
-
-        public async Task<IActionResult> OnGetAsync()
+        
+        public async Task<IActionResult> OnGetAsync(string? PlaceholderURL)
         {
+            URL = PlaceholderURL;
             return Page();
         }
 
