@@ -52,8 +52,7 @@ namespace MiniIndex
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddRazorOptions(ConfigureRazor);
 
-            services.AddDbContext<MiniIndexContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("MiniIndexContext")));
+            services.AddDbContext<MiniIndexContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MiniIndexContext")));
 
             string facebookAppId = Configuration["Authentication:Facebook:AppId"];
             string facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
