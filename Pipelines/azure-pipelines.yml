@@ -39,7 +39,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'dotnet ef migrations script -i -o $(build.artifactStagingDirectory)\migrate.sql --project MiniIndex\MiniIndex.csproj --startup-project MiniIndex\MiniIndex.csproj'
+    script: 'dotnet ef migrations script 20200117122150_InsertMissingGumroadSources -o $(build.artifactStagingDirectory)\migrate.sql --project MiniIndex\MiniIndex.csproj --startup-project MiniIndex\MiniIndex.csproj'
 
 - task: PublishBuildArtifacts@1
   inputs:
