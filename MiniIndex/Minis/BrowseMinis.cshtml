@@ -7,14 +7,16 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-3">
-            <div class="sidebar-item">
-                <div >
+            <div class="sidebar-item container-fluid">
+                    <h3>Search the Index</h3>
+
                     @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
-                </div>
             </div>
         </div>
         <div class="col-9">
             <div class="content-section container-fluid">
+                <h3>Results</h3>
+
                 @await Html.PartialAsync("MiniListView", Model.Minis)
             </div>
         </div>

@@ -4,6 +4,7 @@ using MiniIndex.Core.Minis.Search;
 using MiniIndex.Core.Pagination;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +27,11 @@ namespace MiniIndex.Minis.Handlers
                 .Include(m => m.Creator)
                 .Where(m => m.Status == Status.Approved)
                 .OrderByDescending(m => m.ID);
+
+            if (!String.IsNullOrEmpty(request.SearchString))
+            {
+                search = search.Where(m => m.Name.Contains(request.SearchString));
+            }
 
             return await PaginatedList.CreateAsync(search, request.PageInfo);
         }

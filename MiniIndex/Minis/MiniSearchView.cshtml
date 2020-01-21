@@ -1,5 +1,9 @@
-﻿@model MiniIndex.Minis.MiniSearchModel
+﻿@model MiniIndex.Minis.SearchParametersModel
 
-<div>
-    
+<div class="container" style="padding:25px;">
+
+    @using (Html.BeginForm(FormMethod.Get))
+    {
+        @Html.EditorFor(x => x.SearchString)
+    }
 </div>

@@ -24,22 +24,21 @@ namespace MiniIndex.Minis
 
         [HttpGet("")]
         public async Task<IActionResult> BrowseMinis(
-            [FromQuery]MiniSearchModel search = null,
+            [FromQuery]SearchParametersModel search = null,
             [FromQuery]int pageSize = 20,
             [FromQuery]int pageIndex = 1)
         {
             PageInfo pagingInfo = new PageInfo(pageSize, pageIndex);
 
             MiniSearchRequest searchRequest = new MiniSearchRequest { PageInfo = pagingInfo };
-            _mapper.Map(search).Over(search);
+            _mapper.Map(search).Over(searchRequest);
 
             Task<PaginatedList<Mini>> searchTask = _mediator.Send(searchRequest);
             Task<IEnumerable<Tag>> getTagsTask = _mediator.Send(new GetTagsRequest());
 
             await Task.WhenAll(searchTask, getTagsTask);
 
-            MiniSearchModel searchModel = search ?? new MiniSearchModel();
-            searchModel.Tags = getTagsTask.Result;
+            SearchParametersModel searchModel = search ?? new SearchParametersModel();
 
             BrowseModel model = new BrowseModel(searchModel, searchTask.Result);
 
