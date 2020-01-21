@@ -30,7 +30,24 @@ namespace MiniIndex.Minis.Handlers
 
             if (!String.IsNullOrEmpty(request.SearchString))
             {
-                search = search.Where(m => m.Name.Contains(request.SearchString));
+                var searchTerms = request.SearchString
+                    .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+                    .Distinct()
+                    .Select(s => s.Trim().ToUpperInvariant())
+                    .Where(s => !String.IsNullOrEmpty(s))
+                    .ToArray();
+
+                foreach (var term in searchTerms)
+                {
+                    search = search
+                        .Where(m => m.Name.Contains(term))
+                        .OrderByDescending(m => m.Name.ToUpper().Equals(term))
+                        .ThenByDescending(m => m.Name.ToUpper().StartsWith($"{term} "))
+                        .ThenByDescending(m => m.Name.ToUpper().Contains($" {term} "))
+                        .ThenByDescending(m => m.Name.ToUpper().EndsWith($" {term}"))
+                        .ThenBy(m => m.Name.ToUpper().IndexOf(term))
+                        .ThenBy(m => m.Name);
+                }
             }
 
             return await PaginatedList.CreateAsync(search, request.PageInfo);

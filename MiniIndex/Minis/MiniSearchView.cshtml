@@ -4,6 +4,8 @@
 
     @using (Html.BeginForm(FormMethod.Get))
     {
-        @Html.EditorFor(x => x.SearchString)
+        <div class="col">
+            @Html.EditorFor(x => x.SearchString)
+        </div>
     }
 </div>
