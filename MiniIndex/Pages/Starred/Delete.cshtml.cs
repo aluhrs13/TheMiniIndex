@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
-using System;
 using System.Threading.Tasks;
 
 namespace MiniIndex
@@ -27,7 +26,7 @@ namespace MiniIndex
         [BindProperty]
         public Starred Starred { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync()
         {
             if (!ModelState.IsValid || !mini.HasValue)
             {

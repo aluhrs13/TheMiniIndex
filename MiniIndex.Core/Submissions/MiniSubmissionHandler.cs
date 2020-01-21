@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using MiniIndex.Core.Minis;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -24,16 +23,14 @@ namespace MiniIndex.Core.Submissions
 
         public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
-            Uri uri = new Uri(request.Url);
-
-            Mini mini = await _context.Set<Mini>().SingleOrDefaultAsync(m => m.Link == request.Url, cancellationToken);
+            Mini mini = await _context.Set<Mini>().SingleOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
 
             if (mini != null)
             {
                 return mini;
             }
 
-            IParser parser = _parsers.FirstOrDefault(p => p.CanParse(uri));
+            IParser parser = _parsers.FirstOrDefault(p => p.CanParse(request.Url));
 
             if (parser is null)
             {
@@ -42,7 +39,7 @@ namespace MiniIndex.Core.Submissions
                 return null;
             }
 
-            mini = await parser.ParseFromUrl(uri);
+            mini = await parser.ParseFromUrl(request.Url);
             mini.User = request.User;
 
             _context.Add(mini);
