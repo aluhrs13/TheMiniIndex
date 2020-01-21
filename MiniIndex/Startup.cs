@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +49,8 @@ namespace MiniIndex
 
             services
                 .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddRazorOptions(ConfigureRazor);
 
             services.AddDbContext<MiniIndexContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MiniIndexContext")));
@@ -97,6 +99,13 @@ namespace MiniIndex
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+        }
+
+        private void ConfigureRazor(RazorViewEngineOptions razor)
+        {
+            razor.ViewLocationFormats.Add("/{1}/{0}" + RazorViewEngine.ViewExtension);
+            razor.ViewLocationFormats.Add("/{1}/Views/{0}" + RazorViewEngine.ViewExtension);
+            razor.ViewLocationFormats.Add("/Shared/{0}" + RazorViewEngine.ViewExtension);
         }
     }
 }

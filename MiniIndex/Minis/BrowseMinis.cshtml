@@ -1,0 +1,22 @@
+﻿@model MiniIndex.Minis.BrowseModel
+
+@{
+    ViewData["Title"] = "Browse Minis";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-5">
+            <div class="sidebar-item">
+                <div >
+                    @await Html.PartialAsync("MiniSearchView", Model)
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
+            <div class="content-section">
+                @await Html.PartialAsync("MiniListView", Model)
+            </div>
+        </div>
+    </div>
+</div>
