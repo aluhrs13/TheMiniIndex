@@ -8,10 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AgileObjects.AgileMapper" Version="1.5.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.17" />
-    <PackageReference Include="Lamar" Version="4.0.0" />
-    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.0.2" />
-    <PackageReference Include="MediatR" Version="7.0.0" />
+    <PackageReference Include="Lamar" Version="4.1.0" />
+    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.1.0" />
+    <PackageReference Include="MediatR" Version="8.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.0.0" />
@@ -31,7 +32,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="Sendgrid" Version="9.12.0" />

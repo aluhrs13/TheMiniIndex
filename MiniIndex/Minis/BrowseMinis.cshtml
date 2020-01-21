@@ -6,15 +6,15 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-5">
+        <div class="col-3">
             <div class="sidebar-item">
                 <div >
                     @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
                 </div>
             </div>
         </div>
-        <div class="col-7">
-            <div class="content-section">
+        <div class="col-9">
+            <div class="content-section container-fluid">
                 @await Html.PartialAsync("MiniListView", Model.Minis)
             </div>
         </div>

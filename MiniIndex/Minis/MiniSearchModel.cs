@@ -1,11 +1,10 @@
-﻿using System;
+﻿using MiniIndex.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MiniIndex.Minis
 {
     public class MiniSearchModel
     {
+        public IEnumerable<Tag> Tags { get; set; }
     }
 }

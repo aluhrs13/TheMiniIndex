@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MiniIndex.Core.Minis;
+using MiniIndex.Core.Minis.Parsers;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 using System.Collections.Generic;

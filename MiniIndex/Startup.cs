@@ -55,8 +55,8 @@ namespace MiniIndex
             services.AddDbContext<MiniIndexContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MiniIndexContext")));
 
-            var facebookAppId = Configuration["Authentication:Facebook:AppId"];
-            var facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            string facebookAppId = Configuration["Authentication:Facebook:AppId"];
+            string facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
 
             if (facebookAppId != null && facebookAppSecret != null)
             {
