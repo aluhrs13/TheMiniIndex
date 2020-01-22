@@ -52,7 +52,7 @@ namespace MiniIndex
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddRazorOptions(ConfigureRazor);
 
-            services.AddDbContext<MiniIndexContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MiniIndexContext")));
+            services.AddDbContext<MiniIndexContext>(ConfigureEntityFramework);
 
             string facebookAppId = Configuration["Authentication:Facebook:AppId"];
             string facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
@@ -98,6 +98,14 @@ namespace MiniIndex
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+        }
+
+        private void ConfigureEntityFramework(DbContextOptionsBuilder options)
+        {
+            options
+                .UseSqlServer(
+                    Configuration.GetConnectionString("MiniIndexContext"),
+                    sqlServer => sqlServer.EnableRetryOnFailure(3));
         }
 
         private void ConfigureRazor(RazorViewEngineOptions razor)

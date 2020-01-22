@@ -1,18 +1,7 @@
 ﻿@using MiniIndex.Models
 @using MiniIndex.Core.Pagination
-@using Anaximander.Linq
 
 @model PaginatedList<Mini>
-
-@{
-    int pageRangeSize = 3;
-
-    var pagesToLink = Enumerable.Range(1, Model.TotalPages)
-        .Where(i => i <= pageRangeSize || Math.Abs(Model.PageIndex - i) <= pageRangeSize || Math.Abs(Model.TotalPages - i) < pageRangeSize)
-        .Distinct()
-        .OrderBy(x => x)
-        .BoxWhile((a, b) => b - a == 1);
-}
 
 <div class="album py-5 bg-light">
     <div class="container">
@@ -21,7 +10,7 @@
             {
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                        <a asp-page="./Details" asp-route-id="@mini.ID">
+                        <a href="/Minis/Details?id=@mini.ID">
                             <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
                         </a>
                         <div class="card-body @mini.Status" align="center">
@@ -48,26 +37,5 @@
                     </div>
                 }
         </div>
-    </div>
-    <div>
-        @foreach (var pageGroup in pagesToLink.Select((x, i) => (pages: x, groupIndex: i)))
-        {
-            if (pageGroup.groupIndex != 0)
-            {
-                <span> ... </span>
-            }
-
-            @foreach (var pageIndex in pageGroup.pages)
-            {
-                @if (pageIndex == Model.PageIndex)
-                {
-                    <span><b><u>@pageIndex</u></b></span>
-                }
-                else
-                {
-                    @Html.ActionLink(pageIndex.ToString(), "BrowseMinis", "Minis", new { pageSize = Model.PageSize, pageIndex }, new { @class = "btn" })
-                }
-            }
-        }
     </div>
 </div>

@@ -1,18 +1,18 @@
-﻿using MiniIndex.Models;
-using System.Collections.Generic;
+﻿using MiniIndex.Core.Pagination;
+using MiniIndex.Models;
 using System.Linq;
 
 namespace MiniIndex.Minis
 {
     public class BrowseModel
     {
-        public BrowseModel(SearchParametersModel searchModel, IEnumerable<Mini> minis)
+        public BrowseModel(SearchParametersModel searchModel, PaginatedList<Mini> minis)
         {
             SearchModel = searchModel;
-            Minis = minis ?? Enumerable.Empty<Mini>();
+            Minis = minis ?? PaginatedList.Empty<Mini>();
         }
 
         public SearchParametersModel SearchModel { get; set; }
-        public IEnumerable<Mini> Minis { get; set; }
+        public PaginatedList<Mini> Minis { get; set; }
     }
 }

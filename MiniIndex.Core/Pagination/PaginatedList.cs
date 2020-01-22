@@ -8,6 +8,11 @@ namespace MiniIndex.Core.Pagination
 {
     public class PaginatedList
     {
+        public static PaginatedList<T> Empty<T>()
+        {
+            return new PaginatedList<T>(Enumerable.Empty<T>().ToList(), 0, 1, 0);
+        }
+
         public static async Task<PaginatedList<T>> CreateAsync<T>(IQueryable<T> source, PageInfo pageInfo)
         {
             var count = await source.CountAsync();

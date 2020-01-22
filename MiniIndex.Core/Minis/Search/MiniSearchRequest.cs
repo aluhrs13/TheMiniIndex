@@ -9,6 +9,8 @@ namespace MiniIndex.Core.Minis.Search
     {
         public string SearchString { get; set; }
 
+        public IEnumerable<string> Tags { get; set; }
+
         public PageInfo PageInfo { get; set; }
     }
 }

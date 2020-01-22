@@ -1,11 +1,23 @@
-﻿@model MiniIndex.Minis.SearchParametersModel
+﻿@model MiniIndex.Minis.MiniSearchModel
 
 <div class="container" style="padding:25px;">
 
-    @using (Html.BeginForm(FormMethod.Get))
-    {
-        <div class="col">
-            @Html.EditorFor(x => x.SearchString)
-        </div>
-    }
+    <div class="col">
+        @using (Html.BeginForm(FormMethod.Get))
+        {
+            <div class="row">
+                @Html.LabelFor(x => x.SearchString, "Search")
+                @Html.EditorFor(x => x.SearchString)
+            </div>
+
+            <div class="row">
+                @Html.LabelFor(x => x.Tags, "Tags")
+                <select multiple asp-for="SearchString" asp-items="Model.TagsList" id="selectizedinput"></select>
+            </div>
+            <div>
+            </div>
+
+            <input type="submit" value="Search" />
+        }
+    </div>
 </div>
