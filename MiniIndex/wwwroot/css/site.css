@@ -47,3 +47,28 @@ body {
 .card-img-top {
     object-fit:contain;
 }
+
+.Patreon {
+    background-color: #E85B46 !important;
+    border-color: #E85B46 !important;
+    color: white !important;
+}
+
+.MyMiniFactory {
+    background-color: #3fbc9c !important;
+    border-color: #3fbc9c !important;
+    color: white !important;
+}
+
+.Shapeways {
+    background-color: #FF4B5A !important;
+    border-color: #FF4B5A !important;
+    color: white !important;
+}
+
+.Gumroad {
+    background-color: #198C8C !important;
+    border-color: #198C8C !important;
+    color: white !important;
+}
+
