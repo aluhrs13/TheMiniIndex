@@ -13,7 +13,7 @@ namespace MiniIndex.Core.Mapping.Configurations
         {
             mapper
                 .WhenMapping
-                .From<SearchParametersModel>()
+                .From<MiniSearchModel>()
                 .To<MiniSearchRequest>()
                 .Map(x => x.Source.Tags
                     .Split(",", StringSplitOptions.RemoveEmptyEntries)

@@ -1,23 +1,23 @@
 ﻿@model MiniIndex.Minis.MiniSearchModel
 
-<div class="container" style="padding:25px;">
+<div class="container">
 
-    <div class="col">
+    <div class="col form">
         @using (Html.BeginForm(FormMethod.Get))
         {
             <div class="row">
                 @Html.LabelFor(x => x.SearchString, "Search")
-                @Html.EditorFor(x => x.SearchString)
+                @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control", placeholder = "Search for..." })
             </div>
 
-            <div class="row">
+            <div class="row form-group">
                 @Html.LabelFor(x => x.Tags, "Tags")
-                <select multiple asp-for="SearchString" asp-items="Model.TagsList" id="selectizedinput"></select>
-            </div>
-            <div>
+                @Html.TextAreaFor(x => x.Tags, new { @class = "form-control", placeholder = "Find tags..." })
             </div>
 
-            <input type="submit" value="Search" />
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
         }
     </div>
 </div>

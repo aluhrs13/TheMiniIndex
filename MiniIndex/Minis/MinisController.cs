@@ -24,7 +24,7 @@ namespace MiniIndex.Minis
 
         [HttpGet("")]
         public async Task<IActionResult> BrowseMinis(
-            [FromQuery]SearchParametersModel search = null,
+            [FromQuery]MiniSearchModel search = null,
             [FromQuery]int pageSize = 20,
             [FromQuery]int pageIndex = 1)
         {
@@ -38,7 +38,7 @@ namespace MiniIndex.Minis
 
             await Task.WhenAll(searchTask, getTagsTask);
 
-            SearchParametersModel searchModel = search ?? new SearchParametersModel();
+            MiniSearchModel searchModel = search ?? new MiniSearchModel();
 
             BrowseModel model = new BrowseModel(searchModel, searchTask.Result);
 

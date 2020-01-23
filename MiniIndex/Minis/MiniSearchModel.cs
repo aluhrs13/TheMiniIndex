@@ -2,6 +2,11 @@
 {
     public class MiniSearchModel
     {
-        public SearchParametersModel SearchParameters { get; set; }
+
+        public string SearchString { get; set; }
+
+        public string Tags { get; set; }
+
+        public SeachSupportingInfo SupportingInfo { get; set; }
     }
 }
