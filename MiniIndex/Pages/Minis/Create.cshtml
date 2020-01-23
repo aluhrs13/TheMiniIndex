@@ -24,7 +24,7 @@
             @Html.AntiForgeryToken()
             <div class="row" align="center">
                 <div class="col-md-8">
-                    <h3><input type="text" name="URL" style="width:100%;" placeholder="Link to the mini's page" /></h3>
+                    <h3><input type="text" name="URL" style="width:100%;" placeholder="Link to the mini's page" value="@Model.URL" /></h3>
                 </div>
                 <div class="col-md-4">
                     <input type="submit" class="btn btn-primary" value="Add Mini" style="width:100%;" />

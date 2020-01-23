@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MiniIndex.Models
 {
@@ -21,5 +23,6 @@ namespace MiniIndex.Models
         public List<MiniSourceSite> Sources { get; set; }
         public IdentityUser User { get; set; }
         public int Cost { get; set; }
+        public DateTime ApprovedTime { get; set; }
     }
 }

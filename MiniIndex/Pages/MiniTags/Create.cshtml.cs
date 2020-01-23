@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,16 @@ namespace MiniIndex.Pages.MiniTags
     [Authorize]
     public class CreateModel : PageModel
     {
-        public CreateModel(MiniIndexContext context)
+        public CreateModel(
+                UserManager<IdentityUser> userManager,
+                MiniIndexContext context)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         private readonly MiniIndexContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
         [BindProperty(SupportsGet = true)]
         public string mini { get; set; }
@@ -46,6 +51,9 @@ namespace MiniIndex.Pages.MiniTags
 
             MiniTag newMiniTag = new MiniTag();
             Tag newTag = new Tag();
+
+            IdentityUser user = await _userManager.GetUserAsync(User);
+            newMiniTag.Tagger = user;
 
             if (!String.IsNullOrEmpty(tagName))
             {

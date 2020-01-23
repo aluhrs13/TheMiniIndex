@@ -99,7 +99,7 @@ namespace MiniIndex.Pages.Minis
                 .OrderByDescending(m => m.ID)
                 .AsNoTracking();
 
-            Mini = await PaginatedList<Mini>.CreateAsync(minis, miniCount, pageIndex ?? 1, pageSize);
+            Mini = await PaginatedList.CreateAsync(minis, miniCount, pageIndex ?? 1, pageSize);
 
             List<Tag> allTags = await _context
                 .Tag

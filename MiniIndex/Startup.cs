@@ -53,12 +53,18 @@ namespace MiniIndex
             services.AddDbContext<MiniIndexContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MiniIndexContext")));
 
-            services.AddAuthentication()
-                .AddFacebook(facebookOptions =>
-                {
-                    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                });
+            var facebookAppId = Configuration["Authentication:Facebook:AppId"];
+            var facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
+
+            if (facebookAppId != null && facebookAppSecret != null)
+            {
+                services.AddAuthentication()
+                    .AddFacebook(facebookOptions =>
+                    {
+                        facebookOptions.AppId = facebookAppId;
+                        facebookOptions.AppSecret = facebookAppSecret;
+                    });
+            }
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
