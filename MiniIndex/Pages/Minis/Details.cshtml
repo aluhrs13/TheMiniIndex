@@ -6,6 +6,12 @@
     ViewData["Title"] = "Details";
 }
 
+@section Scripts
+{
+    <script type="module" src="~/dist/tags.entry.js" defer></script>
+    <script type="module" src="~/dist/stars.entry.js" defer></script>
+}
+
 <div>
     @if (User.IsInRole("Moderator"))
     {
@@ -54,7 +60,7 @@
                             <a href="@miniSource.Link" class="btn btn-block btn-primary" style="margin-top:10px;">View On @miniSource.Site.SiteName</a>
                         }
                     }
-                    else if (!String.IsNullOrEmpty(Model.Mini.Link))                    
+                    else if (!String.IsNullOrEmpty(Model.Mini.Link))
                     {
                         <a href="@Html.DisplayFor(modelItem => Model.Mini.Link)" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
                     }
@@ -172,11 +178,11 @@
                     <div class="add-tag-div">
 
                         @foreach (var Tag in Model.UnusedTags
-                            .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                                && m.Category != TagCategory.Genre
-                                && m.Category != TagCategory.OtherDescription
-                                && m.Category != TagCategory.CreatureName
-                                && m.Category != TagCategory.Use))
+                          .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                              && m.Category != TagCategory.Genre
+                              && m.Category != TagCategory.OtherDescription
+                              && m.Category != TagCategory.CreatureName
+                              && m.Category != TagCategory.Use))
                         {
                             @if (Tag.Category.ToString() != PreviousCategory)
                             {
