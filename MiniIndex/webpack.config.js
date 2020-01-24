@@ -4,9 +4,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
     entry: {
         site: './wwwroot/js/site.js',
-        bootstrap_js: './wwwroot/js/bootstrapjs.js',
+        bootstrapjs: './wwwroot/js/bootstrapjs.js',
         validation: './wwwroot/js/validation.js',
-        tags: './wwwroot/js/tags-selectized.js',
+        tags: './wwwroot/js/tags-tagify.js',
         stars: './wwwroot/js/stars.js'
     },
     output: {

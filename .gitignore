@@ -346,3 +346,4 @@ package-lock.json
 npm-debug.log*
 node_modules/
 */wwwroot/dist
+*/wwwroot/js/*.min.js
