@@ -5,6 +5,7 @@
     <UserSecretsId>3b3bf9f1-74a9-4a42-8d16-abe9538a2f35</UserSecretsId>
     <ApplicationInsightsResourceId>/subscriptions/3fc98a8d-8b5e-4228-83c4-fcce1e1a9143/resourcegroups/MiniIndex/providers/microsoft.insights/components/MiniIndex</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/3fc98a8d-8b5e-4228-83c4-fcce1e1a9143/resourcegroups/MiniIndex/providers/microsoft.insights/components/MiniIndex</ApplicationInsightsAnnotationResourceId>
+    <WWWRoot>wwwroot\</WWWRoot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -63,4 +64,38 @@
     <ProjectReference Include="..\MiniIndex.Persistence\MiniIndex.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="$(WWWRoot)**" />
+    <Content Include="$(WWWRoot)**" Exclude="$(WWWRoot)js\**; $(WWWRoot)css\**; $(WWWRoot)ts\**; $(WWWRoot)scss\**; $(WWWRoot)sass\**" />
+    <None Remove="$(WWWRoot)**" />
+    <None Include="$(WWWRoot)**" Exclude="$(WWWRoot)dist\**" />
+  </ItemGroup>
+
+  <Target Name="NpmInstall" BeforeTargets="Build" Condition=" !Exists('node_modules') ">
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec Command="npm install" />
+  </Target>
+
+  <Target Name="NpmRunBuild" BeforeTargets="Build" DependsOnTargets="NpmInstall">
+    <Exec Command="npm run build" />
+  </Target>
+
+  <Target Name="NpmClean" BeforeTargets="Clean">
+    <RemoveDir Directories="$(WWWRoot)dist" />
+    <RemoveDir Directories="node_modules" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish" DependsOnTargets="NpmInstall">
+    <ItemGroup>
+      <DistFiles Include="$(WWWRoot)dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
 </Project>
