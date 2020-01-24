@@ -7,6 +7,6 @@
 
         public string Tags { get; set; }
 
-        public SeachSupportingInfo SupportingInfo { get; set; }
+        public SearchSupportingInfo SupportingInfo { get; set; }
     }
 }

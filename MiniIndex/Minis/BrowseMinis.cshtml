@@ -12,6 +12,13 @@
         .OrderBy(x => x)
         .BoxWhile((a, b) => b - a == 1);
 }
+
+@section Scripts
+{
+    <script type="module" src="~/dist/tags.entry.js" defer></script>
+    <link href="~/dist/tags.css" rel="stylesheet">
+}
+
 <div class="container">
     <div class="row">
         <div class="col-3">

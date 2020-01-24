@@ -2,7 +2,7 @@
 
 namespace MiniIndex.Minis
 {
-    public class SeachSupportingInfo
+    public class SearchSupportingInfo
     {
         public IEnumerable<string> Tags { get; set; }
     }

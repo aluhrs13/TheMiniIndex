@@ -3,9 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MiniIndex.Core.Minis.Search;
 using MiniIndex.Core.Pagination;
-using MiniIndex.Core.Tags;
 using MiniIndex.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MiniIndex.Minis
@@ -33,14 +31,11 @@ namespace MiniIndex.Minis
             MiniSearchRequest searchRequest = new MiniSearchRequest { PageInfo = pagingInfo };
             _mapper.Map(search).Over(searchRequest);
 
-            Task<PaginatedList<Mini>> searchTask = _mediator.Send(searchRequest);
-            Task<IEnumerable<Tag>> getTagsTask = _mediator.Send(new GetTagsRequest());
-
-            await Task.WhenAll(searchTask, getTagsTask);
+            PaginatedList<Mini> searchResult = await _mediator.Send(searchRequest);
 
             MiniSearchModel searchModel = search ?? new MiniSearchModel();
 
-            BrowseModel model = new BrowseModel(searchModel, searchTask.Result);
+            BrowseModel model = new BrowseModel(searchModel, searchResult);
 
             return View("BrowseMinis", model);
         }

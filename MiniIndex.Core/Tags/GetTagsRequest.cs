@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MiniIndex.Core.Tags
 {
-    public class GetTagsRequest : IRequest<IEnumerable<Tag>>
+    public class GetTagsRequest : IRequest<IEnumerable<string>>
     {
     }
 }
