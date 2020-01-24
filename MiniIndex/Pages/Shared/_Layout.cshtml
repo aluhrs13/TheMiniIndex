@@ -39,14 +39,9 @@
     <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    </environment>
+    <script type="module" src="~/dist/site.entry.js" defer></script>
+    <script type="module" src="~/dist/bootstrapjs.entry.js" defer></script>
+    <link rel="stylesheet" href="~/dist/site.css">
 
     <link href="~/lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
 

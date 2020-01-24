@@ -339,3 +339,11 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database 
 healthchecksdb
+
+# npm
+.npm
+package-lock.json
+npm-debug.log*
+node_modules/
+wwwroot/dist/
+

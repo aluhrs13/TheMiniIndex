@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\node_modules\**" />
+    <Content Remove="wwwroot\node_modules\**" />
+    <EmbeddedResource Remove="wwwroot\node_modules\**" />
+    <None Remove="wwwroot\node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AgileObjects.AgileMapper" Version="1.5.0" />
     <PackageReference Include="Anaximander.Linq" Version="2.3.3" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.17" />
@@ -48,7 +55,6 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="wwwroot\lib\selectizejs\" />
-    <Folder Include="wwwroot\node_modules\" />
   </ItemGroup>
 
   <ItemGroup>
