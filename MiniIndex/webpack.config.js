@@ -6,7 +6,7 @@ module.exports = {
         site: './wwwroot/js/site.js',
         bootstrapjs: './wwwroot/js/bootstrapjs.js',
         validation: './wwwroot/js/validation.js',
-        tags: './wwwroot/js/tags-tagify.js',
+        tags: './wwwroot/js/tags-selectized.js',
         stars: './wwwroot/js/stars.js'
     },
     output: {

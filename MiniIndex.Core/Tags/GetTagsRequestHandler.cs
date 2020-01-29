@@ -21,18 +21,19 @@ namespace MiniIndex.Core.Tags
 
         public async Task<IEnumerable<string>> Handle(GetTagsRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Tag> tagsQuery = _context.Set<Tag>();
+            IQueryable<Tag> tagsQuery = _context.Set<Tag>()
+                .OrderBy(t => t.TagName);
 
-            if (!String.IsNullOrEmpty(request.SearchTerm.Trim()))
+            if (!String.IsNullOrEmpty(request.SearchTerm?.Trim()))
             {
                 tagsQuery = tagsQuery
-                    .Where(m => m.TagName.Contains(request.SearchTerm))
-                    .OrderByDescending(m => m.TagName.ToUpper().Equals(request.SearchTerm))
-                    .ThenByDescending(m => m.TagName.ToUpper().StartsWith($"{request.SearchTerm} "))
-                    .ThenByDescending(m => m.TagName.ToUpper().Contains($" {request.SearchTerm} "))
-                    .ThenByDescending(m => m.TagName.ToUpper().EndsWith($" {request.SearchTerm}"))
-                    .ThenBy(m => m.TagName.ToUpper().IndexOf(request.SearchTerm))
-                    .ThenBy(m => m.TagName);
+                    .Where(t => t.TagName.Contains(request.SearchTerm))
+                    .OrderByDescending(t => t.TagName.ToUpper().Equals(request.SearchTerm))
+                    .ThenByDescending(t => t.TagName.ToUpper().StartsWith($"{request.SearchTerm} "))
+                    .ThenByDescending(t => t.TagName.ToUpper().Contains($" {request.SearchTerm} "))
+                    .ThenByDescending(t => t.TagName.ToUpper().EndsWith($" {request.SearchTerm}"))
+                    .ThenBy(t => t.TagName.ToUpper().IndexOf(request.SearchTerm))
+                    .ThenBy(t => t.TagName);
             }
 
             var tags = await tagsQuery

@@ -1,4 +1,7 @@
-﻿$('.add-tag').click(function () {
+﻿import $ from 'jquery'
+import 'selectize'
+
+$('.add-tag').click(function () {
     document.getElementById("AddedTags").innerHTML = document.getElementById("AddedTags").innerHTML.concat("<span class='badge badge-success'>" + this.innerHTML.substr(2, this.innerHTML.length) + "</span>");
     console.log("Adding " + this.innerHTML);
     $(this).fadeOut();

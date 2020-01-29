@@ -1,9 +1,11 @@
 ﻿using AgileObjects.AgileMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MiniIndex.Core.Minis.Search;
 using MiniIndex.Core.Pagination;
 using MiniIndex.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MiniIndex.Minis
@@ -30,12 +32,18 @@ namespace MiniIndex.Minis
 
             MiniSearchRequest searchRequest = new MiniSearchRequest { PageInfo = pagingInfo };
             _mapper.Map(search).Over(searchRequest);
-
             PaginatedList<Mini> searchResult = await _mediator.Send(searchRequest);
 
-            MiniSearchModel searchModel = search ?? new MiniSearchModel();
+            SearchSupportingInfo searchInfo = await _mediator.Send(new GetSearchInfoRequest());
 
-            BrowseModel model = new BrowseModel(searchModel, searchResult);
+            var allTags = searchInfo.Tags
+                .OrderBy(t => t.Category.ToString())
+                .ThenBy(t => t.TagName)
+                .ToList();
+
+            search.TagOptions = new SelectList(allTags, "TagName", "TagName", null, "Category");
+
+            BrowseModel model = new BrowseModel(search, searchResult);
 
             return View("BrowseMinis", model);
         }

@@ -7,13 +7,29 @@
         {
             <div class="row">
                 @Html.LabelFor(x => x.SearchString, "Search")
-                @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control", placeholder = "Search for..." })
+                @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control col", placeholder = "Search for..." })
             </div>
 
-            <div class="row form-group">
+            @*<div class="row form-group">
                 @Html.LabelFor(x => x.Tags, "Tags")
-                @Html.TextAreaFor(x => x.Tags, new { @class = "form-control", placeholder = "Find tags..." })
-            </div>
+                @Html.TextAreaFor(x => x.Tags, new 
+                {
+                    @class = "form-control",
+                    placeholder = "Find tags...",
+                    data_whitelist = Model.Tags
+                })
+            </div>*@
+    <div class="row form-group">
+        @Html.LabelFor(x => x.Tags, "Tags")
+        @Html.DropDownListFor(x => x.Tags, Model.TagOptions, null,
+            new
+            {
+                id = "selectizedinput",
+                @class = "form-control col",
+                placeholder = "Find tags...",
+                multiple=true
+            })
+    </div>
 
             <div class="form-group">
                 <input type="submit" value="Search" class="btn btn-primary" />
