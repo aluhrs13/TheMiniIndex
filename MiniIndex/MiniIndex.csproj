@@ -55,7 +55,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Mapping\" />
     <Folder Include="wwwroot\lib\selectizejs\" />
   </ItemGroup>
 
