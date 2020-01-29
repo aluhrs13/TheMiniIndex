@@ -28,6 +28,15 @@ namespace MiniIndex.Minis.Handlers
                 .Where(m => m.Status == Status.Approved)
                 .OrderByDescending(m => m.ID);
 
+            foreach (var tag in request.Tags)
+            {
+                search = search
+                    .Where(m => m.MiniTags
+                        .Select(x => x.Tag)
+                        .Any(t => t.TagName == tag)
+                    );
+            }
+
             if (!String.IsNullOrEmpty(request.SearchString))
             {
                 var searchTerms = request.SearchString

@@ -28,6 +28,7 @@ namespace MiniIndex.Minis
             [FromQuery]int pageSize = 20,
             [FromQuery]int pageIndex = 1)
         {
+            
             PageInfo pagingInfo = new PageInfo(pageSize, pageIndex);
 
             MiniSearchRequest searchRequest = new MiniSearchRequest { PageInfo = pagingInfo };

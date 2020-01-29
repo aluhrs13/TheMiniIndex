@@ -2,14 +2,25 @@
 using MiniIndex.Core.Pagination;
 using MiniIndex.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MiniIndex.Core.Minis.Search
 {
     public class MiniSearchRequest : IRequest<PaginatedList<Mini>>
     {
-        public string SearchString { get; set; }
+        public MiniSearchRequest()
+        {
+            Tags = Enumerable.Empty<string>();
+        }
 
-        public IEnumerable<string> Tags { get; set; }
+        private IEnumerable<string> _tags;
+        
+        public string SearchString { get; set; }
+        public IEnumerable<string> Tags 
+        { 
+            get => _tags; 
+            set => _tags = value ?? Enumerable.Empty<string>();
+        }
 
         public PageInfo PageInfo { get; set; }
     }
