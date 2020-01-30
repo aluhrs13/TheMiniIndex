@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,6 +46,7 @@ namespace MiniIndex.Pages.Minis
                 if (NewStatus == "Approved")
                 {
                     Mini.Status = Status.Approved;
+                    Mini.ApprovedTime = DateTime.Now;
                     _context.Attach(Mini).State = EntityState.Modified; //TODO: is this needed? Change tracking should catch this...
                 }
 

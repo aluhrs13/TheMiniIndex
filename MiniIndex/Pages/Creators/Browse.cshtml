@@ -34,7 +34,7 @@
                 <td>
                     @foreach (var site in creatorCount.Key.Sites)
                     {
-                        <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
+                        <a href="@site.CreatorPageUri" class="btn btn-primary @site.DisplayName">@site.DisplayName</a>
                     }
                 </td>
             </tr>
