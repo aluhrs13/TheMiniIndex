@@ -70,6 +70,8 @@ namespace MiniIndex
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddApplicationInsightsTelemetry();
+            services.AddApplicationInsightsTelemetryProcessor<AppInsightsFilter>();
+
 
             services.IncludeRegistry<CoreServices>();
         }
