@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - The Mini Index</title>
 
-
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="~/images/icons/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/images/icons/apple-touch-icon-114x114.png" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/images/icons/apple-touch-icon-72x72.png" />
@@ -31,25 +30,18 @@
 
     <meta property="og:site_name" content="The Mini Index" />
     <meta property="og:image" content="https://theminiindex.com/images/icons/favicon-196x196.png">
-    <meta property="og:title" content="@ViewData["Title"] -The Mini Index" />
+    <meta property="og:title" content="@ViewData["Title"] - The Mini Index" />
     <meta property="og:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta property="fb:app_id" content="217005809246433" />
-
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:image:src" content="https://theminiindex.com/images/icons/favicon-196x196.png">
     <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
-    <meta name="twitter:title" content="@ViewData["Title"] -The Mini Index" />
+    <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    </environment>
+    <script type="module" src="~/dist/site.entry.js" defer></script>
+    <script type="module" src="~/dist/bootstrapjs.entry.js" defer></script>
+    <link rel="stylesheet" href="~/dist/site.css">
 
     <link href="~/lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
 
@@ -62,7 +54,6 @@
 
         window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();
     </script>
-
 </head>
 <body>
 
@@ -116,31 +107,6 @@
             @RenderBody()
         </div>
     </main>
-
-    <environment include="Development">
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-        <script type="text/javascript" src="~/lib/selectizejs/js/standalone/selectize.js"></script>
-        <link rel="stylesheet" type="text/css" href="~/lib/selectizejs/css/selectize.css" />
-
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-        <script type="text/javascript" src="~/lib/selectizejs/js/standalone/selectize.js"></script>
-        <link rel="stylesheet" type="text/css" href="~/lib/selectizejs/css/selectize.css" />
-
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
 
     @RenderSection("Scripts", required: false)
 </body>
