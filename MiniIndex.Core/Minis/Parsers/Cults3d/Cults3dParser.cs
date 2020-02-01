@@ -58,7 +58,7 @@ namespace MiniIndex.Core.Minis.Parsers.Cults3d
 
             int cost = 0;
             HtmlNodeCollection priceNode = htmlDoc.DocumentNode.SelectNodes("//span[@class='btn-group-end btn-third']");
-            if (priceNode != null)
+            if (priceNode != null && priceNode.First().InnerText != "Free")
             {
                 cost = Int32.Parse(priceNode.First().InnerText.Remove(0, 3).Split(".").First());
             }
