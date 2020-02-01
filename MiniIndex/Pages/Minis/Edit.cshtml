@@ -1,11 +1,14 @@
-﻿
-@page
+﻿@page
 @model MiniIndex.Pages.Minis.EditModel
 
 @inject SignInManager<IdentityUser> SignInManager
 
 @{
     ViewData["Title"] = "Edit";
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 @if (User.IsInRole("Moderator"))
@@ -17,11 +20,9 @@
             <a href="@Model.Mini.Link" class="btn btn-lg btn-primary">View On Thingiverse</a>
             <hr />
             <img src="@Model.Mini.Thumbnail" class="img-fluid rounded" />
-
         </div>
         <div class="col-md-6">
             <form method="post">
-
 
                 <div class="form-group">
                     <input asp-for="Mini.Link" class="form-control" />
@@ -38,7 +39,6 @@
                 <div class="form-group">
                     <input asp-for="Mini.Cost" class="form-control" />
                 </div>
-
 
                 <div class="row">
                     <div class="col-md-3">
@@ -81,14 +81,7 @@
 
                     <input type="submit" value="Submit!" class="btn btn-success" />
                 </div>
-
-
-
-
             </form>
         </div>
     </div>
-}
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

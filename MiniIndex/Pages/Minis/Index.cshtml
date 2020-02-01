@@ -2,11 +2,15 @@
 @model MiniIndex.Pages.Minis.IndexModel
 
 @inject SignInManager<IdentityUser> SignInManager
-
-
 @{
     ViewData["Title"] = "Browse Minis";
 }
+
+@section Scripts
+{
+    <script type="module" src="~/dist/tags.entry.js" defer></script>
+}
+
 <h1>Browse Minis</h1>
 
 <div class="container" style="padding:25px;">
@@ -19,7 +23,6 @@
                 </h1>
 
                 <input asp-for="FreeOnly" id="inputcheckbox" value="true" /> <label for="inputcheckbox">Free models only</label>
-
             </div>
         </div>
 
@@ -144,11 +147,8 @@
                 <a class="btn btn-success my-2" href="/Minis/Create" style="width:100%;">Submit a mini</a>
             </div>
         </div>
-
-
     </form>
 </div>
-
 
 <div class="album py-5 bg-light">
     <div class="container">
@@ -157,7 +157,7 @@
             {
                 <div align="center">
                     <h1>No Minis found. Try adjusting your filters.</h1>
-                    <hr/>
+                    <hr />
                     <h2>If you find a mini that matches on Thingiverse or elsewhere, come back and <a href="/Minis/Create">add it here</a> so that the next person can find it easier :)</h2>
                 </div>
             }
@@ -176,22 +176,22 @@
                                 <small class="text-muted">
                                     <a href="/Creators/Details?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
                                 </small>
-                            @if (item.Status == Models.Status.Approved)
-                            {
+                                @if (item.Status == Models.Status.Approved)
+                                {
 
-                            }
-                            else if (item.Status == Models.Status.Pending)
-                            {
+                                }
+                                else if (item.Status == Models.Status.Pending)
+                                {
                                 <p><b>Pending admin approval</b></p>
                             }
                             else if (item.Status == Models.Status.Rejected)
                             {
                                 <p><b>Rejected by admin</b></p>
                             }
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
         </div>
     </div>
 </div>

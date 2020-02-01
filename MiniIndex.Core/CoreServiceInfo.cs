@@ -1,4 +1,4 @@
-﻿using MiniIndex.Core.Minis;
+﻿using MiniIndex.Core.Minis.Parsers;
 using System.Collections.Generic;
 using System.Linq;
 
