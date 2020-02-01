@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace MiniIndex.Core.Minis
+namespace MiniIndex.Core.Minis.Parsers
 {
     public interface IParser
     {

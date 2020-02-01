@@ -4,10 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MiniIndex
+namespace MiniIndex.Core.Pagination
 {
     public class PaginatedList
     {
+        public static PaginatedList<T> Empty<T>()
+        {
+            return new PaginatedList<T>(Enumerable.Empty<T>().ToList(), 0, 1, 0);
+        }
+
+        public static async Task<PaginatedList<T>> CreateAsync<T>(IQueryable<T> source, PageInfo pageInfo)
+        {
+            var count = await source.CountAsync();
+
+            var items = await source
+                .Skip((pageInfo.PageIndex - 1) * pageInfo.PageSize)
+                .Take(pageInfo.PageSize)
+                .ToListAsync();
+
+            return new PaginatedList<T>(items, count, pageInfo.PageIndex, pageInfo.PageSize);
+        }
+
         public static async Task<PaginatedList<T>> CreateAsync<T>(IQueryable<T> source, int pageIndex, int pageSize)
         {
             int count = await source.CountAsync();
@@ -36,13 +53,15 @@ namespace MiniIndex
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
+            PageSize = pageSize;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 
             AddRange(items);
         }
 
-        public int PageIndex { get; private set; }
-        public int TotalPages { get; private set; }
+        public int PageIndex { get; }
+        public int PageSize { get; }
+        public int TotalPages { get; }
 
         public bool HasPreviousPage
         {
