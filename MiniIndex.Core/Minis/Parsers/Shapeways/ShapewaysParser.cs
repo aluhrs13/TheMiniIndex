@@ -50,7 +50,7 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
             Mini mini = new Mini()
             {
                 Creator = creator,
-                Name = miniProperties["name"],
+                Name = System.Web.HttpUtility.HtmlDecode(miniProperties["name"]),
                 Thumbnail = miniProperties["image"],
                 Link = miniProperties["url"]
             };

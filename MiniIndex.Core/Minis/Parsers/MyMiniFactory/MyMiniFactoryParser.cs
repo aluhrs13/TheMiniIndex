@@ -49,7 +49,7 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             Mini mini = new Mini()
             {
                 Creator = creator,
-                Name = htmlDoc.DocumentNode.SelectNodes("//h1").FirstOrDefault().InnerText.Trim(),
+                Name = System.Web.HttpUtility.HtmlDecode(htmlDoc.DocumentNode.SelectNodes("//h1").FirstOrDefault().InnerText.Trim()),
                 Thumbnail = htmlDoc.DocumentNode.SelectNodes("//meta").Where(n => n.Attributes.Any(a => a.Value == "og:image")).First()
                     .Attributes.Where(a => a.Name == "content").First().Value,
                 Link = url.ToString()
