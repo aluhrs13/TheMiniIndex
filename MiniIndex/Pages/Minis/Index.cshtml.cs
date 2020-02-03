@@ -97,6 +97,8 @@ namespace MiniIndex.Pages.Minis
 
             minis = minis
                 .Include(m => m.Creator)
+                .Include(m => m.Sources)
+                    .ThenInclude(s => s.Site)
                 .OrderByDescending(m => m.ID)
                 .AsNoTracking();
 
