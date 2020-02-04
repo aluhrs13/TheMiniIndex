@@ -48,6 +48,10 @@ body {
     object-fit:contain;
 }
 
+.thumb-wrapper.Thingiverse span {
+    background: transparent url('../images/SourceSiteIcons/Thingiverse.png') no-repeat;
+}
+
 .Patreon {
     background-color: #E85B46 !important;
     border-color: #E85B46 !important;
@@ -60,10 +64,18 @@ body {
     color: white !important;
 }
 
+.thumb-wrapper.MyMiniFactory span {
+    background: transparent url('../images/SourceSiteIcons/MyMiniFactory.png') no-repeat;
+}
+
 .Shapeways {
     background-color: #FF4B5A !important;
     border-color: #FF4B5A !important;
     color: white !important;
+}
+
+.thumb-wrapper.Shapeways span {
+    background: transparent url('../images/SourceSiteIcons/Shapeways.png') no-repeat;
 }
 
 .Gumroad {
@@ -72,8 +84,39 @@ body {
     color: white !important;
 }
 
+.thumb-wrapper.Gumroad span {
+    background: transparent url('../images/SourceSiteIcons/Gumroad.png') no-repeat;
+}
+
 .Cults3d {
     background-color: #822ef5 !important;
     border-color: #822ef5 !important;
     color: white !important;
 }
+
+.thumb-wrapper.Cults3d span {
+    background: transparent url('../images/SourceSiteIcons/Cults3d.png') no-repeat;
+}
+
+.thumb-wrapper{
+    position: relative;
+}
+
+.thumb-wrapper img {
+    width:100%;
+    height:auto;
+}
+
+.thumb-wrapper span {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    z-index: 100;
+    background-position: center;
+    background-size: 32px 32px;
+    -webkit-filter: drop-shadow(3px 3px 3px #222);
+    filter: drop-shadow(5px 5px 5px #222);
+}
+
