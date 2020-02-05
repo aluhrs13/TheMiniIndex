@@ -1,0 +1,26 @@
+{
+    "name": "The Mini Index Extension",
+    "version": "1.0",
+    "description": "Extension to easily index 3D models onto TheMiniIndex.com",
+    "permissions": ["activeTab", "declarativeContent", "tabs", "https://theminiindex.com/*", "notifications"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+      },
+    "page_action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "tmi64.png",
+            "32": "tmi64.png",
+            "48": "tmi256.png",
+            "128": "tmi256.png"
+            }
+      },
+    "icons": {
+        "16": "tmi64.png",
+        "32": "tmi64.png",
+        "48": "tmi256.png",
+        "128": "tmi256.png"
+      },
+    "manifest_version": 2
+}
