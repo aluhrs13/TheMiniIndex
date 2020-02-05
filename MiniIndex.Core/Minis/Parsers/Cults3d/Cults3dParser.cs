@@ -7,25 +7,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
+namespace MiniIndex.Core.Minis.Parsers.Cults3d
 {
-    public class MyMiniFactoryParser : IParser
+    public class Cults3dParser : IParser
     {
-        public string Site => "MyMiniFactory";
+        public string Site => "Cults3d";
 
         public bool CanParse(Uri url)
         {
-            bool isMyMiniFactoryUrl = url.Host.Replace("www.", "").Equals("myminifactory.com", StringComparison.OrdinalIgnoreCase);
+            bool isCults3dUrl = url.Host.Replace("www.", "").Equals("cults3d.com", StringComparison.OrdinalIgnoreCase);
 
-            if (!isMyMiniFactoryUrl)
+            if (!isCults3dUrl)
             {
                 return false;
             }
 
-            bool mmfFormat1 = !String.IsNullOrWhiteSpace(url.LocalPath)
-                && url.LocalPath.StartsWith("/object/");
+            bool c3dFormat1 = !String.IsNullOrWhiteSpace(url.LocalPath)
+                && url.LocalPath.Contains("/3d-model/");
 
-            return mmfFormat1;
+            return c3dFormat1;
         }
 
         public async Task<Mini> ParseFromUrl(Uri url)
@@ -33,17 +33,18 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             HtmlWeb web = new HtmlWeb();
             HtmlDocument htmlDoc = await web.LoadFromWebAsync(url, null, null);
 
-            HtmlNode creatorLink = htmlDoc.DocumentNode.SelectNodes("//a[@class=\"under-hover\"]")
+
+            HtmlNode creatorLink = htmlDoc.DocumentNode.SelectNodes("//a[@class='stats']")
                 .FirstOrDefault();
 
             string creatorUrl = creatorLink.GetAttributeValue("href", null);
-            string creatorName = Uri.UnescapeDataString(creatorUrl.Split('/').Last());
+            string creatorName = Uri.UnescapeDataString(creatorUrl.Split('/')[3]);
 
             Creator creator = new Creator
             {
                 Name = creatorName
             };
-            MyMiniFactorySource source = new MyMiniFactorySource(creator, creatorName);
+            Cults3dSource source = new Cults3dSource(creator, creatorName);
             creator.Sites.Add(source);
 
             Mini mini = new Mini()
@@ -56,10 +57,10 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             };
 
             int cost = 0;
-            HtmlNodeCollection priceNode = htmlDoc.DocumentNode.SelectNodes("//span[@class=\"price-title\"]");
-            if (priceNode != null)
+            HtmlNodeCollection priceNode = htmlDoc.DocumentNode.SelectNodes("//span[@class='btn-group-end btn-third']");
+            if (priceNode != null && priceNode.First().InnerText != "Free")
             {
-                cost = Int32.Parse(priceNode.First().InnerText.Remove(0, 1).Split(".").First());
+                cost = Int32.Parse(priceNode.First().InnerText.Remove(0, 3).Split(".").First());
             }
             mini.Cost = cost;
 

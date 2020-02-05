@@ -33,20 +33,22 @@
     <div class="row">
         @foreach (var item in Model.Mini)
         {
-            <div class="card col-md-3 shadow-sm" stlye="margin:5px;">
-                <a asp-page="/Minis/Details" asp-route-id="@item.ID">
-                    <img class="card-img-top" src="@item.Thumbnail" />
-                </a>
-                <div class="card-body @item.Status" align="center">
-                    <p class="card-title">
-                        @Html.DisplayFor(modelItem => item.Name)
+            <div class="col-md-3" style="padding:4px;">
+                <div class="card shadow-sm">
+                    <a asp-page="/Minis/Details" asp-route-id="@item.ID">
+                        <img class="card-img-top" src="@item.Thumbnail" />
+                    </a>
+                    <div class="card-body @item.Status" align="center">
+                        <p class="card-title">
+                            @Html.DisplayFor(modelItem => item.Name)
 
-                        <small class="text-muted">
-                            <a href="/Creators/Details?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
-                        </small>
+                            <small class="text-muted">
+                                <a href="/Creators/Details?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
+                            </small>
+                    </div>
                 </div>
             </div>
-        }
+            }
     </div>
     <hr/>
     <div class="row">

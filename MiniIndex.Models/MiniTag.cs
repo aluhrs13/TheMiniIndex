@@ -1,4 +1,6 @@
-﻿namespace MiniIndex.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace MiniIndex.Models
 {
     public class MiniTag
     {
@@ -7,5 +9,6 @@
         public Mini Mini { get; set; }
         public Tag Tag { get; set; }
         public Status Status { get; set; }
+        public IdentityUser Tagger { get; set; }
     }
 }

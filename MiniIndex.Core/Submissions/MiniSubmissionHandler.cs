@@ -64,7 +64,10 @@ namespace MiniIndex.Core.Submissions
 
             if (foundCreator != null)
             {
+                _context.Remove(mini.Creator);
                 mini.Creator = foundCreator;
+
+                _context.Remove(currentSource.Site);
                 currentSource.Site = matchingSource;
 
                 return;
