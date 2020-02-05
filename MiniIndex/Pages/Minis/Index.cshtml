@@ -166,31 +166,40 @@
 
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                        <a asp-page="./Details" asp-route-id="@item.ID">
-                            <img class="card-img-top" src="@item.Thumbnail"/>
-                        </a>
-                        <div class="card-body @item.Status" align="center">
-                            <p class="card-title">
-                                @Html.DisplayFor(modelItem => item.Name)
-
-                                <small class="text-muted">
-                                    <a href="/Creators/Details?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
-                                </small>
-                                @if (item.Status == Models.Status.Approved)
-                                {
-
-                                }
-                                else if (item.Status == Models.Status.Pending)
-                                {
-                                <p><b>Pending admin approval</b></p>
-                            }
-                            else if (item.Status == Models.Status.Rejected)
-                            {
-                                <p><b>Rejected by admin</b></p>
-                            }
+                        @if (item.Sources.Any())
+                        {
+                            @:<div class="thumb-wrapper @item.Sources.First().Site.SiteName">
+                        }
+                        else
+                        {
+                            @:<div class="thumb-wrapper">
+                        }
+                                <a asp-page="./Details" asp-route-id="@item.ID">
+                                    <img class="card-img-top" src="@item.Thumbnail" /><span></span>
+                                </a>
                             </div>
-                        </div>
-                    </div>
+                            <div class="card-body @item.Status" align="center">
+                                <p class="card-title">
+                                    @Html.DisplayFor(modelItem => item.Name)
+
+                                    <small class="text-muted">
+                                        <a href="/Creators/Details?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
+                                    </small>
+                                    @if (item.Status == Models.Status.Approved)
+                                    {
+
+                                    }
+                                    else if (item.Status == Models.Status.Pending)
+                                    {
+                                    <p><b>Pending admin approval</b></p>
+                                }
+                                else if (item.Status == Models.Status.Rejected)
+                                {
+                                    <p><b>Rejected by admin</b></p>
+                                }
+                                </div>
+                            </div>
+                    @:</div>
                 }
         </div>
     </div>
