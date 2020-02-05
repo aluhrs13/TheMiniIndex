@@ -3,7 +3,7 @@ steps:
 # Compress files into .7z, .tar.gz, or .zip
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)/ChromeExtension/'
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
     includeRootFolder: false 
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
