@@ -99,7 +99,8 @@ namespace MiniIndex.Pages.Minis
                 .Include(m => m.Creator)
                 .Include(m => m.Sources)
                     .ThenInclude(s => s.Site)
-                .OrderByDescending(m => m.ID)
+                .OrderByDescending(m => m.ApprovedTime)
+                    .ThenByDescending(m => m.ID)
                 .AsNoTracking();
 
             Mini = await PaginatedList.CreateAsync(minis, miniCount, pageIndex ?? 1, pageSize);
