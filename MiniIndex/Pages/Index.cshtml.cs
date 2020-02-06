@@ -25,7 +25,8 @@ namespace MiniIndex.Pages
             Mini = _context.Set<Mini>()
                 .Include(m => m.Creator)
                 .Where(m => m.Status == Status.Approved)
-                .OrderByDescending(m => m.ID)
+                .OrderByDescending(m => m.ApprovedTime)
+                    .ThenByDescending(m=>m.ID)
                 .Take(4)
                 .ToList();
 
