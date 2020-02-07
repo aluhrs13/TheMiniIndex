@@ -9,23 +9,40 @@
                 @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control col", placeholder = "Search for..." })
             </div>
 
-            <div class="form-group">
-                <div class="row">
-                    @Html.LabelFor(x => x.Tags, "Tags")
+            <div class="row form-group">
+                <div class="col">
+                    <div class="row">
+                        @Html.LabelFor(x => x.Tags, "Tags")
+                    </div>
+                    <div class="row">
+                        @Html.DropDownListFor(x => x.Tags, Model.TagOptions, null,
+                            new
+                            {
+                                id = "selectizedinput",
+                                @class = "row col",
+                                placeholder = "Find tags...",
+                                multiple = true
+                            })
+                    </div>
                 </div>
+            </div>
+
+            <div class="col form-group">
                 <div class="row">
-                    @Html.DropDownListFor(x => x.Tags, Model.TagOptions, null,
+                    @Html.LabelFor(x => x.FreeOnly, "Free minis only",
+                       new
+                       {
+                           @class = "form-check-label"
+                       })
+                    @Html.CheckBoxFor(x => x.FreeOnly,
                         new
                         {
-                            id = "selectizedinput",
-                            @class = "col",
-                            placeholder = "Find tags...",
-                            multiple = true
+                            @class = "form-check-input"
                         })
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row form-group">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
         }

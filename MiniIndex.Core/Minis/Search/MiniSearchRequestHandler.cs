@@ -28,6 +28,11 @@ namespace MiniIndex.Minis.Handlers
                 .Where(m => m.Status == Status.Approved)
                 .OrderByDescending(m => m.ID);
 
+            if (request.FreeOnly)
+            {
+                search = search.Where(m => m.Cost == 0);
+            }
+
             foreach (var tag in request.Tags)
             {
                 search = search
