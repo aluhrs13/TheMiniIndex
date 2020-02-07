@@ -1,4 +1,6 @@
-﻿$('#toggle-star').click(function () {
+﻿import $ from 'jquery'
+
+$('#toggle-star').click(function () {
     if ($(this).hasClass("add-star")) {
         console.log("Starring " + this.innerHTML);
 
