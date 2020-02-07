@@ -55,6 +55,7 @@ namespace MiniIndex.Minis.Handlers
                         .ThenByDescending(m => m.Name.ToUpper().Contains($" {term} "))
                         .ThenByDescending(m => m.Name.ToUpper().EndsWith($" {term}"))
                         .ThenBy(m => m.Name.ToUpper().IndexOf(term))
+                        .ThenByDescending(m => m.ApprovedTime)
                         .ThenBy(m => m.Name);
                 }
             }

@@ -9,6 +9,7 @@
 @section Scripts
 {
     <script type="module" src="~/dist/tags.entry.js" defer></script>
+    <link rel="stylesheet" href="~/dist/tags.css">
 }
 
 <h1>Browse Minis</h1>
@@ -163,7 +164,6 @@
             }
             @foreach (var item in Model.Mini)
             {
-
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         @if (item.Sources.Any())
@@ -177,30 +177,29 @@
                                 <a asp-page="./Details" asp-route-id="@item.ID">
                                     <img class="card-img-top" src="@item.Thumbnail" /><span></span>
                                 </a>
-                            </div>
-                            <div class="card-body @item.Status" align="center">
-                                <p class="card-title">
-                                    @Html.DisplayFor(modelItem => item.Name)
-
-                                <small class="text-muted">
-                                    <a href="/Creators/Details?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
-                                </small>
-                                @if (item.Status == Models.Status.Approved)
-                                {
-
-                                }
-                                else if (item.Status == Models.Status.Pending)
-                                {
-                                <p><b>Pending admin approval</b></p>
-                            }
-                            else if (item.Status == Models.Status.Rejected)
-                            {
-                                <p><b>Rejected by admin</b></p>
-                            }
-                            </div>
                         </div>
-                    </div>
-                }
+                        <div class="card-body @item.Status" align="center">
+                            <p class="card-title">
+                                @Html.DisplayFor(modelItem => item.Name)
+
+                            <small class="text-muted">
+                                <a href="/Creators/Details?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
+                            </small>
+                            @if (item.Status == Models.Status.Approved)
+                            {
+
+                            }
+                            else if (item.Status == Models.Status.Pending)
+                            {
+                            <p><b>Pending admin approval</b></p>
+                        }
+                        else if (item.Status == Models.Status.Rejected)
+                        {
+                            <p><b>Rejected by admin</b></p>
+                        }
+                        </div>
+                </div>
+            }
         </div>
     </div>
 </div>

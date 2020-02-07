@@ -1,5 +1,6 @@
 ﻿import $ from 'jquery'
 import 'selectize'
+import 'selectize/dist/css/selectize.css'
 
 $('.add-tag').click(function () {
     document.getElementById("AddedTags").innerHTML = document.getElementById("AddedTags").innerHTML.concat("<span class='badge badge-success'>" + this.innerHTML.substr(2, this.innerHTML.length) + "</span>");
