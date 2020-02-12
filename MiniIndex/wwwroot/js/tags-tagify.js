@@ -1,7 +1,9 @@
 ﻿import Tagify from '@yaireo/tagify'
 import '@yaireo/tagify/dist/tagify.css'
 
-var input = document.querySelector('textarea[name=Tags]');
+var controller;
+
+var input = document.querySelector('textarea#tagsInput');
 
 var tagify = new Tagify(input, {
     enforceWhitelist: true,
@@ -10,11 +12,15 @@ var tagify = new Tagify(input, {
         position: "all"
     },
     whitelist: []
-})
+});
 
-var controller;
+tagify.on('input', onInput);
+tagify.on('add', onTagAdded);
 
-tagify.on('input', onInput)
+var parentForm = input.closest('form');
+console.log(parentForm);
+
+parentForm.onsubmit = onFormSubmitted;
 
 function onInput(e) {
     var value = e.detail.value;
@@ -31,4 +37,12 @@ function onInput(e) {
             tagify.settings.whitelist.splice(0, whitelist.length, ...whitelist)
             tagify.loading(false).dropdown.show.call(tagify, value);
         })
+}
+
+function onTagAdded(e) {
+    var tagValue = e.detail.data.value;
+    e.data = tagValue;
+}
+
+function onFormSubmitted(e) {
 }

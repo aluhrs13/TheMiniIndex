@@ -15,10 +15,10 @@
                         @Html.LabelFor(x => x.Tags, "Tags")
                     </div>
                     <div class="row">
-                        @Html.DropDownListFor(x => x.Tags, Model.TagOptions, null,
+                        @Html.TextAreaFor(x => x.Tags,
                             new
                             {
-                                id = "selectizedinput",
+                                id = "tagsInput",
                                 @class = "row col",
                                 placeholder = "Find tags...",
                                 multiple = true

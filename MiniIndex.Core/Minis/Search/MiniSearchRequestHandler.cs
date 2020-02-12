@@ -55,11 +55,11 @@ namespace MiniIndex.Minis.Handlers
                 {
                     search = search
                         .Where(m => m.Name.Contains(term))
-                        .OrderByDescending(m => m.Name.ToUpper().Equals(term))
-                        .ThenByDescending(m => m.Name.ToUpper().StartsWith($"{term} "))
-                        .ThenByDescending(m => m.Name.ToUpper().Contains($" {term} "))
-                        .ThenByDescending(m => m.Name.ToUpper().EndsWith($" {term}"))
-                        .ThenBy(m => m.Name.ToUpper().IndexOf(term))
+                        .OrderByDescending(m => m.Name.ToUpper().Equals(term))              // match where the term *is* the model name
+                        .ThenByDescending(m => m.Name.ToUpper().StartsWith($"{term} "))     // \
+                        .ThenByDescending(m => m.Name.ToUpper().Contains($" {term} "))      // -- these three lines do whole-word matching; there's a more concise way, but not if we want it to translate to SQL
+                        .ThenByDescending(m => m.Name.ToUpper().EndsWith($" {term}"))       // /
+                        .ThenBy(m => m.Name.ToUpper().IndexOf(term))                        // the earlier our term appears in the name, the more likely it is to be relevant (particularly with substring matches)
                         .ThenByDescending(m => m.ApprovedTime)
                         .ThenBy(m => m.Name);
                 }
