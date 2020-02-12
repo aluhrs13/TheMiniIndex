@@ -15,14 +15,8 @@
                         @Html.LabelFor(x => x.Tags, "Tags")
                     </div>
                     <div class="row">
-                        @Html.TextAreaFor(x => x.Tags,
-                            new
-                            {
-                                id = "tagsInput",
-                                @class = "row col",
-                                placeholder = "Find tags...",
-                                multiple = true
-                            })
+                        <textarea id='tagsInput' class="row col" placeholder="Find tags..."></textarea>
+                        @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
                     </div>
                 </div>
             </div>

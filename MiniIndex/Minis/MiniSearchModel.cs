@@ -7,7 +7,7 @@ namespace MiniIndex.Minis
     {
         public string SearchString { get; set; }
 
-        public string[] Tags { get; set; }
+        public string Tags { get; set; }
 
         public bool FreeOnly { get; set; }
 

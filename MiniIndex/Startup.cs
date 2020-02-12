@@ -72,8 +72,8 @@ namespace MiniIndex
             services.AddApplicationInsightsTelemetry();
             services.AddApplicationInsightsTelemetryProcessor<AppInsightsFilter>();
 
-
             services.IncludeRegistry<CoreServices>();
+            services.IncludeRegistry<WebAppServices>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

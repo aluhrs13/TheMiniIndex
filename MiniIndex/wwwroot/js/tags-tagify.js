@@ -3,9 +3,10 @@ import '@yaireo/tagify/dist/tagify.css'
 
 var controller;
 
-var input = document.querySelector('textarea#tagsInput');
+var tagsInput = document.querySelector('textarea#tagsInput');
+var tagsValue = document.querySelector('input#tagsValue');
 
-var tagify = new Tagify(input, {
+var tagify = new Tagify(tagsInput, {
     enforceWhitelist: true,
     dropdown: {
         enabled: 1,
@@ -15,9 +16,8 @@ var tagify = new Tagify(input, {
 });
 
 tagify.on('input', onInput);
-tagify.on('add', onTagAdded);
 
-var parentForm = input.closest('form');
+var parentForm = tagsInput.closest('form');
 console.log(parentForm);
 
 parentForm.onsubmit = onFormSubmitted;
@@ -39,10 +39,6 @@ function onInput(e) {
         })
 }
 
-function onTagAdded(e) {
-    var tagValue = e.detail.data.value;
-    e.data = tagValue;
-}
-
 function onFormSubmitted(e) {
+    tagsValue.value = JSON.parse(tagsInput.value).map(x => x.value).join();
 }
