@@ -6,13 +6,16 @@ var controller;
 var tagsInput = document.querySelector('textarea#tagsInput');
 var tagsValue = document.querySelector('input#tagsValue');
 
+tagsInput.value = tagsValue.value;
+var currentTags = tagsValue.value.split(',');
+
 var tagify = new Tagify(tagsInput, {
     enforceWhitelist: true,
     dropdown: {
         enabled: 1,
         position: "all"
     },
-    whitelist: []
+    whitelist: currentTags
 });
 
 tagify.on('input', onInput);
