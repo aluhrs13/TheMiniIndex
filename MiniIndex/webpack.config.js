@@ -6,7 +6,7 @@ module.exports = {
         site: './wwwroot/js/site.js',
         bootstrapjs: './wwwroot/js/bootstrapjs.js',
         validation: './wwwroot/js/validation.js',
-        tags: './wwwroot/js/tags-selectized.js',
+        tags: './wwwroot/js/tags-tagify.js',
         stars: './wwwroot/js/stars.js'
     },
     output: {
@@ -21,8 +21,9 @@ module.exports = {
             { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
             { test: /\.(woff|woff2)$/, loader: "url-loader?prefix=font/&limit=5000" },
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
+            { test: /\.otf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
             { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-            { test: /\.(png|jpe?g|gif)$/i, loader: 'file-loader' }
+            { test: /\.png$/, loader: "file-loader" }
         ]
     },
     plugins: [

@@ -1,0 +1,66 @@
+﻿@model MiniIndex.Minis.BrowseModel
+@using Anaximander.Linq
+
+@{
+    ViewData["Title"] = "Browse Minis";
+
+    int pageRangeSize = 3;
+
+    var pagesToLink = Enumerable.Range(1, Model.Minis.TotalPages)
+        .Where(i => i <= pageRangeSize || Math.Abs(Model.Minis.PageIndex - i) <= pageRangeSize || Math.Abs(Model.Minis.TotalPages - i) < pageRangeSize)
+        .Distinct()
+        .OrderBy(x => x)
+        .BoxWhile((a, b) => b - a == 1);
+}
+
+@section Scripts
+{
+    <script type="module" src="~/dist/tags.entry.js" defer></script>
+    <link rel="stylesheet" href="~/dist/tags.css">
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <div class="sidebar-item container-fluid">
+                <h3>Search the Index</h3>
+
+                @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="content-section container-fluid">
+                <h3>Results</h3>
+
+                @await Html.PartialAsync("MiniListView", Model.Minis)
+            </div>
+            <div>
+                @foreach (var pageGroup in pagesToLink.Select((x, i) => (pages: x, groupIndex: i)))
+                {
+                    if (pageGroup.groupIndex != 0)
+                    {
+                        <span> ... </span>
+                    }
+
+                    @foreach (var pageIndex in pageGroup.pages)
+                    {
+                        @if (pageIndex == Model.Minis.PageIndex)
+                        {
+                            <span><b><u>@pageIndex</u></b></span>
+                        }
+                        else
+                        {
+                            @Html.ActionLink(pageIndex.ToString(), "BrowseMinis", "Minis", new
+                                {
+                                    searchString = Model.SearchModel.SearchString,
+                                    pageSize = Model.Minis.PageSize,
+                                    pageIndex
+                                },
+                                new { @class = "btn" })
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

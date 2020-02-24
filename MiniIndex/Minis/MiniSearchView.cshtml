@@ -1,0 +1,44 @@
+﻿@model MiniIndex.Minis.MiniSearchModel
+
+<div class="container">
+    <div class="col form">
+        @using (Html.BeginForm(FormMethod.Get))
+        {
+            <div class="row form-group">
+                @Html.LabelFor(x => x.SearchString, "Search")
+                @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control col", placeholder = "Search for..." })
+            </div>
+
+            <div class="row form-group">
+                <div class="col">
+                    <div class="row">
+                        @Html.LabelFor(x => x.Tags, "Tags")
+                    </div>
+                    <div class="row">
+                        <textarea id='tagsInput' class="row col" placeholder="Find tags..."></textarea>
+                        @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col form-group">
+                <div class="row">
+                    @Html.LabelFor(x => x.FreeOnly, "Free minis only",
+                       new
+                       {
+                           @class = "form-check-label"
+                       })
+                    @Html.CheckBoxFor(x => x.FreeOnly,
+                        new
+                        {
+                            @class = "form-check-input"
+                        })
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
