@@ -94,8 +94,6 @@ namespace MiniIndex
             app.UseCookiePolicy();
             app.UseAuthentication();
 
-            app.UseNodeModules();
-
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
