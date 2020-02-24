@@ -1,6 +1,3 @@
 {
-  "ThingiverseToken": "",
-  "ConnectionStrings": {
-    "MiniIndexContext": "Server=.;Database=MiniIndex;User id=sa;Password=#Mq25ytIxm08GsXR"
-  }
+  "ThingiverseToken": ""
 }
