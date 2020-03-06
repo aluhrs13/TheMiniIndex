@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry: {
-        site: './wwwroot/js/site.js',
+        site: ['./wwwroot/js/site.js', './wwwroot/scss/site.scss'],
         bootstrapjs: './wwwroot/js/bootstrapjs.js',
         validation: './wwwroot/js/validation.js',
         tags: './wwwroot/js/tags-tagify.js',
@@ -23,7 +23,26 @@ module.exports = {
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
             { test: /\.otf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
             { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-            { test: /\.png$/, loader: "file-loader" }
+            { test: /\.png$/, loader: "file-loader" },
+            {
+                test: /\.(scss)$/,
+                use: [{
+                    loader: 'style-loader', // inject CSS to page
+                }, {
+                    loader: 'css-loader', // translates CSS into CommonJS modules
+                }, {
+                    loader: 'postcss-loader', // Run postcss actions
+                    options: {
+                        plugins: function () { // postcss plugins, can be exported to postcss.config.js
+                            return [
+                                require('autoprefixer')
+                            ];
+                        }
+                    }
+                }, {
+                    loader: 'sass-loader' // compiles Sass to CSS
+                }]
+            },
         ]
     },
     plugins: [
