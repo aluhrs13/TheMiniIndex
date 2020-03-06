@@ -63,7 +63,9 @@
                                 {
                                     searchString = Model.SearchModel.SearchString,
                                     pageSize = Model.Minis.PageSize,
-                                    pageIndex
+                                    pageIndex,
+                                    FreeOnly = Model.SearchModel.FreeOnly,
+                                    Tags = string.Join(",", Model.SearchModel.Tags)
                                 },
                                 new { @class = "btn" })
                         }
