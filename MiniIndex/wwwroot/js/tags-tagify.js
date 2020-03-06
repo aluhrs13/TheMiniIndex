@@ -12,9 +12,6 @@ var currentTags = tagsValue.value.split(',');
 var whitelistTags = currentTags;
 whitelistTags.push("Fantasy", "Scifi", "Historical", "Mini", "Scatter", "Tile", "Accessory");
 
-console.log(whitelistTags);
-console.log(currentTags);
-
 var tagify = new Tagify(tagsInput, {
     enforceWhitelist: true,
     dropdown: {
