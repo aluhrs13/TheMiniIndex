@@ -56,7 +56,6 @@ function onFormSubmitted(e) {
     }
 }
 
-
 $('.add-tagify').click(function () {
     tagify.addTags($(this).text());
 });

@@ -8,7 +8,6 @@
 
 @section Scripts
 {
-    <script type="module" src="~/dist/tags.entry.js" defer></script>
     <script type="module" src="~/dist/stars.entry.js" defer></script>
 }
 
@@ -40,12 +39,11 @@
     }
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
 <div class="container">
     <p id="miniid" style="display:none;">@Model.Mini.ID</p>
+    <div>
+        <a asp-page="./">Back to List</a>
+    </div>
     <h2>@Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a></h2>
     <hr />
 
@@ -178,11 +176,11 @@
                     <div class="add-tag-div">
 
                         @foreach (var Tag in Model.UnusedTags
-                          .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                              && m.Category != TagCategory.Genre
-                              && m.Category != TagCategory.OtherDescription
-                              && m.Category != TagCategory.CreatureName
-                              && m.Category != TagCategory.Use))
+                         .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                             && m.Category != TagCategory.Genre
+                             && m.Category != TagCategory.OtherDescription
+                             && m.Category != TagCategory.CreatureName
+                             && m.Category != TagCategory.Use))
                         {
                             @if (Tag.Category.ToString() != PreviousCategory)
                             {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MiniIndex.Minis
 {
-    [Route("dev/minis")]
+    [Route("/Minis")] 
     public class MinisController : Controller
     {
         public MinisController(IMapper mapper, IMediator mediator, TelemetryClient telemetry)

@@ -28,3 +28,70 @@ $('#toggle-star').click(function () {
 
     return false;
 });
+
+$('.add-tag').click(function () {
+    document.getElementById("AddedTags").innerHTML = document.getElementById("AddedTags").innerHTML.concat("<span class='badge badge-success'>" + this.innerHTML.substr(2, this.innerHTML.length) + "</span>");
+    console.log("Adding " + this.innerHTML);
+    $(this).fadeOut();
+    $.get({
+        url: "/MiniTags/Create/",
+        data: { mini: document.getElementById("miniid").innerHTML, tag: this.id },
+        complete: function () {
+        },
+    });
+
+    $('#tagSearch').val('');
+    return false;
+});
+
+$('.remove-tag').click(function () {
+    //document.getElementById("UnusedTags").innerHTML = document.getElementById("UnusedTags").innerHTML.concat("<span class='badge badge-success'>" + this.innerHTML.substr(2, this.innerHTML.length) + "</span>");
+
+    console.log("Removing " + this.innerHTML);
+    $.get({
+        url: "/MiniTags/Delete/",
+        data: { mini: document.getElementById("miniid").innerHTML, tag: this.id },
+        complete: function () {
+        },
+    });
+    $(this).hide();
+    return false;
+});
+
+$('#tagSearch').on('input', function (e) {
+    $('.add-tag').hide();
+    $('.add-tag-div').hide();
+    var tagFilter = $(this).val().trim().toLowerCase();
+
+    $('.add-tag').each(function () {
+        if ($(this).text().toLocaleLowerCase().indexOf(tagFilter) >= 0) {
+            $(this).show();
+            $(this).parent().show();
+        }
+    });
+
+    return false;
+});
+
+$('#AddNewTag').click(function () {
+    var newTag = $("#tagSearch").val();
+    document.getElementById("UsedTags").innerHTML = document.getElementById("UsedTags").innerHTML.concat("<span class='badge badge-success'>" + newTag + "</span>");
+    $.get({
+        url: "/MiniTags/Create/",
+        data: { mini: document.getElementById("miniid").innerHTML, tagName: newTag },
+        complete: function () {
+        },
+    });
+    return false;
+});
+
+$('.change-category').change(function () {
+    $.get({
+        url: "/Tags/Edit/",
+        data: { id: this.parentElement.parentElement.id, category: $(this).children("option:selected").text() },
+        complete: function () {
+        },
+    });
+
+    return false;
+});

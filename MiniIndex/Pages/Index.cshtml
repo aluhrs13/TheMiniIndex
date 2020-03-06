@@ -31,26 +31,38 @@
         </p>
     </div>
     <div class="row">
-        @foreach (var item in Model.Mini)
+        @foreach (var mini in Model.Mini)
         {
-            <div class="col-md-3" style="padding:4px;">
-                <div class="card shadow-sm">
-                    <a asp-page="/Minis/Details" asp-route-id="@item.ID">
-                        <img class="card-img-top" src="@item.Thumbnail" />
-                    </a>
-                    <div class="card-body @item.Status" align="center">
-                        <p class="card-title">
-                            @Html.DisplayFor(modelItem => item.Name)
+                <div class="col-md-3" style="margin-bottom:5px">
+                    <div class="card">
 
-                            <small class="text-muted">
-                                <a href="/Creators/Details?id=@item.Creator.ID">by @Html.DisplayFor(modelItem => item.Creator.Name)</a>
-                            </small>
+                        @if (mini.Sources.Any())
+                        {
+                            @:<div class="thumb-wrapper @mini.Sources.First().Site.SiteName">
+                            }
+                            else
+                            {
+                                @:<div class="thumb-wrapper">
+                                }
+                        <a href="/Minis/Details?id=@mini.ID">
+                            <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
+                            <span></span>
+                        </a>
                     </div>
+
+                    <div class="card-body @mini.Status">
+                        @Html.DisplayFor(modelItem => mini.Name)
+                        <br />
+                        <small class="text-muted">
+                            <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
+                        </small>
+                    </div>
+
                 </div>
-            </div>
-            }
+            @:</div>
+        }
     </div>
-    <hr/>
+    <hr />
     <div class="row">
         <div class="col-md-8">
             <a href="/Minis/" class="btn btn-block btn-primary">Browse all...</a>
