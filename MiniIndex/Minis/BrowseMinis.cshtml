@@ -19,22 +19,31 @@
     <link rel="stylesheet" href="~/dist/tags.css">
 }
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-3">
-            <div class="sidebar-item container-fluid">
-                <h3>Search the Index</h3>
+        <h2>Search the Index</h2>
+    </div>
 
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="sidebar-item container-fluid">
                 @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
             </div>
         </div>
-        <div class="col-9">
-            <div class="content-section container-fluid">
-                <h3>Results</h3>
 
+        <div class="col-lg-9">
+            @if (String.IsNullOrWhiteSpace(Model.SearchModel.SearchString))
+            {
+                <h2>Most Recent Results</h2>
+            }
+            else
+            {
+                <h2>Most Relevant Results</h2>
+            }
+            <div class="content-section container-fluid">
                 @await Html.PartialAsync("MiniListView", Model.Minis)
             </div>
-            <div>
+            <div align="center">
                 @foreach (var pageGroup in pagesToLink.Select((x, i) => (pages: x, groupIndex: i)))
                 {
                     if (pageGroup.groupIndex != 0)

@@ -6,6 +6,11 @@
     ViewData["ActivePage"] = ManageNavPages.Tags;
 }
 
+@section Scripts
+{
+    <script type="module" src="~/dist/stars.entry.js" defer></script>
+}
+
 @if (User.IsInRole("Moderator"))
 {
     <h4>Uncategorized Tags</h4>
@@ -23,25 +28,25 @@
         <tbody>
             @foreach (var item in Model.Tag)
             {
-            <tr id="@item.ID">
-                <td>
-                    @Html.DisplayFor(modelItem => item.TagName)
-                </td>
-                <td>
-                    <select asp-for="@item.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
-                        <option selected="selected" value=""></option>
-                    </select>
-                </td>
-                <td>
-                    @item.ID
-                </td>
-                <td>
-                    <a href="/Minis/Index/?SearchString=@item.TagName">View Minis</a>
-                </td>
-                <td>
-                    <a href="/Tags/Delete?id=@item.ID">Delete Tag</a>
-                </td>
-            </tr>
+                <tr id="@item.ID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TagName)
+                    </td>
+                    <td>
+                        <select asp-for="@item.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
+                            <option selected="selected" value=""></option>
+                        </select>
+                    </td>
+                    <td>
+                        @item.ID
+                    </td>
+                    <td>
+                        <a href="/Minis/Index/?SearchString=@item.TagName">View Minis</a>
+                    </td>
+                    <td>
+                        <a href="/Tags/Delete?id=@item.ID">Delete Tag</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

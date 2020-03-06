@@ -25,8 +25,11 @@ namespace MiniIndex.Minis.Handlers
             IQueryable<Mini> search = _context
                 .Set<Mini>()
                 .Include(m => m.Creator)
+                .Include(m => m.Sources)
+                    .ThenInclude(s => s.Site)
                 .Where(m => m.Status == Status.Approved)
-                .OrderByDescending(m => m.ID);
+                .OrderByDescending(m => m.ApprovedTime)
+                    .ThenByDescending(m => m.ID);
 
             if (request.FreeOnly)
             {

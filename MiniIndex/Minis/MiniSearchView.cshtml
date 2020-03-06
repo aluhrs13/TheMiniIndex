@@ -1,44 +1,60 @@
 ﻿@model MiniIndex.Minis.MiniSearchModel
 
-<div class="container">
-    <div class="col form">
+    <div class="container-fluid">
         @using (Html.BeginForm(FormMethod.Get))
         {
-            <div class="row form-group">
-                @Html.LabelFor(x => x.SearchString, "Search")
-                @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control col", placeholder = "Search for..." })
-            </div>
-
-            <div class="row form-group">
-                <div class="col">
-                    <div class="row">
-                        @Html.LabelFor(x => x.Tags, "Tags")
-                    </div>
-                    <div class="row">
-                        <textarea id='tagsInput' class="row col" placeholder="Find tags..."></textarea>
-                        @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col form-group">
-                <div class="row">
-                    @Html.LabelFor(x => x.FreeOnly, "Free minis only",
-                       new
-                       {
-                           @class = "form-check-label"
-                       })
+            <ul class="nav flex-column">
+                <li class="nav-item form-group">
+                    @Html.LabelFor(x => x.SearchString, "Search by name")
+                    @*TODO - Figure out how to get tooltips to work and uncomment this and the other icon.*@
+                    <span class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="right" title="Searches the name of the mini and orders by most relevant"><span class="oi oi-info"></span></span>
+                    @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control", placeholder = "Search for..." })
+                </li>
+                <li class="nav-item form-group">
+                    @Html.LabelFor(x => x.Tags, "Filter by tags")
+                    <span class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="right" title="Show only Minis with the selected tags. If no name search is specified, orders by most recently added"><span class="oi oi-info"></span></span>
+                    <input id="tagsInput" class="form-control" type="text" placeholder="Find tags..." />
+                    @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
+                </li>
+                <li class="nav-item form-group form-check">
                     @Html.CheckBoxFor(x => x.FreeOnly,
                         new
                         {
                             @class = "form-check-input"
                         })
-                </div>
-            </div>
-
-            <div class="row form-group">
-                <input type="submit" value="Search" class="btn btn-primary" />
-            </div>
+                    @Html.LabelFor(x => x.FreeOnly, "Free Minis Only",
+                        new
+                        {
+                            @class = "form-check-label"
+                        })
+                </li>
+                <li class="nav-item form-group">
+                    <input type="submit" value="Search" class="btn btn-primary btn-block" />
+                </li>
+            </ul>
         }
+        <hr/>
+        <h3>Common Tags</h3>
+        <h4>Genres</h4>
+        <a id="Fantasy" class="add-tagify btn btn-secondary" href="#">
+            Fantasy
+        </a>
+        <a id="Scifi" class="add-tagify btn btn-secondary" href="#">
+            Scifi
+        </a>
+        <a id="Historical" class="add-tagify btn btn-secondary" href="#">
+            Historical
+        </a>
+        <h4>Uses</h4>
+        <a id="Mini" class="add-tagify btn btn-secondary" href="#">Mini</a>
+        <a id="Scatter" class="add-tagify btn btn-secondary" href="#">
+            Scatter
+        </a>
+        <a id="Tile" class="add-tagify btn btn-secondary" href="#">
+            Tile
+        </a>
+        <a id="Accessory" class="add-tagify btn btn-secondary" href="#">
+            Accessory
+        </a>
+        <hr/>
     </div>
-</div>

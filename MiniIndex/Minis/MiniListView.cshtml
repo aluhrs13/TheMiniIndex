@@ -6,36 +6,55 @@
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row">
+            @if (Model.Count() == 0)
+            {
+                <div align="center">
+                    <h1>No Minis found. Try adjusting your filters.</h1>
+                        <hr />
+                    <h2>If you find a mini that matches on Thingiverse or elsewhere, come back and <a href="/Minis/Create">add it here</a> so that the next person can find it easier :)</h2>
+                </div>
+            }
+
             @foreach (var mini in Model)
             {
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <a href="/Minis/Details?id=@mini.ID">
-                            <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
-                        </a>
-                        <div class="card-body @mini.Status" align="center">
-                            <p class="card-title">
-                                @Html.DisplayFor(modelItem => mini.Name)
+                <div class="col-md-4" style="margin-bottom:5px">
+                    <div class="card">
 
-                                <small class="text-muted">
-                                    <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
-                                </small>
-                                @if (mini.Status == Status.Approved)
-                                {
+                            @if (mini.Sources.Any())
+                            {
+                                @:<div class="thumb-wrapper @mini.Sources.First().Site.SiteName">
+                            }
+                            else
+                            {
+                                @:<div class="thumb-wrapper">
+                            }                            
+                            <a href="/Minis/Details?id=@mini.ID">
+                                <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
+                                <span></span>
+                            </a>
+                        </div>
 
-                                }
-                                else if (mini.Status == Status.Pending)
-                                {
+                        <div class="card-body @mini.Status">
+                            @Html.DisplayFor(modelItem => mini.Name)
+                            <br />
+                            <small class="text-muted">
+                                <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
+                            </small>
+
+
+                            @if (mini.Status == Status.Pending)
+                            {
                                 <p><b>Pending admin approval</b></p>
                             }
                             else if (mini.Status == Status.Rejected)
                             {
                                 <p><b>Rejected by admin</b></p>
                             }
-                            </div>
                         </div>
+
                     </div>
-                }
+                @:</div>
+            }
         </div>
     </div>
 </div>

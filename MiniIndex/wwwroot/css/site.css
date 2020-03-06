@@ -36,6 +36,10 @@ body {
     }
 }
 
+.add-tagify{
+    margin-bottom: 5px;
+}
+
 .Pending {
     background-color: #ffc107;
 }
@@ -46,6 +50,11 @@ body {
 
 .card-img-top {
     object-fit:contain;
+}
+
+.Thingiverse {
+    background-color: #3F8CFE !important;
+    border-color: #3F8CFE !important;
 }
 
 .thumb-wrapper.Thingiverse span {
