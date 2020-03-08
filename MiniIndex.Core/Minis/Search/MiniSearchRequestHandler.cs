@@ -54,6 +54,8 @@ namespace MiniIndex.Minis.Handlers
                     .Where(s => !String.IsNullOrEmpty(s))
                     .ToArray();
 
+                IQueryable<Mini> tagSearch = search;
+
                 foreach (var term in searchTerms)
                 {
                     search = search
@@ -65,6 +67,22 @@ namespace MiniIndex.Minis.Handlers
                         .ThenBy(m => m.Name.ToUpper().IndexOf(term))                        // the earlier our term appears in the name, the more likely it is to be relevant (particularly with substring matches)
                         .ThenByDescending(m => m.ApprovedTime)
                         .ThenBy(m => m.Name);
+
+                    //Lots of people are trying to search only with one or two words that really should just be tag searches
+                    //If there's no tags passed, this try to do a tag search in addition to the text-based search
+                    if(request.Tags.Count() == 0)
+                    {
+                        tagSearch = tagSearch
+                            .Where(m => m.MiniTags
+                                .Select(x => x.Tag)
+                                .Any(t => t.TagName == term)
+                            );
+                    }
+                }
+
+                if (request.Tags.Count() == 0)
+                {
+                    search = search.Union(tagSearch);
                 }
             }
 
