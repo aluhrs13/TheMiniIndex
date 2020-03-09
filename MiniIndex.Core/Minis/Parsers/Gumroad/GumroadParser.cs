@@ -66,7 +66,7 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
                 Link = miniProperties["url"]
             };
 
-            mini.Cost = Int32.Parse(miniProperties["price"]);
+            mini.Cost = Int32.Parse(miniProperties["price"].Split(".").First());
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
 
             return mini;
