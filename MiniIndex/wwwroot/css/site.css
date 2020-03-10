@@ -110,6 +110,16 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
     background: transparent url('../images/SourceSiteIcons/Cults3d.png') no-repeat;
 }
 
+.thumb-wrapper.Wargaming3d span {
+    background: transparent url('../images/SourceSiteIcons/Wargaming3d.png') no-repeat;
+}
+
+.Wargaming3d {
+    background-color: #41533b !important;
+    border-color: #41533b !important;
+    color: white !important;
+}
+
 .thumb-wrapper{
     position: relative;
 }

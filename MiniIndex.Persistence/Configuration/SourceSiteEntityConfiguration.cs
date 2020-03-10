@@ -18,6 +18,7 @@ namespace MiniIndex.Persistence.Configuration
                 .HasValue<PatreonSource>("Patreon")
                 .HasValue<MyMiniFactorySource>("MyMiniFactory")
                 .HasValue<Cults3dSource>("Cults3d")
+                .HasValue<Wargaming3dSource>("Wargaming3d")
                 .HasValue<WebsiteSource>("Website");
 
             builder.Ignore(x => x.BaseUri);
