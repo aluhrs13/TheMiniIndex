@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MiniIndex.Core.Minis.Parsers.Cults3d
+namespace MiniIndex.Core.Minis.Parsers.Wargaming3d
 {
     public class Wargaming3dParser : IParser
     {

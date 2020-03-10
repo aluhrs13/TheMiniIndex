@@ -120,7 +120,17 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
     color: white !important;
 }
 
-.thumb-wrapper{
+.thumb-wrapper.DuncanShadow span {
+    background: transparent url('../images/SourceSiteIcons/DuncanShadow.png') no-repeat;
+}
+
+.DuncanShadow {
+    background-color: #4E2B07 !important;
+    border-color: #4E2B07 !important;
+    color: white !important;
+}
+
+.thumb-wrapper {
     position: relative;
 }
 
