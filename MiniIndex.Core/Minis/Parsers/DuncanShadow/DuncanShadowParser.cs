@@ -51,7 +51,7 @@ namespace MiniIndex.Core.Minis.Parsers.DuncanShadow
             };
 
             mini.Cost = Int32.Parse(htmlDoc.DocumentNode.SelectNodes("//meta").Where(n => n.Attributes.Any(a => a.Value == "product:price:amount")).First()
-                    .Attributes.Where(a => a.Name == "content").First().Value);
+                    .Attributes.Where(a => a.Name == "content").First().Value.Split('.')[0]);
 
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
 
