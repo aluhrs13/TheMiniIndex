@@ -1,12 +1,9 @@
 ﻿using Azure.Storage;
 using Azure.Storage.Blobs;
-using Microsoft.AspNetCore.Http;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MiniIndex.Core.Utilities
@@ -18,7 +15,7 @@ namespace MiniIndex.Core.Utilities
             Stream fileStream;
             MemoryStream uploadStream = new MemoryStream();
 
-
+            //Configure blob and connect
             Uri blobUri = new Uri("https://" +
                                   _storageConfig.AccountName +
                                   ".blob.core.windows.net/" +
@@ -30,21 +27,28 @@ namespace MiniIndex.Core.Utilities
 
             BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
 
+            //Get the current image into a stream
             using (System.Net.WebClient webClient = new System.Net.WebClient())
             {
                 fileStream = webClient.OpenRead(url);
-
             }
 
-
-            //TODO - Resize smarter, not everything is a square
+            //Load image and resize it before uploading
             Image image = Image.Load(fileStream);
-            image.Mutate(x => x.Resize(480, 480));
+
+            //Resizing to 0 automatically maintains aspect ratio
+            if (image.Width > image.Height)
+            {
+                image.Mutate(x => x.Resize(480, 0));
+            }
+            else
+            {
+                image.Mutate(x => x.Resize(0, 480));
+            }
 
             image.SaveAsJpeg(uploadStream);
 
             uploadStream.Position = 0;
-
             await blobClient.UploadAsync(uploadStream);
 
             return await Task.FromResult(true);

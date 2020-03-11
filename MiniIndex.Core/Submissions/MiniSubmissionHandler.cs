@@ -55,9 +55,12 @@ namespace MiniIndex.Core.Submissions
 
             await _context.SaveChangesAsync();
 
-            if (await UploadThumbnail(mini))
+            if (!String.IsNullOrEmpty(storageConfig.AccountName))
             {
-                await _context.SaveChangesAsync();
+                if (await UploadThumbnail(mini))
+                {
+                    await _context.SaveChangesAsync();
+                }
             }
 
             return mini;
