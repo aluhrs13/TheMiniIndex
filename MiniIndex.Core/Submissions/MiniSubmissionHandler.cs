@@ -104,11 +104,15 @@ namespace MiniIndex.Core.Submissions
         private async Task<bool> UploadThumbnail(Mini mini)
         {
             string imgURL = mini.Thumbnail;
-            string blobLocation = mini.ID.ToString()+Path.GetExtension(imgURL);
+            string MiniID = mini.ID.ToString();
 
-            if(await StorageHelper.UploadFileToStorage(mini.Thumbnail, blobLocation, storageConfig))
+            if(await StorageHelper.UploadFileToStorage(mini.Thumbnail, MiniID, storageConfig))
             {
-                mini.Thumbnail = "https://miniindex.blob.core.windows.net/images/"+blobLocation;
+                mini.Thumbnail = "https://" +
+                                    storageConfig.AccountName +
+                                    ".blob.core.windows.net/" +
+                                    storageConfig.ImageContainer +
+                                    "/"+ MiniID + ".jpg";
                 return true;
             }
             else
