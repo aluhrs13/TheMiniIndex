@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MiniIndex.Core;
+using MiniIndex.Core.Utilities;
 using MiniIndex.Persistence;
 using MiniIndex.Services;
 using WebPWrecover.Services;
@@ -71,6 +72,8 @@ namespace MiniIndex
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddApplicationInsightsTelemetry();
             services.AddApplicationInsightsTelemetryProcessor<AppInsightsFilter>();
+            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
+
 
             services.IncludeRegistry<CoreServices>();
             services.IncludeRegistry<WebAppServices>();

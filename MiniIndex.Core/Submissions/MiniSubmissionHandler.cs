@@ -1,9 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MiniIndex.Core.Minis.Parsers;
+using MiniIndex.Core.Utilities;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,12 +17,14 @@ namespace MiniIndex.Core.Submissions
 {
     public class MiniSubmissionHandler : IRequestHandler<MiniSubmissionRequest, Mini>
     {
-        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers)
+        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers, IOptions<AzureStorageConfig> config)
         {
             _context = context;
             _parsers = parsers;
+            storageConfig = config.Value;
         }
 
+        private readonly AzureStorageConfig storageConfig = null;
         private readonly MiniIndexContext _context;
         private readonly IEnumerable<IParser> _parsers;
 
@@ -47,6 +54,11 @@ namespace MiniIndex.Core.Submissions
             await CorrectMiniCreator(mini, cancellationToken);
 
             await _context.SaveChangesAsync();
+
+            if (await UploadThumbnail(mini))
+            {
+                await _context.SaveChangesAsync();
+            }
 
             return mini;
         }
@@ -86,6 +98,22 @@ namespace MiniIndex.Core.Submissions
                 {
                     foundCreator.Sites.Add(currentSource.Site);
                 }
+            }
+        }
+
+        private async Task<bool> UploadThumbnail(Mini mini)
+        {
+            string imgURL = mini.Thumbnail;
+            string blobLocation = mini.ID.ToString()+Path.GetExtension(imgURL);
+
+            if(await StorageHelper.UploadFileToStorage(mini.Thumbnail, blobLocation, storageConfig))
+            {
+                mini.Thumbnail = "https://miniindex.blob.core.windows.net/images/"+blobLocation;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
