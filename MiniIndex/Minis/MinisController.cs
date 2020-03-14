@@ -55,6 +55,7 @@ namespace MiniIndex.Minis
                                                             { "SearchString", searchRequest.SearchString },
                                                             { "Tags", String.Join(",", searchRequest.Tags) },
                                                             { "FreeOnly", searchRequest.FreeOnly.ToString() },
+                                                            { "IncludeUnapproved", searchRequest.IncludeUnapproved.ToString() },
                                                             { "HadResults", searchResult.Count>0 ? "True" : "False" },
                                                             { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()}
                                                         });

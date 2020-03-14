@@ -47,12 +47,24 @@ namespace MiniIndex.Pages.Minis
                 {
                     Mini.Status = Status.Approved;
                     Mini.ApprovedTime = DateTime.Now;
-                    _context.Attach(Mini).State = EntityState.Modified; //TODO: is this needed? Change tracking should catch this...
+                    _context.Attach(Mini).State = EntityState.Modified;
+                }
+
+                if (NewStatus == "Pending")
+                {
+                    Mini.Status = Status.Pending;
+                    _context.Attach(Mini).State = EntityState.Modified;
                 }
 
                 if (NewStatus == "Rejected")
                 {
                     Mini.Status = Status.Rejected;
+                    _context.Attach(Mini).State = EntityState.Modified;
+                }
+
+                if (NewStatus == "Deleted")
+                {
+                    Mini.Status = Status.Deleted;
                     _context.Attach(Mini).State = EntityState.Modified;
                 }
 
