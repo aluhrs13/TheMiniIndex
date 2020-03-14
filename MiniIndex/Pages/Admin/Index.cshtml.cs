@@ -26,8 +26,8 @@ namespace MiniIndex.Pages.Admin
                         .Include(m => m.MiniTags)
                             .ThenInclude(mt => mt.Tag)
                         .Include(m => m.Creator)
-                        .Where(m => m.Status == Status.Pending)
-                        .OrderByDescending(m => m.MiniTags.Count())
+                        .Where(m => (m.Status == Status.Pending && m.MiniTags.Count>1) || m.Status == Status.Unindexed)
+                        .OrderByDescending(m => m.MiniTags.Count)
                         .AsNoTracking()
                         .ToListAsync();
         }

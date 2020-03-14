@@ -3,38 +3,50 @@
     <div class="container-fluid">
         @using (Html.BeginForm(FormMethod.Get))
         {
-            <ul class="nav flex-column">
-                <li class="nav-item form-group">
-                    @Html.LabelFor(x => x.SearchString, "Search by name")
-                    <a href="#" class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="right" title="Searches the name of the mini and orders by most relevant">
-                            <span class="oi oi-info"></span>
-                    </a> 
-                    @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control", placeholder = "Search for..." })
-                </li>
-                <li class="nav-item form-group">
-                    @Html.LabelFor(x => x.Tags, "Filter by tags")
-                    <a href="#" class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="right" title="Show only Minis with the selected tags. If no name search is specified, orders by most recently added">
-                            <span class="oi oi-info"></span>
-                    </a>
-                    <input id="tagsInput" class="form-control" type="text" placeholder="Find tags..." />
-                    @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
-                </li>
-                <li class="nav-item form-group form-check">
-                    @Html.CheckBoxFor(x => x.FreeOnly,
-                        new
-                        {
-                            @class = "form-check-input"
-                        })
-                    @Html.LabelFor(x => x.FreeOnly, "Free Minis Only",
-                        new
-                        {
-                            @class = "form-check-label"
-                        })
-                </li>
-                <li class="nav-item form-group">
-                    <input type="submit" value="Search" class="btn btn-primary btn-block" />
-                </li>
-            </ul>
+        <ul class="nav flex-column">
+            <li class="nav-item form-group">
+                @Html.LabelFor(x => x.SearchString, "Search by name")
+                <a href="#" class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="right" title="Searches the name of the mini and orders by most relevant">
+                    <span class="oi oi-info"></span>
+                </a>
+                @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control", placeholder = "Search for..." })
+            </li>
+            <li class="nav-item form-group">
+                @Html.LabelFor(x => x.Tags, "Filter by tags")
+                <a href="#" class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="right" title="Show only Minis with the selected tags. If no name search is specified, orders by most recently added">
+                    <span class="oi oi-info"></span>
+                </a>
+                <input id="tagsInput" class="form-control" type="text" placeholder="Find tags..." />
+                @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
+            </li>
+            <li class="nav-item form-group form-check">
+                @Html.CheckBoxFor(x => x.FreeOnly,
+                    new
+                    {
+                        @class = "form-check-input"
+                    })
+                @Html.LabelFor(x => x.FreeOnly, "Free Minis Only",
+                    new
+                    {
+                        @class = "form-check-label"
+                    })
+            </li>
+            <li class="nav-item form-group form-check">
+                @Html.CheckBoxFor(x => x.IncludeUnapproved,
+                    new
+                    {
+                        @class = "form-check-input"
+                    })
+                @Html.LabelFor(x => x.IncludeUnapproved, "Show unapproved and untagged Minis",
+                    new
+                    {
+                        @class = "form-check-label"
+                    })
+            </li>
+            <li class="nav-item form-group">
+                <input type="submit" value="Search" class="btn btn-primary btn-block" />
+            </li>
+        </ul>
         }
         <hr/>
         <h3>Common Tags</h3>
