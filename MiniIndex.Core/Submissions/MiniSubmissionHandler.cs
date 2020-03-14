@@ -48,6 +48,7 @@ namespace MiniIndex.Core.Submissions
 
             mini = await parser.ParseFromUrl(request.Url);
             mini.User = request.User;
+            mini.Status = Status.Unindexed;
 
             _context.Add(mini);
 

@@ -27,9 +27,18 @@ namespace MiniIndex.Minis.Handlers
                 .Include(m => m.Creator)
                 .Include(m => m.Sources)
                     .ThenInclude(s => s.Site)
-                .Where(m => m.Status == Status.Approved)
                 .OrderByDescending(m => m.ApprovedTime)
                     .ThenByDescending(m => m.ID);
+
+            //TODO - Can this be optimized?
+            if (request.IncludeUnapproved)
+            {
+                search = search.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending));
+            }
+            else
+            {
+                search = search.Where(m => m.Status == Status.Approved);
+            }
 
             if (request.FreeOnly)
             {
