@@ -1,9 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MiniIndex.Core.Minis.Parsers;
+using MiniIndex.Core.Utilities;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,12 +17,14 @@ namespace MiniIndex.Core.Submissions
 {
     public class MiniSubmissionHandler : IRequestHandler<MiniSubmissionRequest, Mini>
     {
-        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers)
+        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers, IOptions<AzureStorageConfig> config)
         {
             _context = context;
             _parsers = parsers;
+            storageConfig = config.Value;
         }
 
+        private readonly AzureStorageConfig storageConfig = null;
         private readonly MiniIndexContext _context;
         private readonly IEnumerable<IParser> _parsers;
 
@@ -48,6 +55,14 @@ namespace MiniIndex.Core.Submissions
             await CorrectMiniCreator(mini, cancellationToken);
 
             await _context.SaveChangesAsync();
+
+            if (!String.IsNullOrEmpty(storageConfig.AccountName))
+            {
+                if (await UploadThumbnail(mini))
+                {
+                    await _context.SaveChangesAsync();
+                }
+            }
 
             return mini;
         }
@@ -87,6 +102,26 @@ namespace MiniIndex.Core.Submissions
                 {
                     foundCreator.Sites.Add(currentSource.Site);
                 }
+            }
+        }
+
+        private async Task<bool> UploadThumbnail(Mini mini)
+        {
+            string imgURL = mini.Thumbnail;
+            string MiniID = mini.ID.ToString();
+
+            if(await StorageHelper.UploadFileToStorage(mini.Thumbnail, MiniID, storageConfig))
+            {
+                mini.Thumbnail = "https://" +
+                                    storageConfig.AccountName +
+                                    ".blob.core.windows.net/" +
+                                    storageConfig.ImageContainer +
+                                    "/"+ MiniID + ".jpg";
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
