@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using MiniIndex.Core.Submissions;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 using System;
@@ -12,12 +16,20 @@ namespace MiniIndex.API
     [Route("api/minis")]
     public class MinisController : Controller
     {
-        public MinisController(MiniIndexContext context)
+        public MinisController(
+                MiniIndexContext context,
+                IMediator mediator,
+                IConfiguration configuration)
         {
             _context = context;
+            _mediator = mediator;
+            _apiKey = configuration["AutoCreateKey"];
         }
 
         private readonly MiniIndexContext _context;
+        private readonly IMediator _mediator;
+        private readonly string _apiKey;
+        private object configuration;
 
         [HttpGet("check")]
         public async Task<IActionResult> FindExistingMini(Uri url)
@@ -36,6 +48,21 @@ namespace MiniIndex.API
 
             //TODO: look at using UrlHelper or LinkGenerator for this
             return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
+        }
+
+        [HttpGet("create")]
+        public async Task<IActionResult> CreateMini(Uri url, string key)
+        {
+            if(url == null || key != _apiKey){
+                return BadRequest();
+            }
+
+            IdentityUser user = await _context.Users.FirstAsync(u=>u.Email.Contains("aluhrs"));
+            Mini mini = await _mediator.Send(new MiniSubmissionRequest(url, user));
+
+            return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
+            //return Ok($"https://localhost:44386/Minis/Details?id={mini.ID}");
+
         }
     }
 }

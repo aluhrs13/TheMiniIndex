@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniIndex", "MiniIndex\Mini
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniIndex.Core", "MiniIndex.Core\MiniIndex.Core.csproj", "{B1439F79-634B-4E03-A7FF-F9E745A290D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniIndex.Models", "MiniIndex.Models\MiniIndex.Models.csproj", "{C03D37E2-E33A-4836-8A64-0301C1FF22D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniIndex.Models", "MiniIndex.Models\MiniIndex.Models.csproj", "{C03D37E2-E33A-4836-8A64-0301C1FF22D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniIndex.Persistence", "MiniIndex.Persistence\MiniIndex.Persistence.csproj", "{8C769CBA-3FA9-4179-A59B-713D08238FFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniIndex.Persistence", "MiniIndex.Persistence\MiniIndex.Persistence.csproj", "{8C769CBA-3FA9-4179-A59B-713D08238FFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniIndex.DiscordBot", "MiniIndex.DiscordBot\MiniIndex.DiscordBot.csproj", "{606C6825-8D45-44FA-A928-0DE356B02067}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8C769CBA-3FA9-4179-A59B-713D08238FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C769CBA-3FA9-4179-A59B-713D08238FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C769CBA-3FA9-4179-A59B-713D08238FFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{606C6825-8D45-44FA-A928-0DE356B02067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{606C6825-8D45-44FA-A928-0DE356B02067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{606C6825-8D45-44FA-A928-0DE356B02067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{606C6825-8D45-44FA-A928-0DE356B02067}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
