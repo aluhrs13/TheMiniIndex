@@ -77,18 +77,20 @@
                         <a class="nav-link" href="/Starred">Starred Minis</a>
                     </li>
                 }
+                <li class="nav-item">
+                    <a class="nav-link" href="/Minis/Help">Tag a Mini</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Minis/Create">Add a Mini</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Help improve TMI
+                        Feedback
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/Minis/Help">Tag Minis</a>
-                        <a class="dropdown-item" href="/Minis/Create">Add a Mini</a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="https://github.com/aluhrs13/TheMiniIndex" target="_blank"><span class="oi oi-code"></span> View our GitHub</a>
                         <a class="dropdown-item" href="https://discordapp.com/invite/FDtYRDP" target="_blank"><span class="oi oi-chat"></span> Join us on Disord</a>
                         <a class="dropdown-item" href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1UMDNUNlVURVhEQzlFUFI5UlEwR0ZISlk5Vi4u" target="_blank"><span class="oi oi-bullhorn"></span> Give us feedback</a>
-                        
                     </div>
                 </li>
                 @if (User.IsInRole("Moderator"))

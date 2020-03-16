@@ -62,7 +62,7 @@ namespace MiniIndex.Pages.Minis
                 return Page();
             }
 
-            return RedirectToPage("./Details", new { id = mini.ID });
+            return RedirectToPage("./Details", new { id = mini.ID, showHelp = "create" });
         }
     }
 }
