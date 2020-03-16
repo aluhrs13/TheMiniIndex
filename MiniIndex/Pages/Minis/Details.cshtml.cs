@@ -26,13 +26,13 @@ namespace MiniIndex.Pages.Minis
 
         public Mini Mini { get; set; }
         public List<Tag> UnusedTags { get; set; }
-        public List<Tag> MiscTags { get; set; }
-        public List<Tag> WordMatchingTags { get; set; }
         public List<Tag> RecommendedTags { get; set; }
         public bool IsStarred { get; set; }
+        public string ShowHelp { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, string showHelp="")
         {
+            ShowHelp = showHelp;
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
             if (id == null)
@@ -73,14 +73,12 @@ namespace MiniIndex.Pages.Minis
                 .ThenBy(m => m.TagName)
                 .ToList();
 
-            if (User.IsInRole("Moderator"))
-            {
-                string[] nameSplit = Mini.Name.ToUpperInvariant().Split(' ');
 
-                RecommendedTags = UnusedTags
-                    .Where(t => nameSplit.Contains(t.TagName.ToUpperInvariant()))
-                    .ToList();
-            }
+            string[] nameSplit = Mini.Name.ToUpperInvariant().Split(' ');
+
+            RecommendedTags = UnusedTags
+                .Where(t => nameSplit.Contains(t.TagName.ToUpperInvariant()))
+                .ToList();
 
             return Page();
         }

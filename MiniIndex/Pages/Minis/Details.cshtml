@@ -14,7 +14,7 @@
 <div>
     @if (User.IsInRole("Moderator"))
     {
-        <div class="card">
+        <div class="card shadow">
             <div class="card-body">
                 <h2 class="card-title">Moderate</h2>
                 @if (User.IsInRole("Administrator"))
@@ -53,6 +53,39 @@
     <div>
         <a asp-page="./">Back to List</a>
     </div>
+
+    @if (!String.IsNullOrEmpty(Model.ShowHelp))
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title">Tag Guidance</h2>
+                <p>
+                    <b>Thanks for contributing to The Mini Index!</b><br />
+                    We have some guidelines written about how to make your
+                    tags great, please read through them <a href="https://github.com/aluhrs13/TheMiniIndex/wiki/How-to-tag-Minis">here.</a> At a minimum, please make sure you include
+                    the genre, use, and any notable descriptions like the creature's name and type or race and gender.
+                    Your Mini will show up once a moderator gets a chance to look and approve it.
+                </p>
+                @if (Model.ShowHelp == "create")
+                {
+                    <p>If you're submitting a bunch of Minis from a single creator, we'll approve at most a few a day to not flood the front page with a single creator.</p>
+                    <a href="/Minis/Create" class="btn btn-primary">Add another Mini</a>
+                    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URVo3SDNGWTlENU5FNkw3VjRaNVJPVkVDRy4u" target="_blank" class="btn btn-secondary">
+                        Something doesn't look right
+                    </a>
+                }
+                @if (Model.ShowHelp == "tag")
+                {
+                    <a href="/Minis/Help" class="btn btn-primary">Tag another Mini</a>
+                    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URVo3SDNGWTlENU5FNkw3VjRaNVJPVkVDRy4u" target="_blank" class="btn btn-secondary">
+                        Something's wrong
+                    </a>
+                }
+            </div>
+        </div>
+        <br/>
+    }
+
     <h2>@Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a></h2>
     <hr />
 
@@ -98,7 +131,7 @@
             <h3>Tags</h3>
             @if (!SignInManager.IsSignedIn(User))
             {
-                <p><strong>Register an account and login to add or remove tags.</strong></p>
+                <p><strong><a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString">Register</a> an account or <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString">login</a> to add or remove tags.</strong></p>
             }
             <div id="UsedTags">
                 @foreach (var MiniTag in Model.Mini.MiniTags)
@@ -153,17 +186,15 @@
 
                 <div id="UnusedTags">
 
-                    @if (User.IsInRole("Moderator") && Model.RecommendedTags.Any())
-                    {
-                        <div class="add-tag-div">
-                            <h3 class="add-tag-header">Recommended Tags</h3>
-                            @foreach (var Tag in Model.RecommendedTags)
-                            {
-                                <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                            }
-                        </div>
-                        <hr />
-                    }
+                    <div class="add-tag-div">
+                        <h3 class="add-tag-header">Quick Tag</h3>
+                        @foreach (var Tag in Model.RecommendedTags)
+                        {
+                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                        }
+                    </div>
+
+                    <hr />
 
                     <div class="add-tag-div">
                         <h3 class="add-tag-header">Genre</h3>
@@ -185,11 +216,11 @@
                     <div class="add-tag-div">
 
                         @foreach (var Tag in Model.UnusedTags
-                         .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                             && m.Category != TagCategory.Genre
-                             && m.Category != TagCategory.OtherDescription
-                             && m.Category != TagCategory.CreatureName
-                             && m.Category != TagCategory.Use))
+                        .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                            && m.Category != TagCategory.Genre
+                            && m.Category != TagCategory.OtherDescription
+                            && m.Category != TagCategory.CreatureName
+                            && m.Category != TagCategory.Use))
                         {
                             @if (Tag.Category.ToString() != PreviousCategory)
                             {
