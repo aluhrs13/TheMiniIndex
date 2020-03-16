@@ -10,7 +10,6 @@ namespace MiniIndex.Minis
         public string Tags { get; set; }
 
         public bool FreeOnly { get; set; }
-        public bool IncludeUnapproved { get; set; }
 
         public SearchSupportingInfo SupportingInfo { get; set; }
         public SelectList TagOptions { get; internal set; }
