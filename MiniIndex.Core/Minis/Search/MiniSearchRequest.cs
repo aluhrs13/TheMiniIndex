@@ -22,7 +22,6 @@ namespace MiniIndex.Core.Minis.Search
             set => _tags = value ?? Enumerable.Empty<string>();
         }
         public bool FreeOnly { get; set; }
-        public bool IncludeUnapproved { get; set; }
 
         public PageInfo PageInfo { get; set; }
     }

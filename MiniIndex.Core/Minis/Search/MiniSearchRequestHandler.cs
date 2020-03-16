@@ -30,8 +30,7 @@ namespace MiniIndex.Minis.Handlers
                 .OrderByDescending(m => m.ApprovedTime)
                     .ThenByDescending(m => m.ID);
 
-            //TODO - Can this be optimized?
-            if (request.IncludeUnapproved)
+            if (request.Tags.Count() == 0)
             {
                 search = search.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending));
             }

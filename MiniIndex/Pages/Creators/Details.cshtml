@@ -1,4 +1,6 @@
 ﻿@page
+@using MiniIndex.Models
+
 @model MiniIndex.Pages.Creators.DetailsModel
 
 @{
@@ -29,27 +31,66 @@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+
+
+
+
+
+
         <div class="album py-5 bg-light">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row">
-                    @foreach (var item in Model.AllCreatorsMinis)
+                    @foreach (var mini in Model.AllCreatorsMinis)
                     {
-                        <div class="col-md-4">
-                            <div class="card mb-4 shadow-sm">
-                                <a asp-page="/Minis/Details" asp-route-id="@item.ID">
-                                    <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
+                        <div class="col-md-4" style="margin-bottom:5px">
+                            <div class="card">
+
+                                @if (mini.Sources.Any())
+                                {
+                                    @:<div class="thumb-wrapper @mini.Sources.First().Site.SiteName">
+                                    }
+                                    else
+                                    {
+                                        @:<div class="thumb-wrapper">
+                                        }
+                                <a href="/Minis/Details?id=@mini.ID">
+                                    <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
+                                    <span></span>
                                 </a>
-                                <div class="card-body @item.Status" align="center">
-                                    <p class="card-title">
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </p>
-                                </div>
                             </div>
+
+                            <div class="card-body @mini.Status">
+                                @Html.DisplayFor(modelItem => mini.Name)
+                                <br />
+                                <small class="text-muted">
+                                    <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
+                                </small>
+
+                                @if (mini.Status == Status.Pending)
+                                {
+                                    <p><b>Pending admin approval</b></p>
+                                }
+                                else if (mini.Status == Status.Rejected)
+                                {
+                                    <p><b>Rejected by admin</b></p>
+                                }
+                            </div>
+
                         </div>
-                    }
+                    @:</div>
+                }
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
     </div>
     <div class="tab-pane" id="thingiverse" role="tabpanel" aria-labelledby="thingiverse-tab">
         @if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource))
@@ -64,11 +105,11 @@
                                 @if (item.Status == Models.Status.Unindexed)
                                 {
                                     @:<div class="card mb-4 shadow-sm">
-                                }
-                                else
-                                {
-                                    @:<div class="card mb-4 shadow-sm" style="opacity:.5;">
-                                }
+                                    }
+                                    else
+                                    {
+                                        @:<div class="card mb-4 shadow-sm" style="opacity:.5;">
+                                        }
                                 <img class="card-img-top" src="@item.Thumbnail" width="314" height="236" />
                                 <div class="card-body @item.Status" align="center">
                                     <p class="card-title">
