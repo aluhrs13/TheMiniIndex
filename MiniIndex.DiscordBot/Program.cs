@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DSharpPlus;
 using Newtonsoft.Json;
 
-namespace MiniIndex.DiscordBot
+namespace Supporting.DiscordBot
 {
     class Program
     {

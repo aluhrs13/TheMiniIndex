@@ -10,7 +10,24 @@
             {
                 <div align="center">
                     <h1>No Minis found. Try adjusting your filters.</h1>
-                        <hr />
+                    <hr />
+                </div>
+
+                <div>
+                    <h2>Search by name</h2>
+                    <p>This searches the name of the model that you see for an exact match of each word an prioritizes the most relevant.</p>
+
+                    <h2>Filter by tags</h2>
+                    <p>This filters down the list of Minis searched to include only ones with the given tags.</p>
+
+                    <h2>Free Minis only</h2>
+                    <p>This will exclude any Minis that cost money to download the STL.</p>
+
+                </div>
+
+
+                <div align="center">
+                    <hr />
                     <h2>If you find a mini that matches on Thingiverse or elsewhere, come back and <a href="/Minis/Create">add it here</a> so that the next person can find it easier :)</h2>
                 </div>
             }
@@ -20,40 +37,40 @@
                 <div class="col-md-4" style="margin-bottom:5px">
                     <div class="card">
 
-                            @if (mini.Sources.Any())
-                            {
-                                @:<div class="thumb-wrapper @mini.Sources.First().Site.SiteName">
+                        @if (mini.Sources.Any())
+                        {
+                            @:<div class="thumb-wrapper @mini.Sources.First().Site.SiteName">
                             }
                             else
                             {
                                 @:<div class="thumb-wrapper">
-                            }                            
-                            <a href="/Minis/Details?id=@mini.ID">
-                                <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
-                                <span></span>
-                            </a>
-                        </div>
-
-                        <div class="card-body @mini.Status">
-                            @Html.DisplayFor(modelItem => mini.Name)
-                            <br />
-                            <small class="text-muted">
-                                <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
-                            </small>
-
-                            @if (mini.Status == Status.Pending)
-                            {
-                                <p><b>Pending admin approval</b></p>
-                            }
-                            else if (mini.Status == Status.Rejected)
-                            {
-                                <p><b>Rejected by admin</b></p>
-                            }
-                        </div>
-
+                                }
+                        <a href="/Minis/Details?id=@mini.ID">
+                            <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
+                            <span></span>
+                        </a>
                     </div>
-                @:</div>
-            }
+
+                    <div class="card-body @mini.Status">
+                        @Html.DisplayFor(modelItem => mini.Name)
+                        <br />
+                        <small class="text-muted">
+                            <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
+                        </small>
+
+                        @if (mini.Status == Status.Pending)
+                        {
+                            <p><b>Pending admin approval</b></p>
+                        }
+                        else if (mini.Status == Status.Rejected)
+                        {
+                            <p><b>Rejected by admin</b></p>
+                        }
+                    </div>
+
+                </div>
+            @:</div>
+        }
         </div>
-    </div>
+        </div>
 </div>

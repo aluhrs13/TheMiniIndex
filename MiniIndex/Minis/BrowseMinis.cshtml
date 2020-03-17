@@ -32,6 +32,18 @@
         </div>
 
         <div class="col-lg-9">
+            <div>
+                @if (Model.ShowRateResults)
+                {
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h2 class="card-title">Happy with your search results?</h2>
+                               Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
+                        </div>
+                    </div>
+                }
+            </div>
+            <br/>
             @if (String.IsNullOrWhiteSpace(Model.SearchModel.SearchString))
             {
                 <h2>Most Recent Results</h2>
@@ -65,7 +77,6 @@
                                     pageSize = Model.Minis.PageSize,
                                     pageIndex,
                                     FreeOnly = Model.SearchModel.FreeOnly,
-                                    IncludeUnapproved = Model.SearchModel.IncludeUnapproved,
                                     Tags = string.Join(",", Model.SearchModel.Tags)
                                 },
                                 new { @class = "btn" })
