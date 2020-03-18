@@ -14,10 +14,10 @@
         <thead>
             <tr>
                 <th>
-                    Source
+                    @Html.DisplayNameFor(model => model.Mini[0].Thumbnail)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Mini[0].Thumbnail)
+                    Source
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Mini[0].Name)
@@ -40,10 +40,10 @@
                 {
                     <tr>
                         <td>
-                            <img src="/images/SourceSiteIcons/@(item.Sources.First().Site.DisplayName).png" width="64" />
+                            <img src="@Html.DisplayFor(modelItem => item.Thumbnail)" width="64" />
                         </td>
                         <td>
-                            <img src="@Html.DisplayFor(modelItem => item.Thumbnail)" width="64" />
+                            @item.Sources.First().Site.DisplayName
                         </td>
                         <td>
                             <a asp-page="/Minis/Details" asp-route-id="@item.ID">
