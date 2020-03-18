@@ -57,7 +57,7 @@ namespace MiniIndex.API
                 return BadRequest();
             }
 
-            IdentityUser user = await _context.Users.FirstAsync(u=>u.Email.Contains("aluhrs"));
+            IdentityUser user = await _context.Users.FirstAsync(u=>u.Email.Contains("admin@theminiindex.com"));
             Mini mini = await _mediator.Send(new MiniSubmissionRequest(url, user));
 
             return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");

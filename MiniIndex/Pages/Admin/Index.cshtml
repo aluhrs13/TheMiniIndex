@@ -14,6 +14,9 @@
         <thead>
             <tr>
                 <th>
+                    Source
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Mini[0].Thumbnail)
                 </th>
                 <th>
@@ -37,6 +40,9 @@
                 {
                     <tr>
                         <td>
+                            <img src="/images/SourceSiteIcons/@(item.Sources.First().Site.DisplayName).png" width="64" />
+                        </td>
+                        <td>
                             <img src="@Html.DisplayFor(modelItem => item.Thumbnail)" width="64" />
                         </td>
                         <td>
@@ -45,11 +51,11 @@
                             </a>
                         </td>
                         <td>
-                            <a asp-page="/Minis/UpdateStatus" asp-route-MiniID="@item.ID" asp-route-NewStatus="Pending" class="btn btn-warning btn-block">
+                            <a asp-page="/Minis/UpdateStatus" asp-route-MiniID="@item.ID" asp-route-NewStatus="Pending" asp-route-Redirect="Admin" class="btn btn-warning btn-block">
                                 Visible
                             </a>
-                            <a asp-page="/Minis/UpdateStatus" asp-route-MiniID="@item.ID" asp-route-NewStatus="Rejected" class="btn btn-danger btn-block">
-                                Reject
+                            <a asp-page="/Minis/UpdateStatus" asp-route-MiniID="@item.ID" asp-route-NewStatus="Approved" asp-route-Redirect="Admin" class="btn btn-success btn-block">
+                                Approve
                             </a>
                         </td>
                         <td>

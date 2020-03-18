@@ -23,6 +23,8 @@ namespace MiniIndex.Pages.Minis
 
         [BindProperty(SupportsGet = true)]
         public string NewStatus { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Redirect { get; set; }
 
         [BindProperty]
         public Mini Mini { get; set; }
@@ -82,6 +84,11 @@ namespace MiniIndex.Pages.Minis
                     {
                         throw;
                     }
+                }
+
+                if (Redirect == "Admin")
+                {
+                    return RedirectToPage("/Admin");
                 }
 
                 return RedirectToPage("./Details", new { id = Mini.ID });

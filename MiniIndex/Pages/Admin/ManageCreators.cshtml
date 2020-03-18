@@ -1,0 +1,41 @@
+﻿@page
+@model MiniIndex.Pages.ManageCreators.ManageCreatorsModel
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Manage Creators";
+    ViewData["ActivePage"] = ManageNavPages.Creators;
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h4>Approve Minis</h4> 
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Creator Name
+                </th>
+                <th>
+                    Mini Count
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Creator)
+            {
+                <tr>
+                    <td>
+                        <a asp-page="/Creators/Details" asp-route-id="@item.Key.ID">
+                            @item.Key.Name
+                        </a>
+                    </td>
+                    <td>
+                        @item.Count()
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}

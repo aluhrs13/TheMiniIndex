@@ -1,0 +1,47 @@
+﻿@page
+@model MiniIndex.Pages.ManageUsers.ManageUsersModel
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Manage Users";
+    ViewData["ActivePage"] = ManageNavPages.Users;
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h4>All Users</h4> 
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    UserName
+                </th>
+                <th>
+                    MiniCount
+                </th>
+                <th>
+                    TagCount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.UserMinis)
+            {
+                <tr>
+                    <td>
+                        @item.Key.UserName
+                    </td>
+                    <td>
+                        @item.Count()
+                    </td>
+                    <td>
+                        @if (Model.UserTags.Where(mt => mt.Key == item.Key).Count()>0)
+                        {
+                            @Model.UserTags.Where(mt => mt.Key == item.Key).First().Count();
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
