@@ -60,7 +60,7 @@ namespace MiniIndex.Pages.Creators
             _telemetry.TrackEvent("ViewedCreator", new Dictionary<string, string> { { "CreatorId", Creator.ID.ToString() } });
 
             AllCreatorsMinis = new List<Mini>();
-            AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).ToList();
+            AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).Where(m => (m.Status!=Status.Deleted && m.Status!=Status.Rejected)).ToList();
 
             //TODO: minor hack; review this logic.
             string thingiverseUrlString = Creator.Sites.FirstOrDefault(s => s is ThingiverseSource)?.CreatorPageUri?.ToString();
