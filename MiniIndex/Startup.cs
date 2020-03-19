@@ -83,12 +83,14 @@ namespace MiniIndex
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseStatusCodePagesWithReExecute("/Errors/_{0}");
+                //app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseStatusCodePagesWithReExecute("/Errors/_{0}");
+                //app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
@@ -96,7 +98,6 @@ namespace MiniIndex
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-            app.UseStatusCodePagesWithReExecute("/Errors/_{0}");
 
             app.UseRouting();
             app.UseAuthorization();
