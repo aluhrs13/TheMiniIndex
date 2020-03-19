@@ -27,7 +27,7 @@ namespace MiniIndex.Core.Http
                     .WaitAndRetryAsync(3, (retryCount) =>
                         TimeSpan.FromSeconds(Math.Pow(retryCount, 2))
                         + TimeSpan.FromMilliseconds(jitter.NextDouble() * 500d)))
-                .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(30)))
+                .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(60)))
                 .AddPolicyHandler(circuitBreaker);
 
             return builder;
