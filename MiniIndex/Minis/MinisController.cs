@@ -34,6 +34,15 @@ namespace MiniIndex.Minis
             [FromQuery]int pageSize = 21,
             [FromQuery]int pageIndex = 1)
         {
+            //Mild hack - There's some case where pageIndex is hitting 0 and I can't tell how/why. (GitHub #182)
+            if (pageIndex == 0)
+            {
+                pageIndex = 1;
+            }
+
+            //I really don't want people manually setting massive page sizes, so hardcoding this for now.
+            pageSize = 21;
+
             PageInfo pagingInfo = new PageInfo(pageSize, pageIndex);
 
             MiniSearchRequest searchRequest = new MiniSearchRequest { PageInfo = pagingInfo };

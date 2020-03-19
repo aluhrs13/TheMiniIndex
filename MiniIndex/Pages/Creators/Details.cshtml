@@ -93,7 +93,7 @@
 
     </div>
     <div class="tab-pane" id="thingiverse" role="tabpanel" aria-labelledby="thingiverse-tab">
-        @if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource))
+        @if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource) && Model.ThingiverseMiniList.Count>0)
         {
             <div class="album py-5 bg-light">
                 <div class="container">
@@ -153,6 +153,11 @@
                     <a asp-page="./Details" asp-route-id="@Model.Creator.ID" asp-route-PageNumber="@nextPageNumber" class="btn btn-primary @nextDisabled">Next Page &gt;&gt;</a>
                 </div>
             </div>
+        }
+        @if (!String.IsNullOrEmpty(Model.ThingiverseError))
+        {
+            <br/>
+            <h3 align ="center" style="margin:40px;">@Model.ThingiverseError</h3>
         }
     </div>
 </div>
