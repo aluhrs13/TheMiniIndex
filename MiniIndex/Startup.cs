@@ -83,14 +83,12 @@ namespace MiniIndex
         {
             if (env.IsDevelopment())
             {
-                app.UseStatusCodePagesWithReExecute("/Errors/_{0}");
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
             else
             {
-                app.UseStatusCodePagesWithReExecute("/Errors/_{0}");
-                //app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
