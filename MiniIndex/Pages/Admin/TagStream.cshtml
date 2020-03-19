@@ -1,0 +1,54 @@
+﻿@page
+@model MiniIndex.Pages.TagStream.TagStreamModel
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Tag Stream";
+    ViewData["ActivePage"] = ManageNavPages.TagStream;
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h4>All Users</h4> 
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    UserName
+                </th>
+                <th>
+                    MiniCount
+                </th>
+                <th>
+                    TagCount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.UserTags)
+            {
+                @if (item.Mini.Status == Models.Status.Approved)
+                {
+                    @:<tr class="table-warning">
+                }
+                else
+                {
+                    @:<tr>
+                }
+                        <td>
+                            <img src="@Html.DisplayFor(modelItem => item.Mini.Thumbnail)" width="64" />
+                        </td>
+                        <td>
+                            @item.Tagger.UserName
+                        </td>
+                        <td>
+                            @item.Mini.Name
+                        </td>
+                        <td>
+                            @item.Tag.TagName
+                        </td>
+                    @:</tr>
+                }
+            </tbody>
+    </table>
+}
