@@ -67,7 +67,10 @@ namespace MiniIndex.Pages.Creators
 
             if (!String.IsNullOrEmpty(thingiverseUrlString))
             {
+                ThingiverseError = "Thingiverse is currently having API issues and as a result we've temporarily disabled this feature, sorry for the inconvenience.";
                 ThingiverseMiniList = new List<Mini>();
+
+                /*
                 using (HttpClient client = new HttpClient())
                 {
                     if (String.IsNullOrEmpty(PageNumber))
@@ -124,6 +127,7 @@ namespace MiniIndex.Pages.Creators
                         });
                     }
                 }
+                */
             }
             return Page();
         }
