@@ -96,6 +96,7 @@ namespace MiniIndex
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseStatusCodePagesWithReExecute("/Errors/_{0}");
 
             app.UseRouting();
             app.UseAuthorization();

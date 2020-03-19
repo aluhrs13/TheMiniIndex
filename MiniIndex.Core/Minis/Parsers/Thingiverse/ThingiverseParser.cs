@@ -66,7 +66,7 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
 
         public bool CanParse(Uri url)
         {
-            return url.Host.Replace("www.", "").Equals("thingiverse.com", StringComparison.OrdinalIgnoreCase);
+            return (url.Host.Replace("www.", "").Equals("thingiverse.com", StringComparison.OrdinalIgnoreCase) && url.ToString().Contains("thing:"));
         }
 
         private string GetThingIdFromUrl(Uri url)

@@ -38,6 +38,8 @@ namespace MiniIndex.Pages.Creators
 
         public int ParsedPageNumber { get; set; }
 
+        public string ThingiverseError { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -75,6 +77,11 @@ namespace MiniIndex.Pages.Creators
                     else
                     {
                         ParsedPageNumber = Int32.Parse(PageNumber);
+
+                        if (ParsedPageNumber <= 0)
+                        {
+                            ParsedPageNumber = 1;
+                        }
                     }
 
                     string ThingiverseUserName = thingiverseUrlString.Split('/').Last();
@@ -107,6 +114,14 @@ namespace MiniIndex.Pages.Creators
                                 ThingiverseMiniList.Add(NewMini);
                             }
                         }
+                    }
+                    else
+                    {
+                        ThingiverseError = "Received an error from Thingiverse's API. This is generally a problem with connectivity to Thingiverse on their side, please try again later.";
+                        _telemetry.TrackEvent("ThingiverseError", new Dictionary<string, string> {
+                            { "StatusCode", response.StatusCode.ToString() },
+                            { "ReasonPhrase", response.ReasonPhrase.ToString() }
+                        });
                     }
                 }
             }
