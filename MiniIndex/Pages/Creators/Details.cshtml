@@ -67,13 +67,9 @@
                                     <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
                                 </small>
 
-                                @if (mini.Status == Status.Pending)
+                                @if (mini.Status == Status.Pending || mini.Status == Status.Unindexed)
                                 {
                                     <p><b>Pending admin approval</b></p>
-                                }
-                                else if (mini.Status == Status.Rejected)
-                                {
-                                    <p><b>Rejected by admin</b></p>
                                 }
                             </div>
 

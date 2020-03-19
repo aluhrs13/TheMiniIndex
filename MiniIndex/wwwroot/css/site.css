@@ -47,6 +47,10 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
     background-color: #FFF5A6;
 }
 
+.Unindexed {
+    background-color: #FFF5A6;
+}
+
 .Rejected {
     background-color: #dc3545;
 }
