@@ -88,7 +88,7 @@ namespace MiniIndex.Pages.Minis
 
                 if (Redirect == "Admin")
                 {
-                    return RedirectToPage("/Admin");
+                    return RedirectToPage("/Admin/Index");
                 }
 
                 return RedirectToPage("./Details", new { id = Mini.ID });

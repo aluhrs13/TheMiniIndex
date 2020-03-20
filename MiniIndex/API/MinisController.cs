@@ -60,7 +60,15 @@ namespace MiniIndex.API
             IdentityUser user = await _context.Users.FirstAsync(u=>u.Email.Contains("admin@theminiindex.com"));
             Mini mini = await _mediator.Send(new MiniSubmissionRequest(url, user));
 
-            return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
+            if (mini != null)
+            {
+                return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
+            }
+            else
+            {
+                return new StatusCodeResult(501);
+            }
+            
             //return Ok($"https://localhost:44386/Minis/Details?id={mini.ID}");
 
         }

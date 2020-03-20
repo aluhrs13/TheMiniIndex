@@ -4,8 +4,6 @@
         @using (Html.BeginForm(FormMethod.Get))
         {
         <ul class="nav flex-column">
-            <asp:LinkButton id="myid" runat="server" OnClick="ViewHelp" />
-
             <li class="nav-item form-group">
                 @Html.LabelFor(x => x.SearchString, "Search by name")
                 <a href="#" class="badge badge-pill badge-primary" data-toggle="tooltip" data-placement="right" title="Searches the name of the mini and orders by most relevant">
