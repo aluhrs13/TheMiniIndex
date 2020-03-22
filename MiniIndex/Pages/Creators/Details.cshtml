@@ -55,7 +55,14 @@
                                         @:<div class="thumb-wrapper">
                                         }
                                 <a href="/Minis/Details?id=@mini.ID">
-                                    <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
+                                    @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
+                                    {
+                                        <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" width="314" height="236" />
+                                    }
+                                    else
+                                    {
+                                        <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
+                                    }
                                     <span></span>
                                 </a>
                             </div>

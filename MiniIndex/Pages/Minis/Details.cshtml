@@ -124,7 +124,14 @@
 
             <hr />
 
-            <img src="@Model.Mini.Thumbnail" class="img-fluid rounded" />
+                @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
+                {
+                    <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" />
+                }
+                else
+                {
+                    <img class="img-fluid rounded" src="@Model.Mini.Thumbnail" />
+                }
         </div>
 
         <div class="col-md-6">
