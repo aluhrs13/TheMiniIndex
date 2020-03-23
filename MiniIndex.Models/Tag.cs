@@ -18,7 +18,8 @@ namespace MiniIndex.Models
         Clothing,
         Location,
         OtherDescription,
-        Purpose
+        Purpose,
+        Scale
     }
 
     public class Tag

@@ -21,6 +21,7 @@
                 <th>Tag Name</th>
                 <th>Tag Category</th>
                 <th>ID</th>
+                <th>Count</th>
                 <th>View Tagged Minis</th>
                 <th>Delete Tag</th>
             </tr>
@@ -28,23 +29,26 @@
         <tbody>
             @foreach (var item in Model.Tag)
             {
-                <tr id="@item.ID">
+                <tr id="@item.Key.ID">
                     <td>
-                        @Html.DisplayFor(modelItem => item.TagName)
+                        @Html.DisplayFor(modelItem => item.Key.TagName)
                     </td>
                     <td>
-                        <select asp-for="@item.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
+                        <select asp-for="@item.Key.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
                             <option selected="selected" value=""></option>
                         </select>
                     </td>
                     <td>
-                        @item.ID
+                        @item.Key.ID
                     </td>
                     <td>
-                        <a href="/Minis/?Tags=@item.TagName">View Minis</a>
+                        @item.Count()
                     </td>
                     <td>
-                        <a href="/Tags/Delete?id=@item.ID">Delete Tag</a>
+                        <a href="/Minis/?Tags=@item.Key.TagName">View Minis</a>
+                    </td>
+                    <td>
+                        <a href="/Tags/Delete?id=@item.Key.ID">Delete Tag</a>
                     </td>
                 </tr>
             }

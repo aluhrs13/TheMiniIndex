@@ -18,7 +18,7 @@ namespace MiniIndex.Pages.Admin
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly MiniIndexContext _context;
-        public IList<Tag> Tag { get; set; }
+        public IList<IGrouping<Tag,MiniTag>> Tag { get; set; }
 
         public CategoryManagerModel(
                 UserManager<IdentityUser> userManager,
@@ -34,9 +34,12 @@ namespace MiniIndex.Pages.Admin
         {
             if (User.IsInRole("Moderator"))
             {
-                Tag = await _context.Tag
-                    .OrderBy(t=>t.Category)
-                    .ToListAsync();
+                Tag = _context.MiniTag
+                    .Include(t=>t.Tag)
+                    .AsEnumerable()
+                    .GroupBy(t=>t.Tag)
+                    .OrderByDescending(t=>t.Count())
+                    .ToList();
             }
         }
     }

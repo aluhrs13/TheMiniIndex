@@ -39,7 +39,7 @@
         <input type="hidden" asp-for="Tag.ID" />
         <input type="submit" value="Delete" class="btn btn-danger" @(Model.DisableSubmit ? "disabled" : "") /> |
         <a asp-page="/Admin/CategoryManager">Back to List</a> |
-        <a href="/Minis/Index/?SearchString=@Model.Tag.TagName">View Tagged Minis</a>
+        <a href="/Minis/?Tags=@Model.Tag.TagName">View Tagged Minis</a>
     </form>
 </div>
 </body>
