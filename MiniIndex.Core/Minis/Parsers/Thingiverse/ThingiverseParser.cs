@@ -44,7 +44,7 @@ namespace MiniIndex.Core.Minis.Parsers.Thingiverse
             Mini mini = new Mini
             {
                 Name = thing.name,
-                Status = Status.Pending,
+                Status = Status.Unindexed,
                 Cost = 0,
                 Link = thing.public_url,
                 Creator = creator

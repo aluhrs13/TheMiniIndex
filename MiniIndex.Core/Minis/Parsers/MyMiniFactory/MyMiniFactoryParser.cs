@@ -11,6 +11,13 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
 {
     public class MyMiniFactoryParser : IParser
     {
+        public MyMiniFactoryParser(MyMiniFactoryClient myMiniFactoryClient)
+        {
+            _myMiniFactoryClient = myMiniFactoryClient;
+        }
+
+        private readonly MyMiniFactoryClient _myMiniFactoryClient;
+        
         public string Site => "MyMiniFactory";
 
         public bool CanParse(Uri url)
@@ -30,7 +37,49 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
 
         public async Task<Mini> ParseFromUrl(Uri url)
         {
-            HtmlWeb web = new HtmlWeb();
+            string objectId = GetObjectIdFromUrl(url);
+
+            MyMiniFactoryModel.RootObject myModel = await _myMiniFactoryClient.GetObject(objectId);
+
+            if (myModel is null)
+            {
+                return null;
+            }
+
+            Creator creator = new Creator
+            {
+                Name = myModel.designer.username
+            };
+
+            MyMiniFactorySource source = new MyMiniFactorySource(creator, myModel.designer.profile_url);
+            creator.Sites.Add(source);
+
+            Mini mini = new Mini
+            {
+                Name = myModel.name,
+                Status = Status.Unindexed,
+                Cost = Int32.Parse(myModel.price.value),
+                Link = myModel.url,
+                Creator = creator
+            };
+
+            mini.Thumbnail = myModel.images.Where(i => i.is_primary == true).FirstOrDefault().large.url;
+
+            mini.Sources.Add(new MiniSourceSite(mini, source, url));
+
+            return mini;
+        }
+
+        private string GetObjectIdFromUrl(Uri url)
+        {
+            return url.AbsolutePath.Split('-').Last();
+        }
+    }
+}
+
+/*
+ 
+                HtmlWeb web = new HtmlWeb();
             HtmlDocument htmlDoc = await web.LoadFromWebAsync(url, null, null);
 
             HtmlNode creatorLink = htmlDoc.DocumentNode.SelectNodes("//a[@class=\"under-hover\"]")
@@ -66,6 +115,5 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
 
             return mini;
-        }
-    }
-}
+
+ * */
