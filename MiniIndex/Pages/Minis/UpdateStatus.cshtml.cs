@@ -49,6 +49,12 @@ namespace MiniIndex.Pages.Minis
                 {
                     Mini.Status = Status.Approved;
                     Mini.ApprovedTime = DateTime.Now;
+                    foreach(MiniTag mt in Mini.MiniTags)
+                    {
+                        mt.Status = Status.Approved;
+                        mt.ApprovedTime = DateTime.Now;
+                        mt.LastModifiedTime = DateTime.Now;
+                    }
                     _context.Attach(Mini).State = EntityState.Modified;
                 }
 
