@@ -43,6 +43,19 @@
     <script type="module" src="https://miniindex.azureedge.net/bootstrapjs.entry.js" defer></script>
     <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
 
+    <environment include="Development">
+        <script type="module" src="~/dist/validation.entry.js" defer></script>
+        <script type="module" src="~/dist/site.entry.js" defer></script>
+        <script type="module" src="~/dist/bootstrapjs.entry.js" defer></script>
+        <link rel="stylesheet" href="~/dist/site.css">
+    </environment>
+
+    <environment exclude="Development">
+        <script type="module" src="https://miniindex.azureedge.net/site.entry.js" defer></script>
+        <script type="module" src="https://miniindex.azureedge.net/bootstrapjs.entry.js" defer></script>
+        <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
+    </environment>
+
     <script type="text/javascript">
         var appInsights = window.appInsights || function (a) {
             function b(a) { c[a] = function () { var b = arguments; c.queue.push(function () { c[a].apply(c, b) }) } } var c = { config: a }, d = document, e = window; setTimeout(function () { var b = d.createElement("script"); b.src = a.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js", d.getElementsByTagName("script")[0].parentNode.appendChild(b) }); try { c.cookie = d.cookie } catch (a) { } c.queue = []; for (var f = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; f.length;)b("track" + f.pop()); if (b("setAuthenticatedUserContext"), b("clearAuthenticatedUserContext"), b("startTrackEvent"), b("stopTrackEvent"), b("startTrackPage"), b("stopTrackPage"), b("flush"), !a.disableExceptionTracking) { f = "onerror", b("_" + f); var g = e[f]; e[f] = function (a, b, d, e, h) { var i = g && g(a, b, d, e, h); return !0 !== i && c["_" + f](a, b, d, e, h), i } } return c

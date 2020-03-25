@@ -8,7 +8,13 @@
 
 @section Scripts
 {
-    <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
+    <environment include="Development">
+        <script type="module" src="~/dist/stars.entry.js" defer></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
+    </environment>
 }
 
 <div>
@@ -83,7 +89,7 @@
                 }
             </div>
         </div>
-        <br/>
+        <br />
     }
 
     <h2>@Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a></h2>
@@ -124,14 +130,14 @@
 
             <hr />
 
-                @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
-                {
-                    <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" />
-                }
-                else
-                {
-                    <img class="img-fluid rounded" src="@Model.Mini.Thumbnail" />
-                }
+            @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
+            {
+                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" />
+            }
+            else
+            {
+                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail" />
+            }
         </div>
 
         <div class="col-md-6">
@@ -223,11 +229,11 @@
                     <div class="add-tag-div">
 
                         @foreach (var Tag in Model.UnusedTags
-                        .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                            && m.Category != TagCategory.Genre
-                            && m.Category != TagCategory.OtherDescription
-                            && m.Category != TagCategory.CreatureName
-                            && m.Category != TagCategory.Use))
+                       .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                           && m.Category != TagCategory.Genre
+                           && m.Category != TagCategory.OtherDescription
+                           && m.Category != TagCategory.CreatureName
+                           && m.Category != TagCategory.Use))
                         {
                             @if (Tag.Category.ToString() != PreviousCategory)
                             {
