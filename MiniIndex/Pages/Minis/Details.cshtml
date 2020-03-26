@@ -154,11 +154,11 @@
                     {
                         @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
                         {
-                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <b>@MiniTag.Tag.TagName</b></a>
+                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <b>@MiniTag.Tag.TagName (@MiniTag.Status.ToString())</b></a>
                         }
                         else
                         {
-                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <small>@MiniTag.Tag.Category:</small> <b>@MiniTag.Tag.TagName</b></a>
+                            <a href="#" id="@MiniTag.Tag.ID" class="btn btn-outline-danger remove-tag" style="margin-top:5px;">- <small>@MiniTag.Tag.Category:</small> <b>@MiniTag.Tag.TagName (@MiniTag.Status.ToString())</b></a>
                         }
 
                     }

@@ -65,10 +65,11 @@ namespace MiniIndex.Pages.Minis
                 IsStarred = false;
             }
 
+            //TODO - 99% confident this is wrong.
             UnusedTags = _context
                 .Tag
                 .AsEnumerable()
-                .Except(Mini.MiniTags.Select(mt => mt.Tag))
+                .Except(Mini.MiniTags.Where(mt=>mt.Status==Status.Pending).Select(mt => mt.Tag))
                 .OrderBy(m => m.Category.ToString())
                 .ThenBy(m => m.TagName)
                 .ToList();

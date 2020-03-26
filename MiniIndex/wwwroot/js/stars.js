@@ -88,10 +88,31 @@ $('#AddNewTag').click(function () {
 $('.change-category').change(function () {
     $.get({
         url: "/Tags/Edit/",
-        data: { id: this.parentElement.parentElement.id, category: $(this).children("option:selected").text() },
+        data: { id: this.id, category: $(this).children("option:selected").text() },
         complete: function () {
         },
     });
 
+    return false;
+});
+
+
+$('.remove-pair').click(function () {
+    $.get({
+        url: "/TagPairs/Delete/",
+        data: { id: this.id },
+        complete: function () {
+        },
+    });
+    return false;
+});
+
+$('.new-pair').click(function () {
+    $.get({
+        url: "/TagPairs/Create/",
+        data: { tag1: this.id, tag2: document.getElementById("new-pair-tag").value, type: document.getElementById("new-pair-type").value },
+        complete: function () {
+        },
+    });
     return false;
 });

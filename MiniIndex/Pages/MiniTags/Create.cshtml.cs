@@ -128,11 +128,21 @@ namespace MiniIndex.Pages.MiniTags
                 tag.MiniTags.Add(newMiniTag);
                 mini.MiniTags.Add(newMiniTag);
                 _context.MiniTag.Add(newMiniTag);
+            }
+            else
+            {
+                newMiniTag = mini.MiniTags.Where(mt => mt.Tag.TagName == tag.TagName).First();
 
-                foreach (Tag pairedTag in FindPairedTags(tag))
+                if(newMiniTag.Status == Status.Pending || newMiniTag.Status == Status.Approved)
                 {
-                    AddMiniTag(mini, pairedTag, user);
+                    return;
                 }
+                newMiniTag.Status = Status.Pending;
+            }
+
+            foreach (Tag pairedTag in FindPairedTags(tag))
+            {
+                AddMiniTag(mini, pairedTag, user);
             }
         }
 
