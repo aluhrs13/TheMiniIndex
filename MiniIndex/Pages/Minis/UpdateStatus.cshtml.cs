@@ -38,7 +38,9 @@ namespace MiniIndex.Pages.Minis
                     return NotFound();
                 }
 
-                Mini = await _context.Mini.FirstOrDefaultAsync(m => m.ID == MiniID);
+                Mini = await _context.Mini
+                                .Include(m=>m.MiniTags)
+                                .FirstOrDefaultAsync(m => m.ID == MiniID);
 
                 if (Mini == null)
                 {
@@ -54,6 +56,7 @@ namespace MiniIndex.Pages.Minis
                         mt.Status = Status.Approved;
                         mt.ApprovedTime = DateTime.Now;
                         mt.LastModifiedTime = DateTime.Now;
+                        _context.Attach(mt).State = EntityState.Modified;
                     }
                     _context.Attach(Mini).State = EntityState.Modified;
                 }

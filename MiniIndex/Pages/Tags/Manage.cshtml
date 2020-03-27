@@ -27,7 +27,7 @@
                 <a asp-page="/Admin/CategoryManager">Back to all tags</a>
             </div>
 
-            <h1>@Model.Tag.TagName</h1>
+            <h1>@Model.Tag.ID - @Model.Tag.TagName</h1>
 
             <select id="@Model.Tag.ID" asp-for="@Model.Tag.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
                 <option selected="selected" value=""></option>

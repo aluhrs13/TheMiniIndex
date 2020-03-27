@@ -19,7 +19,9 @@ namespace MiniIndex.Models
         Location,
         OtherDescription,
         Purpose,
-        Scale
+        Scale,
+        SourceBook,
+        BookSection
     }
 
     public class Tag
