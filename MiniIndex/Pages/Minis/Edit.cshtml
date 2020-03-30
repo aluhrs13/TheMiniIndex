@@ -1,87 +1,217 @@
 ﻿@page
+@using MiniIndex.Models;
 @model MiniIndex.Pages.Minis.EditModel
-
 @inject SignInManager<IdentityUser> SignInManager
-
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
     ViewData["Title"] = "Edit";
 }
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts
+{
+    <environment include="Development">
+        <script type="module" src="~/dist/stars.entry.js" defer></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
+    </environment>
 }
 
-@if (User.IsInRole("Moderator"))
-{
-    <h2>Edit</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-6" align="center">
-            <a href="@Model.Mini.Link" class="btn btn-lg btn-primary">View On Thingiverse</a>
-            <hr />
-            <img src="@Model.Mini.Thumbnail" class="img-fluid rounded" />
-        </div>
-        <div class="col-md-6">
-            <form method="post">
+<div>
+    @if (User.IsInRole("Moderator"))
+    {
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title">Moderate</h2>
+                @if (User.IsInRole("Administrator"))
+                {
+                    <small>Submitted by @Model.Mini.User.Email</small>
+                }
 
-                <div class="form-group">
-                    <input asp-for="Mini.Link" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <input asp-for="Mini.Thumbnail" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <input asp-for="Mini.ID" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <input asp-for="Mini.Cost" class="form-control" />
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3">
-                        <label asp-for="Mini.Status" class="control-label"></label>
-                    </div>
-                    <div class="col-md-9">
-                        <select asp-for="Mini.Status" asp-items="Html.GetEnumSelectList<MiniIndex.Models.Status>().OrderBy(m => m.Text)" class="form-control">
-                            <option selected="selected" value=""></option>
-                        </select>
-                        <span asp-validation-for="Mini.Status" class="text-danger"></span>
-                    </div>
-                </div>
-
+                <p><b>Current Status - </b>@Model.Mini.Status</p>
+                <p><b>Cost - </b>@Model.Mini.Cost</p>
+                <p><b>Thumbnail - </b>@Model.Mini.Thumbnail</p>
                 <hr />
 
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Approved" class="btn btn-success">
+                    Approve
+                </a>
+                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Pending" class="btn btn-warning">
+                    Visible
+                </a>
+                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Rejected" class="btn btn-danger">
+                    Reject
+                </a>
+                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Deleted" class="btn btn-danger">
+                    Delete
+                </a>
+                <hr />
+                <a asp-page="./FixThumbnail" asp-route-id="@Model.Mini.ID" class="btn btn-primary">
+                    Fix Thumbnail
+                </a>
+            </div>
+        </div>
+    }
+</div>
 
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label asp-for="Mini.Name" class="control-label"></label>
-                        </div>
-                        <div class="col-md-9">
-                            <input asp-for="Mini.Name" class="form-control" readonly="readonly" />
-                            <span asp-validation-for="Mini.Name" class="text-danger"></span>
-                        </div>
-                    </div>
+<div class="container">
+    <p id="miniid" style="display:none;">@Model.Mini.ID</p>
+    <div>
+        <a asp-page="./Details" asp-route-id="@Model.Mini.ID">Back to Mini</a>
+    </div>
 
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label asp-for="Mini.Creator" class="control-label"></label>
-                        </div>
-                        <div class="col-md-9">
-                            <select asp-for="Mini.Creator.ID" class="form-control" asp-items="@Model.CreatorSL">
-                                <option value="">-- Select Creator --</option>
-                            </select>
-                            <span asp-validation-for="Mini.Creator" class="text-danger" />
-                        </div>
-                    </div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title">Tag Guidance</h2>
+            <p>
+                <b>Thanks for contributing to The Mini Index!</b><br />
+                We have some guidelines written about how to make your
+                tags great, please read through them <a href="https://github.com/aluhrs13/TheMiniIndex/wiki/How-to-tag-Minis">here.</a> At a minimum, please make sure you include
+                the genre, use, and any notable descriptions like the creature's name and type or race and gender.
+                Your Mini and tags will show up once a moderator gets a chance to look and approve it. If you're submitting a bunch of Minis from a single creator, we'll approve at most a few a day to not flood the front page with a single creator.
+            </p>
 
-                    <input type="submit" value="Submit!" class="btn btn-success" />
-                </div>
-            </form>
+            <p><b>We're also experimenting with automatic tag additions soon, when adding a tag you may notice more tags than the one you clicked getting added. Feel free to remove those, and if they
+                appear extremely wrong, hit the "Something's wrong" button below and let us know what you don't like!</b></p>
+
+            <a href="/Minis/Help" class="btn btn-primary">Tag another Mini</a>
+            <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URVo3SDNGWTlENU5FNkw3VjRaNVJPVkVDRy4u" target="_blank" class="btn btn-secondary">
+                Something's wrong
+            </a>
         </div>
     </div>
-}
+    <br />
+
+    <h2>@Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a></h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-4" align="center">
+            <div class="row">
+                <div class="col-md-12">
+                    @if (Model.Mini.Sources.Any())
+                    {
+                        @foreach (var miniSource in Model.Mini.Sources)
+                        {
+                            <a href="@miniSource.Link" class="btn btn-block btn-primary @miniSource.Site.SiteName" style="margin-top:10px;">View On @miniSource.Site.SiteName</a>
+                        }
+                    }
+                    else if (!String.IsNullOrEmpty(Model.Mini.Link))
+                    {
+                        <a href="@Html.DisplayFor(modelItem => Model.Mini.Link)" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
+                    }
+                </div>
+            </div>
+
+            <hr />
+
+            @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
+            {
+                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
+            }
+            else
+            {
+                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail" />
+            }
+        </div>
+
+        <div class="col-md-6">
+            <h3>Tags</h3>
+            <hr />
+            <!-- <img src="~/images/icons/apple-touch-icon-152x152.png" class="loading-spinner" style="display:none;"/> -->
+            <div id="UsedTags">
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <hr />
+
+            <h2>Add Tags</h2>
+            Filter <input id="tagSearch" type="text" />
+
+            <hr />
+
+            <div id="UnusedTags">
+
+                @if (Model.RecommendedTags.Count > 0)
+                {
+                    <div class="add-tag-div">
+                        <h3 class="add-tag-header">Quick Tag</h3>
+                        @foreach (var Tag in Model.RecommendedTags)
+                        {
+                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                        }
+                    </div>
+
+                    <hr />
+                }
+
+                <div class="add-tag-div">
+                    <h3 class="add-tag-header">Genre</h3>
+                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Genre"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                    }
+                </div>
+
+                <div class="add-tag-div">
+                    <h3 class="add-tag-header">Use</h3>
+                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Use"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                    }
+                </div>
+
+                @{var PreviousCategory = "";}
+                <div class="add-tag-div">
+
+                    @foreach (var Tag in Model.UnusedTags
+                .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                    && m.Category != TagCategory.Genre
+                    && m.Category != TagCategory.OtherDescription
+                    && m.Category != TagCategory.CreatureName
+                    && m.Category != TagCategory.Use))
+                    {
+                        @if (Tag.Category.ToString() != PreviousCategory)
+                        {
+                        @:</div>
+                        @:<div class="add-tag-div">
+                            if (string.IsNullOrEmpty(Tag.Category.ToString()))
+                            {
+                                <hr />
+                            }
+                            else
+                            {
+                                <h3 class="add-tag-header">@Tag.Category</h3>
+                            }
+
+                        }
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                        PreviousCategory = Tag.Category.ToString();
+                    }
+                </div>
+                <div class="add-tag-div">
+                    <h3 class="add-tag-header">Creature Name</h3>
+                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "CreatureName"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                    }
+                </div>
+                <hr />
+                <h3>Other Tags</h3>
+                @foreach (var Tag in Model.UnusedTags.Where(m => string.IsNullOrEmpty(m.Category.ToString()) || m.Category.ToString() == "OtherDescription"))
+                {
+                    <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                }
+            </div>
+            <a href="#" id="AddNewTag" class="btn btn-success" style="margin-top:5px;">+ Add as new tag</a>
+        </div>
+    </div>
+</div>

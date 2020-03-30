@@ -14,13 +14,19 @@
         <thead>
             <tr>
                 <th>
-                    UserName
+
                 </th>
                 <th>
-                    MiniCount
+                    Tag
                 </th>
                 <th>
-                    TagCount
+                    Mini Name
+                </th>
+                <th>
+                    Tagger
+                </th>
+                <th>
+
                 </th>
             </tr>
         </thead>
@@ -34,20 +40,30 @@
                 else
                 {
                     @:<tr>
-                }
-                        <td>
-                            <img src="@Html.DisplayFor(modelItem => item.Mini.Thumbnail)" width="64" />
-                        </td>
-                        <td>
-                            @item.Tagger.UserName
-                        </td>
-                        <td>
-                            @item.Mini.Name
-                        </td>
-                        <td>
-                            @item.Tag.TagName
-                        </td>
-                    @:</tr>
+}
+                <td>
+                    <a asp-page="/MiniTags/UpdateStatus" asp-route-MiniID="@item.MiniID" asp-route-TagID="@item.TagID" asp-route-NewStatus="Approved" class="btn btn-success btn-block">
+                        Approve
+                    </a>
+                    <a asp-page="/MiniTags/UpdateStatus" asp-route-MiniID="@item.MiniID" asp-route-TagID="@item.TagID" asp-route-NewStatus="Rejected" class="btn btn-danger btn-block">
+                        Reject
+                    </a>
+                </td>
+                <td>
+                    <img src="@Html.DisplayFor(modelItem => item.Mini.Thumbnail)" width="64" />
+                </td>
+                <td>
+                    @item.Tag.TagName
+                </td>
+                <td>
+                    <a asp-page="/Minis/Edit" asp-route-id="@item.Mini.ID">
+                        @item.Mini.Name
+                    </a>
+                </td>
+                <td>
+                    @item.Tagger.UserName
+                </td>
+            @:</tr>
                 }
             </tbody>
     </table>

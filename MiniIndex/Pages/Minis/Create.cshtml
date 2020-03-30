@@ -2,6 +2,8 @@
 @model MiniIndex.Pages.Minis.CreateModel
 @inject SignInManager<IdentityUser> SignInManager
 @inject MiniIndex.Core.CoreServiceInfo serviceInfo
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @{
     ViewData["Title"] = "Create";
@@ -10,13 +12,22 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="container" style="padding:50px;">
+        @if (Configuration["CreateWarningMessage"] != "")
+        {
+            <div class="alert alert-danger shadow-sm">
+                    <h2>Warning</h2>
+                    <p>
+                        @Configuration["CreateWarningMessage"];
+                    </p>
+            </div>
+        }
         <div class="row">
             <div class="colo-md-12">
                 <h1>
                     Add a mini
                 </h1>
                 <p font-size="smaller">
-                    Thank you for submitting a mini! Just paste a link to a Thingiverse, Shapeways, or Gumroad model below to get started. Please make sure you take a few seconds once completed to add some useful tags.
+                    Thank you for submitting a mini! Just paste a link to a model on one of our supported sites below to get started. Please make sure you take a few seconds once completed to add some useful tags.
                 </p>
             </div>
         </div>

@@ -1,5 +1,7 @@
 ﻿@page
 @using MiniIndex.Models
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @model MiniIndex.Pages.Creators.DetailsModel
 
@@ -57,7 +59,7 @@
                                 <a href="/Minis/Details?id=@mini.ID">
                                     @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
                                     {
-                                        <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" width="314" height="236" />
+                                        <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
                                     }
                                     else
                                     {
@@ -96,7 +98,7 @@
 
     </div>
     <div class="tab-pane" id="thingiverse" role="tabpanel" aria-labelledby="thingiverse-tab">
-        @if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource) && Model.ThingiverseMiniList.Count>0)
+        @if (Model.Creator.Sites.Any(s => s is MiniIndex.Models.SourceSites.ThingiverseSource) && Model.ThingiverseMiniList.Count > 0)
         {
             <div class="album py-5 bg-light">
                 <div class="container">
@@ -121,7 +123,7 @@
                                     <hr />
                                     @if (item.Status == Models.Status.Approved)
                                     {
-                                        <a asp-page="/Minis/Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Already indexed </a>
+                                        <a asp-page="/Minis/Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Already indexed </a>
                                     }
                                     else if (item.Status == Models.Status.Pending)
                                     {
@@ -159,8 +161,8 @@
         }
         @if (!String.IsNullOrEmpty(Model.ThingiverseError))
         {
-            <br/>
-            <h3 align ="center" style="margin:40px;">@Model.ThingiverseError</h3>
+            <br />
+            <h3 align="center" style="margin:40px;">@Model.ThingiverseError</h3>
         }
     </div>
 </div>

@@ -25,12 +25,13 @@ namespace MiniIndex.Pages.TagStream
         {
             UserTags = _context.MiniTag
                 .Include(mt => mt.Tagger)
-                .Include(mt=>mt.Mini)
-                .Include(mt=>mt.Tag)
-                .Where(mt=>mt.Tagger!=null)
+                .Include(mt => mt.Mini)
+                .Include(mt => mt.Tag)
+                .Where(mt => mt.Status == Status.Pending)
+                .Where(mt => mt.Tagger != null)
                 .ToList();
 
-            UserTags = UserTags.Take(100).ToList();
+            UserTags = UserTags.ToList();
         }
     }
 }

@@ -39,8 +39,10 @@ namespace MiniIndex.Pages.MiniTags
 
             MiniTag = await _context.MiniTag.FindAsync(MiniID, TagID);
 
-            _context.MiniTag.Remove(MiniTag);
-                await _context.SaveChangesAsync();
+            MiniTag.Status = Status.Deleted;
+            MiniTag.LastModifiedTime = DateTime.Now;
+
+            await _context.SaveChangesAsync();
 
             return Page();
         }
@@ -56,7 +58,9 @@ namespace MiniIndex.Pages.MiniTags
 
             if (MiniTag != null)
             {
-                _context.MiniTag.Remove(MiniTag);
+                MiniTag.Status = Status.Deleted;
+                MiniTag.LastModifiedTime = DateTime.Now;
+
                 await _context.SaveChangesAsync();
             }
 

@@ -13,6 +13,8 @@ namespace MiniIndex.Pages.Admin
         public static string Users => "Users";
         public static string Creators => "Creators";
         public static string TagStream => "TagStream";
+        public static string TagPairs => "TagPairs";
+
 
 
         public static string MinisNavClass(ViewContext viewContext) => PageNavClass(viewContext, Minis);
@@ -20,6 +22,8 @@ namespace MiniIndex.Pages.Admin
         public static string UsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, Users);
         public static string CreatorsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Creators);
         public static string TagStreamNavClass(ViewContext viewContext) => PageNavClass(viewContext, TagStream);
+        public static string TagPairsNavClass(ViewContext viewContext) => PageNavClass(viewContext, TagPairs);
+
 
 
         private static string PageNavClass(ViewContext viewContext, string page)

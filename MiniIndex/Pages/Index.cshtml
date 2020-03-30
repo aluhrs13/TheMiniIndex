@@ -1,5 +1,8 @@
 ﻿@page
 @model IndexModel
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 @{
     ViewData["Title"] = "The Mini Index";
 }
@@ -48,7 +51,7 @@
                         <a href="/Minis/Details?id=@mini.ID">
                             @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
                             {
-                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" width="314" height="236" />
+                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
                             }
                             else
                             {

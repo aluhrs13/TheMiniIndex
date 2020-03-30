@@ -8,7 +8,13 @@
 
 @section Scripts
 {
-    <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
+    <environment include="Development">
+        <script type="module" src="~/dist/stars.entry.js" defer></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
+    </environment>
 }
 
 @if (User.IsInRole("Moderator"))
@@ -19,11 +25,8 @@
         <thead>
             <tr>
                 <th>Tag Name</th>
-                <th>Tag Category</th>
-                <th>ID</th>
                 <th>Count</th>
                 <th>View Tagged Minis</th>
-                <th>Delete Tag</th>
             </tr>
         </thead>
         <tbody>
@@ -31,24 +34,15 @@
             {
                 <tr id="@item.Key.ID">
                     <td>
-                        @Html.DisplayFor(modelItem => item.Key.TagName)
-                    </td>
-                    <td>
-                        <select asp-for="@item.Key.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
-                            <option selected="selected" value=""></option>
-                        </select>
-                    </td>
-                    <td>
-                        @item.Key.ID
+                        <a href="/Tags/Manage?id=@item.Key.ID">
+                            @Html.DisplayFor(modelItem => item.Key.TagName)
+                        </a>
                     </td>
                     <td>
                         @item.Count()
                     </td>
                     <td>
                         <a href="/Minis/?Tags=@item.Key.TagName">View Minis</a>
-                    </td>
-                    <td>
-                        <a href="/Tags/Delete?id=@item.Key.ID">Delete Tag</a>
                     </td>
                 </tr>
             }
