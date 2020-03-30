@@ -121,7 +121,7 @@
                                     <hr />
                                     @if (item.Status == Models.Status.Approved)
                                     {
-                                        <a asp-page="/Minis/Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Already indexed </a>
+                                        <a asp-page="/Minis/Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary">Already indexed </a>
                                     }
                                     else if (item.Status == Models.Status.Pending)
                                     {

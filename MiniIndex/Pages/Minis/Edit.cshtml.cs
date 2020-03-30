@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,107 +16,64 @@ namespace MiniIndex.Pages.Minis
     [Authorize]
     public class EditModel : PageModel
     {
-        public EditModel(
-                UserManager<IdentityUser> userManager,
-                SignInManager<IdentityUser> signInManager,
-                MiniIndexContext context)
+        public EditModel(UserManager<IdentityUser> userManager, MiniIndexContext context, TelemetryClient telemetry)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
+            _telemetry = telemetry;
         }
 
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly MiniIndexContext _context;
+        private readonly TelemetryClient _telemetry;
 
-        [BindProperty]
         public Mini Mini { get; set; }
+        public List<Tag> UnusedTags { get; set; }
+        public List<Tag> RecommendedTags { get; set; }
+        public string ShowHelp { get; set; }
 
-        public SelectList CreatorSL { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, string showHelp = "")
         {
-            if (User.IsInRole("Moderator"))
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
+            ShowHelp = showHelp;
+            IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
-                Mini = await _context.Mini
-                    .Include(m => m.Creator)
-                    .Include(m => m.MiniTags)
-                        .ThenInclude(mt => mt.Tag)
-                    .FirstOrDefaultAsync(m => m.ID == id);
-
-                PopulateCreatorsDropDownList(Mini.Creator.ID);
-
-                if (Mini == null)
-                {
-                    return NotFound();
-                }
-                return Page();
-            }
-            else
+            if (id == null)
             {
                 return NotFound();
             }
-        }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (User.IsInRole("Moderator"))
-            {
-                if (!ModelState.IsValid)
-                {
-                    return Page();
-                }
-                //TODO - Fix this to enable any status
-                //So I can just click submit.
-                if (Mini.Status == Status.Pending)
-                {
-                    Mini.Status = Status.Approved;
-                }
+            Mini = await _context.Mini
+                .Include(m => m.MiniTags)
+                    .ThenInclude(mt => mt.Tag)
+                .Include(m => m.Creator)
+                .Include(m => m.User)
+                .Include(m => m.Sources)
+                    .ThenInclude(s => s.Site)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
-                _context.Attach(Mini).State = EntityState.Modified;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MiniExists(Mini.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return RedirectToPage("./Admin");
-            }
-            else
+            if (Mini == null)
             {
                 return NotFound();
             }
-        }
 
-        public void PopulateCreatorsDropDownList(object selectedCreator = null)
-        {
-            IQueryable<Creator> creatorsQuery = from c in _context.Mini
-                                                orderby c.Creator.Name
-                                                select c.Creator;
+            _telemetry.TrackEvent("EditedMini", new Dictionary<string, string> { { "MiniId", Mini.ID.ToString() } });
 
-            CreatorSL = new SelectList(creatorsQuery.Distinct(), "ID", "Name", selectedCreator);
-        }
+            UnusedTags = _context
+                .Tag
+                .AsEnumerable()
+                .Except(Mini.MiniTags.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending)).Select(mt => mt.Tag))
+                .OrderBy(m => m.Category.ToString())
+                .ThenBy(m => m.TagName)
+                .ToList();
 
-        private bool MiniExists(int id)
-        {
-            return _context.Mini.Any(e => e.ID == id);
+
+            string[] nameSplit = Mini.Name.ToUpperInvariant().Split(' ');
+
+            RecommendedTags = UnusedTags
+                .Where(t => nameSplit.Contains(t.TagName.ToUpperInvariant()))
+                .ToList();
+
+            return Page();
         }
     }
 }

@@ -8,6 +8,9 @@ using MiniIndex.Core.Submissions;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MiniIndex.API
@@ -50,6 +53,31 @@ namespace MiniIndex.API
             return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
         }
 
+
+        [HttpGet("tagList")]
+        public async Task<IActionResult> FindMinisTags(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            Mini mini = await _context.Mini
+                                .Include(m=>m.MiniTags)
+                                    .ThenInclude(mt=>mt.Tag)
+                                .FirstOrDefaultAsync(m => m.ID == id);
+
+            var tagList = JsonSerializer.Serialize(mini.MiniTags.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending)).Select(mt=> new { ID = mt.Tag.ID, TagName = mt.Tag.TagName, Category = mt.Tag.Category.ToString(), Status = mt.Status.ToString() }).ToList().OrderBy(i =>i.Status));
+
+
+            if (mini == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(tagList);
+        }
+
         [HttpGet("create")]
         public async Task<IActionResult> CreateMini(Uri url, string key)
         {
@@ -68,9 +96,6 @@ namespace MiniIndex.API
             {
                 return new StatusCodeResult(501);
             }
-            
-            //return Ok($"https://localhost:44386/Minis/Details?id={mini.ID}");
-
         }
     }
 }
