@@ -1,5 +1,7 @@
 ﻿@using MiniIndex.Models
 @using MiniIndex.Core.Pagination
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @model PaginatedList<Mini>
 
@@ -48,12 +50,12 @@
                         <a href="/Minis/Details?id=@mini.ID">
                             @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
                             {
-                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" width="314" height="236" />
+                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
                             }
                             else
                             {
                                 <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
-                            }                            
+                            }
                             <span></span>
                         </a>
                     </div>
@@ -79,5 +81,5 @@
             @:</div>
         }
         </div>
-        </div>
+    </div>
 </div>

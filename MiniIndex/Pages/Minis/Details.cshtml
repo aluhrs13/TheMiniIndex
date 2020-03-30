@@ -2,6 +2,8 @@
 @using MiniIndex.Models;
 @model MiniIndex.Pages.Minis.DetailsModel
 @inject SignInManager<IdentityUser> SignInManager
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
     ViewData["Title"] = "Details";
 }
@@ -104,7 +106,7 @@
 
             @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
             {
-                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" />
+                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
             }
             else
             {
@@ -117,7 +119,7 @@
             <small>
                 Something look wrong? <a asp-page="./Edit" asp-route-id="@Model.Mini.ID">Tag this Mini</a>
             </small>
-            <hr/>
+            <hr />
             @foreach (var MiniTag in Model.Mini.MiniTags.Where(mt => mt.Status == Status.Approved))
             {
                 @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
@@ -141,7 +143,7 @@
         </div>
 
         <div class="col-md-6">
-            
+
         </div>
     </div>
 </div>

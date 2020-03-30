@@ -2,6 +2,8 @@
 @using MiniIndex.Models;
 @model MiniIndex.Pages.Minis.EditModel
 @inject SignInManager<IdentityUser> SignInManager
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
     ViewData["Title"] = "Edit";
 }
@@ -68,10 +70,11 @@
                 We have some guidelines written about how to make your
                 tags great, please read through them <a href="https://github.com/aluhrs13/TheMiniIndex/wiki/How-to-tag-Minis">here.</a> At a minimum, please make sure you include
                 the genre, use, and any notable descriptions like the creature's name and type or race and gender.
-                Your Mini and tags will show up once a moderator gets a chance to look and approve it.
+                Your Mini and tags will show up once a moderator gets a chance to look and approve it. If you're submitting a bunch of Minis from a single creator, we'll approve at most a few a day to not flood the front page with a single creator.
             </p>
 
-            <p>If you're submitting a bunch of Minis from a single creator, we'll approve at most a few a day to not flood the front page with a single creator.</p>
+            <p><b>We're also experimenting with automatic tag additions soon, when adding a tag you may notice more tags than the one you clicked getting added. Feel free to remove those, and if they
+                appear extremely wrong, hit the "Something's wrong" button below and let us know what you don't like!</b></p>
 
             <a href="/Minis/Help" class="btn btn-primary">Tag another Mini</a>
             <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URVo3SDNGWTlENU5FNkw3VjRaNVJPVkVDRy4u" target="_blank" class="btn btn-secondary">
@@ -106,7 +109,7 @@
 
             @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
             {
-                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", "miniindexblobcdn.azureedge.net")" />
+                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
             }
             else
             {
@@ -116,99 +119,99 @@
 
         <div class="col-md-6">
             <h3>Tags</h3>
-            <hr/>
+            <hr />
             <!-- <img src="~/images/icons/apple-touch-icon-152x152.png" class="loading-spinner" style="display:none;"/> -->
             <div id="UsedTags">
-                
+
             </div>
         </div>
     </div>
- 
 
-        <div class="row">
-            <div class="col-md-12">
 
-                <hr />
+    <div class="row">
+        <div class="col-md-12">
 
-                <h2>Add Tags</h2>
-                Filter <input id="tagSearch" type="text" />
+            <hr />
 
-                <hr />
+            <h2>Add Tags</h2>
+            Filter <input id="tagSearch" type="text" />
 
-                <div id="UnusedTags">
+            <hr />
 
-                    @if (Model.RecommendedTags.Count > 0)
-                    {
-                        <div class="add-tag-div">
-                            <h3 class="add-tag-header">Quick Tag</h3>
-                            @foreach (var Tag in Model.RecommendedTags)
-                            {
-                                <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                            }
-                        </div>
+            <div id="UnusedTags">
 
-                        <hr />
-                    }
-
+                @if (Model.RecommendedTags.Count > 0)
+                {
                     <div class="add-tag-div">
-                        <h3 class="add-tag-header">Genre</h3>
-                        @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Genre"))
+                        <h3 class="add-tag-header">Quick Tag</h3>
+                        @foreach (var Tag in Model.RecommendedTags)
                         {
                             <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
                         }
                     </div>
 
-                    <div class="add-tag-div">
-                        <h3 class="add-tag-header">Use</h3>
-                        @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Use"))
-                        {
-                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                        }
-                    </div>
-
-                    @{var PreviousCategory = "";}
-                    <div class="add-tag-div">
-
-                        @foreach (var Tag in Model.UnusedTags
-                     .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                         && m.Category != TagCategory.Genre
-                         && m.Category != TagCategory.OtherDescription
-                         && m.Category != TagCategory.CreatureName
-                         && m.Category != TagCategory.Use))
-                        {
-                            @if (Tag.Category.ToString() != PreviousCategory)
-                            {
-                            @:</div>
-                            @:<div class="add-tag-div">
-                                if (string.IsNullOrEmpty(Tag.Category.ToString()))
-                                {
-                                    <hr />
-                                }
-                                else
-                                {
-                                    <h3 class="add-tag-header">@Tag.Category</h3>
-                                }
-
-                            }
-                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                            PreviousCategory = Tag.Category.ToString();
-                        }
-                    </div>
-                    <div class="add-tag-div">
-                        <h3 class="add-tag-header">Creature Name</h3>
-                        @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "CreatureName"))
-                        {
-                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                        }
-                    </div>
                     <hr />
-                    <h3>Other Tags</h3>
-                    @foreach (var Tag in Model.UnusedTags.Where(m => string.IsNullOrEmpty(m.Category.ToString()) || m.Category.ToString() == "OtherDescription"))
+                }
+
+                <div class="add-tag-div">
+                    <h3 class="add-tag-header">Genre</h3>
+                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Genre"))
                     {
                         <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
                     }
                 </div>
-                <a href="#" id="AddNewTag" class="btn btn-success" style="margin-top:5px;">+ Add as new tag</a>
+
+                <div class="add-tag-div">
+                    <h3 class="add-tag-header">Use</h3>
+                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Use"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                    }
+                </div>
+
+                @{var PreviousCategory = "";}
+                <div class="add-tag-div">
+
+                    @foreach (var Tag in Model.UnusedTags
+                .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                    && m.Category != TagCategory.Genre
+                    && m.Category != TagCategory.OtherDescription
+                    && m.Category != TagCategory.CreatureName
+                    && m.Category != TagCategory.Use))
+                    {
+                        @if (Tag.Category.ToString() != PreviousCategory)
+                        {
+                        @:</div>
+                        @:<div class="add-tag-div">
+                            if (string.IsNullOrEmpty(Tag.Category.ToString()))
+                            {
+                                <hr />
+                            }
+                            else
+                            {
+                                <h3 class="add-tag-header">@Tag.Category</h3>
+                            }
+
+                        }
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                        PreviousCategory = Tag.Category.ToString();
+                    }
+                </div>
+                <div class="add-tag-div">
+                    <h3 class="add-tag-header">Creature Name</h3>
+                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "CreatureName"))
+                    {
+                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                    }
+                </div>
+                <hr />
+                <h3>Other Tags</h3>
+                @foreach (var Tag in Model.UnusedTags.Where(m => string.IsNullOrEmpty(m.Category.ToString()) || m.Category.ToString() == "OtherDescription"))
+                {
+                    <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                }
             </div>
+            <a href="#" id="AddNewTag" class="btn btn-success" style="margin-top:5px;">+ Add as new tag</a>
         </div>
+    </div>
 </div>

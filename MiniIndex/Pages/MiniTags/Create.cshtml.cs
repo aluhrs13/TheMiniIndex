@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 using System;
@@ -16,13 +17,16 @@ namespace MiniIndex.Pages.MiniTags
     public class CreateModel : PageModel
     {
         public CreateModel(
+                IConfiguration configuration,
                 UserManager<IdentityUser> userManager,
                 MiniIndexContext context)
         {
+            _configuration = configuration;
             _context = context;
             _userManager = userManager;
         }
 
+        private readonly IConfiguration _configuration;
         private readonly MiniIndexContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
@@ -148,21 +152,29 @@ namespace MiniIndex.Pages.MiniTags
 
         public IList<Tag> FindPairedTags(Tag seedTag)
         {
-            IList<Tag> synonyms = _context.TagPair
-                                        .Include(tp => tp.Tag1)
-                                        .Include(tp => tp.Tag2)
-                                    .Where(tp => tp.Type == PairType.Synonym && (tp.Tag1 == seedTag || tp.Tag2 == seedTag))
-                                    .Select(tp => tp.GetPairedTag(seedTag))
-                                    .ToList();
+            if (_configuration["CreateTagPairs"] != "false")
+            {
+                IList<Tag> synonyms = _context.TagPair
+                            .Include(tp => tp.Tag1)
+                            .Include(tp => tp.Tag2)
+                        .Where(tp => tp.Type == PairType.Synonym && (tp.Tag1 == seedTag || tp.Tag2 == seedTag))
+                        .Select(tp => tp.GetPairedTag(seedTag))
+                        .ToList();
 
-            IList<Tag> parents = _context.TagPair
-                                        .Include(tp => tp.Tag1)
-                                        .Include(tp => tp.Tag2)
-                                    .Where(tp => tp.Type == PairType.Parent && tp.Tag1 == seedTag)
-                                    .Select(tp => tp.GetPairedTag(tp.Tag1))
-                                    .ToList();
+                IList<Tag> parents = _context.TagPair
+                                            .Include(tp => tp.Tag1)
+                                            .Include(tp => tp.Tag2)
+                                        .Where(tp => tp.Type == PairType.Parent && tp.Tag1 == seedTag)
+                                        .Select(tp => tp.GetPairedTag(tp.Tag1))
+                                        .ToList();
 
-            return synonyms.Concat(parents).ToList();
+                return synonyms.Concat(parents).ToList();
+            }
+            else
+            {
+                return new List<Tag>();
+            }
+
 
         }
     }

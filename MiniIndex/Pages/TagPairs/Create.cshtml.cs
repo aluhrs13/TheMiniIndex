@@ -33,9 +33,18 @@ namespace MiniIndex.Pages.TagPairs
             {
                 Tag Tag1 = _context.Tag.FirstOrDefault(t => t.ID == tag1);
                 Tag Tag2 = _context.Tag.FirstOrDefault(t => t.ID == tag2);
-                PairType pairType =  (PairType)type;
+                PairType pairType = (PairType)type;
 
-                if(Tag1 == null | Tag2 == null || pairType == null)
+                //TODO - This is a hack. 99 means "child" from the tag manager, so we're swapping them.
+                //It's a dumb hack, but I'm tired.
+                if (type == 99)
+                {
+                    Tag1 = _context.Tag.FirstOrDefault(t => t.ID == tag2);
+                    Tag2 = _context.Tag.FirstOrDefault(t => t.ID == tag1);
+                    pairType = PairType.Parent;
+                }
+
+                if(Tag1 == null | Tag2 == null)
                 {
                     return NotFound();
                 }
