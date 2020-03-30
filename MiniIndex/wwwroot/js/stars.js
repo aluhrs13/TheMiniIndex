@@ -157,7 +157,7 @@ $('#UsedTags').on('click', '.remove-tag', function (){
 });
 
 function RefreshTagsStart() {
-    //$('.loading-spinner').show();
+    $('.loading-spinner').show();
     $('#UsedTags').hide();
 
     $('#tagSearch').val('');
@@ -166,7 +166,6 @@ function RefreshTagsStart() {
 }
 
 function RefreshTagsEnd() {
-    //$('.loading-spinner').hide();
     $.getJSON({
         url: "/api/minis/tagList/",
         data: { id: document.getElementById("miniid").innerHTML },
@@ -197,6 +196,7 @@ function RefreshTagsEnd() {
             //console.log(status + " - " + newHTML);
         },
     });
+    $('.loading-spinner').hide();
 
     return false;
 }
