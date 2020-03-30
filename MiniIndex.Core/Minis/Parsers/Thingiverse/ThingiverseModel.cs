@@ -12,13 +12,14 @@ public class ThingiverseModel
         public Creator creator { get; set; }
         public DateTime added { get; set; }
         public DateTime modified { get; set; }
-        public bool is_published { get; set; }
-        public bool is_wip { get; set; }
-        public bool is_featured { get; set; }
+        public int is_published { get; set; }
+        public int is_wip { get; set; }
+        public object is_featured { get; set; }
         public int like_count { get; set; }
         public bool is_liked { get; set; }
         public int collect_count { get; set; }
         public bool is_collected { get; set; }
+        public int comment_count { get; set; }
         public bool is_watched { get; set; }
         public Default_Image default_image { get; set; }
         public string description { get; set; }
@@ -40,8 +41,8 @@ public class ThingiverseModel
         public int file_count { get; set; }
         public int layout_count { get; set; }
         public string layouts_url { get; set; }
-        public bool is_private { get; set; }
-        public bool is_purchased { get; set; }
+        public int is_private { get; set; }
+        public int is_purchased { get; set; }
         public bool in_library { get; set; }
         public int print_history_count { get; set; }
         public object app_id { get; set; }
@@ -60,6 +61,9 @@ public class ThingiverseModel
         public string public_url { get; set; }
         public string thumbnail { get; set; }
         public bool accepts_tips { get; set; }
+        public bool is_following { get; set; }
+        public string location { get; set; }
+        public string cover { get; set; }
     }
 
     public class Default_Image
