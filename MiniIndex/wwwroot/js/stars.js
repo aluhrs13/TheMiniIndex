@@ -159,13 +159,13 @@ $('#UsedTags').on('click', '.remove-tag', function (){
 function RefreshTagsStart() {
     $('.loading-spinner').show();
     $('#UsedTags').hide();
-
-    $('#tagSearch').val('');
     $('.add-tag-div').show();
     $('.add-tag').show();
 }
 
 function RefreshTagsEnd() {
+    $('#tagSearch').val('');
+
     $.getJSON({
         url: "/api/minis/tagList/",
         data: { id: document.getElementById("miniid").innerHTML },
