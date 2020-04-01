@@ -149,10 +149,8 @@ $('#UsedTags').on('click', '.remove-tag', function (){
             //TODO - Error styling
         },
         success: function () {
-            $(this).fadeOut();
         },
     });
-    $(this).hide();
     return false;
 });
 

@@ -7,15 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 
-namespace MiniIndex.Pages.ManageCreators
+namespace MiniIndex.Pages.Admin
 {
     [Authorize]
-    public class ManageCreatorsModel : PageModel
+    public class CreatorManagerModel : PageModel
     {
         private readonly MiniIndexContext _context;
         public IList<IGrouping<Creator, Mini>> Creator { get; set; }
 
-        public ManageCreatorsModel(MiniIndexContext context)
+        public CreatorManagerModel(MiniIndexContext context)
         {
             _context = context;
         }
@@ -28,9 +28,6 @@ namespace MiniIndex.Pages.ManageCreators
                         .GroupBy(m => m.Creator)
                         .OrderBy(m=>m.Key.Name)
                         .ToList();
-
-
-                        //.ToDictionaryAsync<Creator,Mini>(g => g.Key, g => g.ToLisT());
         }
     }
 }

@@ -8,17 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 
-namespace MiniIndex.Pages.ManageUsers
+namespace MiniIndex.Pages.Admin
 {
     [Authorize]
-    public class ManageUsersModel : PageModel
+    public class UserManagerModel : PageModel
     {
         private readonly MiniIndexContext _context;
         public IList<IGrouping<IdentityUser, Mini>> UserMinis { get; set; }
         public IList<IGrouping<IdentityUser, MiniTag>> UserTags { get; set; }
 
 
-        public ManageUsersModel(MiniIndexContext context)
+        public UserManagerModel(MiniIndexContext context)
         {
             _context = context;
         }

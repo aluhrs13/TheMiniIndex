@@ -13,14 +13,14 @@ using MiniIndex.Persistence;
 namespace MiniIndex.Pages.Admin
 {
     [Authorize]
-    public class CategoryManagerModel : PageModel
+    public class TagManagerModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly MiniIndexContext _context;
         public IList<IGrouping<Tag,MiniTag>> Tag { get; set; }
 
-        public CategoryManagerModel(
+        public TagManagerModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
                 MiniIndexContext context)

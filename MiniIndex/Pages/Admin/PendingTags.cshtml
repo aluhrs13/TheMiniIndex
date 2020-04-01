@@ -1,9 +1,9 @@
 ﻿@page
-@model MiniIndex.Pages.TagStream.TagStreamModel
+@model MiniIndex.Pages.Admin.PendingTagsModel
 @inject SignInManager<IdentityUser> SignInManager
 @{
-    ViewData["Title"] = "Tag Stream";
-    ViewData["ActivePage"] = ManageNavPages.TagStream;
+    ViewData["Title"] = "Pending Tags";
+    ViewData["ActivePage"] = ManageNavPages.PendingTags;
 }
 
 @if (User.IsInRole("Moderator"))

@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 
-namespace MiniIndex.Pages.TagStream
+namespace MiniIndex.Pages.Admin
 {
     [Authorize]
-    public class TagStreamModel : PageModel
+    public class PendingTagsModel : PageModel
     {
         private readonly MiniIndexContext _context;
         public IList<MiniTag> UserTags { get; set; }
 
-        public TagStreamModel(MiniIndexContext context)
+        public PendingTagsModel(MiniIndexContext context)
         {
             _context = context;
         }
@@ -30,8 +30,6 @@ namespace MiniIndex.Pages.TagStream
                 .Where(mt => mt.Status == Status.Pending)
                 .Where(mt => mt.Tagger != null)
                 .ToList();
-
-            UserTags = UserTags.ToList();
         }
     }
 }
