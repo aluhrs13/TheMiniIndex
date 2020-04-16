@@ -77,12 +77,12 @@
                     {
                         @foreach (var miniSource in Model.Mini.Sources)
                         {
-                            <a href="@miniSource.Link" class="btn btn-block btn-primary @miniSource.Site.SiteName" style="margin-top:10px;">View On @miniSource.Site.SiteName</a>
+                            <a href="/Minis/Redirect?id=@Model.Mini.ID" class="btn btn-block btn-primary @miniSource.Site.SiteName" style="margin-top:10px;">View On @miniSource.Site.SiteName</a>
                         }
                     }
                     else if (!String.IsNullOrEmpty(Model.Mini.Link))
                     {
-                        <a href="@Html.DisplayFor(modelItem => Model.Mini.Link)" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
+                        <a href="/Minis/Redirect?id=@Model.Mini.ID" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
                     }
                 </div>
 
