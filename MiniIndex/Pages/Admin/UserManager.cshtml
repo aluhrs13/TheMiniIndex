@@ -1,9 +1,9 @@
 ﻿@page
-@model MiniIndex.Pages.ManageUsers.ManageUsersModel
+@model MiniIndex.Pages.Admin.UserManagerModel
 @inject SignInManager<IdentityUser> SignInManager
 @{
-    ViewData["Title"] = "Manage Users";
-    ViewData["ActivePage"] = ManageNavPages.Users;
+    ViewData["Title"] = "User Manager";
+    ViewData["ActivePage"] = ManageNavPages.UserManager;
 }
 
 @if (User.IsInRole("Moderator"))

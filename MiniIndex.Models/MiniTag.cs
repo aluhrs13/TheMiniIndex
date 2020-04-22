@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace MiniIndex.Models
 {
@@ -10,5 +11,8 @@ namespace MiniIndex.Models
         public Tag Tag { get; set; }
         public Status Status { get; set; }
         public IdentityUser Tagger { get; set; }
+        public DateTime CreatedTime { get; set; }
+        public DateTime? ApprovedTime { get; set; }
+        public DateTime LastModifiedTime { get; set; }
     }
 }

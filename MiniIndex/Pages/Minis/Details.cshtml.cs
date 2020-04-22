@@ -25,14 +25,10 @@ namespace MiniIndex.Pages.Minis
         private readonly TelemetryClient _telemetry;
 
         public Mini Mini { get; set; }
-        public List<Tag> UnusedTags { get; set; }
-        public List<Tag> RecommendedTags { get; set; }
         public bool IsStarred { get; set; }
-        public string ShowHelp { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id, string showHelp="")
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            ShowHelp = showHelp;
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
 
             if (id == null)
@@ -64,21 +60,6 @@ namespace MiniIndex.Pages.Minis
             {
                 IsStarred = false;
             }
-
-            UnusedTags = _context
-                .Tag
-                .AsEnumerable()
-                .Except(Mini.MiniTags.Select(mt => mt.Tag))
-                .OrderBy(m => m.Category.ToString())
-                .ThenBy(m => m.TagName)
-                .ToList();
-
-
-            string[] nameSplit = Mini.Name.ToUpperInvariant().Split(' ');
-
-            RecommendedTags = UnusedTags
-                .Where(t => nameSplit.Contains(t.TagName.ToUpperInvariant()))
-                .ToList();
 
             return Page();
         }

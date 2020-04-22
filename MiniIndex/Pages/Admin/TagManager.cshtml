@@ -1,0 +1,55 @@
+﻿@page
+@model MiniIndex.Pages.Admin.TagManagerModel
+
+@{
+    ViewData["Title"] = "Tag Manager";
+    ViewData["ActivePage"] = ManageNavPages.TagManager;
+}
+
+@section Scripts
+{
+    <environment include="Development">
+        <script type="module" src="~/dist/stars.entry.js" defer></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
+    </environment>
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h4>Uncategorized Tags</h4>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tag Name</th>
+                <th>Category</th>
+                <th>Count</th>
+                <th>View Tagged Minis</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tag)
+            {
+            <tr id="@item.Key.ID">
+                <td>
+                    <a href="/Tags/Manage?id=@item.Key.ID">
+                        @Html.DisplayFor(modelItem => item.Key.TagName)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Key.Category)
+                </td>
+                <td>
+                    @item.Count()
+                </td>
+                <td>
+                    <a href="/Minis/?Tags=@item.Key.TagName">View Minis</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

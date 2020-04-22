@@ -1,0 +1,72 @@
+﻿@page
+@model MiniIndex.Pages.Admin.TagPairManagerModel
+
+@{
+    ViewData["Title"] = "Tag Pair Manager";
+    ViewData["ActivePage"] = ManageNavPages.TagPairManager;
+}
+
+@section Scripts
+{
+    <environment include="Development">
+    </environment>
+
+    <environment exclude="Development">
+    </environment>
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h4>Tag Pairs</h4>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tag 1</th>
+                <th>Type</th>
+                <th>Tag 2</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select>
+                        <option selected="selected" value=""></option>
+                    </select>
+                </td>
+                <td>
+                    <select asp-items="Html.GetEnumSelectList<MiniIndex.Models.PairType>().OrderBy(m => m.Text)">
+                        <option selected="selected" value=""></option>
+                    </select>
+                </td>
+                <td>
+                    <select>
+                        <option selected="selected" value=""></option>
+                    </select>
+                </td>
+                <td>
+                    <a href="#" id="addPair" class="btn btn-success btn-block">Add</a>
+                </td>
+            </tr>
+
+            @foreach (var item in Model.TagPairs)
+            {
+                <tr id="@item.ID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tag1.TagName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tag2.TagName)
+                    </td>
+                    <td>
+                        <a href="#" id="@item.ID" class="btn btn-danger btn-block removePair">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

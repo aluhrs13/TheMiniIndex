@@ -15,6 +15,7 @@ namespace MiniIndex.Persistence
         public DbSet<Tag> Tag { get; set; }
         public DbSet<MiniTag> MiniTag { get; set; }
         public DbSet<Starred> Starred { get; set; }
+        public DbSet<TagPair> TagPair { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

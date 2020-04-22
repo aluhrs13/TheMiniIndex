@@ -32,7 +32,7 @@ namespace MiniIndex.Pages.Minis
                         .Where(m => m.Status == Status.Pending)
                         .ToListAsync();
 
-            return RedirectToPage("./Details", new { id = Mini[rnd.Next(Mini.Count)].ID, showHelp = "tag" });
+            return RedirectToPage("./Edit", new { id = Mini[rnd.Next(Mini.Count)].ID, showHelp = "tag" });
         }
     }
 }

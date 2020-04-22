@@ -13,10 +13,17 @@
         .BoxWhile((a, b) => b - a == 1);
 }
 
+
+
 @section Scripts
 {
-    <script type="module" src="https://miniindex.azureedge.net/tags.entry.js" defer></script>
-    <link rel="stylesheet" href="https://miniindex.azureedge.net/tags.css">
+@*
+<script type="module" src="~/dist/tags.entry.js" defer></script>
+<link rel="stylesheet" href="~/dist/tags.css">
+*@
+
+<script type="module" src="https://miniindex.azureedge.net/tags.entry.js" defer></script>
+<link rel="stylesheet" href="https://miniindex.azureedge.net/tags.css">
 }
 
 <div class="container-fluid">
@@ -38,12 +45,12 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <h2 class="card-title">Happy with your search results?</h2>
-                               Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
+                            Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
                         </div>
                     </div>
                 }
             </div>
-            <br/>
+            <br />
             @if (String.IsNullOrWhiteSpace(Model.SearchModel.SearchString))
             {
                 <h2>Most Recent Results</h2>
@@ -85,5 +92,5 @@
                 }
             </div>
         </div>
-    </div> 
+    </div>
 </div>

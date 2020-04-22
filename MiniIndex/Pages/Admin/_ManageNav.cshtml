@@ -1,8 +1,8 @@
 ﻿<ul class="nav nav-pills flex-column">
     <li class="nav-item"><a class="nav-link @ManageNavPages.MinisNavClass(ViewContext)" id="minis" asp-page="./Index">Pending Minis</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TagsNavClass(ViewContext)" id="email" asp-page="./CategoryManager">Tag Categories</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.UsersNavClass(ViewContext)" id="users" asp-page="./ManageUsers">Manage Users</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.CreatorsNavClass(ViewContext)" id="creators" asp-page="./ManageCreators">Manage Creators</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TagStreamNavClass(ViewContext)" id="tagStream" asp-page="./TagStream">Tag Stream</a></li>
-
+    <li class="nav-item"><a class="nav-link @ManageNavPages.PendingTagsNavClass(ViewContext)" id="tagStream" asp-page="./PendingTags">Pending Tags</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.TagManagerNavClass(ViewContext)" id="email" asp-page="./TagManager">Manage Tags</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.UserManagerNavClass(ViewContext)" id="users" asp-page="./UserManager">Manage Users</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.CreatorManagerNavClass(ViewContext)" id="creators" asp-page="./CreatorManager">Manage Creators</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.TagPairManagerNavClass(ViewContext)" id="tagPairs" asp-page="./TagPairManager">Manage Tag Pairs</a></li>
 </ul>

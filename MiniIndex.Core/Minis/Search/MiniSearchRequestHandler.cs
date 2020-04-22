@@ -48,6 +48,7 @@ namespace MiniIndex.Minis.Handlers
             {
                 search = search
                     .Where(m => m.MiniTags
+                        .Where(x => x.Status == Status.Approved)
                         .Select(x => x.Tag)
                         .Any(t => t.TagName == tag)
                     );
@@ -82,6 +83,7 @@ namespace MiniIndex.Minis.Handlers
                     {
                         tagSearch = tagSearch
                             .Where(m => m.MiniTags
+                                .Where(x => x.Status == Status.Approved)
                                 .Select(x => x.Tag)
                                 .Any(t => t.TagName == term)
                             );

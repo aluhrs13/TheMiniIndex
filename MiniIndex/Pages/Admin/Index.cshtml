@@ -46,7 +46,7 @@
                             @item.Sources.First().Site.DisplayName
                         </td>
                         <td>
-                            <a asp-page="/Minis/Details" asp-route-id="@item.ID">
+                            <a asp-page="/Minis/Edit" asp-route-id="@item.ID">
                                 @item.Name
                             </a>
                         </td>
@@ -64,7 +64,11 @@
                         <td>
                             @foreach (var miniTag in item.MiniTags)
                             {
-                                <span class="badge badge-primary">@miniTag.Tag.Category - @miniTag.Tag.TagName</span>
+                                <span class="badge badge-primary">
+                                    <a href="/Tags/Manage?id=@miniTag.Tag.ID">
+                                        @miniTag.Tag.Category - @miniTag.Tag.TagName
+                                    </a>
+                                </span>
                             }
                         </td>
                     </tr>

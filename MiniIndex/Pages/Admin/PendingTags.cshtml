@@ -1,0 +1,70 @@
+﻿@page
+@model MiniIndex.Pages.Admin.PendingTagsModel
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Pending Tags";
+    ViewData["ActivePage"] = ManageNavPages.PendingTags;
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <h4>All Users</h4> 
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+
+                </th>
+                <th>
+                    Tag
+                </th>
+                <th>
+                    Mini Name
+                </th>
+                <th>
+                    Tagger
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.UserTags)
+            {
+                @if (item.Mini.Status == Models.Status.Approved)
+                {
+                    @:<tr class="table-warning">
+                }
+                else
+                {
+                    @:<tr>
+}
+                <td>
+                    <a asp-page="/MiniTags/UpdateStatus" asp-route-MiniID="@item.MiniID" asp-route-TagID="@item.TagID" asp-route-NewStatus="Approved" class="btn btn-success btn-block">
+                        Approve
+                    </a>
+                    <a asp-page="/MiniTags/UpdateStatus" asp-route-MiniID="@item.MiniID" asp-route-TagID="@item.TagID" asp-route-NewStatus="Rejected" class="btn btn-danger btn-block">
+                        Reject
+                    </a>
+                </td>
+                <td>
+                    <img src="@Html.DisplayFor(modelItem => item.Mini.Thumbnail)" width="64" />
+                </td>
+                <td>
+                    @item.Tag.TagName
+                </td>
+                <td>
+                    <a asp-page="/Minis/Edit" asp-route-id="@item.Mini.ID">
+                        @item.Mini.Name
+                    </a>
+                </td>
+                <td>
+                    @item.Tagger.UserName
+                </td>
+            @:</tr>
+                }
+            </tbody>
+    </table>
+}

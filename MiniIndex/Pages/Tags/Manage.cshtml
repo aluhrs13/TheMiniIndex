@@ -1,0 +1,88 @@
+﻿@page
+@model MiniIndex.Pages.Tags.ManageModel
+@{
+    ViewData["Title"] = "Edit Tag";
+}
+
+@section Scripts
+{
+    <environment include="Development">
+        <script type="module" src="~/dist/stars.entry.js" defer></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
+    </environment>
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+
+        <div class="col-md-8">
+            <div>
+                <a asp-page="/Admin/CategoryManager">Back to all tags</a>
+            </div>
+
+            <h1>@Model.Tag.ID - @Model.Tag.TagName</h1>
+
+            <select id="@Model.Tag.ID" asp-for="@Model.Tag.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
+                <option selected="selected" value=""></option>
+            </select>
+
+            <a href="/Minis/?Tags=@Model.Tag.TagName" class="btn btn-primary" target="_blank">View @Model.MiniCount Tagged</a>
+            <a href="/Tags/Delete?id=@Model.Tag.ID" class="btn btn-danger">Delete Tag</a>
+
+            <hr />
+
+            <h2>Tag Pairs</h2>
+            <table class="table">
+                @foreach (var item in Model.TagPairs)
+                {
+                    <tr id="@item.ID">
+                        <td>
+                            <a href="/Tags/Manage?id=@item.Tag1.ID">@Html.DisplayFor(modelItem => item.Tag1.TagName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            <a href="/Tags/Manage?id=@item.Tag2.ID">@Html.DisplayFor(modelItem => item.Tag2.TagName)</a>
+                        </td>
+                        <td>
+                            <a href="#" id="@item.ID" class="remove-pair btn btn-danger btn-block">
+                                <span class="oi oi-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td>@Model.Tag.TagName</td>
+                    <td>
+                        <select id="new-pair-type" asp-items="Html.GetEnumSelectList<MiniIndex.Models.PairType>().OrderBy(m => m.Text)">
+                            <option selected="selected" value=""></option>
+                            <option value="99">Child</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="new-pair-tag" asp-items="@Model.TagOptions">
+                            <option selected="selected" value=""></option>
+                        </select>
+                    </td>
+                    <td>
+                        <a href="#" id="@Model.Tag.ID" class="new-pair btn btn-block btn-secondary">
+                            <span class="oi oi-plus"></span>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+}

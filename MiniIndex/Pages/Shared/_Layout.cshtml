@@ -15,11 +15,13 @@
     <link rel="apple-touch-icon-precomposed" sizes="120x120" href="~/images/icons/apple-touch-icon-120x120.png" />
     <link rel="apple-touch-icon-precomposed" sizes="76x76" href="~/images/icons/apple-touch-icon-76x76.png" />
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="~/images/icons/apple-touch-icon-152x152.png" />
+
     <link rel="icon" type="image/png" href="~/images/icons/favicon-196x196.png" sizes="196x196" />
     <link rel="icon" type="image/png" href="~/images/icons/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/png" href="~/images/icons/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="~/images/icons/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="~/images/icons/favicon-128.png" sizes="128x128" />
+
     <meta name="application-name" content="The Mini Index" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="~/images/icons/mstile-144x144.png" />
@@ -39,9 +41,18 @@
     <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
 
-    <script type="module" src="https://miniindex.azureedge.net/site.entry.js" defer></script>
-    <script type="module" src="https://miniindex.azureedge.net/bootstrapjs.entry.js" defer></script>
-    <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
+    <environment include="Development">
+        <script type="module" src="~/dist/validation.entry.js" defer></script>
+        <script type="module" src="~/dist/site.entry.js" defer></script>
+        <script type="module" src="~/dist/bootstrapjs.entry.js" defer></script>
+        <link rel="stylesheet" href="~/dist/site.css">
+    </environment>
+
+    <environment exclude="Development">
+        <script type="module" src="https://miniindex.azureedge.net/site.entry.js" defer></script>
+        <script type="module" src="https://miniindex.azureedge.net/bootstrapjs.entry.js" defer></script>
+        <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
+    </environment>
 
     <script type="text/javascript">
         var appInsights = window.appInsights || function (a) {

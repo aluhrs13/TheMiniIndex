@@ -3,9 +3,11 @@ using MediatR;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MiniIndex.Core.Minis.Search;
 using MiniIndex.Core.Pagination;
 using MiniIndex.Models;
+using MiniIndex.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +18,15 @@ namespace MiniIndex.Minis
     [Route("/Minis")] 
     public class MinisController : Controller
     {
-        public MinisController(IMapper mapper, IMediator mediator, TelemetryClient telemetry)
+        public MinisController(MiniIndexContext context, IMapper mapper, IMediator mediator, TelemetryClient telemetry)
         {
+            _context = context;
             _mapper = mapper;
             _mediator = mediator;
             _telemetry = telemetry;
         }
 
+        private readonly MiniIndexContext _context;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly TelemetryClient _telemetry;
@@ -69,6 +73,44 @@ namespace MiniIndex.Minis
                                                         });
 
             return View("BrowseMinis", model);
+        }
+
+        [HttpGet("redirect")]
+        public async Task<IActionResult> RedirectToMini(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Mini mini = await _context.Mini.Include(m=>m.Sources).Include(m=>m.Creator).FirstOrDefaultAsync(m => m.ID == id);
+
+            if(mini == null)
+            {
+                return NotFound();
+            }
+
+            MiniSourceSite Source = mini.Sources.FirstOrDefault();
+
+            if (Source != null)
+            {
+                _telemetry.TrackEvent("MiniRedirect", new Dictionary<string, string> {
+                        { "TargetHost", Source.Link.Host },
+                        { "MiniID", id.ToString() },
+                        { "CreatorID", mini.Creator.ID.ToString() }
+                    });
+
+                return Redirect(Source.Link.ToString());
+            }
+            else{
+                _telemetry.TrackEvent("MiniRedirect", new Dictionary<string, string> {
+                        { "TargetHost", new Uri(mini.Link).Host },
+                        { "MiniID", id.ToString() },
+                        { "CreatorID", mini.Creator.ID.ToString() }
+                    });
+
+                return Redirect(mini.Link.ToString());
+            }
         }
     }
 }

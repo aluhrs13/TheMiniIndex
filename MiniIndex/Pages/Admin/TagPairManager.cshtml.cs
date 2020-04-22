@@ -13,14 +13,14 @@ using MiniIndex.Persistence;
 namespace MiniIndex.Pages.Admin
 {
     [Authorize]
-    public class CategoryManagerModel : PageModel
+    public class TagPairManagerModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly MiniIndexContext _context;
-        public IList<Tag> Tag { get; set; }
+        public IList<TagPair> TagPairs { get; set; }
 
-        public CategoryManagerModel(
+        public TagPairManagerModel(
                 UserManager<IdentityUser> userManager,
                 SignInManager<IdentityUser> signInManager,
                 MiniIndexContext context)
@@ -34,9 +34,10 @@ namespace MiniIndex.Pages.Admin
         {
             if (User.IsInRole("Moderator"))
             {
-                Tag = await _context.Tag
-                    .OrderBy(t=>t.Category)
-                    .ToListAsync();
+                TagPairs = _context.TagPair
+                                .Include(tp => tp.Tag1)
+                                .Include(tp => tp.Tag2)
+                                .ToList();
             }
         }
     }

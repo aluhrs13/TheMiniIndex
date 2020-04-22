@@ -1,9 +1,9 @@
 ﻿@page
-@model MiniIndex.Pages.ManageCreators.ManageCreatorsModel
+@model MiniIndex.Pages.Admin.CreatorManagerModel
 @inject SignInManager<IdentityUser> SignInManager
 @{
     ViewData["Title"] = "Manage Creators";
-    ViewData["ActivePage"] = ManageNavPages.Creators;
+    ViewData["ActivePage"] = ManageNavPages.CreatorManager;
 }
 
 @if (User.IsInRole("Moderator"))
@@ -35,7 +35,6 @@
                     </td>
                 </tr>
             }
-
         </tbody>
     </table>
 }
