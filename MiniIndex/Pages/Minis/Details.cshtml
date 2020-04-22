@@ -137,13 +137,53 @@
             }
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
+    @if (Model.RelatedMinis.Count > 1)
+    {
+        <hr />
+        <h3>Related Minis</h3>
+        <div class="row">
+            @{
+                int relatedCount = 0;
+            }
+            @foreach (var mini in Model.RelatedMinis)
+            {
+                @if (mini.ID == Model.Mini.ID)
+                {
+                    continue;
+                }
+                <div class="col-md-3" style="margin-bottom:5px">
+                    <div class="card shadow">
+                        <a href="/Minis/Details?id=@mini.ID">
+                            @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
+                            {
+                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"] + ".azureedge.net")" width="314" height="236" />
+                            }
+                            else
+                            {
+                                <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
+                            }
+                            <span></span>
+                        </a>
 
+                        <div class="card-body">
+                            @Html.DisplayFor(modelItem => mini.Name)
+                            <br />
+                            <small class="text-muted">
+                                <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                @if (relatedCount == 3)
+                {
+                    break;
+                }
+                else
+                {
+                    relatedCount++;
+                }
+            }
         </div>
+    }
 
-        <div class="col-md-6">
-
-        </div>
-    </div>
 </div>
