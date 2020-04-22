@@ -58,7 +58,7 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             {
                 Name = myModel.name,
                 Status = Status.Unindexed,
-                Cost = Int32.Parse(myModel.price.value),
+                Cost = Convert.ToInt32(Math.Round(Convert.ToDouble(myModel.price.value))),
                 Link = myModel.url,
                 Creator = creator
             };
@@ -76,44 +76,3 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
         }
     }
 }
-
-/*
- 
-                HtmlWeb web = new HtmlWeb();
-            HtmlDocument htmlDoc = await web.LoadFromWebAsync(url, null, null);
-
-            HtmlNode creatorLink = htmlDoc.DocumentNode.SelectNodes("//a[@class=\"under-hover\"]")
-                .FirstOrDefault();
-
-            string creatorUrl = creatorLink.GetAttributeValue("href", null);
-            string creatorName = Uri.UnescapeDataString(creatorUrl.Split('/').Last());
-
-            Creator creator = new Creator
-            {
-                Name = creatorName
-            };
-            MyMiniFactorySource source = new MyMiniFactorySource(creator, creatorName);
-            creator.Sites.Add(source);
-
-            Mini mini = new Mini()
-            {
-                Creator = creator,
-                Name = System.Web.HttpUtility.HtmlDecode(htmlDoc.DocumentNode.SelectNodes("//h1").FirstOrDefault().InnerText.Trim()),
-                Thumbnail = htmlDoc.DocumentNode.SelectNodes("//meta").Where(n => n.Attributes.Any(a => a.Value == "og:image")).First()
-                    .Attributes.Where(a => a.Name == "content").First().Value,
-                Link = url.ToString()
-            };
-
-            int cost = 0;
-            HtmlNodeCollection priceNode = htmlDoc.DocumentNode.SelectNodes("//span[@class=\"price-title\"]");
-            if (priceNode != null)
-            {
-                cost = Int32.Parse(priceNode.First().InnerText.Remove(0, 1).Split(".").First());
-            }
-            mini.Cost = cost;
-
-            mini.Sources.Add(new MiniSourceSite(mini, source, url));
-
-            return mini;
-
- * */

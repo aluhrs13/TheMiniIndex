@@ -146,8 +146,8 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             public string name { get; set; }
             public string url { get; set; }
             public string slug { get; set; }
-            public int popularity { get; set; }
-            public object parent { get; set; }
+            public int? popularity { get; set; }
+            public Parent parent { get; set; }
             public string banner_url { get; set; }
         }
 
