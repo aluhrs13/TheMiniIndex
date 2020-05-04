@@ -107,7 +107,7 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             public int id { get; set; }
             public string name { get; set; }
             public bool automatic_slicing { get; set; }
-            public bool premium { get; set; }
+            public bool? premium { get; set; }
             public string model { get; set; }
             public string brand { get; set; }
             public object image { get; set; }
