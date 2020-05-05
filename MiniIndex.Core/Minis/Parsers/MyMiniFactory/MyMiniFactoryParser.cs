@@ -54,11 +54,18 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             MyMiniFactorySource source = new MyMiniFactorySource(creator, myModel.designer.profile_url);
             creator.Sites.Add(source);
 
+            int cost = 0;
+
+            if (myModel.price != null)
+            {
+                cost = Convert.ToInt32(Math.Round(Convert.ToDouble(myModel.price.value)));
+            }
+
             Mini mini = new Mini
             {
                 Name = myModel.name,
                 Status = Status.Unindexed,
-                Cost = Convert.ToInt32(Math.Round(Convert.ToDouble(myModel.price.value))),
+                Cost = cost,
                 Link = myModel.url,
                 Creator = creator
             };
