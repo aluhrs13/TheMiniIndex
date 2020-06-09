@@ -8,7 +8,6 @@ using MiniIndex.Core.Submissions;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -32,7 +31,6 @@ namespace MiniIndex.API
         private readonly MiniIndexContext _context;
         private readonly IMediator _mediator;
         private readonly string _apiKey;
-        private object configuration;
 
         [HttpGet("check")]
         public async Task<IActionResult> FindExistingMini(Uri url)
@@ -53,7 +51,6 @@ namespace MiniIndex.API
             return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
         }
 
-
         [HttpGet("tagList")]
         public async Task<IActionResult> FindMinisTags(int? id)
         {
@@ -63,12 +60,21 @@ namespace MiniIndex.API
             }
 
             Mini mini = await _context.Mini
-                                .Include(m=>m.MiniTags)
-                                    .ThenInclude(mt=>mt.Tag)
+                                .Include(m => m.MiniTags)
+                                    .ThenInclude(mt => mt.Tag)
                                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            var tagList = JsonSerializer.Serialize(mini.MiniTags.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending)).Select(mt=> new { ID = mt.Tag.ID, TagName = mt.Tag.TagName, Category = mt.Tag.Category.ToString(), Status = mt.Status.ToString() }).ToList().OrderBy(i =>i.Status));
-
+            var tagList = JsonSerializer.Serialize(mini.MiniTags
+                .Where(m => m.Status == Status.Approved || m.Status == Status.Pending)
+                .Select(mt => new
+                {
+                    ID = mt.Tag.ID,
+                    TagName = mt.Tag.TagName,
+                    Category = mt.Tag.Category.ToString(),
+                    Status = mt.Status.ToString()
+                })
+                .ToList()
+                .OrderBy(i => i.Status));
 
             if (mini == null)
             {
@@ -81,11 +87,12 @@ namespace MiniIndex.API
         [HttpGet("create")]
         public async Task<IActionResult> CreateMini(Uri url, string key)
         {
-            if(url == null || key != _apiKey){
+            if (url == null || key != _apiKey)
+            {
                 return BadRequest();
             }
 
-            IdentityUser user = await _context.Users.FirstAsync(u=>u.Email.Contains("admin@theminiindex.com"));
+            IdentityUser user = await _context.Users.FirstAsync(u => u.Email.Contains("admin@theminiindex.com"));
             Mini mini = await _mediator.Send(new MiniSubmissionRequest(url, user));
 
             if (mini != null)
