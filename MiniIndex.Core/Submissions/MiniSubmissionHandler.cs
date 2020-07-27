@@ -30,7 +30,7 @@ namespace MiniIndex.Core.Submissions
 
         public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
-            Mini mini = await _context.Set<Mini>().SingleOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
+            Mini mini = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
 
             if (mini != null)
             {
