@@ -1,0 +1,25 @@
+﻿@page
+@model MiniIndex.Pages.Tags.BrowseModel
+@{
+    ViewData["Title"] = "All Tags";
+    string prevCategory="";
+}
+
+<h1>Browse All Tags</h1>
+
+@foreach (var item in Model.Tag)
+{
+    @if (item.Key.Category.ToString() != prevCategory)
+    {
+        <h2>@item.Key.Category</h2>
+
+        @if(item.Key.Category.ToString() == "")
+        {
+            <h2>Uncategorized</h2>
+        }
+    }
+
+    <a href="/Minis/?Tags=@item.Key.TagName" class="btn btn-outline-success" style="margin:5px 0px 5px 0px;">@Html.DisplayFor(modelItem => item.Key.TagName) </a>
+
+    prevCategory = item.Key.Category.ToString();
+}
