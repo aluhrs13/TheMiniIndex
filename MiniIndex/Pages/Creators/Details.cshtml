@@ -9,6 +9,24 @@
     ViewData["Title"] = Model.Creator.Name + " Details";
 }
 
+    <div>
+        @if (User.IsInRole("Moderator"))
+        {
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title">Scan Creator</h2>
+                    @foreach (var site in Model.Creator.Sites)
+                    {
+                        <a href="http://localhost:7071/api/ProfileParser?url=@site.CreatorPageUri" class="btn btn-primary">Scan @site.DisplayName</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+
 <h1>@Html.DisplayFor(model => model.Creator.Name)</h1>
 
 @foreach (var site in Model.Creator.Sites)
