@@ -31,19 +31,18 @@ namespace Supporting.ProfileParsing
         {
             string url = req.Query["url"];
 
-            string key = req.Query["key"];
-
-            if(key == AutoCreateKey)
+            if (string.IsNullOrEmpty(url))
+            {
+                return new OkObjectResult("Need URL");
+            }
+            else
             {
                 log.LogInformation("[Main] Looking at - " + url.ToString());
                 await ParseURLAsync(log, new Uri(url));
                 return new OkObjectResult($"Scanned {url}");
+            }
 
-            }
-            else
-            {
-                return new BadRequestObjectResult($"Invalid Key");
-            }
+
         }
 
         public static async Task ParseURLAsync(ILogger log, Uri url)
