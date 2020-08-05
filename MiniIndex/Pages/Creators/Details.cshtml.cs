@@ -29,6 +29,8 @@ namespace MiniIndex.Pages.Creators
         private readonly IConfiguration _configuration;
         private readonly TelemetryClient _telemetry;
 
+        public string FunctionsCode { get; set; }
+
         public Creator Creator { get; set; }
         public List<Mini> ThingiverseMiniList { get; set; }
         public List<Mini> AllCreatorsMinis { get; set; }
@@ -46,6 +48,8 @@ namespace MiniIndex.Pages.Creators
             {
                 return NotFound();
             }
+
+            FunctionsCode = _configuration["FunctionsCode"];
 
             Creator = await _context
                 .Set<Creator>()
