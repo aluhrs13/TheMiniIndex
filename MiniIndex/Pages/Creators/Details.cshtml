@@ -1,6 +1,7 @@
 ﻿@page
 @using MiniIndex.Models
 @using Microsoft.Extensions.Configuration
+@inject SignInManager<IdentityUser> SignInManager
 @inject IConfiguration Configuration
 
 @model MiniIndex.Pages.Creators.DetailsModel
@@ -19,7 +20,7 @@
 <div id="scan-container">
     @if (User.IsInRole("Moderator"))
     {
-        <hr/>
+        <hr />
         <div class="card shadow">
             <div class="card-body">
                 <h2 class="card-title">Scan Creator</h2>
