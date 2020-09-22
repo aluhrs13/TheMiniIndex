@@ -48,9 +48,9 @@ namespace MiniIndex.Core.Minis.Parsers.AtelierStoria
             Mini mini = new Mini()
             {
                 Creator = creator,
-                Name = getValueFromMeta(htmlDoc, "product:title:", variantId),
-                Thumbnail = getValueFromMeta(htmlDoc, "product:image:", variantId),
-                Cost = getCost(htmlDoc, variantId),
+                Name = GetValueFromMeta(htmlDoc, "product:title:", variantId),
+                Thumbnail = GetValueFromMeta(htmlDoc, "product:image:", variantId),
+                Cost = GetCost(htmlDoc, variantId),
                 Link = url.ToString(),
             };
 
@@ -68,7 +68,7 @@ namespace MiniIndex.Core.Minis.Parsers.AtelierStoria
         /// <param name="target">The meta tag attribute to find, such as "product:title:".</param>
         /// <param name="variantId">The variant name of the particular miniature variant, such as "Pose-A". If the miniature doesn't have variants, variantId will be empty.</param>
         /// <returns></returns>
-        private string getValueFromMeta(HtmlDocument htmlDoc, string target, string variantId)
+        private string GetValueFromMeta(HtmlDocument htmlDoc, string target, string variantId)
         {
             return htmlDoc.DocumentNode.SelectNodes("//meta").Where(n => n.Attributes.Any(a => a.Value == target + variantId || a.Value == target)).First()
                     .Attributes.Where(a => a.Name == "content").First().Value.Trim();
@@ -80,10 +80,10 @@ namespace MiniIndex.Core.Minis.Parsers.AtelierStoria
         /// <param name="htmlDoc">The html document to parse.</param>
         /// <param name="variantId">The variant name of the particular miniature variant, such as "Pose-A". If the miniature doesn't have variants, variantId will be empty.</param>
         /// <returns></returns>
-        private int getCost(HtmlDocument htmlDoc, string variantId)
+        private int GetCost(HtmlDocument htmlDoc, string variantId)
         {
             int cost = 0;
-            string priceContent = getValueFromMeta(htmlDoc, "product:price:", variantId);
+            string priceContent = GetValueFromMeta(htmlDoc, "product:price:", variantId);
             if (priceContent != null)
             {
                 cost = Int32.Parse(priceContent.Split(".").First());
