@@ -134,6 +134,16 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
     color: white !important;
 }
 
+.thumb-wrapper.AtelierStoria span {
+    background: transparent url('../images/SourceSiteIcons/AtelierStoria.png') no-repeat;
+}
+
+.AtelierStoria {
+    background-color: #5F7E23 !important;
+    border-color: #5F7E23 !important;
+    color: white !important;
+}
+
 .thumb-wrapper {
     position: relative;
 }
