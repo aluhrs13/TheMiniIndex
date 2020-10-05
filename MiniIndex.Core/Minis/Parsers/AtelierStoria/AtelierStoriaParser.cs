@@ -45,6 +45,13 @@ namespace MiniIndex.Core.Minis.Parsers.AtelierStoria
             // Some minis have variants, in which case they have a single query parameter named variant.
             var variantId = url.Query.Split("=").Last();
 
+            // If the variant is not specified in the URL query, the default variant will be used when avaiable.
+            // If the default variant doesn't exist, variantId will still be an empty string.
+            if (variantId == "")
+            {
+                variantId = GetValueFromMeta(htmlDoc, "product:defaultvariant", "");
+            }
+
             Mini mini = new Mini()
             {
                 Creator = creator,
