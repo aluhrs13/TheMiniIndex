@@ -136,6 +136,8 @@ namespace Supporting.ProfileParsing
 
             while (true)
             {
+                log.LogInformation("[Thingiverse Parsing] Looking at user " + user + " page " + page);
+
                 HttpResponseMessage response = await httpClient.GetAsync("https://api.thingiverse.com/Users/" + user + "/things?access_token=" + ThingiverseKey + "&page=" + page);
                 HttpContent responseContent = response.Content;
 
@@ -149,16 +151,17 @@ namespace Supporting.ProfileParsing
                         try
                         {
                             List<ThingiverseObject> rootObject = JsonConvert.DeserializeObject<List<ThingiverseObject>>(result);
+                            //log.LogInformation(result);
+
+                            if (rootObject == null)
+                            {
+                                log.LogError("[Thingiverse Parsing] No object found!");
+                            }
 
                             if (rootObject.Count == 0)
                             {
                                 log.LogInformation("[Thingiverse Parsing] All out of items!");
                                 break;
-                            }
-
-                            if (rootObject == null)
-                            {
-                                log.LogError("[Thingiverse Parsing] No object found!");
                             }
 
                             foreach (ThingiverseObject item in rootObject)
