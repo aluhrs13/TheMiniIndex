@@ -27,6 +27,7 @@ namespace MiniIndex.Pages.Admin
                 .Include(mt => mt.Tagger)
                 .Include(mt => mt.Mini)
                 .Include(mt => mt.Tag)
+                .Where(mt => mt.Mini.Status == Status.Approved)
                 .Where(mt => mt.Status == Status.Pending)
                 .Where(mt => mt.Tagger != null)
                 .ToList();

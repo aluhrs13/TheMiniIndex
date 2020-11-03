@@ -181,3 +181,13 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
     background-repeat: no-repeat;
     background-size: 100%;
 }
+
+.badge-True{
+    background-color: green;
+    color: white;
+}
+
+.badge-False{
+    background-color: red;
+    color: white;
+}
