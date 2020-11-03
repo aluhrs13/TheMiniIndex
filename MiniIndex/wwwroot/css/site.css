@@ -176,3 +176,8 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
     filter: drop-shadow(5px 5px 5px #222);
 }
 
+.loading-spinner {
+    background: transparent url('../images/loading.gif');
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
