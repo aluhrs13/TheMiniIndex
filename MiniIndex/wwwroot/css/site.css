@@ -134,6 +134,16 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
     color: white !important;
 }
 
+.thumb-wrapper.PrusaPrinters span {
+    background: transparent url('../images/SourceSiteIcons/PrusaPrinters.png') no-repeat;
+}
+
+.PrusaPrinters {
+    background-color: #fa6831 !important;
+    border-color: #fa6831 !important;
+    color: white !important;
+}
+
 .thumb-wrapper.AtelierStoria span {
     background: transparent url('../images/SourceSiteIcons/AtelierStoria.png') no-repeat;
 }

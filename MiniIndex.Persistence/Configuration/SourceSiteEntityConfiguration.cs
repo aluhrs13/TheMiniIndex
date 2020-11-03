@@ -21,6 +21,7 @@ namespace MiniIndex.Persistence.Configuration
                 .HasValue<Wargaming3dSource>("Wargaming3d")
                 .HasValue<DuncanShadowSource>("DuncanShadow")
                 .HasValue<AtelierStoriaSource>("AtelierStoria")
+                .HasValue<PrusaPrintersSource>("PrusaPrinters")
                 .HasValue<WebsiteSource>("Website");
 
             builder.Ignore(x => x.BaseUri);
