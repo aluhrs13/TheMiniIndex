@@ -11,6 +11,13 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
 {
     public class MyMiniFactoryParser : IParser
     {
+        public MyMiniFactoryParser(MyMiniFactoryClient myMiniFactoryClient)
+        {
+            _myMiniFactoryClient = myMiniFactoryClient;
+        }
+
+        private readonly MyMiniFactoryClient _myMiniFactoryClient;
+        
         public string Site => "MyMiniFactory";
 
         public bool CanParse(Uri url)
@@ -30,42 +37,49 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
 
         public async Task<Mini> ParseFromUrl(Uri url)
         {
-            HtmlWeb web = new HtmlWeb();
-            HtmlDocument htmlDoc = await web.LoadFromWebAsync(url, null, null);
+            string objectId = GetObjectIdFromUrl(url);
 
-            HtmlNode creatorLink = htmlDoc.DocumentNode.SelectNodes("//a[@class=\"under-hover\"]")
-                .FirstOrDefault();
+            MyMiniFactoryModel.RootObject myModel = await _myMiniFactoryClient.GetObject(objectId);
 
-            string creatorUrl = creatorLink.GetAttributeValue("href", null);
-            string creatorName = Uri.UnescapeDataString(creatorUrl.Split('/').Last());
+            if (myModel is null)
+            {
+                return null;
+            }
 
             Creator creator = new Creator
             {
-                Name = creatorName
+                Name = myModel.designer.username
             };
-            MyMiniFactorySource source = new MyMiniFactorySource(creator, creatorName);
+
+            MyMiniFactorySource source = new MyMiniFactorySource(creator, myModel.designer.profile_url);
             creator.Sites.Add(source);
 
-            Mini mini = new Mini()
+            int cost = 0;
+
+            if (myModel.price != null)
             {
-                Creator = creator,
-                Name = System.Web.HttpUtility.HtmlDecode(htmlDoc.DocumentNode.SelectNodes("//h1").FirstOrDefault().InnerText.Trim()),
-                Thumbnail = htmlDoc.DocumentNode.SelectNodes("//meta").Where(n => n.Attributes.Any(a => a.Value == "og:image")).First()
-                    .Attributes.Where(a => a.Name == "content").First().Value,
-                Link = url.ToString()
+                cost = Convert.ToInt32(Math.Round(Convert.ToDouble(myModel.price.value)));
+            }
+
+            Mini mini = new Mini
+            {
+                Name = myModel.name,
+                Status = Status.Unindexed,
+                Cost = cost,
+                Link = myModel.url,
+                Creator = creator
             };
 
-            int cost = 0;
-            HtmlNodeCollection priceNode = htmlDoc.DocumentNode.SelectNodes("//span[@class=\"price-title\"]");
-            if (priceNode != null)
-            {
-                cost = Int32.Parse(priceNode.First().InnerText.Remove(0, 1).Split(".").First());
-            }
-            mini.Cost = cost;
+            mini.Thumbnail = myModel.images.Where(i => i.is_primary == true).FirstOrDefault().large.url;
 
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
 
             return mini;
+        }
+
+        private string GetObjectIdFromUrl(Uri url)
+        {
+            return url.AbsolutePath.Split('-').Last();
         }
     }
 }

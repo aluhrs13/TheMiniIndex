@@ -30,7 +30,7 @@ namespace MiniIndex.Core.Submissions
 
         public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
-            Mini mini = await _context.Set<Mini>().SingleOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
+            Mini mini = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
 
             if (mini != null)
             {
@@ -47,6 +47,15 @@ namespace MiniIndex.Core.Submissions
             }
 
             mini = await parser.ParseFromUrl(request.Url);
+
+            //Now that we've parsed it, check if the parsed URL is different from the original URL and if we have that.
+            Mini checkDupe = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.Link == mini.Link, cancellationToken);
+
+            if (checkDupe != null)
+            {
+                return checkDupe;
+            }
+
             mini.User = request.User;
             mini.Status = Status.Unindexed;
 

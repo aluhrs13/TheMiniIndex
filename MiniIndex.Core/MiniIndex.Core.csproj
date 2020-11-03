@@ -5,18 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AgileObjects.AgileMapper" Version="1.5.0" />
+    <PackageReference Include="AgileObjects.AgileMapper" Version="1.6.0" />
     <PackageReference Include="Anaximander.Linq" Version="2.3.3" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.3.0" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.17" />
-    <PackageReference Include="Lamar" Version="4.1.0" />
-    <PackageReference Include="MediatR" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.1.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.4.4" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.24" />
+    <PackageReference Include="Lamar" Version="4.3.0" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Polly" Version="7.2.0" />
+    <PackageReference Include="Polly" Version="7.2.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
   </ItemGroup>
 

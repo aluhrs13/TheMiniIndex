@@ -1,6 +1,7 @@
 ﻿@page
 @using MiniIndex.Models
 @using Microsoft.Extensions.Configuration
+@inject SignInManager<IdentityUser> SignInManager
 @inject IConfiguration Configuration
 
 @model MiniIndex.Pages.Creators.DetailsModel
@@ -15,6 +16,22 @@
 {
     <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
 }
+
+<div id="scan-container">
+    @if (User.IsInRole("Moderator"))
+    {
+        <hr />
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title">Scan Creator</h2>
+                @foreach (var site in Model.Creator.Sites)
+                {
+                    <a href="http://miniindexprofileparser.azurewebsites.net/api/ProfileParser?code=@Model.FunctionsCode&url=@site.CreatorPageUri" class="btn btn-primary">Scan @site.DisplayName</a>
+                }
+            </div>
+        </div>
+    }
+</div>
 
 <hr />
 
