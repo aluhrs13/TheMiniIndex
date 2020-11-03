@@ -36,7 +36,8 @@ namespace MiniIndex.Core.Minis.Parsers.PrusaPrinters
 
         public async Task<Mini> ParseFromUrl(Uri url)
         {
-            //Split the LocalPath of url on '-' and grab the first value
+            //Prusa format is https://www.prusaprinters.org/prints/41937-tiamat-updated
+            //So we split the LocalPath of url on '-' and grab the first value, then on '/' and grab the last
             string id = url.LocalPath.Split('-').First().Split('/').Last();
 
             HttpClient client = new HttpClient();
@@ -44,11 +45,13 @@ namespace MiniIndex.Core.Minis.Parsers.PrusaPrinters
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://www.prusaprinters.org/graphql/");
             requestMessage.Headers.Add("ContentType", "application/json");
 
-            string myContent = @"{
+            //This is super hacky, but probably slightly less hacky than HTML parsing.
+            //REALLY trying to avoid pulling in a full GraphQL library for one SourceSite
+            string myContent = string.Format(@"{{
                 ""operationName"": ""PrintProfile"",
-                ""variables"":{""id"": ""44053""},
-                ""query"":""query PrintProfile($id: ID!) { print(id: $id) { id slug name user { id slug publicUsername} images { filePath } } }""
-            }";
+                ""variables"":{{""id"": ""{0}""}},
+                ""query"":""query PrintProfile($id: ID!) {{ print(id: $id) {{ id slug name user {{ id slug publicUsername}} images {{ filePath }} }} }}""
+            }}", id);
 
             requestMessage.Content = new StringContent(myContent, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.SendAsync(requestMessage);
@@ -56,13 +59,14 @@ namespace MiniIndex.Core.Minis.Parsers.PrusaPrinters
 
             JObject text = JObject.Parse(responseString);
 
+            string creatorId = text["data"]["print"]["user"]["id"].ToString();
             string creatorName = text["data"]["print"]["user"]["publicUsername"].ToString();
 
             Creator creator = new Creator
             {
                 Name = creatorName
             };
-            PrusaPrintersSource source = new PrusaPrintersSource(creator, creatorName);
+            PrusaPrintersSource source = new PrusaPrintersSource(creator, creatorId, creatorName);
             creator.Sites.Add(source);
 
             Mini mini = new Mini()
@@ -78,24 +82,3 @@ namespace MiniIndex.Core.Minis.Parsers.PrusaPrinters
         }
     }
 }
-
-
-
-
-/*
-
-
-Invoke-WebRequest -Uri "https://www.prusaprinters.org/graphql/" `
--Method "POST" `
--ContentType "application/json" `
--Body "{`"operationName`":`"PrintProfile`",`"variables`":{`"id`":`"30323`"},`"query`":`"query PrintProfile(`$id: ID!) {\n print(id: `$id) {\n id\n slug\n name\n user {\n id\n slug\n email\n donationLinks {\n id\n title\n url\n __typename\n      }\n publicUsername\n avatarFilePath\n __typename\n    }\n ratingAvg\n myRating\n ratingCount\n content\n category {\n id\n path {\n id\n name\n __typename\n      }\n __typename\n    }\n modified\n firstPublish\n datePublished\n hasModel\n summary\n shareCount\n printDuration\n numPieces\n weight\n nozzleDiameters\n usedMaterial\n layerHeights\n materials {\n name\n __typename\n    }\n dateFeatured\n downloadCount\n displayCount\n pdfFilePath\n commentCount\n userGcodeCount\n userGcodesCount\n remixCount\n canBeRated\n inMyCollections\n printer {\n id\n name\n __typename\n    }\n images {\n id\n filePath\n __typename\n    }\n tags {\n name\n id\n __typename\n    }\n thingiverseLink\n filesType\n foundInUserGcodes\n remixParents {\n...remixParentDetail\n __typename\n    }\n __typename\n  }\n}\n\nfragment remixParentDetail on PrintRemixType {\n id\n parentPrintName\n parentPrintAuthor {\n id\n slug\n publicUsername\n __typename\n  }\n parentPrint {\n id\n name\n slug\n datePublished\n images {\n id\n filePath\n __typename\n    }\n license {\n id\n name\n disallowRemixing\n __typename\n    }\n __typename\n  }\n __typename\n }\n`"}" 
-
-
-Invoke-WebRequest -Uri "https://www.prusaprinters.org/graphql/" `
--Method "POST" `
--ContentType "application/json" `
--Body "{`"operationName`":`"PrintProfile`",`"variables`":{`"id`":`"30323`"},`"query`":`"query PrintProfile(`$id: ID!) {\n print(id: `$id) {\n id\n slug\n name\n }\n`"}" 
-
-
-
-*/
