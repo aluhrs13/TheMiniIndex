@@ -20,6 +20,7 @@ namespace MiniIndex.Persistence.Configuration
                 .HasValue<Cults3dSource>("Cults3d")
                 .HasValue<Wargaming3dSource>("Wargaming3d")
                 .HasValue<DuncanShadowSource>("DuncanShadow")
+                .HasValue<PrusaPrintersSource>("AtelierStoria")
                 .HasValue<PrusaPrintersSource>("PrusaPrinters")
                 .HasValue<WebsiteSource>("Website");
 

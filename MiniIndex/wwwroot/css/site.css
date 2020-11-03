@@ -139,7 +139,19 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .PrusaPrinters {
-    background-color: #fa6831 !important; border-color: #fa6831 !important; color: white !important;
+    background-color: #fa6831 !important;
+    border-color: #fa6831 !important;
+    color: white !important;
+}
+
+.thumb-wrapper.AtelierStoria span {
+    background: transparent url('../images/SourceSiteIcons/AtelierStoria.png') no-repeat;
+}
+
+.AtelierStoria {
+    background-color: #5F7E23 !important;
+    border-color: #5F7E23 !important;
+    color: white !important;
 }
 
 .thumb-wrapper {
