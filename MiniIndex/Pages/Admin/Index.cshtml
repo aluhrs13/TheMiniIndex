@@ -88,7 +88,7 @@
                             <hr />
 
                             @{
-                                if (usedCategories.Contains(TagCategory.Race))
+                                if (usedCategories.Contains(TagCategory.Race) || usedCategories.Contains(TagCategory.Gender) || usedCategories.Contains(TagCategory.Class))
                                 {
                                     <p>
                                         PC<br/>
@@ -104,12 +104,15 @@
                                         <span class="badge badge-@usedCategories.Contains(TagCategory.Weapon)">
                                             Weapon
                                         </span>
+                                        (
                                         <span class="badge badge-@usedCategories.Contains(TagCategory.Armor)">
                                             Armor
                                         </span>
+                                         and/or 
                                         <span class="badge badge-@usedCategories.Contains(TagCategory.Clothing)">
                                             Clothing
                                         </span>
+                                        )
                                     </p>
                                     <hr />
                                 }
