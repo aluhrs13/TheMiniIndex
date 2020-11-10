@@ -75,6 +75,10 @@
     <None Include="$(WWWRoot)**" Exclude="$(WWWRoot)dist\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\images\banner.png" />
+  </ItemGroup>
+
   <Target Name="NpmInstall" BeforeTargets="Build" Condition=" !Exists('node_modules') ">
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />

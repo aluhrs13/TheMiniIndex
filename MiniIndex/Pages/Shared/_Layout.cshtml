@@ -31,13 +31,13 @@
     <meta name="msapplication-square310x310logo" content="~/images/icons/mstile-310x310.png" />
 
     <meta property="og:site_name" content="The Mini Index" />
-    <meta property="og:image" content="https://theminiindex.com/images/icons/favicon-196x196.png">
+    <meta property="og:image" content="https://theminiindex.com/images/banner.png">
     <meta property="og:title" content="@ViewData["Title"] - The Mini Index" />
     <meta property="og:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta property="fb:app_id" content="217005809246433" />
 
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:image:src" content="https://theminiindex.com/images/icons/favicon-196x196.png">
+    <meta name="twitter:image:src" content="https://theminiindex.com/images/banner.png">
     <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
 
@@ -54,6 +54,8 @@
         <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
     </environment>
 
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
     <script type="text/javascript">
         var appInsights = window.appInsights || function (a) {
             function b(a) { c[a] = function () { var b = arguments; c.queue.push(function () { c[a].apply(c, b) }) } } var c = { config: a }, d = document, e = window; setTimeout(function () { var b = d.createElement("script"); b.src = a.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js", d.getElementsByTagName("script")[0].parentNode.appendChild(b) }); try { c.cookie = d.cookie } catch (a) { } c.queue = []; for (var f = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; f.length;)b("track" + f.pop()); if (b("setAuthenticatedUserContext"), b("clearAuthenticatedUserContext"), b("startTrackEvent"), b("stopTrackEvent"), b("startTrackPage"), b("stopTrackPage"), b("flush"), !a.disableExceptionTracking) { f = "onerror", b("_" + f); var g = e[f]; e[f] = function (a, b, d, e, h) { var i = g && g(a, b, d, e, h); return !0 !== i && c["_" + f](a, b, d, e, h), i } } return c
@@ -66,8 +68,14 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="/">The Mini Index</a>
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="/">
+            <img src="~/images/icons/apple-touch-icon-57x57.png" style="height:40px;" />
+            <div style="margin-left:7px; float:right; line-height:1;">
+                <span style="font-size:x-small;">THE</span><br />
+                MINI INDEX
+            </div>
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
