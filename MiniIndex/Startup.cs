@@ -38,6 +38,16 @@ namespace MiniIndex
                 config.AddApplicationInsights();
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("SpecificOrigins",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://tmireact.azurewebsites.net/", "https://*.theminiindex.com")
+                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                    });
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -98,6 +108,7 @@ namespace MiniIndex
             app.UseAuthentication();
 
             app.UseRouting();
+            app.UseCors();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
