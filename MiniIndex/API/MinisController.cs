@@ -82,12 +82,14 @@ namespace MiniIndex.API
             _mapper.Map(search).Over(searchRequest);
             PaginatedList<Mini> searchResult = await _mediator.Send(searchRequest);
 
+            //SearchSupportingInfo searchInfo = await _mediator.Send(new GetSearchInfoRequest());
+
             return Ok(searchResult.Select(m=> new
                     {
                         ID = m.ID,
                         Name = m.Name,
                         Status = m.Status,
-                        Creator = m.Creator.Name,
+                        Creator = new { name = m.Creator.Name, id = m.Creator.ID },
                         Thumbnail = m.Thumbnail,
                         Link = m.Link
                     })
