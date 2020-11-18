@@ -78,10 +78,26 @@ namespace MiniIndex.API
                 .Select(m => m.Creator)
                 .ToListAsync();
 
-            Dictionary<Creator, int> CreatorCounts = countQuery
-                .GroupBy(x => x)
-                .OrderByDescending(x => x.Count())
-                .ToDictionary(k => k.Key, v => v.Count());
+            Dictionary<Creator, int> CreatorCounts = new Dictionary<Creator, int>();
+
+            if (pageIndex > 1)
+            {
+                CreatorCounts = countQuery
+                    .GroupBy(x => x)
+                    .OrderByDescending(x => x.Count())
+                    .Skip(pageSize*pageIndex)
+                    .Take(pageSize)
+                    .ToDictionary(k => k.Key, v => v.Count());
+            }
+            else
+            {
+                CreatorCounts = countQuery
+                    .GroupBy(x => x)
+                    .OrderByDescending(x => x.Count())
+                    .Take(pageSize)
+                    .ToDictionary(k => k.Key, v => v.Count());
+            }
+
 
             return Ok(CreatorCounts.Select(k=>new
                 { 

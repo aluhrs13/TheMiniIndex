@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
+using System.Collections.Generic;
 
 namespace MiniIndex.API
 {
@@ -42,7 +43,7 @@ namespace MiniIndex.API
         private readonly string _apiKey;
 
         [EnableCors("SpecificOrigins")]
-        [HttpGet("mini")]
+        [HttpGet("view")]
         public async Task<IActionResult> GetMini(int id)
         {
             if (id == null)
@@ -50,14 +51,104 @@ namespace MiniIndex.API
                 return BadRequest();
             }
 
-            Mini mini = await _context.Mini.FirstOrDefaultAsync(m=>m.ID == id);
+            List<Mini> RelatedMinis = new List<Mini> { };
+            Mini mini = await _context.Mini
+                                        .Include(m => m.MiniTags)
+                                            .ThenInclude(mt => mt.Tag)
+                                        .Include(m=>m.Creator)
+                                        .FirstOrDefaultAsync(m => m.ID == id);
 
             if (mini == null)
             {
                 return NotFound();
             }
 
-            return Ok(mini);
+            //Find Related Minis. This is fairly hacky right now, but good for common cases.
+            if (mini.MiniTags.Where(mt => mt.Status == Status.Approved).Any())
+            {
+                //First - Creature Name, the most straight-forward.
+                IEnumerable<Tag> creatureTags = mini.MiniTags.Where(mt => mt.Status == Status.Approved).Where(mt => mt.Tag.Category == TagCategory.CreatureName).Select(mt => mt.Tag);
+
+                if (creatureTags.Any())
+                {
+                    foreach (Tag creatureTag in creatureTags)
+                    {
+                        List<Mini> creatureRelatedMinis = _context.Mini
+                                                            .Include(m => m.Creator)
+                                                            .Where(m => m.MiniTags.Where(mt => mt.Status == Status.Approved).Any(mt => mt.Tag == creatureTag))
+                                                            .ToList();
+
+                        RelatedMinis = RelatedMinis.Concat(creatureRelatedMinis).ToList();
+                    }
+                }
+
+                //Second - Race + Class, pretty solid attempt but doesn't account for Gender which is mostly fine.
+                IEnumerable<Tag> classTags = mini.MiniTags.Where(mt => mt.Status == Status.Approved).Where(mt => mt.Tag.Category == TagCategory.Class).Select(mt => mt.Tag);
+                IEnumerable<Tag> raceTags = mini.MiniTags.Where(mt => mt.Status == Status.Approved).Where(mt => mt.Tag.Category == TagCategory.Race).Select(mt => mt.Tag);
+
+                if (classTags.Any() && raceTags.Any())
+                {
+                    foreach (Tag classTag in classTags)
+                    {
+                        IEnumerable<Mini> classRelatedMinis = _context.Mini
+                                                                    .Include(m => m.Creator)
+                                                                    .Include(m => m.MiniTags)
+                                                                        .ThenInclude(mt => mt.Tag)
+                                                                    .Where(m => m.MiniTags.Select(mt => mt.Tag).Contains(classTag));
+
+                        foreach (Tag raceTag in raceTags)
+                        {
+                            List<Mini> raceClassRelatedMinis = classRelatedMinis.Where(m => m.MiniTags.Select(mt => mt.Tag).Contains(raceTag)).ToList();
+
+
+                            RelatedMinis = RelatedMinis.Concat(raceClassRelatedMinis).ToList();
+                        }
+                    }
+                }
+            }
+
+            //Finally, include things by CreatureType or this creator.
+            //Only do this if we don't have any related already.
+            if (RelatedMinis.Count == 0)
+            {
+                IEnumerable<Tag> creatureTypeTags = mini.MiniTags.Where(mt => mt.Status == Status.Approved).Where(mt => mt.Tag.Category == TagCategory.CreatureType).Select(mt => mt.Tag);
+
+                if (creatureTypeTags.Any())
+                {
+                    foreach (Tag creatureTypeTag in creatureTypeTags)
+                    {
+                        List<Mini> creatureRelatedMinis = _context.Mini
+                                                            .Include(m => m.Creator)
+                                                            .Where(m => m.MiniTags.Where(mt => mt.Status == Status.Approved).Any(mt => mt.Tag == creatureTypeTag))
+                                                            .ToList();
+
+                        RelatedMinis = RelatedMinis.Concat(creatureRelatedMinis).ToList();
+                    }
+                }
+
+                if (RelatedMinis.Count == 0)
+                {
+                    RelatedMinis = RelatedMinis.Concat(_context.Mini.Where(m => m.Creator == mini.Creator).ToList()).ToList();
+                }
+            }
+
+            //Filter down just to approved and recent Minis.
+            RelatedMinis = RelatedMinis.Distinct()
+                                .Where(m => m.Status == Status.Approved)
+                                .Where(m => m.ID != mini.ID)
+                                .OrderByDescending(m => m.ApprovedTime).ToList();
+
+            return Ok(new
+                        {
+                            ID = mini.ID,
+                            Name = mini.Name,
+                            Status = mini.Status,
+                            Thumbnail = mini.Thumbnail,
+                            Link = mini.Link,
+                            Creator = new { name = mini.Creator.Name, id = mini.Creator.ID },
+                            Tags = mini.MiniTags.Select(mt=> new { TagName = mt.Tag.TagName, Category = mt.Tag.Category, Status = mt.Status }),
+                            RelatedMinis = RelatedMinis.Select(rm=>new { id = rm.ID, Name = rm.Name, Thumbnail = rm.Thumbnail, Link = rm.Link, Creator = new { Name = rm.Creator.Name, Id = rm.Creator.ID } }).Take(4)
+                        });
         }
 
         [EnableCors("SpecificOrigins")]
