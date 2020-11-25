@@ -147,7 +147,7 @@ namespace MiniIndex.API
                             Link = mini.Link,
                             Creator = new { name = mini.Creator.Name, id = mini.Creator.ID },
                             Tags = mini.MiniTags.Select(mt=> new { TagName = mt.Tag.TagName, Category = mt.Tag.Category, Status = mt.Status }),
-                            RelatedMinis = RelatedMinis.Select(rm=>new { id = rm.ID, Name = rm.Name, Thumbnail = rm.Thumbnail, Link = rm.Link, Creator = new { Name = rm.Creator.Name, Id = rm.Creator.ID } }).Take(4)
+                            RelatedMinis = RelatedMinis.Select(rm=>new { id = rm.ID, Name = rm.Name, Thumbnail = rm.Thumbnail, Link = rm.Link, Creator = new { Name = rm.Creator.Name, Id = rm.Creator.ID } }).Take(5)
                         });
         }
 
