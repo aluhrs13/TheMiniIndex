@@ -43,27 +43,38 @@ namespace MiniIndex.API
         private readonly string _apiKey;
 
         [EnableCors("SpecificOrigins")]
-        [HttpGet("mini")]
-        public async Task<IActionResult> GetMini(int id)
+        [HttpGet("view")]
+        public async Task<IActionResult> GetCreator(int id)
         {
             if (id == null)
             {
                 return BadRequest();
             }
 
-            Mini mini = await _context.Mini.FirstOrDefaultAsync(m=>m.ID == id);
-
-            if (mini == null)
+            Creator creator = await _context.Set<Mini>()
+                                        .Include(m => m.Creator).ThenInclude(c => c.Sites)
+                                        .Select(m => m.Creator)
+                                        .FirstOrDefaultAsync(c => c.ID == id);
+            if (creator == null)
             {
                 return NotFound();
             }
 
-            return Ok(mini);
+            return Ok(new
+            {
+                ID = creator.ID,
+                Name = creator.Name,
+                SourceSites = creator.Sites.Select(ss => new
+                {
+                    SiteName = ss.SiteName,
+                    URL = ss.CreatorPageUri
+                })
+            });
         }
 
         [EnableCors("SpecificOrigins")]
         [HttpGet("browse")]
-        public async Task<IActionResult> SearchMinis(
+        public async Task<IActionResult> BrowseCreators(
             [FromQuery]int pageSize = 21,
             [FromQuery]int pageIndex = 1)
         {

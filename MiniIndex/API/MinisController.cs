@@ -156,7 +156,8 @@ namespace MiniIndex.API
         public async Task<IActionResult> SearchMinis(
             [FromQuery]MiniSearchModel search = null,
             [FromQuery]int pageSize = 21,
-            [FromQuery]int pageIndex = 1)
+            [FromQuery]int pageIndex = 1,
+            [FromQuery]int creatorId = 0)
         {
             //Mild hack - There's some case where pageIndex is hitting 0 and I can't tell how/why. (GitHub #182)
             if (pageIndex == 0)
@@ -164,16 +165,25 @@ namespace MiniIndex.API
                 pageIndex = 1;
             }
 
+            Creator creatorInfo = new Creator();
+
+            if(creatorId > 0)
+            {
+                creatorInfo = await _context.Mini
+                                .Include(m => m.Creator)
+                                    .ThenInclude(c => c.Sites)
+                                .Select(m => m.Creator)
+                                .FirstOrDefaultAsync(c => c.ID == creatorId);
+            }
+
             //I really don't want people manually setting massive page sizes, so hardcoding this for now.
             pageSize = 21;
 
             PageInfo pagingInfo = new PageInfo(pageSize, pageIndex);
 
-            MiniSearchRequest searchRequest = new MiniSearchRequest { PageInfo = pagingInfo };
+            MiniSearchRequest searchRequest = new MiniSearchRequest { PageInfo = pagingInfo, Creator = creatorInfo };
             _mapper.Map(search).Over(searchRequest);
             PaginatedList<Mini> searchResult = await _mediator.Send(searchRequest);
-
-            //SearchSupportingInfo searchInfo = await _mediator.Send(new GetSearchInfoRequest());
 
             return Ok(searchResult.Select(m=> new
                     {

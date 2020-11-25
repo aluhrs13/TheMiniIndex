@@ -24,5 +24,7 @@ namespace MiniIndex.Core.Minis.Search
         public bool FreeOnly { get; set; }
 
         public PageInfo PageInfo { get; set; }
+
+        public Creator Creator { get; set; }
     }
 }

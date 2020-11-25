@@ -30,13 +30,21 @@ namespace MiniIndex.Minis.Handlers
                 .OrderByDescending(m => m.ApprovedTime)
                     .ThenByDescending(m => m.ID);
 
-            if (request.Tags.Count() == 0)
+            if(request.Creator!=null && request.Creator.ID > 0)
             {
-                search = search.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending));
+                search = search.Where(m => m.Creator == request.Creator);
             }
             else
             {
-                search = search.Where(m => m.Status == Status.Approved);
+                //If we're searching by creator, show all their minis not just approved or pending
+                if (request.Tags.Count() == 0)
+                {
+                    search = search.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending));
+                }
+                else
+                {
+                    search = search.Where(m => m.Status == Status.Approved);
+                }
             }
 
             if (request.FreeOnly)
