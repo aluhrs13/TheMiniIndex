@@ -59,14 +59,10 @@
 <div class="container">
     <p id="miniid" style="display:none;">@Model.Mini.ID</p>
 
-    <div>
-        <a asp-page="./">Back to List</a>
-    </div>
-
     <h2>
         @Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a>
     </h2>
-
+    <a href="https://beta.theminiindex.com/minis/@Model.Mini.ID">Check out on The Mini Index Beta!</a>
     <hr />
 
     <div class="row">

@@ -76,7 +76,7 @@ namespace MiniIndex.Minis
         }
 
         [HttpGet("redirect")]
-        public async Task<IActionResult> RedirectToMini(int id)
+        public async Task<IActionResult> RedirectToMini(int id, string beta)
         {
             if (id == null)
             {
@@ -89,6 +89,7 @@ namespace MiniIndex.Minis
             {
                 return NotFound();
             }
+    
 
             MiniSourceSite Source = mini.Sources.FirstOrDefault();
 
@@ -97,6 +98,7 @@ namespace MiniIndex.Minis
                 _telemetry.TrackEvent("MiniRedirect", new Dictionary<string, string> {
                         { "TargetHost", Source.Link.Host },
                         { "MiniID", id.ToString() },
+                        { "Beta", beta },
                         { "CreatorID", mini.Creator.ID.ToString() }
                     });
 
@@ -106,6 +108,7 @@ namespace MiniIndex.Minis
                 _telemetry.TrackEvent("MiniRedirect", new Dictionary<string, string> {
                         { "TargetHost", new Uri(mini.Link).Host },
                         { "MiniID", id.ToString() },
+                        { "Beta", beta },
                         { "CreatorID", mini.Creator.ID.ToString() }
                     });
 

@@ -1,5 +1,6 @@
 ﻿using AgileObjects.AgileMapper;
 using MediatR;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -29,18 +30,21 @@ namespace MiniIndex.API
                 MiniIndexContext context,
                 IMapper mapper,
                 IMediator mediator,
-                IConfiguration configuration)
+                IConfiguration configuration,
+                TelemetryClient telemetry)
         {
+            _apiKey = configuration["AutoCreateKey"];
             _context = context;
             _mapper = mapper;
             _mediator = mediator;
-            _apiKey = configuration["AutoCreateKey"];
+            _telemetry = telemetry;
         }
 
+        private readonly string _apiKey;
         private readonly MiniIndexContext _context;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-        private readonly string _apiKey;
+        private readonly TelemetryClient _telemetry;
 
         [EnableCors("SpecificOrigins")]
         [HttpGet("view")]
@@ -62,6 +66,8 @@ namespace MiniIndex.API
             {
                 return NotFound();
             }
+
+            _telemetry.TrackEvent("ViewedMiniAPI", new Dictionary<string, string> { { "MiniId", mini.ID.ToString() } });
 
             //Find Related Minis. This is fairly hacky right now, but good for common cases.
             if (mini.MiniTags.Where(mt => mt.Status == Status.Approved).Any())
@@ -184,6 +190,12 @@ namespace MiniIndex.API
             MiniSearchRequest searchRequest = new MiniSearchRequest { PageInfo = pagingInfo, Creator = creatorInfo };
             _mapper.Map(search).Over(searchRequest);
             PaginatedList<Mini> searchResult = await _mediator.Send(searchRequest);
+
+            _telemetry.TrackEvent("NewMiniSearchAPI", new Dictionary<string, string> {
+                                                            { "SearchString", searchRequest.SearchString },
+                                                            { "HadResults", searchResult.Count>0 ? "True" : "False" },
+                                                            { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()}
+                                                        });
 
             return Ok(searchResult.Select(m=> new
                     {

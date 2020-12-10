@@ -1,5 +1,6 @@
 ﻿using AgileObjects.AgileMapper;
 using MediatR;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -29,18 +30,23 @@ namespace MiniIndex.API
                 MiniIndexContext context,
                 IMapper mapper,
                 IMediator mediator,
-                IConfiguration configuration)
+                IConfiguration configuration,
+                TelemetryClient telemetry)
         {
+            _apiKey = configuration["AutoCreateKey"];
             _context = context;
             _mapper = mapper;
             _mediator = mediator;
-            _apiKey = configuration["AutoCreateKey"];
+            _telemetry = telemetry;
+
+
         }
 
+        private readonly string _apiKey;
         private readonly MiniIndexContext _context;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-        private readonly string _apiKey;
+        private readonly TelemetryClient _telemetry;
 
         [EnableCors("SpecificOrigins")]
         [HttpGet("view")]
@@ -59,6 +65,8 @@ namespace MiniIndex.API
             {
                 return NotFound();
             }
+
+            _telemetry.TrackEvent("ViewedCreatorAPI", new Dictionary<string, string> { { "CreatorId", creator.ID.ToString() } });
 
             return Ok(new
             {
