@@ -48,7 +48,7 @@ namespace MiniIndex.API
 
         [EnableCors("SpecificOrigins")]
         [HttpGet("view")]
-        public async Task<IActionResult> GetMini(int id)
+        public async Task<IActionResult> GetMiniAPI(int id)
         {
             if (id == null)
             {
@@ -159,7 +159,7 @@ namespace MiniIndex.API
 
         [EnableCors("SpecificOrigins")]
         [HttpGet("search")]
-        public async Task<IActionResult> SearchMinis(
+        public async Task<IActionResult> SearchMinisAPI(
             [FromQuery]MiniSearchModel search = null,
             [FromQuery]int pageSize = 21,
             [FromQuery]int pageIndex = 1,

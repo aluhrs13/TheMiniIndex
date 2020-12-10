@@ -50,7 +50,7 @@ namespace MiniIndex.API
 
         [EnableCors("SpecificOrigins")]
         [HttpGet("view")]
-        public async Task<IActionResult> GetCreator(int id)
+        public async Task<IActionResult> GetCreatorAPI(int id)
         {
             if (id == null)
             {
@@ -82,7 +82,7 @@ namespace MiniIndex.API
 
         [EnableCors("SpecificOrigins")]
         [HttpGet("browse")]
-        public async Task<IActionResult> BrowseCreators(
+        public async Task<IActionResult> BrowseCreatorsAPI(
             [FromQuery]int pageSize = 21,
             [FromQuery]int pageIndex = 1)
         {

@@ -1,4 +1,5 @@
 using Lamar;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -43,8 +44,9 @@ namespace MiniIndex
                 options.AddPolicy("SpecificOrigins",
                     builder =>
                     {
-                        builder.WithOrigins("https://tmireact.azurewebsites.net/", "https://*.theminiindex.com")
-                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                        builder.WithOrigins("https://tmireact.azurewebsites.net", "https://theminiindex.com", "https://wwww.theminiindex.com", "http://localhost:3000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                     });
             });
 
@@ -81,6 +83,8 @@ namespace MiniIndex
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddApplicationInsightsTelemetry();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ITelemetryInitializer, TelemetryEnrichment>();
             services.AddApplicationInsightsTelemetryProcessor<AppInsightsFilter>();
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
 
