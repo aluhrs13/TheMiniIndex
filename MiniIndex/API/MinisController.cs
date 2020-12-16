@@ -19,9 +19,11 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MiniIndex.API
 {
+    [Authorize]
     [ApiController]
     [Route("api/minis")]
     public class MinisController : Controller

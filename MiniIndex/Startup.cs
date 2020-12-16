@@ -17,6 +17,8 @@ using MiniIndex.Core.Utilities;
 using MiniIndex.Persistence;
 using MiniIndex.Services;
 using WebPWrecover.Services;
+using Microsoft.AspNetCore.Authentication;
+
 
 namespace MiniIndex
 {
@@ -67,6 +69,12 @@ namespace MiniIndex
 
             services.AddDbContext<MiniIndexContext>(ConfigureEntityFramework);
 
+            services.AddIdentityServer()
+                .AddApiAuthorization<IdentityUser, MiniIndexContext>();
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
+
             string facebookAppId = Configuration["Authentication:Facebook:AppId"];
             string facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
 
@@ -110,6 +118,8 @@ namespace MiniIndex
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+            app.UseIdentityServer();
 
             app.UseRouting();
             app.UseCors();
