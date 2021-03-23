@@ -25,6 +25,7 @@
     <PackageReference Include="HtmlAgilityPack" Version="1.11.31" />
     <PackageReference Include="Lamar" Version="5.0.3" />
     <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="5.0.3" />
+    <PackageReference Include="Google.Cloud.RecaptchaEnterprise.V1" Version="1.1.0" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
