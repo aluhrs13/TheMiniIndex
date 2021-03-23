@@ -22,6 +22,7 @@
   <ItemGroup>
     <PackageReference Include="AgileObjects.AgileMapper" Version="1.6.0" />
     <PackageReference Include="Anaximander.Linq" Version="2.3.3" />
+    <PackageReference Include="Google.Cloud.RecaptchaEnterprise.V1" Version="1.1.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.24" />
     <PackageReference Include="Lamar" Version="4.3.0" />
     <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.3.0" />
