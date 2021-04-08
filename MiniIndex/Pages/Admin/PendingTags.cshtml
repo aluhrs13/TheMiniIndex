@@ -55,7 +55,10 @@
                         </a>
                     </td>
                     <td>
-                        @item.Tagger.UserName
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            @item.Tagger.UserName
+                        }
                     </td>
                 </tr>
             }

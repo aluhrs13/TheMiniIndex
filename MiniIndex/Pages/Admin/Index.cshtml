@@ -63,10 +63,6 @@
                             @item.Status
                         </td>
                         <td>
-                            @{
-                                IList<TagCategory> usedCategories = new List<TagCategory>();
-                            }
-
                             @foreach (var miniTag in item.MiniTags)
                             {
                                 <span class="badge badge-primary">
@@ -74,67 +70,7 @@
                                         @miniTag.Tag.Category - @miniTag.Tag.TagName
                                     </a>
                                 </span>
-
-                                usedCategories.Add(miniTag.Tag.Category.GetValueOrDefault());
                             }
-
-                            <span class="badge badge-@usedCategories.Contains(TagCategory.Genre)">
-                                Genre
-                            </span>
-                            <span class="badge badge-@usedCategories.Contains(TagCategory.Use)">
-                                Use
-                            </span>
-
-                            <hr />
-
-                            @{
-                                if (usedCategories.Contains(TagCategory.Race) || usedCategories.Contains(TagCategory.Gender) || usedCategories.Contains(TagCategory.Class))
-                                {
-                                    <p>
-                                        PC<br/>
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.Race)">
-                                            Race
-                                        </span>
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.Gender)">
-                                            Gender
-                                        </span>
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.Class)">
-                                            Class
-                                        </span>
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.Weapon)">
-                                            Weapon
-                                        </span>
-                                        (
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.Armor)">
-                                            Armor
-                                        </span>
-                                         and/or 
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.Clothing)">
-                                            Clothing
-                                        </span>
-                                        )
-                                    </p>
-                                    <hr />
-                                }
-
-                                if (usedCategories.Contains(TagCategory.CreatureName))
-                                {
-                                    <p>
-                                        Monster <br/>
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.CreatureName)">
-                                            CreatureName
-                                        </span>
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.CreatureType)">
-                                            CreatureType
-                                        </span>
-                                        <span class="badge badge-@usedCategories.Contains(TagCategory.Location)">
-                                            Location
-                                        </span>
-                                    </p>
-                                    <hr />
-                                }
-                            }
-
                         </td>
                     </tr>
                 }

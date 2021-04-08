@@ -6,7 +6,7 @@
     ViewData["ActivePage"] = ManageNavPages.UserManager;
 }
 
-@if (User.IsInRole("Moderator"))
+@if (User.IsInRole("Administrator"))
 {
     <h4>All Users</h4> 
 

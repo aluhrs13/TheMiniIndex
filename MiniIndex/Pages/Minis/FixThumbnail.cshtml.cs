@@ -35,73 +35,7 @@ namespace MiniIndex.Pages.Minis
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (User.IsInRole("Moderator"))
-            {
-                if (Id == null)
-                {
-                    return NotFound();
-                }
-
-                Mini = await _context.Mini
-                    .FirstOrDefaultAsync(m => m.ID == Id);
-
-                if (Mini == null)
-                {
-                    return NotFound();
-                }
-
-                //Fix Thumbnail
-                if (Mini.Link.Contains("thingiverse"))
-                {
-                    using (HttpClient client = new HttpClient())
-                    {
-                        string[] SplitURL = Mini.Link.Split(":");
-
-                        HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/things/" + SplitURL.Last() + "/?access_token=" + _configuration["ThingiverseToken"]);
-                        HttpContent responseContent = response.Content;
-                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                        {
-                            using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
-                            {
-                                string result = await reader.ReadToEndAsync();
-                                JObject currentMini = JsonConvert.DeserializeObject<JObject>(result);
-                                if (!currentMini["default_image"]["url"].ToString().EndsWith(".stl") && !currentMini["default_image"]["url"].ToString().EndsWith(".obj"))
-                                {
-                                    Mini.Thumbnail = currentMini["default_image"]["url"].ToString();
-                                    _context.Attach(Mini).State = EntityState.Modified;
-                                }
-                                else
-                                {
-                                    Mini.Thumbnail = currentMini["default_image"]["sizes"][4]["url"].ToString();
-                                    _context.Attach(Mini).State = EntityState.Modified;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MiniExists(Mini.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return RedirectToPage("/Minis/Details", new { id = Mini.ID });
-            }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
 
         private bool MiniExists(int id)

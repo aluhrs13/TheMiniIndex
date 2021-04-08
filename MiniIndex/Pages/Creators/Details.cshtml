@@ -24,6 +24,7 @@
         <div class="card shadow">
             <div class="card-body">
                 <h2 class="card-title">Scan Creator</h2>
+                Please don't spam scan a bunch of creators, some APIs have rate-limiting and requesting a lot of scans within a few minutes of each other can break things.
                 @foreach (var site in Model.Creator.Sites)
                 {
                     <a href="http://miniindexprofileparser.azurewebsites.net/api/ProfileParser?code=@Model.FunctionsCode&url=@site.CreatorPageUri" class="btn btn-primary">Scan @site.DisplayName</a>
