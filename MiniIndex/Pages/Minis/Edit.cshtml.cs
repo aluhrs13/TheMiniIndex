@@ -30,6 +30,7 @@ namespace MiniIndex.Pages.Minis
         public Mini Mini { get; set; }
         public List<Tag> UnusedTags { get; set; }
         public List<Tag> RecommendedTags { get; set; }
+        public List<Tag> TargetedCreatureTags { get; set; }
         public string ShowHelp { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id, string showHelp = "")
@@ -66,12 +67,27 @@ namespace MiniIndex.Pages.Minis
                 .ThenBy(m => m.TagName)
                 .ToList();
 
+            //TODO - Remove punctuation?
+            //TODO - Get this to work PERFORMANTLY for creatures with more than 2 words in their name
+            List<string> nameSplit = Mini.Name.ToUpperInvariant().Split(' ').ToList();
 
-            string[] nameSplit = Mini.Name.ToUpperInvariant().Split(' ');
+            //Doing this "normally" is an infinite loop.
+            int listLength = nameSplit.Count - 1;
+            for (int i = 0; i < listLength; i++)
+            {
+                nameSplit.Add(nameSplit.ElementAt(i) + " " + nameSplit.ElementAt(i+1));
+            }
 
             RecommendedTags = UnusedTags
                 .Where(t => nameSplit.Contains(t.TagName.ToUpperInvariant()))
                 .ToList();
+
+            //TODO - Things that are creatures to ignore before using this automatically: "Shadow"
+            TargetedCreatureTags = RecommendedTags
+                .Where(t => t.Category == TagCategory.CreatureName)
+                .ToList();
+
+            _telemetry.TrackEvent("SuperSmartTagSuggestions", new Dictionary<string, string> { { "MiniId", Mini.ID.ToString() }, { "MiniName", Mini.Name }, { "SuggestedTags", string.Join(", ", TargetedCreatureTags.Select(t=>t.TagName).ToList()) } });
 
             return Page();
         }

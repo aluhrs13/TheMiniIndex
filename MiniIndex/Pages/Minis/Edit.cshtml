@@ -139,6 +139,21 @@
             <hr />
 
             <div id="UnusedTags">
+                    @if (User.IsInRole("Moderator"))
+                    {
+                        @if (Model.TargetedCreatureTags.Count > 0)
+                        {
+                            <div class="add-tag-div">
+                                <h3 class="add-tag-header">SUPER SMART Quick Tag</h3>
+                                @foreach (var Tag in Model.TargetedCreatureTags)
+                                {
+                                    <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                                }
+                            </div>
+
+                            <hr />
+                        }
+                    }
 
                 @if (Model.RecommendedTags.Count > 0)
                 {
@@ -173,11 +188,11 @@
                 <div class="add-tag-div">
 
                     @foreach (var Tag in Model.UnusedTags
-                .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                    && m.Category != TagCategory.Genre
-                    && m.Category != TagCategory.OtherDescription
-                    && m.Category != TagCategory.CreatureName
-                    && m.Category != TagCategory.Use))
+               .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+                   && m.Category != TagCategory.Genre
+                   && m.Category != TagCategory.OtherDescription
+                   && m.Category != TagCategory.CreatureName
+                   && m.Category != TagCategory.Use))
                     {
                         @if (Tag.Category.ToString() != PreviousCategory)
                         {
