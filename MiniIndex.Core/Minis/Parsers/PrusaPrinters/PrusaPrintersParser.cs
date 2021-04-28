@@ -73,7 +73,7 @@ namespace MiniIndex.Core.Minis.Parsers.PrusaPrinters
             {
                 Creator = creator,
                 Name = text["data"]["print"]["name"].ToString(),
-                Thumbnail = "https://media.prusaprinters.org/thumbs/cover/640x480/" + text["data"]["print"]["images"].First()["filePath"].ToString(),
+                Thumbnail = "https://media.prusaprinters.org/" + text["data"]["print"]["images"].First()["filePath"].ToString(),
                 Link = "https://www.prusaprinters.org/prints/" + text["data"]["print"]["id"] + "-" + text["data"]["print"]["slug"]
             };
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
