@@ -31,7 +31,7 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             public Image[] images { get; set; }
             public int views { get; set; }
             public int likes { get; set; }
-            public DateTime published_at { get; set; }
+            public DateTime? published_at { get; set; }
             public string[] tags { get; set; }
             public License[] licenses { get; set; }
             public object[] filters { get; set; }
