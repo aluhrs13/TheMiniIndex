@@ -196,7 +196,7 @@ namespace MiniIndex.API
                                                             { "HadResults", searchResult.Count>0 ? "True" : "False" },
                                                             { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()}
                                                         });
-
+            //TODO - Why is this even returning m.Link?
             return Ok(searchResult.Select(m=> new
                     {
                         ID = m.ID,
@@ -209,6 +209,7 @@ namespace MiniIndex.API
                 );
         }
 
+        //TODO - Is this still used anywhere?
         [HttpGet("check")]
         public async Task<IActionResult> FindExistingMini(Uri url)
         {

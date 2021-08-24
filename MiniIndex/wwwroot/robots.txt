@@ -1,5 +1,5 @@
 ﻿User-agent: *
-Disallow: /Identity/
+Disallow: /Identity/*
 Disallow: /Minis/Redirect
-Disallow: /api/
-Disallow: /dist/
+Disallow: /api/*
+Disallow: /dist/*

@@ -82,7 +82,7 @@ namespace MiniIndex.Pages.Minis
                 .Where(t => nameSplit.Contains(t.TagName.ToUpperInvariant()))
                 .ToList();
 
-            //TODO - Things that are creatures to ignore before using this automatically: "Shadow"
+            //TODO - Things that are creatures to ignore before using this automatically: "Shadow", "Vampire", "Troll"
             TargetedCreatureTags = RecommendedTags
                 .Where(t => t.Category == TagCategory.CreatureName)
                 .ToList();

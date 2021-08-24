@@ -347,3 +347,5 @@ npm-debug.log*
 node_modules/
 */wwwroot/dist
 */wwwroot/js/*.min.js
+/MiniIndex/Properties/ServiceDependencies/miniindex-Preproduction - Web Deploy/profile.arm.json
+/MiniIndex/Properties/ServiceDependencies/MiniIndex - Web Deploy/profile.arm.json
