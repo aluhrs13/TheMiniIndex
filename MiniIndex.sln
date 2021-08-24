@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.87
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniIndex", "MiniIndex\MiniIndex.csproj", "{8FC22772-5E11-4534-A73D-565A2245E05A}"
 EndProject
@@ -10,14 +10,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniIndex.Models", "MiniIndex.Models\MiniIndex.Models.csproj", "{C03D37E2-E33A-4836-8A64-0301C1FF22D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniIndex.Persistence", "MiniIndex.Persistence\MiniIndex.Persistence.csproj", "{8C769CBA-3FA9-4179-A59B-713D08238FFC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Supporting.DiscordBot", "MiniIndex.DiscordBot\Supporting.DiscordBot.csproj", "{606C6825-8D45-44FA-A928-0DE356B02067}"
-EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Supporting.Reddit", "MiniIndex.Reddit\Supporting.Reddit.pyproj", "{7248F308-1010-4D43-8C6B-0BB752AE2BE3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Supporting.CSV", "Supporting.CSV\Supporting.CSV.csproj", "{9C893C9A-192E-477E-B436-E9CCD71AC469}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supporting.ProfileParsing", "Supporting.ProfileParsing\Supporting.ProfileParsing.csproj", "{635F9D1B-F1BC-42B7-8F15-41AD4E0DBADF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,20 +33,6 @@ Global
 		{8C769CBA-3FA9-4179-A59B-713D08238FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C769CBA-3FA9-4179-A59B-713D08238FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C769CBA-3FA9-4179-A59B-713D08238FFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{606C6825-8D45-44FA-A928-0DE356B02067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{606C6825-8D45-44FA-A928-0DE356B02067}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{606C6825-8D45-44FA-A928-0DE356B02067}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{606C6825-8D45-44FA-A928-0DE356B02067}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7248F308-1010-4D43-8C6B-0BB752AE2BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7248F308-1010-4D43-8C6B-0BB752AE2BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C893C9A-192E-477E-B436-E9CCD71AC469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C893C9A-192E-477E-B436-E9CCD71AC469}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C893C9A-192E-477E-B436-E9CCD71AC469}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C893C9A-192E-477E-B436-E9CCD71AC469}.Release|Any CPU.Build.0 = Release|Any CPU
-		{635F9D1B-F1BC-42B7-8F15-41AD4E0DBADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{635F9D1B-F1BC-42B7-8F15-41AD4E0DBADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{635F9D1B-F1BC-42B7-8F15-41AD4E0DBADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{635F9D1B-F1BC-42B7-8F15-41AD4E0DBADF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
