@@ -11,6 +11,8 @@
     <script type="module" src="/build/miniindex-components.esm.js"></script>
     <script nomodule src="/build/miniindex-components.js"></script>
 
+    <script src="index.js"></script>
+
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
       rel="stylesheet"
@@ -21,94 +23,27 @@
   <body>
     <tmi-nav-bar></tmi-nav-bar>
 
-    <div style="padding: 0px 32px; background-color: aliceblue">
+    <div style="padding: 0px 32px">
       <h1>Find Minis</h1>
       <div class="flexbox">
         <div class="stretch">
-          <input />
+          <input type="text" id="search-box" />
         </div>
         <div class="normal">
-          <button>Search</button>
+          <button onclick="searchMinis()">Search</button>
         </div>
       </div>
     </div>
 
     <div id="results">
       <h2>Most Recent Results</h2>
-      <div class="gallery">
-        <tmi-mini-card
-          miniid="27101"
-          name="Female Ifrit But longer and stuff and even longer now lets do one more line"
-          status="Approved"
-          creatorname="rocketpiggames"
-          creatorid="1391"
-          sourcesite="myminifactory"
-        >
-        </tmi-mini-card>
-        <tmi-mini-card
-          miniid="27101"
-          name="Female Ifrit"
-          status="Approved"
-          creatorname="rocketpiggames"
-          creatorid="1391"
-          sourcesite="myminifactory"
-        >
-        </tmi-mini-card>
-        <tmi-mini-card
-          miniid="27101"
-          name="Female Ifrit"
-          status="Approved"
-          creatorname="rocketpiggames"
-          creatorid="1391"
-          sourcesite="myminifactory"
-        >
-        </tmi-mini-card>
-        <tmi-mini-card
-          miniid="27101"
-          name="Female Ifrit"
-          status="Approved"
-          creatorname="rocketpiggames"
-          creatorid="1391"
-          sourcesite="myminifactory"
-        >
-        </tmi-mini-card>
-        <tmi-mini-card
-          miniid="27101"
-          name="Female Ifrit"
-          status="Approved"
-          creatorname="rocketpiggamesbutwayyyyylongerthannormal"
-          creatorid="1391"
-          sourcesite="myminifactory"
-        >
-        </tmi-mini-card>
-        <tmi-mini-card
-          miniid="27101"
-          name="Female Ifrit"
-          status="Approved"
-          creatorname="rocketpiggames"
-          creatorid="1391"
-          sourcesite="myminifactory"
-        >
-        </tmi-mini-card>
-        <tmi-mini-card
-          miniid="27101"
-          name="Female Ifrit"
-          status="Approved"
-          creatorname="rocketpiggames"
-          creatorid="1391"
-          sourcesite="myminifactory"
-        >
-        </tmi-mini-card>
-        <tmi-mini-card
-          miniid="27101"
-          name="Female Ifrit"
-          status="Approved"
-          creatorname="rocketpiggames"
-          creatorid="1391"
-          sourcesite="myminifactory"
-        >
-        </tmi-mini-card>
-      </div>
+      <div id="gallery"></div>
     </div>
+
+    <div style="text-align: center; margin: 16px">
+      <button onclick="nextPage()" style="width: 90%">Next Page</button>
+    </div>
+
+    <tmi-nav-bar></tmi-nav-bar>
   </body>
 </html>

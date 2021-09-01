@@ -1,4 +1,5 @@
 import { Component, Prop, h } from '@stencil/core';
+import { fixCDN } from '../../utils/utils';
 
 @Component({
   tag: 'tmi-mini-card',
@@ -19,7 +20,7 @@ export class TmiMiniCard {
   /**
    * Approval status of the Mini
    */
-  @Prop() status: string;
+  @Prop() status: number;
 
   /**
    * Creator Details
@@ -36,13 +37,17 @@ export class TmiMiniCard {
    */
   @Prop() sourcesite: string;
 
+  /**
+   * Thumbnail URL
+   */
+  @Prop() thumbnail: string;
+
   render() {
-    console.log(this);
     return (
       <div class="card">
         <div>
           <a href={`https://beta.theminiindex.com/minis/${this.miniid}`}>
-            <img class="card-thumbnail" src={`https://miniindex.blob.core.windows.net/images/${this.miniid}.jpg`} />
+            <img class="card-thumbnail" src={fixCDN(this.thumbnail)} />
           </a>
         </div>
         <div class="card-text">
