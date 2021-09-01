@@ -39,7 +39,6 @@ a:hover {
 
 #nav-bar {
   padding: 8px;
-  margin: -8px -8px 0px -8px;
   color: white;
   display: flex;
   flex-direction: row;
