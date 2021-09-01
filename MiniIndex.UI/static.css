@@ -1,0 +1,28 @@
+body {
+  margin: 0px;
+}
+
+#results {
+  padding: 0px 32px;
+}
+
+/* https://jsfiddle.net/oneeezy/1jxkyLdv/ */
+.flexbox {
+  display: flex;
+}
+
+.flexbox .stretch {
+  flex: 1;
+}
+.flexbox .normal {
+  flex: 0;
+  margin: 0 0 0 1rem;
+}
+.flexbox div input {
+  padding: 0.5em 1em;
+  width: 100%;
+}
+.flexbox div button {
+  padding: 0.5em 1em;
+  white-space: nowrap;
+}
