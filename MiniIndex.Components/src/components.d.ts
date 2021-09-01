@@ -44,7 +44,11 @@ export namespace Components {
         /**
           * Approval status of the Mini
          */
-        "status": string;
+        "status": number;
+        /**
+          * Thumbnail URL
+         */
+        "thumbnail": string;
     }
     interface TmiNavBar {
         /**
@@ -117,7 +121,11 @@ declare namespace LocalJSX {
         /**
           * Approval status of the Mini
          */
-        "status"?: string;
+        "status"?: number;
+        /**
+          * Thumbnail URL
+         */
+        "thumbnail"?: string;
     }
     interface TmiNavBar {
         /**

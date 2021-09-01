@@ -9,11 +9,3 @@ h2,
 h3 {
   font-family: 'Montserrat', sans-serif !important;
 }
-
-/* https://travishorn.com/responsive-grid-in-2-minutes-with-css-grid-layout-4842a41420fe */
-.gallery {
-  max-width: 1800px;
-  display: grid;
-  grid-gap: 8px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}

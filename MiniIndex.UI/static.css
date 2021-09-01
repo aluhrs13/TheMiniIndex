@@ -6,6 +6,15 @@ body {
   padding: 0px 32px;
 }
 
+/* https://travishorn.com/responsive-grid-in-2-minutes-with-css-grid-layout-4842a41420fe */
+#gallery {
+  max-width: 1800px;
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-bottom: 32px;
+}
+
 /* https://jsfiddle.net/oneeezy/1jxkyLdv/ */
 .flexbox {
   display: flex;
