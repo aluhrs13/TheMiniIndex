@@ -1,5 +1,15 @@
 document.addEventListener("DOMContentLoaded", (event) => {
   //https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
+
+  //Populate the searchbox if loading this page directly
+  var currentParams = new URLSearchParams(
+    document.location.search.substring(1)
+  );
+
+  if (currentParams.get("searchString") != "") {
+    document.getElementById("search-box").value =
+      currentParams.get("searchString");
+  }
   searchMinis();
 });
 
@@ -15,7 +25,7 @@ function nextPage() {
   }
 }
 
-function searchMinis() {
+async function searchMinis() {
   var searchString = document.getElementById("search-box").value;
   let galleryElement = document.getElementById("gallery");
 
@@ -40,7 +50,20 @@ function searchMinis() {
     pageIndex = 1;
   }
 
-  fetch(
+  //Handle page refresh or back scenario
+  if (galleryElement.children.length == 0 && pageIndex > 1) {
+    //TODO: Loop through pages here
+    for (x = 1; x <= pageIndex; x++) {
+      await fetchStuff(galleryElement, searchString, x);
+    }
+  } else {
+    fetchStuff(galleryElement, searchString, pageIndex);
+  }
+}
+
+async function fetchStuff(galleryElement, searchString, pageIndex) {
+  //TODO: Await is for refresh case, does it cause perf problems in normal case?
+  await fetch(
     `https://theminiindex.com/api/minis/search?pageIndex=${pageIndex}&SearchString=${searchString}`
   )
     .then((response) => {
@@ -50,8 +73,6 @@ function searchMinis() {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
-
       //TODO: Is CreateElement or insertAdjacentHTML better?
       //https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
       //let newCard = document.createElement("tmi-mini-card");
