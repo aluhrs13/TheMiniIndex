@@ -6,7 +6,7 @@
     // Move that value to LastVisit and highlight Minis that are new since then.
     if (currentVisitTimestamp != "") {
         if (Date.now() - currentVisitTimestamp > (3600000 * 2)) {
-            fetch(`https://localhost:44386/api/overhead/seen/?since=` + (Date.now() - currentVisitTimestamp))
+            fetch(`/api/overhead/seen/?since=` + (Date.now() - currentVisitTimestamp))
             document.cookie = "LastVisit=" + currentVisitTimestamp + ";max-age=" + (60 * 60 * 24 * 28);
         }
     }
@@ -18,7 +18,7 @@
         flagNewMinis(lastVisitTimestamp);
     } else {
         updateDateCookie("LastVisit");
-        fetch(`https://localhost:44386/api/overhead/seen/?since=-1`)
+        fetch(`/api/overhead/seen/?since=-1`)
     }
 });
 
