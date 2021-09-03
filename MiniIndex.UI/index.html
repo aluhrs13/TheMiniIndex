@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>The Mini Index</title>
+
+    <script type="module" src="/build/miniindex-components.esm.js"></script>
+    <script nomodule src="/build/miniindex-components.js"></script>
+
+    <script src="index.js"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/build/miniindex-components.css" />
+    <link rel="stylesheet" href="/static.css" />
+  </head>
+  <body>
+    <tmi-nav-bar></tmi-nav-bar>
+
+    <div style="padding: 0px 32px">
+      <h1>Find Minis</h1>
+      <div class="flexbox">
+        <div class="stretch">
+          <input type="text" id="search-box" />
+        </div>
+        <div class="normal">
+          <button onclick="searchMinis()">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="results">
+      <h2>Most Recent Results</h2>
+      <div id="gallery"></div>
+    </div>
+
+    <div style="text-align: center; margin: 16px">
+      <button onclick="nextPage()" style="width: 90%">Next Page</button>
+    </div>
+
+    <tmi-nav-bar></tmi-nav-bar>
+  </body>
+</html>

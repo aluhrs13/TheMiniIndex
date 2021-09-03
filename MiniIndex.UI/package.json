@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@web/dev-server": "^0.1.22"
+  },
+  "scripts": {
+    "start": "web-dev-server --port 3000 --node-resolve --watch --open"
+  }
+}

@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.nav-link {
+  height: 100%;
+}
+
+a {
+  color: white;
+  margin: 4px;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#logotype {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0px 10px;
+}
+
+#xsmall {
+  font-size: x-small;
+}
+
+#larger {
+  font-size: larger;
+  white-space: nowrap;
+  line-height: 0.4em;
+}
+
+#right-aligned {
+  text-align: right;
+  width: 100%;
+}
+
+#nav-bar {
+  padding: 8px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--app-primary-color);
+}

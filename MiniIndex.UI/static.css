@@ -1,0 +1,37 @@
+body {
+  margin: 0px;
+}
+
+#results {
+  padding: 0px 32px;
+}
+
+/* https://travishorn.com/responsive-grid-in-2-minutes-with-css-grid-layout-4842a41420fe */
+#gallery {
+  max-width: 1800px;
+  display: grid;
+  grid-gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-bottom: 32px;
+}
+
+/* https://jsfiddle.net/oneeezy/1jxkyLdv/ */
+.flexbox {
+  display: flex;
+}
+
+.flexbox .stretch {
+  flex: 1;
+}
+.flexbox .normal {
+  flex: 0;
+  margin: 0 0 0 1rem;
+}
+.flexbox div input {
+  padding: 0.5em 1em;
+  width: 100%;
+}
+.flexbox div button {
+  padding: 0.5em 1em;
+  white-space: nowrap;
+}
