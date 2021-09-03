@@ -24,5 +24,12 @@ namespace MiniIndex.Models
         public IdentityUser User { get; set; }
         public int Cost { get; set; }
         public DateTime ApprovedTime { get; set; }
+
+        //https://www.fluxbytes.com/csharp/convert-datetime-to-unix-time-in-c/
+        public long ApprovedLinuxTime()
+        {
+            DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return (long)(ApprovedTime.ToUniversalTime() - sTime).TotalSeconds*1000;
+        }
     }
 }

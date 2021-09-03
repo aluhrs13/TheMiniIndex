@@ -7,7 +7,8 @@ module.exports = {
         bootstrapjs: './wwwroot/js/bootstrapjs.js',
         validation: './wwwroot/js/validation.js',
         tags: './wwwroot/js/tags-tagify.js',
-        stars: './wwwroot/js/stars.js'
+        stars: './wwwroot/js/stars.js',
+        latest: './wwwroot/js/latest.js'
     },
     output: {
         filename: '[name].entry.js',

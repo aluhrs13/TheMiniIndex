@@ -66,7 +66,7 @@
                         <small class="text-muted">
                             <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
                         </small>
-
+                        <div class="new-tag hidden"><span class="new-tag-span">New!</span></div>
                         @if (mini.Status == Status.Pending)
                         {
                             <p><b>Pending admin approval</b></p>
@@ -74,6 +74,9 @@
                         else if (mini.Status == Status.Rejected)
                         {
                             <p><b>Rejected by admin</b></p>
+                        }else if (mini.Status == Status.Approved){
+                            <!-- This is hacky. Do it better in new UI. -->
+                            <div class="approved-time">@mini.ApprovedLinuxTime()</div>
                         }
                     </div>
 
