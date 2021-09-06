@@ -1,5 +1,4 @@
-﻿using AgileObjects.AgileMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,6 @@ using MiniIndex.Core.Submissions;
 using MiniIndex.Models;
 using MiniIndex.Persistence;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,38 +22,16 @@ namespace MiniIndex.API
         public MiniTagsController(
                 UserManager<IdentityUser> userManager,
                 MiniIndexContext context,
-                IMapper mapper,
                 IMediator mediator)
         {
             _userManager = userManager;
             _context = context;
-            _mapper = mapper;
             _mediator = mediator;
         }
 
         private readonly MiniIndexContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-
-        // GET api/<MiniTagsController>/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            Mini selectedMini = await _context.Set<Mini>()
-                                        .Include(m => m.MiniTags)
-                                        .ThenInclude(mt => mt.Tag)
-                                        .FirstOrDefaultAsync(c => c.ID == id);
-
-            if (selectedMini == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return Ok(selectedMini.MiniTags.Select(mt=> new{ mt.Status, mt.Tag.TagName, mt.Tag.ID, mt.Tag.Category} ));
-            }
-        }
 
         // POST api/<MiniTagsController>
         [HttpPost]
@@ -66,7 +42,7 @@ namespace MiniIndex.API
             MiniTag newMT = await _mediator.Send(new MiniTagSubmissionRequest(value.Mini, value.Tag, user));
 
             //TODO: TBD -> some useful URL
-            return Created("TBD", newMT.Mini.MiniTags.Select(mt=>mt.Tag.TagName));
+            return Created(new Uri("TBD"), newMT.Mini.MiniTags.Select(mt=>mt.Tag.TagName));
         }
 
         // PATCH api/<MiniTagsController>/
@@ -97,7 +73,7 @@ namespace MiniIndex.API
             return Ok();
        }
 
-        // DELETE api/<MiniTagsController>/5
+        // DELETE api/<MiniTagsController>/
         [HttpDelete]
         [Authorize]
         public async Task<IActionResult> Delete([FromBody] MiniTag value)
