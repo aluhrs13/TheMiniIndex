@@ -78,6 +78,7 @@ namespace MiniIndex.API
         [Authorize]
         public async Task<IActionResult> Delete([FromBody] MiniTag value)
         {
+            //TODO: Propagate deletion to paired tags. Possibly with a new state for "Autoadded"
             MiniTag MiniTag = await _context.MiniTag.FirstOrDefaultAsync(m => m.MiniID == value.MiniID && m.TagID == value.TagID);
 
             if (User.IsInRole("Moderator"))

@@ -1,4 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AgileObjects.AgileMapper;
+using MediatR;
+using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MiniIndex.Core.Tags;
+using MiniIndex.Models;
+using MiniIndex.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,36 +21,167 @@ namespace MiniIndex.API
     [ApiController]
     public class TagsController : ControllerBase
     {
+        public TagsController(
+                UserManager<IdentityUser> userManager,
+                MiniIndexContext context,
+                IMapper mapper,
+                IMediator mediator,
+                TelemetryClient telemetry)
+        {
+            _userManager = userManager;
+            _context = context;
+            _mapper = mapper;
+            _mediator = mediator;
+            _telemetry = telemetry;
+        }
+
+        private readonly MiniIndexContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
+        private readonly TelemetryClient _telemetry;
+
         // GET: api/<TagsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get([FromQuery] string search = null)
         {
-            return new string[] { "value1", "value2" };
+            var tags = await _mediator.Send(new GetTagsRequest(search));
+            return Ok(tags);
         }
 
-        // GET api/<TagsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // PATCH api/<TagsController>/
+        [HttpPatch]
+        [Authorize(Roles ="Moderator")]
+        public async Task<IActionResult> Patch([FromBody] Tag value)
         {
-            return "value";
-        }
+            Tag Tag = await _context.Tag.FirstOrDefaultAsync(t=> t.ID == value.ID);
 
-        // POST api/<TagsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+            if (Tag == null)
+            {
+                return NotFound();
+            }
 
-        // PUT api/<TagsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            if(value.Category != null)
+            {
+                Tag.Category = value.Category;
+            }
+
+            if(value.TagName != null)
+            {
+                Tag.TagName = value.TagName;
+            }
+
+            _context.Attach(Tag).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict();
+            }
+
+            return Ok();
         }
 
         // DELETE api/<TagsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> Delete(int id)
         {
+            //TODO: Delete MiniTags too? Maybe only work if there's no approved MiniTags
+            Tag Tag = await _context.Tag.FirstOrDefaultAsync(t => t.ID == id);
+            _context.Remove(Tag);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict();
+            }
+
+            return Ok();
+        }
+
+        /*
+         * 
+         * 
+         * 
+         * PAIRS BELOW HERE
+         * 
+         * 
+         * 
+         */
+
+        // GET api/<TagsController>/5/Pairs
+        [HttpGet("{id}/Pairs")]
+        public async Task<IActionResult> Get(int id)
+        {
+            Tag selectedTag = _context.Tag.FirstOrDefault(t => t.ID == id);
+                
+            List<TagPair> pairs = _context.TagPair
+                    .Where(tp => tp.Tag1 ==selectedTag || tp.Tag2 == selectedTag)
+                    .Include(tp=>tp.Tag2)
+                    .Include(tp=>tp.Tag1)
+                    .ToList();
+
+            return Ok(pairs);
+        }
+
+        // POST api/<TagsController>/5/Pairs/6?type=<type>
+        [HttpPost("{tag1}/Pairs/{tag2}")]
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> PairPost(int tag1, int tag2, [FromQuery] int type)
+        {
+            Tag Tag1 = _context.Tag.FirstOrDefault(t => t.ID == tag1);
+            Tag Tag2 = _context.Tag.FirstOrDefault(t => t.ID == tag2);
+            PairType pairType = (PairType)type;
+
+            //TODO - This is a hack. 99 means "child" from the tag manager, so we're swapping them.
+            //It's a dumb hack, but I'm tired.
+            if (type == 99)
+            {
+                Tag1 = _context.Tag.FirstOrDefault(t => t.ID == tag2);
+                Tag2 = _context.Tag.FirstOrDefault(t => t.ID == tag1);
+                pairType = PairType.Parent;
+            }
+
+            if (Tag1 == null | Tag2 == null)
+            {
+                return NotFound();
+            }
+
+            TagPair newPair = new TagPair()
+            {
+                Tag1 = Tag1,
+                Tag2 = Tag2,
+                Type = pairType
+            };
+
+            if (_context.TagPair.Any(tp => (tp.Tag1 == Tag1 && tp.Tag2 == Tag2)))
+            {
+                return NotFound();
+            }
+
+            _context.TagPair.Add(newPair);
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        // DELETE api/Pairs/6
+        [HttpDelete("/Pairs/{id}")]
+        public async Task<IActionResult> PairDelete(int id)
+        {
+            TagPair TagPair = await _context.TagPair.FindAsync(id);
+
+            _context.TagPair.Remove(TagPair);
+
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }
