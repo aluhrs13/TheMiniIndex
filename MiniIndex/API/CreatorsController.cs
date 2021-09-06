@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AgileObjects.AgileMapper;
+using MediatR;
+using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MiniIndex.Models;
+using MiniIndex.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,36 +19,72 @@ namespace MiniIndex.API
     [ApiController]
     public class CreatorsController : ControllerBase
     {
+        public CreatorsController(
+        UserManager<IdentityUser> userManager,
+        MiniIndexContext context,
+        IMapper mapper,
+        IMediator mediator,
+        TelemetryClient telemetry)
+        {
+            _userManager = userManager;
+            _context = context;
+            _mapper = mapper;
+            _mediator = mediator;
+            _telemetry = telemetry;
+        }
+
+        private readonly MiniIndexContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
+        private readonly TelemetryClient _telemetry;
+
         // GET: api/<CreatorsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get(
+            [FromQuery] int pageSize = 21,
+            [FromQuery] int pageIndex = 1)
         {
-            return new string[] { "value1", "value2" };
-        }
+            //TODO: Use Mediatr and Pagination classes
+            //TODO: Telemetry
+            List<Creator> countQuery = await _context.Set<Mini>()
+                .Include(m => m.Creator).ThenInclude(c => c.Sites)
+                .Select(m => m.Creator)
+                .ToListAsync();
 
-        // GET api/<CreatorsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+            Dictionary<Creator, int> CreatorCounts = new Dictionary<Creator, int>();
 
-        // POST api/<CreatorsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+            if (pageIndex > 1)
+            {
+                CreatorCounts = countQuery
+                    .GroupBy(x => x)
+                    .OrderByDescending(x => x.Count())
+                    .Skip(pageSize * pageIndex)
+                    .Take(pageSize)
+                    .ToDictionary(k => k.Key, v => v.Count());
+            }
+            else
+            {
+                CreatorCounts = countQuery
+                    .GroupBy(x => x)
+                    .OrderByDescending(x => x.Count())
+                    .Take(pageSize)
+                    .ToDictionary(k => k.Key, v => v.Count());
+            }
 
-        // PUT api/<CreatorsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE api/<CreatorsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(CreatorCounts.Select(k => new
+            {
+                ID = k.Key.ID,
+                Name = k.Key.Name,
+                MiniCount = k.Value,
+                SourceSites = k.Key.Sites.Select(ss => new
+                {
+                    SiteName = ss.SiteName,
+                    URL = ss.CreatorPageUri
+                })
+            }
+            ));
         }
     }
 }

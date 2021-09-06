@@ -25,7 +25,7 @@ namespace MiniIndex.API
     public class MinisController : ControllerBase
     {
         public MinisController(
-        UserManager<IdentityUser> userManager,
+                UserManager<IdentityUser> userManager,
                 MiniIndexContext context,
                 IMapper mapper,
                 IMediator mediator,
