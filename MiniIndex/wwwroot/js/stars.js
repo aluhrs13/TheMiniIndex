@@ -1,85 +1,76 @@
-﻿import $ from 'jquery'
+﻿import $ from "jquery";
 
-// Used in /Minis/Details
-$('#toggle-star').click(function () {
+// Used in /Minis/Edit
+$(document).ready(function () {
+    RefreshTagsStart();
+    RefreshTagsEnd();
+});
+
+const toggleStarEl = document.getElementById("toggle-star");
+toggleStarEl.addEventListener("click", ToggleStar);
+function ToggleStar() {
     if ($(this).hasClass("add-star")) {
-        console.log("Starring " + this.innerHTML);
-
-        $.get({
-            url: "/Starred/Create/",
-            data: { mini: document.getElementById("miniid").innerHTML },
-            complete: function () {
-            },
+        fetch("/api/Starred/" + document.getElementById("miniid").innerHTML, {
+            method: "POST",
         });
     } else {
-        console.log("Unstarring " + this.innerHTML);
-
-        $.get({
-            url: "/Starred/Delete/",
-            data: { mini: document.getElementById("miniid").innerHTML },
-            complete: function () {
-            },
+        fetch("/api/Starred/" + document.getElementById("miniid").innerHTML, {
+            method: "DELETE",
         });
     }
+
     $(this).toggleClass("remove-star");
     $(this).toggleClass("add-star");
 
     $(this).toggleClass("btn-danger");
     $(this).toggleClass("btn-success");
-
-    return false;
-});
-
+}
 
 // Used in /Admin/
-$('.change-category').change(function () {
+$(".change-category").change(function () {
     $.get({
         url: "/Tags/Edit/",
-        data: { id: this.id, category: $(this).children("option:selected").text() },
-        complete: function () {
+        data: {
+            id: this.id,
+            category: $(this).children("option:selected").text(),
         },
+        complete: function () {},
     });
 
     return false;
 });
 
 // Used in /Tags/Manage
-$('.remove-pair').click(function () {
+$(".remove-pair").click(function () {
     $.get({
         url: "/TagPairs/Delete/",
         data: { id: this.id },
-        complete: function () {
-        },
+        complete: function () {},
     });
     return false;
 });
 
-$('.new-pair').click(function () {
+$(".new-pair").click(function () {
     $.get({
         url: "/TagPairs/Create/",
-        data: { tag1: this.id, tag2: document.getElementById("new-pair-tag").value, type: document.getElementById("new-pair-type").value },
-        complete: function () {
+        data: {
+            tag1: this.id,
+            tag2: document.getElementById("new-pair-tag").value,
+            type: document.getElementById("new-pair-type").value,
         },
+        complete: function () {},
     });
     return false;
-});
-
-
-// Used in /Minis/Edit
-
-$(document).ready(function () {
-    RefreshTagsStart();
-    RefreshTagsEnd();
 });
 
 //When typing into the tag search box
 //Hid all the .add-tag items that aren't the input text
-$('#tagSearch').on('input', function (e) {
-    $('.add-tag').hide();
-    $('.add-tag-div').hide();
+$("#tagSearch").on("input", function (e) {
+    $(".add-tag").hide();
+    $(".add-tag-div").hide();
     var tagFilter = $(this).val().trim().toLowerCase();
 
-    $('.add-tag').each(function () {
+    $(".add-tag").each(function () {
         if ($(this).text().toLocaleLowerCase().indexOf(tagFilter) >= 0) {
             $(this).show();
             $(this).parent().show();
@@ -90,7 +81,7 @@ $('#tagSearch').on('input', function (e) {
 });
 
 //When the user clicks "Add New Tag"
-$('#AddNewTag').click(function () {
+$("#AddNewTag").click(function () {
     RefreshTagsStart();
 
     var newTag = $("#tagSearch").val();
@@ -98,7 +89,10 @@ $('#AddNewTag').click(function () {
 
     $.get({
         url: "/MiniTags/Create/",
-        data: { mini: document.getElementById("miniid").innerHTML, tagName: newTag },
+        data: {
+            mini: document.getElementById("miniid").innerHTML,
+            tagName: newTag,
+        },
         complete: function () {
             RefreshTagsEnd();
         },
@@ -113,21 +107,23 @@ $('#AddNewTag').click(function () {
     return false;
 });
 
-$('#UnusedTags').on('click', '.add-tag', function () {
+$("#UnusedTags").on("click", ".add-tag", function () {
     RefreshTagsStart();
     console.log("Adding " + this.innerHTML);
 
     $.get({
         url: "/MiniTags/Create/",
-        data: { mini: document.getElementById("miniid").innerHTML, tag: this.id },
+        data: {
+            mini: document.getElementById("miniid").innerHTML,
+            tag: this.id,
+        },
         complete: function () {
             RefreshTagsEnd();
         },
         error: function () {
             //TODO - Error styling
         },
-        success: function () {
-        }
+        success: function () {},
     });
 
     //TODO - Fix this to reset all .add-tags too
@@ -135,66 +131,76 @@ $('#UnusedTags').on('click', '.add-tag', function () {
     return false;
 });
 
-$('#UsedTags').on('click', '.remove-tag', function (){
+$("#UsedTags").on("click", ".remove-tag", function () {
     RefreshTagsStart();
     console.log("Removing " + this.innerHTML);
 
     $.get({
         url: "/MiniTags/Delete/",
-        data: { mini: document.getElementById("miniid").innerHTML, tag: this.id },
+        data: {
+            mini: document.getElementById("miniid").innerHTML,
+            tag: this.id,
+        },
         complete: function () {
             RefreshTagsEnd();
         },
         error: function () {
             //TODO - Error styling
         },
-        success: function () {
-        },
+        success: function () {},
     });
     return false;
 });
 
 function RefreshTagsStart() {
-    $('.loading-spinner').show();
-    $('#UsedTags').hide();
-    $('.add-tag-div').show();
-    $('.add-tag').show();
+    $(".loading-spinner").show();
+    $("#UsedTags").hide();
+    $(".add-tag-div").show();
+    $(".add-tag").show();
 }
 
 function RefreshTagsEnd() {
-    $('#tagSearch').val('');
+    $("#tagSearch").val("");
 
     $.getJSON({
         url: "/api/minis/tagList/",
         data: { id: document.getElementById("miniid").innerHTML },
-        complete: function (response, status) {
-        },
+        complete: function (response, status) {},
         error: function () {
             //TODO - Error styling
         },
         success: function (response, status) {
-            var newHTML="";
+            var newHTML = "";
 
             //console.log(response);
 
             var prevStatus = "";
             response.forEach(function (tag) {
-                if (prevStatus != tag['Status']) {
-                    newHTML += '<h4>'+tag['Status']+'</h4>';
+                if (prevStatus != tag["Status"]) {
+                    newHTML += "<h4>" + tag["Status"] + "</h4>";
                 }
-                newHTML += '<a href="#" id="' + tag['ID'] + '" class="btn btn-outline-danger remove-tag ' + tag['Status'] + '" style="margin-top:5px;">- <small>' + tag['Category'] + ':</small> <b>' + tag['TagName'] + '</b></a>';
-                prevStatus = tag['Status'];
+                newHTML +=
+                    '<a href="#" id="' +
+                    tag["ID"] +
+                    '" class="btn btn-outline-danger remove-tag ' +
+                    tag["Status"] +
+                    '" style="margin-top:5px;">- <small>' +
+                    tag["Category"] +
+                    ":</small> <b>" +
+                    tag["TagName"] +
+                    "</b></a>";
+                prevStatus = tag["Status"];
 
-                $('.add-tag#' + tag['ID']).hide();
+                $(".add-tag#" + tag["ID"]).hide();
             });
 
-            $('#UsedTags').html(newHTML);
-            $('#UsedTags').show();
+            $("#UsedTags").html(newHTML);
+            $("#UsedTags").show();
 
             //console.log(status + " - " + newHTML);
         },
     });
-    $('.loading-spinner').hide();
+    $(".loading-spinner").hide();
 
     return false;
 }
