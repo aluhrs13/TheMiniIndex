@@ -1,135 +1,47 @@
-﻿using AgileObjects.AgileMapper;
-using MediatR;
-using Microsoft.ApplicationInsights;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using MiniIndex.Core.Minis.Search;
-using MiniIndex.Core.Pagination;
-using MiniIndex.Core.Submissions;
-using MiniIndex.Minis;
-using MiniIndex.Models;
-using MiniIndex.Persistence;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MiniIndex.API
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("api/creators")]
-    public class CreatorsController : Controller
+    public class CreatorsController : ControllerBase
     {
-        public CreatorsController(
-                MiniIndexContext context,
-                IMapper mapper,
-                IMediator mediator,
-                IConfiguration configuration,
-                TelemetryClient telemetry)
+        // GET: api/<CreatorsController>
+        [HttpGet]
+        public IEnumerable<string> Get()
         {
-            _apiKey = configuration["AutoCreateKey"];
-            _context = context;
-            _mapper = mapper;
-            _mediator = mediator;
-            _telemetry = telemetry;
-
-
+            return new string[] { "value1", "value2" };
         }
 
-        private readonly string _apiKey;
-        private readonly MiniIndexContext _context;
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
-        private readonly TelemetryClient _telemetry;
-
-        [EnableCors("SpecificOrigins")]
-        [HttpGet("view")]
-        public async Task<IActionResult> GetCreatorAPI(int id)
+        // GET api/<CreatorsController>/5
+        [HttpGet("{id}")]
+        public string Get(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
-
-            Creator creator = await _context.Set<Mini>()
-                                        .Include(m => m.Creator).ThenInclude(c => c.Sites)
-                                        .Select(m => m.Creator)
-                                        .FirstOrDefaultAsync(c => c.ID == id);
-            if (creator == null)
-            {
-                return NotFound();
-            }
-
-            _telemetry.TrackEvent("ViewedCreatorAPI", new Dictionary<string, string> { { "CreatorId", creator.ID.ToString() } });
-
-            return Ok(new
-            {
-                ID = creator.ID,
-                Name = creator.Name,
-                SourceSites = creator.Sites.Select(ss => new
-                {
-                    SiteName = ss.SiteName,
-                    URL = ss.CreatorPageUri
-                })
-            });
+            return "value";
         }
 
-        [EnableCors("SpecificOrigins")]
-        [HttpGet("browse")]
-        public async Task<IActionResult> BrowseCreatorsAPI(
-            [FromQuery]int pageSize = 21,
-            [FromQuery]int pageIndex = 1)
+        // POST api/<CreatorsController>
+        [HttpPost]
+        public void Post([FromBody] string value)
         {
-            //Mild hack - There's some case where pageIndex is hitting 0 and I can't tell how/why. (GitHub #182)
-            if (pageIndex == 0)
-            {
-                pageIndex = 1;
-            }
+        }
 
-            List<Creator> countQuery = await _context.Set<Mini>()
-                .Include(m => m.Creator).ThenInclude(c => c.Sites)
-                .Select(m => m.Creator)
-                .ToListAsync();
+        // PUT api/<CreatorsController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
 
-            Dictionary<Creator, int> CreatorCounts = new Dictionary<Creator, int>();
-
-            if (pageIndex > 1)
-            {
-                CreatorCounts = countQuery
-                    .GroupBy(x => x)
-                    .OrderByDescending(x => x.Count())
-                    .Skip(pageSize*pageIndex)
-                    .Take(pageSize)
-                    .ToDictionary(k => k.Key, v => v.Count());
-            }
-            else
-            {
-                CreatorCounts = countQuery
-                    .GroupBy(x => x)
-                    .OrderByDescending(x => x.Count())
-                    .Take(pageSize)
-                    .ToDictionary(k => k.Key, v => v.Count());
-            }
-
-
-            return Ok(CreatorCounts.Select(k=>new
-                { 
-                    ID = k.Key.ID,
-                    Name = k.Key.Name,
-                    MiniCount = k.Value,
-                    SourceSites = k.Key.Sites.Select(ss=> new
-                    {
-                        SiteName = ss.SiteName,
-                        URL = ss.CreatorPageUri
-                    })
-                }
-            ));
+        // DELETE api/<CreatorsController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
         }
     }
 }

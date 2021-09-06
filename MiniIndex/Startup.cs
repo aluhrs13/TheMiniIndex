@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +57,8 @@ namespace MiniIndex
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSwaggerGen();
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniIndexContext>();
@@ -88,7 +91,6 @@ namespace MiniIndex
             services.AddApplicationInsightsTelemetryProcessor<AppInsightsFilter>();
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
 
-
             services.IncludeRegistry<CoreServices>();
             services.IncludeRegistry<WebAppServices>();
         }
@@ -106,10 +108,21 @@ namespace MiniIndex
                 app.UseHsts();
             }
 
+            app.UseStatusCodePages();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
             app.UseCors();

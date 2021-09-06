@@ -19,10 +19,10 @@ namespace MiniIndex.API
         }
         private readonly TelemetryClient _telemetry;
 
-        [HttpGet("seen")]
-        public async Task<IActionResult> SeenUser(string since)
+        [HttpGet("Session")]
+        public async Task<IActionResult> NewSession(string since)
         {
-            _telemetry.TrackEvent("UserSeen", new Dictionary<string, string> { { "TimeSince", since } });
+            _telemetry.TrackEvent("NewSession", new Dictionary<string, string> { { "TimeSince", since } });
             return Ok();
         }
     }
