@@ -74,46 +74,5 @@ namespace MiniIndex.Minis
 
             return View("BrowseMinis", model);
         }
-
-        [HttpGet("redirect")]
-        public async Task<IActionResult> RedirectToMini(int id, string beta)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Mini mini = await _context.Mini.Include(m=>m.Sources).Include(m=>m.Creator).FirstOrDefaultAsync(m => m.ID == id);
-
-            if(mini == null)
-            {
-                return NotFound();
-            }
-    
-
-            MiniSourceSite Source = mini.Sources.FirstOrDefault();
-
-            if (Source != null)
-            {
-                _telemetry.TrackEvent("MiniRedirect", new Dictionary<string, string> {
-                        { "TargetHost", Source.Link.Host },
-                        { "MiniID", id.ToString() },
-                        { "Beta", beta },
-                        { "CreatorID", mini.Creator.ID.ToString() }
-                    });
-
-                return Redirect(Source.Link.ToString());
-            }
-            else{
-                _telemetry.TrackEvent("MiniRedirect", new Dictionary<string, string> {
-                        { "TargetHost", new Uri(mini.Link).Host },
-                        { "MiniID", id.ToString() },
-                        { "Beta", beta },
-                        { "CreatorID", mini.Creator.ID.ToString() }
-                    });
-
-                return Redirect(mini.Link.ToString());
-            }
-        }
     }
 }

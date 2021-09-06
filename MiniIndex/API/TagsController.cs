@@ -173,7 +173,7 @@ namespace MiniIndex.API
         }
 
         // DELETE api/Pairs/6
-        [HttpDelete("/Pairs/{id}")]
+        [HttpDelete("/api/Pairs/{id}")]
         public async Task<IActionResult> PairDelete(int id)
         {
             TagPair TagPair = await _context.TagPair.FindAsync(id);
