@@ -17,9 +17,21 @@ a:hover {
   text-decoration: underline;
 }
 
+#top-bar {
+  width: 100%;
+  display: flex;
+}
+
 #logotype {
   font-family: 'Montserrat', sans-serif;
-  margin: 0px 10px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 0px 20px 0px 0px;
+}
+
+#logotype img {
+  margin: 0px 10px 0px 0px;
 }
 
 #xsmall {
@@ -33,7 +45,8 @@ a:hover {
 }
 
 #right-aligned {
-  text-align: right;
+  display: flex;
+  justify-content: right;
   width: 100%;
 }
 
@@ -44,4 +57,29 @@ a:hover {
   flex-direction: row;
   align-items: center;
   background-color: var(--app-primary-color);
+}
+
+.hide {
+  display: none !important;
+}
+
+@media (max-width: 700px) {
+  #nav-bar {
+    flex-direction: column;
+  }
+
+  #logotype {
+    margin: 0px 0px 0px 0px;
+  }
+
+  #hamburger {
+    display: block;
+    justify-content: right;
+  }
+
+  #right-aligned {
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+  }
 }
