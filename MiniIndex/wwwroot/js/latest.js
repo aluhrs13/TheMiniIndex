@@ -7,7 +7,7 @@
     if (currentVisitTimestamp != "") {
         if (Date.now() - currentVisitTimestamp > (3600000 * 2)) {
             fetch(`/api/overhead/seen/?since=` + (Date.now() - currentVisitTimestamp))
-            document.cookie = "LastVisit=" + currentVisitTimestamp + ";max-age=" + (60 * 60 * 24 * 28);
+            document.cookie = "LastVisit=" + currentVisitTimestamp + ";SameSite=Strict;max-age=" + (60 * 60 * 24 * 28);
         }
     }
 
@@ -45,5 +45,5 @@ function getCookie(cookieName) {
 }
 
 function updateDateCookie(cookieName) {
-    document.cookie = cookieName + "=" + Date.now() +";max-age="+(60*60*24*28);
+    document.cookie = cookieName + "=" + Date.now() +";SameSite=Strict;max-age="+(60*60*24*28);
 }
