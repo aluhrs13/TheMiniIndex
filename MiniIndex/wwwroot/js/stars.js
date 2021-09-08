@@ -163,8 +163,10 @@ function RefreshTagsEnd() {
     $("#tagSearch").val("");
 
     $.getJSON({
-        url: "/api/minis/tagList/",
-        data: { id: document.getElementById("miniid").innerHTML },
+        url:
+            "/api/Minis/" +
+            document.getElementById("miniid").innerHTML +
+            "/Tags",
         complete: function (response, status) {},
         error: function () {
             //TODO - Error styling
@@ -181,13 +183,13 @@ function RefreshTagsEnd() {
                 }
                 newHTML +=
                     '<a href="#" id="' +
-                    tag["ID"] +
+                    tag["id"] +
                     '" class="btn btn-outline-danger remove-tag ' +
-                    tag["Status"] +
+                    tag["status"] +
                     '" style="margin-top:5px;">- <small>' +
-                    tag["Category"] +
+                    tag["category"] +
                     ":</small> <b>" +
-                    tag["TagName"] +
+                    tag["tagName"] +
                     "</b></a>";
                 prevStatus = tag["Status"];
 
