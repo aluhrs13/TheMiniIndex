@@ -6,9 +6,7 @@ $(document).ready(function () {
     RefreshTagsEnd();
 });
 
-const toggleStarEl = document.getElementById("toggle-star");
-toggleStarEl.addEventListener("click", ToggleStar);
-function ToggleStar() {
+$("#toggle-star").click(function () {
     if ($(this).hasClass("add-star")) {
         fetch("/api/Starred/" + document.getElementById("miniid").innerHTML, {
             method: "POST",
@@ -24,42 +22,48 @@ function ToggleStar() {
 
     $(this).toggleClass("btn-danger");
     $(this).toggleClass("btn-success");
-}
+});
 
 // Used in /Admin/
 $(".change-category").change(function () {
-    $.get({
-        url: "/Tags/Edit/",
-        data: {
-            id: this.id,
-            category: $(this).children("option:selected").text(),
+    var data = {
+        ID: this.id * 1,
+        Category: $(this).val() * 1,
+    };
+
+    fetch("/api/Tags/", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
         },
-        complete: function () {},
-    });
+        body: JSON.stringify(data),
+    }).then((response) => {});
 
     return false;
 });
 
 // Used in /Tags/Manage
 $(".remove-pair").click(function () {
-    $.get({
-        url: "/TagPairs/Delete/",
-        data: { id: this.id },
-        complete: function () {},
-    });
+    fetch("/api/Pairs/" + this.id, {
+        method: "DELETE",
+    }).then((response) => {});
+
     return false;
 });
 
 $(".new-pair").click(function () {
-    $.get({
-        url: "/TagPairs/Create/",
-        data: {
-            tag1: this.id,
-            tag2: document.getElementById("new-pair-tag").value,
-            type: document.getElementById("new-pair-type").value,
-        },
-        complete: function () {},
-    });
+    fetch(
+        "/api/Tags/" +
+            this.id +
+            "/Pairs/" +
+            document.getElementById("new-pair-tag").value +
+            "?type=" +
+            document.getElementById("new-pair-type").value,
+        {
+            method: "POST",
+        }
+    ).then((response) => {});
+
     return false;
 });
 
@@ -84,26 +88,26 @@ $("#tagSearch").on("input", function (e) {
 $("#AddNewTag").click(function () {
     RefreshTagsStart();
 
-    var newTag = $("#tagSearch").val();
-    console.log("Adding new tag " + newTag);
+    var data = {
+        Mini: {
+            ID: document.getElementById("miniid").innerHTML * 1,
+        },
+        Tag: {
+            TagName: $("#tagSearch").val(),
+        },
+    };
 
-    $.get({
-        url: "/MiniTags/Create/",
-        data: {
-            mini: document.getElementById("miniid").innerHTML,
-            tagName: newTag,
+    fetch("/api/MiniTags/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
         },
-        complete: function () {
-            RefreshTagsEnd();
-        },
-        error: function () {
-            //Error styling
-        },
-        success: function () {
-            //Success styling
-            $(this).fadeOut();
-        },
+        body: JSON.stringify(data),
+    }).then((response) => {
+        RefreshTagsEnd();
+        $(this).fadeOut();
     });
+
     return false;
 });
 
@@ -111,19 +115,23 @@ $("#UnusedTags").on("click", ".add-tag", function () {
     RefreshTagsStart();
     console.log("Adding " + this.innerHTML);
 
-    $.get({
-        url: "/MiniTags/Create/",
-        data: {
-            mini: document.getElementById("miniid").innerHTML,
-            tag: this.id,
+    var data = {
+        Mini: {
+            ID: document.getElementById("miniid").innerHTML * 1,
         },
-        complete: function () {
-            RefreshTagsEnd();
+        Tag: {
+            ID: this.id * 1,
         },
-        error: function () {
-            //TODO - Error styling
+    };
+
+    fetch("/api/MiniTags/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
         },
-        success: function () {},
+        body: JSON.stringify(data),
+    }).then((response) => {
+        RefreshTagsEnd();
     });
 
     //TODO - Fix this to reset all .add-tags too
@@ -135,19 +143,23 @@ $("#UsedTags").on("click", ".remove-tag", function () {
     RefreshTagsStart();
     console.log("Removing " + this.innerHTML);
 
-    $.get({
-        url: "/MiniTags/Delete/",
-        data: {
-            mini: document.getElementById("miniid").innerHTML,
-            tag: this.id,
+    var data = {
+        Mini: {
+            ID: document.getElementById("miniid").innerHTML * 1,
         },
-        complete: function () {
-            RefreshTagsEnd();
+        Tag: {
+            ID: this.id * 1,
         },
-        error: function () {
-            //TODO - Error styling
+    };
+
+    fetch("/api/MiniTags/", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
         },
-        success: function () {},
+        body: JSON.stringify(data),
+    }).then((response) => {
+        RefreshTagsEnd();
     });
     return false;
 });

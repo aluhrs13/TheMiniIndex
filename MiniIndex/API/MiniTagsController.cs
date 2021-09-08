@@ -40,9 +40,7 @@ namespace MiniIndex.API
         {
             IdentityUser user = await _userManager.GetUserAsync(User);
             MiniTag newMT = await _mediator.Send(new MiniTagSubmissionRequest(value.Mini, value.Tag, user));
-
-            //TODO: TBD -> some useful URL
-            return Created(new Uri("TBD"), newMT.Mini.MiniTags.Select(mt=>mt.Tag.TagName));
+            return Ok();
         }
 
         // PATCH api/<MiniTagsController>/
@@ -79,7 +77,8 @@ namespace MiniIndex.API
         public async Task<IActionResult> Delete([FromBody] MiniTag value)
         {
             //TODO: Propagate deletion to paired tags. Possibly with a new state for "Autoadded"
-            MiniTag MiniTag = await _context.MiniTag.FirstOrDefaultAsync(m => m.MiniID == value.MiniID && m.TagID == value.TagID);
+            MiniTag MiniTag = await _context.MiniTag.FirstOrDefaultAsync(m => m.MiniID == value.Mini.ID && m.TagID == value.Tag.ID);
+
 
             if (User.IsInRole("Moderator"))
             {

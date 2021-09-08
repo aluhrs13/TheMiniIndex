@@ -140,7 +140,7 @@ namespace MiniIndex.API
             Tag Tag2 = _context.Tag.FirstOrDefault(t => t.ID == tag2);
             PairType pairType = (PairType)type;
 
-            //TODO - This is a hack. 99 means "child" from the tag manager, so we're swapping them.
+            //This is a hack. 99 means "child" from the tag manager, so we're swapping them.
             //It's a dumb hack, but I'm tired.
             if (type == 99)
             {
