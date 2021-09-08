@@ -26,6 +26,18 @@
     <h2>Template Component</h2>
     <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
 
+    <h2>Do Something Button</h2>
+    <tmi-do-something-button text="Submit" tmistyle="start" url="https://theminiindex.com/api/minis/search?pageIndex=1&SearchString=bard"></tmi-do-something-button>
+    <div id="fetchResults"></div>
+    <script>
+      const todoListElement = document.querySelector('tmi-do-something-button');
+      todoListElement.addEventListener('fetchCompleted', event => {
+        let fetchElement = document.getElementById('fetchResults');
+        let newHTML = '<div>' + event.detail + '</div>';
+        fetchElement.insertAdjacentHTML('beforeend', newHTML);
+      });
+    </script>
+
     <h2>Nav Bar</h2>
     <tmi-nav-bar></tmi-nav-bar>
 

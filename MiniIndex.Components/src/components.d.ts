@@ -20,6 +20,11 @@ export namespace Components {
          */
         "middle": string;
     }
+    interface TmiDoSomethingButton {
+        "text": string;
+        "tmistyle": string;
+        "url": string;
+    }
     interface TmiMiniCard {
         /**
           * Creator Details
@@ -64,6 +69,12 @@ declare global {
         prototype: HTMLMyComponentElement;
         new (): HTMLMyComponentElement;
     };
+    interface HTMLTmiDoSomethingButtonElement extends Components.TmiDoSomethingButton, HTMLStencilElement {
+    }
+    var HTMLTmiDoSomethingButtonElement: {
+        prototype: HTMLTmiDoSomethingButtonElement;
+        new (): HTMLTmiDoSomethingButtonElement;
+    };
     interface HTMLTmiMiniCardElement extends Components.TmiMiniCard, HTMLStencilElement {
     }
     var HTMLTmiMiniCardElement: {
@@ -78,6 +89,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "my-component": HTMLMyComponentElement;
+        "tmi-do-something-button": HTMLTmiDoSomethingButtonElement;
         "tmi-mini-card": HTMLTmiMiniCardElement;
         "tmi-nav-bar": HTMLTmiNavBarElement;
     }
@@ -96,6 +108,12 @@ declare namespace LocalJSX {
           * The middle name
          */
         "middle"?: string;
+    }
+    interface TmiDoSomethingButton {
+        "onFetchCompleted"?: (event: CustomEvent<string>) => void;
+        "text"?: string;
+        "tmistyle"?: string;
+        "url"?: string;
     }
     interface TmiMiniCard {
         /**
@@ -135,6 +153,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "my-component": MyComponent;
+        "tmi-do-something-button": TmiDoSomethingButton;
         "tmi-mini-card": TmiMiniCard;
         "tmi-nav-bar": TmiNavBar;
     }
@@ -144,6 +163,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "tmi-do-something-button": LocalJSX.TmiDoSomethingButton & JSXBase.HTMLAttributes<HTMLTmiDoSomethingButtonElement>;
             "tmi-mini-card": LocalJSX.TmiMiniCard & JSXBase.HTMLAttributes<HTMLTmiMiniCardElement>;
             "tmi-nav-bar": LocalJSX.TmiNavBar & JSXBase.HTMLAttributes<HTMLTmiNavBarElement>;
         }

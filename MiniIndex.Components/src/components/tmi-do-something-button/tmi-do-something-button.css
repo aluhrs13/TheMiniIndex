@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.start {
+  color: white;
+  background-color: var(--app-primary-color);
+
+  padding: 12px 32px;
+
+  text-align: center;
+  font-size: 16px;
+
+  border: none;
+  border-radius: 5px;
+
+  transition-duration: 0.2s;
+}
+
+.start:hover {
+  color: var(--app-primary-color);
+  background-color: var(--app-secondary-color);
+}
+
+.disabled {
+  opacity: 0.6;
+}
+
+.load {
+  opacity: 0.6;
+}
+
+.complete {
+  color: darkgreen;
+  background-color: lightgreen;
+}
+
+.error {
+  color: darkred;
+  background-color: lightpink;
+}
