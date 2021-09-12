@@ -8,6 +8,7 @@ import { Component, Prop, h, State, Event, EventEmitter } from '@stencil/core';
 export class TmiDoSomethingButton {
   @Prop() text: string;
   @Prop() tmistyle: string;
+  @Prop() method: string;
   @Prop() url: string;
   @State() currentState: string;
   @State() currentText: string;
@@ -16,38 +17,39 @@ export class TmiDoSomethingButton {
     this.currentText = this.text;
   }
 
-  private makeCall(): string {
+  private makeCall(event): boolean {
+    event.preventDefault();
     this.currentState = 'load';
 
+    //TODO: Take in method and use that.
     fetch(this.url)
       .then(response => {
+        this.fetchCompleted.emit(response.ok);
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+
         return response.json();
       })
       .then(data => {
-        console.log(data);
-        this.fetchCompleted.emit(this.url + ' succeeded');
         this.currentState = 'complete';
       })
       .catch(error => {
-        console.error('Error in call:', error);
-        this.fetchCompleted.emit(this.url + ' failed');
-        this.currentText = 'Failed - Retry';
+        this.currentText = 'Failed - Retry?';
         this.currentState = 'error';
       });
-    return '';
+    return false;
   }
 
-  @Event() fetchCompleted: EventEmitter<string>;
-  fetchCompletedHandler(data: string) {
+  @Event() fetchCompleted: EventEmitter<boolean>;
+  fetchCompletedHandler(data: boolean) {
     this.fetchCompleted.emit(data);
   }
 
   render() {
     return (
-      <button onClick={() => this.makeCall()} class={this.tmistyle + ' ' + this.currentState}>
+      <button onClick={event => this.makeCall(event)} class={'btn ' + this.tmistyle + ' ' + this.currentState}>
         {this.currentText}
       </button>
     );

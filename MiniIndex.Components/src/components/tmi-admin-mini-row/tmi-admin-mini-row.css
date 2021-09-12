@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.mini-row {
+  display: grid;
+  grid-template-columns: 70px 100px 20% max-content;
+  overflow-wrap: normal;
+  grid-gap: 8px;
+}
+
+.mini-row div {
+  text-align: left;
+}
+
+.tag {
+  padding: 6px 10px;
+  margin: 2px;
+  background-color: var(--app-primary-color);
+  color: white;
+  align-content: middle;
+  border-radius: 4px;
+}
+
+#imgplace {
+  background-color: gray;
+  width: 70px;
+  height: 70px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 2px;
+  height: fit-content;
+}
+
+.column {
+  display: grid;
+  grid-gap: 4px;
+}
