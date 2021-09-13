@@ -18,7 +18,6 @@ a:hover {
 }
 
 #top-bar {
-  width: 100%;
   display: flex;
 }
 
@@ -44,6 +43,12 @@ a:hover {
   line-height: 0.4em;
 }
 
+#middle-aligned {
+  display: flex;
+  justify-content: middle;
+  width: 100%;
+}
+
 #right-aligned {
   display: flex;
   justify-content: right;
@@ -64,6 +69,10 @@ a:hover {
 }
 
 @media (max-width: 700px) {
+  #top-bar {
+    width: 100%;
+  }
+
   #nav-bar {
     flex-direction: column;
   }
@@ -81,5 +90,11 @@ a:hover {
     flex-direction: column;
     align-content: center;
     align-items: center;
+  }
+}
+
+@media (min-width: 699px) {
+  #hamburger {
+    display: none;
   }
 }

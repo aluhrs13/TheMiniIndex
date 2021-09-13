@@ -13,11 +13,14 @@ export class TmiNavBar {
 
   @State() open: boolean;
 
-  //TODO: Limit this to just ham.
   //TODO: Figure out resize: https://medium.com/stencil-tricks/creating-responsive-components-in-stencil-using-the-resizeobserver-api-8eb9a1f69469
-  @Listen('click', { capture: true })
-  handleClick() {
+  handleClick(ev) {
+    ev.preventDefault();
     this.open = !this.open;
+  }
+
+  componentWillLoad() {
+    this.open = true;
   }
 
   render() {
@@ -34,7 +37,9 @@ export class TmiNavBar {
             </div>
           </div>
           <div id="hamburger">
-            <a href="#">Ham</a>
+            <a href="#" onClick={ev => this.handleClick(ev)}>
+              Ham
+            </a>
           </div>
         </div>
         <div id="right-aligned" class={this.open ? 'show' : 'hide'}>
@@ -42,7 +47,8 @@ export class TmiNavBar {
           <a href="">Creators</a>
           <a href="">Add a Mini</a>
           <a href="">About</a>
-
+        </div>
+        <div id="right-aligned" class={this.open ? 'show' : 'hide'}>
           <a href="">Register</a>
           <a href="">Login</a>
         </div>
