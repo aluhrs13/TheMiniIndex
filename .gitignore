@@ -349,3 +349,4 @@ node_modules/
 */wwwroot/js/*.min.js
 /MiniIndex/Properties/ServiceDependencies/miniindex-Preproduction - Web Deploy/profile.arm.json
 /MiniIndex/Properties/ServiceDependencies/MiniIndex - Web Deploy/profile.arm.json
+*/wwwroot/components

@@ -6,6 +6,7 @@ export const config: Config = {
   outputTargets: [
     {
       type: 'dist',
+      dir: '../MiniIndex/wwwroot/components',
       esmLoaderPath: '../loader',
     },
     {
