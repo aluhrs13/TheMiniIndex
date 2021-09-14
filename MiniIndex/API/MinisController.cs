@@ -253,7 +253,7 @@ namespace MiniIndex.API
                             mt.Tag.ID,
                             Category = mt.Tag.Category.ToString()
                         }
-                    )
+                    ).OrderBy(mt=>mt.Status).ThenBy(mt=>mt.TagName)
                 );
             }
         }

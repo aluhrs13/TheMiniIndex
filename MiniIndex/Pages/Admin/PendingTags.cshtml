@@ -36,12 +36,20 @@
 
                 <tr>
                     <td>
-                        <a asp-page="/MiniTags/UpdateStatus" asp-route-MiniID="@item.MiniID" asp-route-TagID="@item.TagID" asp-route-NewStatus="Approved" class="btn btn-success btn-block">
-                            Approve
-                        </a>
-                        <a asp-page="/MiniTags/UpdateStatus" asp-route-MiniID="@item.MiniID" asp-route-TagID="@item.TagID" asp-route-NewStatus="Rejected" class="btn btn-danger btn-block">
-                            Reject
-                        </a>
+                      <tmi-do-something-button
+                        text="Approve"
+                        tmistyle="btn approve"
+                        method="PATCH"
+                        url="/api/MiniTags/"
+                        data='{"miniID": @item.MiniID, "tagID": @item.TagID, "status": 1}'
+                      ></tmi-do-something-button>
+                      <tmi-do-something-button
+                        text="Reject"
+                        tmistyle="btn deny"
+                        method="PATCH"
+                        url="/api/MiniTags/"
+                        data='{"miniID": @item.MiniID, "tagID": @item.TagID, "status": 2}'
+                      ></tmi-do-something-button>
                     </td>
                     <td>
                         <img src="@Html.DisplayFor(modelItem => item.Mini.Thumbnail)" width="64" />

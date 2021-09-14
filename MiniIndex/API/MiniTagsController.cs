@@ -40,7 +40,7 @@ namespace MiniIndex.API
         {
             IdentityUser user = await _userManager.GetUserAsync(User);
             MiniTag newMT = await _mediator.Send(new MiniTagSubmissionRequest(value.Mini, value.Tag, user));
-            return Ok();
+            return Ok("{}");
         }
 
         // PATCH api/<MiniTagsController>/
@@ -68,7 +68,7 @@ namespace MiniIndex.API
                 return Conflict();
             }
 
-            return Ok();
+            return Ok("{}");
        }
 
         // DELETE api/<MiniTagsController>/
@@ -99,8 +99,7 @@ namespace MiniIndex.API
             {
                 return Conflict();
             }
-
-            return Ok();
+            return Ok("{}");
         }
     }
 }

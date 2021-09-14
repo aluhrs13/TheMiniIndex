@@ -25,9 +25,11 @@ export namespace Components {
         "name": string;
         "source": string;
         "tagdata": string;
+        "thumbnail": string;
         "type": string;
     }
     interface TmiDoSomethingButton {
+        "data": string;
         "method": string;
         "text": string;
         "tmistyle": string;
@@ -129,9 +131,11 @@ declare namespace LocalJSX {
         "name"?: string;
         "source"?: string;
         "tagdata"?: string;
+        "thumbnail"?: string;
         "type"?: string;
     }
     interface TmiDoSomethingButton {
+        "data"?: string;
         "method"?: string;
         "onFetchCompleted"?: (event: CustomEvent<boolean>) => void;
         "text"?: string;

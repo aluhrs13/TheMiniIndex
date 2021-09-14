@@ -23,7 +23,7 @@ namespace MiniIndex.API
         public async Task<IActionResult> NewSession(string since)
         {
             _telemetry.TrackEvent("NewSession", new Dictionary<string, string> { { "TimeSince", since } });
-            return Ok();
+            return Ok("{}");
         }
     }
 }
