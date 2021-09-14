@@ -1,5 +1,27 @@
 {
     "configurations": [
+        
+        {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/MiniIndex/bin/Debug/net5.0/MiniIndex.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MiniIndex",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "https://localhost:44386/"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
         {
             "name": "Launch Microsoft Edge and open the Edge DevTools",
             "request": "launch",
