@@ -6,6 +6,16 @@
 @inject IConfiguration Configuration
 @{
     ViewData["Title"] = "Edit";
+    @if (User.IsInRole("Administrator"))
+    {
+        ViewData["Submitter"] = @Model.Mini.User.Email;
+    }else{
+        if(@Model.Mini.User.Email == "admin@theminiindex.com"){
+            ViewData["Submitter"] = "Auto-submitted";
+        }else{
+            ViewData["Submitter"] = "User";
+        }
+    }
 }
 
 @section Scripts
@@ -22,33 +32,13 @@
 <div>
     @if (User.IsInRole("Moderator"))
     {
-        <div class="card shadow">
-            <div class="card-body">
-                <h2 class="card-title">Moderate</h2>
-                @if (User.IsInRole("Administrator"))
-                {
-                    <small>Submitted by @Model.Mini.User.Email</small>
-                }
-
-                <p><b>Current Status - </b>@Model.Mini.Status</p>
-                <p><b>Cost - </b>@Model.Mini.Cost</p>
-                <p><b>Thumbnail - </b>@Model.Mini.Thumbnail</p>
-                <hr />
-
-                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Approved" class="btn btn-success">
-                    Approve
-                </a>
-                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Pending" class="btn btn-warning">
-                    Visible
-                </a>
-                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Rejected" class="btn btn-danger">
-                    Reject
-                </a>
-                <a asp-page="./UpdateStatus" asp-route-MiniID="@Model.Mini.ID" asp-route-NewStatus="Deleted" class="btn btn-danger">
-                    Delete
-                </a>
-            </div>
-        </div>
+        <tmi-admin-card
+            miniid="@Model.Mini.ID"
+            submitter="@ViewData["Submitter"]"
+            status="@Model.Mini.Status"
+            cost="@Model.Mini.Cost"
+            thumbnail="@Model.Mini.Thumbnail">
+        </tmi-admin-card>
     }
 </div>
 

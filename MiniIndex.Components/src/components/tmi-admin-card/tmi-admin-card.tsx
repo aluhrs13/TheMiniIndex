@@ -20,7 +20,6 @@ export class TmiAdminCard {
   render() {
     return (
       <div class="mini-card">
-        <h2>Moderate</h2>
         <b>Submitted by: </b> {this.submitter} <br />
         <b>Status: </b> {this.status} <br />
         <b>Cost: </b> {this.cost} <br />
