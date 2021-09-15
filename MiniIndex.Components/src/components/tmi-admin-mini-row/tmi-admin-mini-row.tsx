@@ -17,13 +17,13 @@ export class TmiAdminMiniRow {
 
   //Prints out tags in the right styling
   private printTags() {
-      return (
-        <div class="row">
-          {this.tags.map(item => {
-            return <p class="tag">{item}</p>;
-          })}
-        </div>
-      );
+    return (
+      <div class="row">
+        {this.tags.map(item => {
+          return <p class="tag">{item}</p>;
+        })}
+      </div>
+    );
   }
 
   componentWillLoad() {
@@ -47,7 +47,7 @@ export class TmiAdminMiniRow {
             tmistyle="btn approve"
             method="PATCH"
             url={'/api/Minis/'}
-            data={'{"id": '+this.miniid+', "status": 1}'}
+            data={'{"id": ' + this.miniid + ', "status": 1}'}
           ></tmi-do-something-button>
           <tmi-do-something-button
             onFetchCompleted={ev => this.buttonCompleted(ev)}
@@ -55,7 +55,7 @@ export class TmiAdminMiniRow {
             tmistyle="btn deny"
             method="PATCH"
             url={'/api/Minis/'}
-            data={'{"id": '+this.miniid+', "status": 2}'}
+            data={'{"id": ' + this.miniid + ', "status": 2}'}
           ></tmi-do-something-button>
         </div>
       );
@@ -68,7 +68,7 @@ export class TmiAdminMiniRow {
             tmistyle="btn visible"
             method="PATCH"
             url={'/api/Minis/'}
-            data={'{"id": '+this.miniid+', "status": 0}'}
+            data={'{"id": ' + this.miniid + ', "status": 0}'}
           ></tmi-do-something-button>
           <tmi-do-something-button
             onFetchCompleted={ev => this.buttonCompleted(ev)}
@@ -76,7 +76,7 @@ export class TmiAdminMiniRow {
             tmistyle="btn deny"
             method="PATCH"
             url={'/api/Minis/'}
-            data={'{"id": '+this.miniid+', "status": 2}'}
+            data={'{"id": ' + this.miniid + ', "status": 2}'}
           ></tmi-do-something-button>
         </div>
       );

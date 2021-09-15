@@ -6,19 +6,12 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first": string;
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
+    interface TmiAdminCard {
+        "cost": string;
+        "miniid": string;
+        "status": string;
+        "submitter": string;
+        "thumbnail": string;
     }
     interface TmiAdminMiniRow {
         "miniid": string;
@@ -73,11 +66,11 @@ export namespace Components {
     }
 }
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+    interface HTMLTmiAdminCardElement extends Components.TmiAdminCard, HTMLStencilElement {
     }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
+    var HTMLTmiAdminCardElement: {
+        prototype: HTMLTmiAdminCardElement;
+        new (): HTMLTmiAdminCardElement;
     };
     interface HTMLTmiAdminMiniRowElement extends Components.TmiAdminMiniRow, HTMLStencilElement {
     }
@@ -104,7 +97,7 @@ declare global {
         new (): HTMLTmiNavBarElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
+        "tmi-admin-card": HTMLTmiAdminCardElement;
         "tmi-admin-mini-row": HTMLTmiAdminMiniRowElement;
         "tmi-do-something-button": HTMLTmiDoSomethingButtonElement;
         "tmi-mini-card": HTMLTmiMiniCardElement;
@@ -112,19 +105,12 @@ declare global {
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
+    interface TmiAdminCard {
+        "cost"?: string;
+        "miniid"?: string;
+        "status"?: string;
+        "submitter"?: string;
+        "thumbnail"?: string;
     }
     interface TmiAdminMiniRow {
         "miniid"?: string;
@@ -179,7 +165,7 @@ declare namespace LocalJSX {
         "currentpage"?: string;
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
+        "tmi-admin-card": TmiAdminCard;
         "tmi-admin-mini-row": TmiAdminMiniRow;
         "tmi-do-something-button": TmiDoSomethingButton;
         "tmi-mini-card": TmiMiniCard;
@@ -190,7 +176,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "tmi-admin-card": LocalJSX.TmiAdminCard & JSXBase.HTMLAttributes<HTMLTmiAdminCardElement>;
             "tmi-admin-mini-row": LocalJSX.TmiAdminMiniRow & JSXBase.HTMLAttributes<HTMLTmiAdminMiniRowElement>;
             "tmi-do-something-button": LocalJSX.TmiDoSomethingButton & JSXBase.HTMLAttributes<HTMLTmiDoSomethingButtonElement>;
             "tmi-mini-card": LocalJSX.TmiMiniCard & JSXBase.HTMLAttributes<HTMLTmiMiniCardElement>;

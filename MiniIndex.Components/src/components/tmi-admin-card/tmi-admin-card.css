@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.mini-card {
+  padding: 0px 16px 8px 16px;
+  filter: drop-shadow(4px 4px 4px var(--app-primary-color));
+  background-color: white;
+  border-radius: 4px;
+}
+
+tmi-do-something-button {
+  margin: 4px;
+}

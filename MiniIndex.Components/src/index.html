@@ -31,12 +31,14 @@
     <h2>Template Component</h2>
     <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
 
-    <h3>Admin Mini Row</h3>
+    <h2>Admin Card</h2>
+    <tmi-admin-card miniid="10" submitter="Andy" status="Pending" cost="10" thumbnail="url"> </tmi-admin-card>
+
+    <h2>Admin Mini Row</h2>
     <div id="mini-row-holder">
-      <tmi-admin-mini-row miniid="10" type="unindexed" name="Foo" source="Shapeways" tagdata='["Test", "test2", "test3", "test34"]'> </tmi-admin-mini-row>
-      <tmi-admin-mini-row miniid="10" type="pending" name="Foo" source="Shapewaysadsfasdfasdf" tagdata='["Test", "test2", "longer", "more", "more", "and more"]'>
+      <tmi-admin-mini-row miniid="10" type="Unindexed" name="Foo" source="Shapeways" tagdata='["Test", "test2", "test3", "test34"]'> </tmi-admin-mini-row>
+      <tmi-admin-mini-row miniid="10" type="Pending" name="Foo" source="Shapewaysadsfasdfasdf" tagdata='["Test", "test2", "longer", "more", "more", "and more"]'>
       </tmi-admin-mini-row>
-      <tmi-admin-mini-row miniid="10" type="pending" name="Foo" source="Shapeways" tagdata='["Test", "test2"]'> </tmi-admin-mini-row>
     </div>
 
     <h2>Do Something Button</h2>
