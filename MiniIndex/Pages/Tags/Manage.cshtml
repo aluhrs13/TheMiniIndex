@@ -6,11 +6,11 @@
 
 @section Scripts
 {
-    <environment include="Development">
+    <environment include="Development, Staging">
         <script type="module" src="~/dist/stars.entry.js" defer></script>
     </environment>
 
-    <environment exclude="Development">
+    <environment include="Production">
         <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
     </environment>
 }
