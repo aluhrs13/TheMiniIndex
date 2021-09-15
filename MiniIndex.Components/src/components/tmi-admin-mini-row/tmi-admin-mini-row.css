@@ -4,7 +4,7 @@
 
 .mini-row {
   display: grid;
-  grid-template-columns: 70px 100px 20% max-content;
+  grid-template-columns: 70px 100px 1fr 1fr;
   overflow-wrap: normal;
   grid-gap: 8px;
 }

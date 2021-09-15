@@ -190,8 +190,8 @@ function RefreshTagsEnd() {
 
             var prevStatus = "";
             response.forEach(function (tag) {
-                if (prevStatus != tag["Status"]) {
-                    newHTML += "<h4>" + tag["Status"] + "</h4>";
+                if (prevStatus != tag["status"]) {
+                    newHTML += "<h4>" + tag["status"] + "</h4>";
                 }
                 newHTML +=
                     '<a href="#" id="' +
@@ -203,7 +203,7 @@ function RefreshTagsEnd() {
                     ":</small> <b>" +
                     tag["tagName"] +
                     "</b></a>";
-                prevStatus = tag["Status"];
+                prevStatus = tag["status"];
 
                 $(".add-tag#" + tag["ID"]).hide();
             });

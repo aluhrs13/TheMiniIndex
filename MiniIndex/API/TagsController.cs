@@ -82,7 +82,7 @@ namespace MiniIndex.API
                 return Conflict();
             }
 
-            return Ok();
+            return Ok("{}");
         }
 
         // DELETE api/<TagsController>/5
@@ -103,7 +103,7 @@ namespace MiniIndex.API
                 return Conflict();
             }
 
-            return Ok();
+            return Ok("{}");
         }
 
         /*
@@ -169,7 +169,7 @@ namespace MiniIndex.API
             _context.TagPair.Add(newPair);
 
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok("{}");
         }
 
         // DELETE api/Pairs/6
@@ -181,7 +181,7 @@ namespace MiniIndex.API
             _context.TagPair.Remove(TagPair);
 
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok("{}");
         }
     }
 }

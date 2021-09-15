@@ -7,6 +7,7 @@ import { Component, Prop, h, Watch, State } from '@stencil/core';
 })
 export class TmiAdminMiniRow {
   @Prop() miniid: string;
+  @Prop() thumbnail: string;
   @Prop() name: string;
   @Prop() source: string;
   @Prop() tagdata: string;
@@ -16,7 +17,6 @@ export class TmiAdminMiniRow {
 
   //Prints out tags in the right styling
   private printTags() {
-    if (this.type == 'pending') {
       return (
         <div class="row">
           {this.tags.map(item => {
@@ -24,25 +24,6 @@ export class TmiAdminMiniRow {
           })}
         </div>
       );
-    } else {
-      return (
-        <div class="column">
-          {this.tags.map(item => {
-            return (
-              <div>
-                <tmi-do-something-button
-                  onFetchCompleted={ev => this.buttonCompleted(ev)}
-                  text={'Tag as ' + item + ' and Approve'}
-                  tmistyle="start"
-                  method="PATCH"
-                  url={'/api/minis/' + this.miniid}
-                ></tmi-do-something-button>
-              </div>
-            );
-          })}
-        </div>
-      );
-    }
   }
 
   componentWillLoad() {
@@ -57,20 +38,24 @@ export class TmiAdminMiniRow {
 
   //TODO: This can be cleaned up a lot.
   printButtons() {
-    if (this.type == 'pending') {
+    if (this.type == 'Pending') {
       return (
         <div id="mini-buttons">
           <tmi-do-something-button
             onFetchCompleted={ev => this.buttonCompleted(ev)}
             text="Approve"
             tmistyle="btn approve"
-            url="/api/minis/search?pageIndex=1&SearchString=bard"
+            method="PATCH"
+            url={'/api/Minis/'}
+            data={'{"id": '+this.miniid+', "status": 1}'}
           ></tmi-do-something-button>
           <tmi-do-something-button
             onFetchCompleted={ev => this.buttonCompleted(ev)}
             text="Deny"
             tmistyle="btn deny"
-            url="/api/minis/search?pageIndex=1&SearchString=bard"
+            method="PATCH"
+            url={'/api/Minis/'}
+            data={'{"id": '+this.miniid+', "status": 2}'}
           ></tmi-do-something-button>
         </div>
       );
@@ -82,32 +67,33 @@ export class TmiAdminMiniRow {
             text="Visible"
             tmistyle="btn visible"
             method="PATCH"
-            url="/api/minis/search?pageIndex=1&SearchString=bard"
+            url={'/api/Minis/'}
+            data={'{"id": '+this.miniid+', "status": 0}'}
           ></tmi-do-something-button>
           <tmi-do-something-button
             onFetchCompleted={ev => this.buttonCompleted(ev)}
             text="Deny"
             tmistyle="btn deny"
             method="PATCH"
-            url="/api/minis/search?pageIndex=1&SearchString=bard"
+            url={'/api/Minis/'}
+            data={'{"id": '+this.miniid+', "status": 2}'}
           ></tmi-do-something-button>
         </div>
       );
     }
   }
 
-  //TODO: Fix img URL
-  //TODO: Fix API URLs
   render() {
     if (this.visible) {
       return (
         <div class="mini-row">
           <div>
-            <img src="" id="imgplace" />
+            <img src={this.thumbnail} id="imgplace" />
           </div>
+
           {this.printButtons()}
           <div>
-            <a href={'/minis/id=' + this.miniid}>{this.name}</a>
+            <a href={'/Minis/Edit?id=' + this.miniid}>{this.name}</a>
             <br />
             <small>{this.source}</small>
           </div>

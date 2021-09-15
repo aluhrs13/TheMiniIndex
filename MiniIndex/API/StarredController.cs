@@ -55,7 +55,7 @@ namespace MiniIndex.API
 
             _context.Set<Starred>().Add(newStarred);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok("{}");
         }
 
         // DELETE api/<StarredController>/5
@@ -70,7 +70,7 @@ namespace MiniIndex.API
             {
                 _context.Set<Starred>().Remove(Starred);
                 await _context.SaveChangesAsync();
-                return Ok();
+                return Ok("{}");
             }
             else
             {

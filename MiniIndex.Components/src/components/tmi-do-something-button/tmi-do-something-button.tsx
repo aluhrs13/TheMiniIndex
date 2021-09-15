@@ -10,6 +10,7 @@ export class TmiDoSomethingButton {
   @Prop() tmistyle: string;
   @Prop() method: string;
   @Prop() url: string;
+  @Prop() data: string;
   @State() currentState: string;
   @State() currentText: string;
 
@@ -22,7 +23,9 @@ export class TmiDoSomethingButton {
     this.currentState = 'load';
 
     //TODO: Take in method and use that.
-    fetch(this.url)
+    fetch(this.url, {method: this.method, body: this.data,     headers: {
+      'Content-Type': 'application/json'
+    } })
       .then(response => {
         this.fetchCompleted.emit(response.ok);
 
@@ -33,6 +36,7 @@ export class TmiDoSomethingButton {
         return response.json();
       })
       .then(data => {
+        this.currentText = "Success!";
         this.currentState = 'complete';
       })
       .catch(error => {
