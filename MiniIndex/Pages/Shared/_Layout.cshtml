@@ -42,7 +42,6 @@
     <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
 
     <environment include="Staging, Development">
-        <script type="module" src="~/dist/validation.entry.js" defer></script>
         <script type="module" src="~/dist/site.entry.js" defer></script>
         <script type="module" src="~/dist/bootstrapjs.entry.js" defer></script>
     </environment>
@@ -60,14 +59,12 @@
     <link rel="stylesheet" href="~/components/miniindex-components/miniindex-components.css" />
 
     <environment include="Production">
-        <script type="module" src="https://miniindex.azureedge.net/validation.entry.js" defer></script>
         <script type="module" src="https://miniindex.azureedge.net/site.entry.js" defer></script>
         <script type="module" src="https://miniindex.azureedge.net/bootstrapjs.entry.js" defer></script>
         <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
     </environment>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
 
     <script type="text/javascript">
         var appInsights = window.appInsights || function (a) {

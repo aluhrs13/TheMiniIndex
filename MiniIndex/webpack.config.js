@@ -8,7 +8,9 @@ module.exports = {
         validation: './wwwroot/js/validation.js',
         tags: './wwwroot/js/tags-tagify.js',
         stars: './wwwroot/js/stars.js',
-        latest: './wwwroot/js/latest.js'
+        latest: './wwwroot/js/latest.js',
+        admin: './wwwroot/js/admin.js',
+        edit: './wwwroot/js/edit.js'
     },
     output: {
         filename: '[name].entry.js',
