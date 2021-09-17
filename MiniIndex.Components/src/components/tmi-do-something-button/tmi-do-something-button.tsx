@@ -35,11 +35,12 @@ export class TmiDoSomethingButton {
 
         return response.json();
       })
-      .then(data => {
+      .then(() => {
         this.currentText = "Success!";
         this.currentState = 'complete';
       })
       .catch(error => {
+        console.error(error);
         this.currentText = 'Failed - Retry?';
         this.currentState = 'error';
       });

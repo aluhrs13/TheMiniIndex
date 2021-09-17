@@ -1,4 +1,4 @@
-import { Component, Prop, h, Listen, State } from '@stencil/core';
+import { Component, Prop, h, State } from '@stencil/core';
 
 @Component({
   tag: 'tmi-nav-bar',

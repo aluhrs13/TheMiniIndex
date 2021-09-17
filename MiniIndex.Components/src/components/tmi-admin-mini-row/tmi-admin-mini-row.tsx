@@ -1,4 +1,4 @@
-import { Component, Prop, h, Watch, State } from '@stencil/core';
+import { Component, Prop, h, State } from '@stencil/core';
 
 @Component({
   tag: 'tmi-admin-mini-row',

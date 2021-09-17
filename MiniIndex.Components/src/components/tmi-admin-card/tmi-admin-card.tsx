@@ -13,7 +13,7 @@ export class TmiAdminCard {
   @Prop() thumbnail: string;
 
   //If any of the button presses succeed, hide this row.
-  buttonCompleted(event) {
+  buttonCompleted() {
     window.location.reload();
   }
 
@@ -27,7 +27,7 @@ export class TmiAdminCard {
         <hr />
         <div class="row">
           <tmi-do-something-button
-            onFetchCompleted={ev => this.buttonCompleted(ev)}
+            onFetchCompleted={() => this.buttonCompleted()}
             text="Approve"
             tmistyle="btn approve"
             method="PATCH"
@@ -35,7 +35,7 @@ export class TmiAdminCard {
             data={'{"id": ' + this.miniid + ', "status": 1}'}
           ></tmi-do-something-button>
           <tmi-do-something-button
-            onFetchCompleted={ev => this.buttonCompleted(ev)}
+            onFetchCompleted={() => this.buttonCompleted()}
             text="Visible"
             tmistyle="btn visible"
             method="PATCH"
@@ -43,7 +43,7 @@ export class TmiAdminCard {
             data={'{"id": ' + this.miniid + ', "status": 0}'}
           ></tmi-do-something-button>
           <tmi-do-something-button
-            onFetchCompleted={ev => this.buttonCompleted(ev)}
+            onFetchCompleted={() => this.buttonCompleted()}
             text="Reject"
             tmistyle="btn deny"
             method="PATCH"
