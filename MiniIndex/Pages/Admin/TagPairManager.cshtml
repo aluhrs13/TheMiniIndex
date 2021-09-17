@@ -6,15 +6,6 @@
     ViewData["ActivePage"] = ManageNavPages.TagPairManager;
 }
 
-@section Scripts
-{
-    <environment include="Development">
-    </environment>
-
-    <environment exclude="Development">
-    </environment>
-}
-
 @if (User.IsInRole("Moderator"))
 {
     <h4>Tag Pairs</h4>
