@@ -117,7 +117,7 @@ function RefreshTagsEnd() {
             "/api/Minis/" +
             document.getElementById("miniid").innerHTML +
             "/Tags",
-        complete: function (response, status) { },
+        complete: function (response, status) {},
         error: function () {
             //TODO - Error styling
         },

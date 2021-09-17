@@ -5,7 +5,7 @@ body {
     padding-bottom: 20px;
 }
 a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
-    color: #57BC90 !important;
+    color: #57bc90 !important;
 }
 
 /* Wrapping element */
@@ -40,19 +40,19 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .navbar-brand {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
 }
 
-.add-tagify{
+.add-tagify {
     margin-bottom: 5px;
 }
 
 .Pending {
-    background-color: #FFF5A6 !important;
+    background-color: #fff5a6 !important;
 }
 
 .Unindexed {
-    background-color: #FFF5A6;
+    background-color: #fff5a6;
 }
 
 .Rejected {
@@ -60,21 +60,22 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .card-img-top {
-    object-fit:contain;
+    object-fit: contain;
 }
 
 .Thingiverse {
-    background-color: #3F8CFE !important;
-    border-color: #3F8CFE !important;
+    background-color: #3f8cfe !important;
+    border-color: #3f8cfe !important;
 }
 
 .thumb-wrapper.Thingiverse span {
-    background: transparent url('../images/SourceSiteIcons/Thingiverse.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/Thingiverse.png")
+        no-repeat;
 }
 
 .Patreon {
-    background-color: #E85B46 !important;
-    border-color: #E85B46 !important;
+    background-color: #e85b46 !important;
+    border-color: #e85b46 !important;
     color: white !important;
 }
 
@@ -85,27 +86,30 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .thumb-wrapper.MyMiniFactory span {
-    background: transparent url('../images/SourceSiteIcons/MyMiniFactory.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/MyMiniFactory.png")
+        no-repeat;
 }
 
 .Shapeways {
-    background-color: #FF4B5A !important;
-    border-color: #FF4B5A !important;
+    background-color: #ff4b5a !important;
+    border-color: #ff4b5a !important;
     color: white !important;
 }
 
 .thumb-wrapper.Shapeways span {
-    background: transparent url('../images/SourceSiteIcons/Shapeways.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/Shapeways.png")
+        no-repeat;
 }
 
 .Gumroad {
-    background-color: #198C8C !important;
-    border-color: #198C8C !important;
+    background-color: #198c8c !important;
+    border-color: #198c8c !important;
     color: white !important;
 }
 
 .thumb-wrapper.Gumroad span {
-    background: transparent url('../images/SourceSiteIcons/Gumroad.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/Gumroad.png")
+        no-repeat;
 }
 
 .Cults3d {
@@ -115,11 +119,13 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .thumb-wrapper.Cults3d span {
-    background: transparent url('../images/SourceSiteIcons/Cults3d.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/Cults3d.png")
+        no-repeat;
 }
 
 .thumb-wrapper.Wargaming3d span {
-    background: transparent url('../images/SourceSiteIcons/Wargaming3d.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/Wargaming3d.png")
+        no-repeat;
 }
 
 .Wargaming3d {
@@ -129,17 +135,19 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .thumb-wrapper.DuncanShadow span {
-    background: transparent url('../images/SourceSiteIcons/DuncanShadow.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/DuncanShadow.png")
+        no-repeat;
 }
 
 .DuncanShadow {
-    background-color: #4E2B07 !important;
-    border-color: #4E2B07 !important;
+    background-color: #4e2b07 !important;
+    border-color: #4e2b07 !important;
     color: white !important;
 }
 
 .thumb-wrapper.PrusaPrinters span {
-    background: transparent url('../images/SourceSiteIcons/PrusaPrinters.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/PrusaPrinters.png")
+        no-repeat;
 }
 
 .PrusaPrinters {
@@ -149,12 +157,13 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .thumb-wrapper.AtelierStoria span {
-    background: transparent url('../images/SourceSiteIcons/AtelierStoria.png') no-repeat;
+    background: transparent url("../images/SourceSiteIcons/AtelierStoria.png")
+        no-repeat;
 }
 
 .AtelierStoria {
-    background-color: #5F7E23 !important;
-    border-color: #5F7E23 !important;
+    background-color: #5f7e23 !important;
+    border-color: #5f7e23 !important;
     color: white !important;
 }
 
@@ -163,8 +172,8 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .thumb-wrapper img {
-    width:100%;
-    height:auto;
+    width: 100%;
+    height: auto;
 }
 
 .thumb-wrapper span {
@@ -181,17 +190,17 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 }
 
 .loading-spinner {
-    background: transparent url('../images/loading.gif');
+    background: transparent url("../images/loading.gif");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
-.badge-True{
+.badge-True {
     background-color: green;
     color: white;
 }
 
-.badge-False{
+.badge-False {
     background-color: red;
     color: white;
 }
@@ -228,6 +237,6 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
     display: block;
 }
 
-.approved-time{
+.approved-time {
     display: none;
 }

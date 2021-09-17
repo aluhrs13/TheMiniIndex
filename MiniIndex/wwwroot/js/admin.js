@@ -12,7 +12,7 @@ $(".change-category").change(function () {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-    }).then((response) => { });
+    }).then((response) => {});
 
     return false;
 });
@@ -20,7 +20,7 @@ $(".change-category").change(function () {
 $(".remove-pair").click(function () {
     fetch("/api/Pairs/" + this.id, {
         method: "DELETE",
-    }).then((response) => { });
+    }).then((response) => {});
 
     return false;
 });
@@ -28,15 +28,15 @@ $(".remove-pair").click(function () {
 $(".new-pair").click(function () {
     fetch(
         "/api/Tags/" +
-        this.id +
-        "/Pairs/" +
-        document.getElementById("new-pair-tag").value +
-        "?type=" +
-        document.getElementById("new-pair-type").value,
+            this.id +
+            "/Pairs/" +
+            document.getElementById("new-pair-tag").value +
+            "?type=" +
+            document.getElementById("new-pair-type").value,
         {
             method: "POST",
         }
-    ).then((response) => { });
+    ).then((response) => {});
 
     return false;
 });
