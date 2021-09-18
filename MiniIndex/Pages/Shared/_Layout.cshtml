@@ -43,7 +43,6 @@
 
     <environment include="Staging, Development">
         <script type="module" src="~/dist/site.entry.js" defer></script>
-        <script type="module" src="~/dist/bootstrapjs.entry.js" defer></script>
     </environment>
 
     <environment include="Staging">
@@ -60,7 +59,6 @@
 
     <environment include="Production">
         <script type="module" src="https://miniindex.azureedge.net/site.entry.js" defer></script>
-        <script type="module" src="https://miniindex.azureedge.net/bootstrapjs.entry.js" defer></script>
         <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
     </environment>
 
@@ -77,67 +75,16 @@
     </script>
 </head>
 <body>
-
-    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="/">
-            <img src="~/images/icons/apple-touch-icon-57x57.png" style="height:40px;" />
-            <div style="margin-left:7px; float:right; line-height:1;">
-                <span style="font-size:x-small;">THE</span><br />
-                MINI INDEX
-            </div>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis">Browse Minis</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Creators/Browse">Browse Creators</a>
-                </li>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Starred">Starred Minis</a>
-                    </li>
-                }
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis/Help">Tag a Mini</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis/Create">Add a Mini</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Feedback
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="https://github.com/aluhrs13/TheMiniIndex" target="_blank"><span class="oi oi-code"></span> View our GitHub</a>
-                        <a class="dropdown-item" href="https://discordapp.com/invite/FDtYRDP" target="_blank"><span class="oi oi-chat"></span> Join us on Disord</a>
-                        <a class="dropdown-item" href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1UMDNUNlVURVhEQzlFUFI5UlEwR0ZISlk5Vi4u" target="_blank"><span class="oi oi-bullhorn"></span> Give us feedback</a>
-                    </div>
-                </li>
-                @if (User.IsInRole("Moderator"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Admin/">Moderator Dashboard</a>
-                    </li>
-                }
-            </ul>
-            <partial name="_LoginPartial" />
-        </div>
+    <nav>
+        <tmi-nav-bar></tmi-nav-bar>
     </nav>
 
-    <main role="main" class="container-fluid">
-        <div style="padding: 3rem 1.5rem;">
-            @RenderBody()
-        </div>
+    <main>
+        @RenderBody()
     </main>
+
+    <footer>TODO</footer>
+
 
     @RenderSection("Scripts", required: false)
 </body>

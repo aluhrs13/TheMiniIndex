@@ -240,3 +240,46 @@ a:not(.btn):not(.nav-link):not(.badge):not(.navbar-brand) {
 .approved-time {
     display: none;
 }
+
+
+.btn {
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .5rem;
+    border-radius: .25rem;
+    margin: 0px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-block{
+    display: block;
+    width: 100%;
+}
+
+#advanced-search{
+    display:none;
+}
+
+/* https://travishorn.com/responsive-grid-in-2-minutes-with-css-grid-layout-4842a41420fe */
+#gallery {
+    max-width: 1800px;
+    display: grid;
+    grid-gap: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    margin-bottom: 32px;
+}

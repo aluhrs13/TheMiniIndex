@@ -74,35 +74,6 @@
             <div class="content-section container-fluid">
                 @await Html.PartialAsync("MiniListView", Model.Minis)
             </div>
-            <div align="center">
-                @foreach (var pageGroup in pagesToLink.Select((x, i) => (pages: x, groupIndex: i)))
-                {
-                    if (pageGroup.groupIndex != 0)
-                    {
-                        <span> ... </span>
-                    }
-
-                    @foreach (var pageIndex in pageGroup.pages)
-                    {
-                        @if (pageIndex == Model.Minis.PageIndex)
-                        {
-                            <span><b><u>@pageIndex</u></b></span>
-                        }
-                        else
-                        {
-                            @Html.ActionLink(pageIndex.ToString(), "BrowseMinis", "Minis", new
-                                {
-                                    searchString = Model.SearchModel.SearchString,
-                                    pageSize = Model.Minis.PageSize,
-                                    pageIndex,
-                                    FreeOnly = Model.SearchModel.FreeOnly,
-                                    Tags = string.Join(",", Model.SearchModel.Tags)
-                                },
-                                new { @class = "btn" })
-                        }
-                    }
-                }
-            </div>
         </div>
     </div>
 </div>

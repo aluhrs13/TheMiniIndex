@@ -47,7 +47,7 @@ export class TmiMiniCard {
       <div class="card">
         <div>
           <a href={`https://beta.theminiindex.com/minis/${this.miniid}`}>
-            <img class="card-thumbnail" src={fixCDN(this.thumbnail)} />
+            <img class="card-thumbnail" src={fixCDN(this.thumbnail)} width="314" height="236" />
           </a>
         </div>
         <div class="card-text">

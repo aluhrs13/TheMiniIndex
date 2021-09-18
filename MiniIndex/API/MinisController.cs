@@ -82,6 +82,7 @@ namespace MiniIndex.API
                         {
                             ID = m.ID,
                             Name = m.Name,
+                            Link = m.Link,
                             Status = m.Status,
                             Creator = new { name = m.Creator.Name, id = m.Creator.ID },
                             Thumbnail = m.Thumbnail

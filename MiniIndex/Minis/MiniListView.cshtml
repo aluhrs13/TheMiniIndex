@@ -34,55 +34,30 @@
                 </div>
             }
 
-            @foreach (var mini in Model)
-            {
-                <div class="col-md-4" style="margin-bottom:5px">
-                    <div class="card">
+            <div id="gallery">
+                @foreach (var mini in Model)
+                {
+                    <!-- TODO: Thumbnail CDN logic -->
+                    <!-- TODO: No source site logic -->
+                    <!-- TODO: New tag logic -->
+                    <!-- TODO: Pending and Rejected logic -->
 
-                        @if (mini.Sources.Any())
-                        {
-                            @:<div class="thumb-wrapper @mini.Sources.First().Site.SiteName">
-                            }
-                            else
-                            {
-                                @:<div class="thumb-wrapper">
-                                }
-                        <a href="/Minis/Details?id=@mini.ID">
-                            @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
-                            {
-                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
-                            }
-                            else
-                            {
-                                <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
-                            }
-                            <span></span>
-                        </a>
-                    </div>
+                    <tmi-mini-card
+                        miniid="@mini.ID"
+                        name="@mini.Name"
+                        thumbnail="@mini.Thumbnail"
+                        status="@mini.Status"
+                        creatorname="@mini.Creator.Name"
+                        creatorid="@mini.Creator.ID"
+                        sourcesite="@mini.Sources.First().Site.SiteName.ToLower()"
+                    >
+                    </tmi-mini-card>
+                }
+            </div>
 
-                    <div class="card-body @mini.Status">
-                        @Html.DisplayFor(modelItem => mini.Name)
-                        <br />
-                        <small class="text-muted">
-                            <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
-                        </small>
-                        <div class="new-tag hidden"><span class="new-tag-span">New!</span></div>
-                        @if (mini.Status == Status.Pending)
-                        {
-                            <p><b>Pending admin approval</b></p>
-                        }
-                        else if (mini.Status == Status.Rejected)
-                        {
-                            <p><b>Rejected by admin</b></p>
-                        }else if (mini.Status == Status.Approved){
-                            <!-- This is hacky. Do it better in new UI. -->
-                            <div class="approved-time">@mini.ApprovedLinuxTime()</div>
-                        }
-                    </div>
-
-                </div>
-            @:</div>
-        }
+            <div style="text-align: center; margin: 16px">
+                <button href="#" onclick="nextPage()" style="width: 90%">Next Page</button>
+            </div>
         </div>
     </div>
 </div>
