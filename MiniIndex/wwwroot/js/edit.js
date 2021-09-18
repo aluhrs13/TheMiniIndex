@@ -43,7 +43,6 @@ $("#AddNewTag").click(function () {
         body: JSON.stringify(data),
     }).then((response) => {
         RefreshTagsEnd();
-        $(this).fadeOut();
     });
 
     return false;
