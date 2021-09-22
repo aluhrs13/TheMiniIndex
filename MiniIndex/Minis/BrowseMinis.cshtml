@@ -22,20 +22,12 @@
         <script src="~/js/latest.js" defer></script>
     </environment>
 
-    <environment include="Staging">
+    <environment include="Staging,Production">
         <script src="~/dist/latest.entry.js" defer></script>
     </environment>
 
-    <environment include="Staging, Development">
-        <script type="module" src="~/dist/tags.entry.js" defer></script>
-        <link rel="stylesheet" href="~/dist/tags.css">
-    </environment>
-
-    <environment include="Production">
-        <script src="https://miniindex.azureedge.net/latest.entry.js" defer></script>
-        <script type="module" src="https://miniindex.azureedge.net/tags.entry.js" defer></script>
-        <link rel="stylesheet" href="https://miniindex.azureedge.net/tags.css">
-    </environment>
+    <script type="module" src="~/dist/tags.entry.js" defer></script>
+    <link rel="stylesheet" href="~/dist/tags.css">
 }
 
 <div class="container-fluid">

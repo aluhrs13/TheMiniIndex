@@ -41,12 +41,10 @@
     <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
 
-    <environment include="Staging, Development">
-        <script type="module" src="~/dist/site.entry.js" defer></script>
-        <script type="module" src="~/dist/bootstrapjs.entry.js" defer></script>
-    </environment>
+    <script type="module" src="~/dist/site.entry.js" defer></script>
+    <script type="module" src="~/dist/bootstrapjs.entry.js" defer></script>
 
-    <environment include="Staging">
+    <environment include="Staging, Production">
         <link rel="stylesheet" href="~/dist/site.css">
     </environment>
 
@@ -57,12 +55,6 @@
     <script type="module" src="~/components/miniindex-components/miniindex-components.esm.js"></script>
     <script nomodule src="~/components/miniindex-components/miniindex-components.js"></script>
     <link rel="stylesheet" href="~/components/miniindex-components/miniindex-components.css" />
-
-    <environment include="Production">
-        <script type="module" src="https://miniindex.azureedge.net/site.entry.js" defer></script>
-        <script type="module" src="https://miniindex.azureedge.net/bootstrapjs.entry.js" defer></script>
-        <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
-    </environment>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 
