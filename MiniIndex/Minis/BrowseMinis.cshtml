@@ -14,8 +14,6 @@
         .BoxWhile((a, b) => b - a == 1);
 }
 
-
-
 @section Scripts
 {
     <environment include="Development,">
@@ -38,31 +36,23 @@
     </environment>
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <h2>Search the Index</h2>
-    </div>
+<div>
+    <h1>Search the Index</h1>
 
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="sidebar-item container-fluid">
-                @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
+    <div>
+        @if (Model.ShowRateResults)
+        {
+            <div>
+                <h2>Happy with your search results?</h2>
+                Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
             </div>
+        }
+
+        <div>
+            @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
         </div>
 
-        <div class="col-lg-9">
-            <div>
-                @if (Model.ShowRateResults)
-                {
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <h2 class="card-title">Happy with your search results?</h2>
-                            Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
-                        </div>
-                    </div>
-                }
-            </div>
-            <br />
+        <div>
             @if (String.IsNullOrWhiteSpace(Model.SearchModel.SearchString))
             {
                 <h2>Most Recent Results</h2>
@@ -71,9 +61,11 @@
             {
                 <h2>Most Relevant Results</h2>
             }
-            <div class="content-section container-fluid">
-                @await Html.PartialAsync("MiniListView", Model.Minis)
-            </div>
+            @await Html.PartialAsync("MiniListView", Model.Minis)
         </div>
+    </div>
+
+    <div style="text-align: center; margin: 16px">
+        <button href="#" onclick="nextPage()" style="width: 90%">Next Page</button>
     </div>
 </div>

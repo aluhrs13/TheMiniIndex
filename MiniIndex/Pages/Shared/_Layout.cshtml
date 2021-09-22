@@ -51,6 +51,9 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css">
+        <link rel="stylesheet" href="~/css/utility.css">
+        <link rel="stylesheet" href="~/css/styles.css">
+
     </environment>
 
     <script type="module" src="~/components/miniindex-components/miniindex-components.esm.js"></script>
@@ -75,16 +78,19 @@
     </script>
 </head>
 <body>
-    <nav>
-        <tmi-nav-bar></tmi-nav-bar>
-    </nav>
+    <div class="stack">
+        <nav>
+            <partial name="_NavBarPartial" />
+        </nav>
 
-    <main>
-        @RenderBody()
-    </main>
+        <main>
+            @RenderBody()
+        </main>
 
-    <footer>TODO</footer>
-
+        <footer>
+            <partial name="_FooterPartial" />
+        </footer>
+    </div>
 
     @RenderSection("Scripts", required: false)
 </body>

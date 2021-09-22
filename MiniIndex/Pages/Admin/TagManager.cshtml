@@ -3,14 +3,13 @@
 
 @{
     ViewData["Title"] = "Tag Manager";
-    ViewData["ActivePage"] = ManageNavPages.TagManager;
 }
 
 @if (User.IsInRole("Moderator"))
 {
     <h4>Tag Manager</h4>
 
-    <table class="table">
+    <table>
         <thead>
             <tr>
                 <th>Tag Name</th>

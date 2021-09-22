@@ -1,58 +1,58 @@
 ﻿@model MiniIndex.Minis.MiniSearchModel
 
-    <div class="container-fluid">
-        @using (Html.BeginForm(FormMethod.Get))
-        {
-            @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
+<div>
+    @using (Html.BeginForm(FormMethod.Get))
+    {
+        @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
 
-            @Html.LabelFor(x => x.SearchString, "Find Minis")
-            @Html.TextBoxFor(x => x.SearchString, new { placeholder = "Search for..." })
+        @Html.LabelFor(x => x.SearchString, "Find Minis")
+        @Html.TextBoxFor(x => x.SearchString, new { placeholder = "Search for..." })
 
+        <br/>
+
+        <div id="advanced-search">
+            @Html.LabelFor(x => x.Tags, "Filter by tags")
+            <input id="tagsInput" type="text" placeholder="Find tags..." />
+
+            @Html.CheckBoxFor(x => x.FreeOnly,
+                new
+                {
+                    @class = "form-check-input"
+                })
+            @Html.LabelFor(x => x.FreeOnly, "Free Minis Only",
+                new
+                {
+                    @class = "form-check-label"
+                })
             <br/>
+        </div>
 
-            <div id="advanced-search">
-                @Html.LabelFor(x => x.Tags, "Filter by tags")
-                <input id="tagsInput" type="text" placeholder="Find tags..." />
+        <input type="submit" value="Search" class="btn btn-primary btn-block" />
+    }
+    <hr />
+    <h3>Common Tags</h3>
+    <h4>Genres</h4>
+    <a id="Fantasy" class="add-tagify btn btn-secondary" href="#">
+        Fantasy
+    </a>
+    <a id="Scifi" class="add-tagify btn btn-secondary" href="#">
+        Scifi
+    </a>
+    <a id="Historical" class="add-tagify btn btn-secondary" href="#">
+        Historical
+    </a>
+    <h4>Uses</h4>
+    <a id="Mini" class="add-tagify btn btn-secondary" href="#">Mini</a>
+    <a id="Scatter" class="add-tagify btn btn-secondary" href="#">
+        Scatter
+    </a>
+    <a id="Tile" class="add-tagify btn btn-secondary" href="#">
+        Tile
+    </a>
+    <a id="Accessory" class="add-tagify btn btn-secondary" href="#">
+        Accessory
+    </a><br />
 
-                @Html.CheckBoxFor(x => x.FreeOnly,
-                    new
-                    {
-                        @class = "form-check-input"
-                    })
-                @Html.LabelFor(x => x.FreeOnly, "Free Minis Only",
-                    new
-                    {
-                        @class = "form-check-label"
-                    })
-                <br/>
-            </div>
-
-            <input type="submit" value="Search" class="btn btn-primary btn-block" />
-        }
-        <hr />
-        <h3>Common Tags</h3>
-        <h4>Genres</h4>
-        <a id="Fantasy" class="add-tagify btn btn-secondary" href="#">
-            Fantasy
-        </a>
-        <a id="Scifi" class="add-tagify btn btn-secondary" href="#">
-            Scifi
-        </a>
-        <a id="Historical" class="add-tagify btn btn-secondary" href="#">
-            Historical
-        </a>
-        <h4>Uses</h4>
-        <a id="Mini" class="add-tagify btn btn-secondary" href="#">Mini</a>
-        <a id="Scatter" class="add-tagify btn btn-secondary" href="#">
-            Scatter
-        </a>
-        <a id="Tile" class="add-tagify btn btn-secondary" href="#">
-            Tile
-        </a>
-        <a id="Accessory" class="add-tagify btn btn-secondary" href="#">
-            Accessory
-        </a><br />
-
-        <a href="/Tags/Browse/">Browse all tags</a>
-        <hr />
-    </div>
+    <a href="/Tags/Browse/">Browse all tags</a>
+    <hr />
+</div>

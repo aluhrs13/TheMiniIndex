@@ -1,0 +1,67 @@
+﻿h1,
+h2,
+h3 {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.btn {
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .5rem;
+    border-radius: .25rem;
+    margin: 0px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.darkbg {
+    color: #fff;
+    background-color: var(--app-primary-color);
+}
+
+.darkbg a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.navfooter {
+    margin: -8px;
+    padding: .5rem;
+}
+
+body{
+    margin: 8px;
+}
+
+.xsmall {
+    font-size: x-small;
+}
+
+.larger {
+    font-size: larger;
+    white-space: nowrap;
+    line-height: 0.4em;
+}
+
+img{
+    margin-right: .5rem;
+}

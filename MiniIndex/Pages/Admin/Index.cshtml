@@ -5,7 +5,6 @@
 @inject SignInManager<IdentityUser> SignInManager
 @{
     ViewData["Title"] = "Approve Minis";
-    ViewData["ActivePage"] = ManageNavPages.Minis;
 }
 
 @if (User.IsInRole("Moderator"))
@@ -29,13 +28,10 @@
     }
     else
     {
-        <tr>
-            <td colspan="5" align="center">
-                <h1 style="color:slategray">
-                    All submissions have been moderated!
-                </h1>
-            </td>
-        </tr>
-
+        <div class="center">
+            <h2>
+                All submissions have been moderated!
+            </h2>
+        </div>
     }
 }

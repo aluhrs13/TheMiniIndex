@@ -1,0 +1,65 @@
+﻿.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.stack > * {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.stack > * + * {
+    margin-top: var(--space, 1.5rem);
+}
+
+.outer-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space, 1rem);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space, 1rem);
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.switcher {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s1);
+}
+
+.switcher > * {
+    flex-grow: 1;
+    flex-basis: calc(( 30rem - 100%) * 999);
+}
+
+.switcher > :nth-last-child(n+ 6),
+.switcher > :nth-last-child(n+ 6) ~ * {
+    flex-basis: 100%;
+}
+
+.center {
+    box-sizing: content-box;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    max-width: var(--measure);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
