@@ -15,6 +15,7 @@ using System.Net.Http;
 using Supporting.ProfileParsing.JSONClasses;
 using System.Net;
 using System.ComponentModel.Design.Serialization;
+using System.Text;
 
 namespace Supporting.ProfileParsing
 {
@@ -229,7 +230,6 @@ namespace Supporting.ProfileParsing
                                 log.LogInformation("[MyMiniFactory Parsing] Found URL - " + foundUrl.ToString());
                                 SubmitLinkAsync(log, foundUrl);
                             }
-
                         }
                         catch (Exception ex)
                         {
@@ -249,8 +249,20 @@ namespace Supporting.ProfileParsing
 
         public static async Task SubmitLinkAsync(ILogger log, Uri url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.theminiindex.com/api/minis/create?url=" + url.ToString() + "&key=" + AutoCreateKey);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.theminiindex.com/api/Minis");
             log.LogInformation("[Mini Submission] Looking at - " + url);
+
+            string postData = "\""+url+"\"";
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] byte1 = encoding.GetBytes(postData);
+
+            // Set the content length of the string being posted.
+            request.ContentType = "application/json";
+            request.ContentLength = byte1.Length;
+            request.Method = "POST";
+            Stream newStream = request.GetRequestStream();
+
+            newStream.Write(byte1, 0, byte1.Length);
 
             try
             {
