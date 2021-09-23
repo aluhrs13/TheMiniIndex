@@ -39,6 +39,9 @@ namespace MiniIndex
                 config.AddApplicationInsights();
             });
 
+            //Response Compression - https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-5.0
+            services.AddResponseCompression();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("SpecificOrigins",
@@ -116,6 +119,8 @@ namespace MiniIndex
                 app.UseHsts();
             }
 
+            //Response Compression - https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-5.0
+            app.UseResponseCompression();
             app.UseStatusCodePages();
 
             app.UseHttpsRedirection();
