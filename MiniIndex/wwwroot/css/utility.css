@@ -18,19 +18,11 @@
     margin-top: var(--space, 1.5rem);
 }
 
-.outer-cluster {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space, 1rem);
-    justify-content: space-between;
-    align-items: center;
-}
-
 .cluster {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space, 1rem);
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 }
 
@@ -38,7 +30,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: var(--s1);
+    gap: 1rem;
 }
 
 .switcher > * {
@@ -49,6 +41,18 @@
 .switcher > :nth-last-child(n+ 6),
 .switcher > :nth-last-child(n+ 6) ~ * {
     flex-basis: 100%;
+}
+
+@media (max-width: 700px) {
+    #navitems {
+        display:none;
+    }
+}
+
+@media (min-width: 699px) {
+    #hamburger {
+        display: none;
+    }
 }
 
 .center {
