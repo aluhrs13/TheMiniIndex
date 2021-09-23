@@ -7,62 +7,30 @@
     ViewData["Title"] = "The Mini Index";
 }
 
-<div>
-        <h1>Welcome to The Mini Index!</h1>
+
+<div style="position: relative">
+    <div class="hero-frame">
+        <img src="https://miniindex.blob.core.windows.net/react-images/hero.jpg"/>
+    </div>
+    <div class="imposter">
+        <h1 class="center">Welcome to The Mini Index!</h1>
         <p class="lead" align="center">
-            This is a <b>crowd-sourced</b> index of 3d printable files for minis, terrain tiles, and scatter terrain across
+            This is a <strong>crowd-sourced</strong> index of 3d printable files for minis, terrain tiles, and scatter terrain across
             different websites for use with tabletop games like Dungeons and Dragons.
-            We have <b>@Model.MiniCount models</b> tagged with the important attributes of the mini in order to make it fast and easy to find exactly what you're looking for.
-            There are an additional <b>@Model.UntaggedMiniCount models</b> that can be found by searching their name (or you can help tag a random one by clicking <a href="/Minis/Help">here!</a>)
+            We have <b>@Model.MiniCount.ToString("N0") models</b> tagged with the important attributes of the mini in order to make it fast and easy to find exactly what you're looking for.
             <br />
         </p>
-        <hr/>
-        <h2>Latest Minis</h2>
-        <p style="font-size:small;">
-            Everything you find here is thanks to someone who took the time to index and tag it. If you don't find what you're looking for,
-            or just have some spare time, please try to improve the quality of The Mini Index by <a href="/Minis/Create/">submitting a mini</a> or improving tags.
-        </p>
-    <div class="row">
-        @foreach (var mini in Model.Mini)
-        {
-                <div class="col-md-3" style="margin-bottom:5px">
-                    <div class="card">
-
-                        @if (mini.Sources.Any())
-                        {
-                            @:<div class="thumb-wrapper @mini.Sources.First().Site.SiteName">
-                            }
-                            else
-                            {
-                                @:<div class="thumb-wrapper">
-                                }
-                        <a href="/Minis/Details?id=@mini.ID">
-                            @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
-                            {
-                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
-                            }
-                            else
-                            {
-                                <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
-                            }
-                            <span></span>
-                        </a>
-                    </div>
-
-                    <div class="card-body @mini.Status">
-                        @Html.DisplayFor(modelItem => mini.Name)
-                        <br />
-                        <small class="text-muted">
-                            <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
-                        </small>
-                    </div>
-
-                </div>
-            @:</div>
-        }
+        <a class="btn btn-primary" href="">Browse the Index</a>
+        <a class="btn btn-secondary" href="">I'm feeling lucky</a> 
     </div>
-    <hr />
-    <div class="row">
-        <a href="/Minis/" class="btn btn-block btn-primary">Browse all...</a>
-        <a href="/Minis/Create" class="btn btn-block btn-success">Add new...</a>
-    </div>
+</div>
+
+<div>
+    <h2>Latest Minis</h2>
+    @await Html.PartialAsync("MiniListView", Model.Mini)
+</div>
+
+<div>
+    <a href="/Minis/" class="btn btn-block btn-primary">Browse all...</a>
+    <a href="/Minis/Create" class="btn btn-block btn-secondary">Add new...</a>
+</div>
