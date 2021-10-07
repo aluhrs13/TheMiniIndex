@@ -48,9 +48,7 @@
             </div>
         }
 
-        <div>
-            @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
-        </div>
+        @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
 
         <div>
             @if (String.IsNullOrWhiteSpace(Model.SearchModel.SearchString))

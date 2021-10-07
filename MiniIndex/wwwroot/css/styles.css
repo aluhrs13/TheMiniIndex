@@ -5,10 +5,6 @@ h3 {
     font-weight:500;
 }
 
-main {
-    margin: 2rem;
-}
-
 .montserrat {
     font-family: 'Montserrat', sans-serif !important;
 }
@@ -45,8 +41,9 @@ main {
 }
 
 .btn-block {
-    display: block;
+    display: inline-block;
     width: 100%;
+    margin: .5rem;
 }
 
 .darkbg {

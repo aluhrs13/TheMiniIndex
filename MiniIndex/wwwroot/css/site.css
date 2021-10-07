@@ -1,6 +1,7 @@
 ﻿:root {
     --app-primary-color: #18312d;
     --app-secondary-color: rgb(202, 227, 223);
+    --edge-offset: .5rem;
     --s1: 1rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
@@ -208,5 +209,5 @@
 }
 
 #advanced-search{
-    display:none;
+    /*display:none;*/
 }

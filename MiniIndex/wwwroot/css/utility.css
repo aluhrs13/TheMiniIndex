@@ -1,6 +1,114 @@
-﻿.row {
+﻿.darkbg {
+    margin-left: calc(var(--edge-offset) * -1);
+    padding-left: var(--edge-offset);
+    margin-right: calc(var(--edge-offset) * -1);
+    padding-right: var(--edge-offset);
+    padding-bottom: .5rem;
+}
+
+nav >div:first-child {
+    margin-top: calc(var(--edge-offset) * -1);
+    padding-top: var(--edge-offset);
+}
+
+footer >div:first-child {
+    padding-top: .5rem;
+    margin-bottom: calc(var(--edge-offset) * -1);
+    padding-bottom: var(--edge-offset);
+}
+
+.row {
     display: flex;
     flex-direction: row;
+}
+
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space, 1rem);
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.center {
+    box-sizing: content-box;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.center-t {
+    box-sizing: content-box;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.grid {
+    display: grid;
+    grid-gap: 1rem;
+}
+
+@supports (width: min(250px, 100%)) {
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+    }
+}
+.hero-frame {
+    --n: 9;
+    --d: 16;
+    padding-bottom: calc(var(--n) / var(--d) * 100%);
+    position: relative;
+
+    /* Custom */
+    margin-left: calc(var(--edge-offset)*-1);
+    margin-right: calc(var(--edge-offset)*-1);
+}
+
+/* Custom*/
+.hero {
+    height: 26rem;
+}
+
+.hero-frame > * {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.hero-frame > img,
+.hero-frame > video {
+    width: 100%;
+    height: 28rem;
+    object-fit: cover;
+}
+  
+
+@media (max-width: 700px) {
+    #navitems {
+        display: none;
+    }
+}
+
+@media (min-width: 699px) {
+    #hamburger {
+        display: none;
+    }
 }
 
 .stack {
@@ -18,112 +126,46 @@
     margin-top: var(--space, 1.5rem);
 }
 
-.cluster {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space, 1rem);
-    justify-content: center;
-    align-items: center;
+.imposter {
+    position: absolute;
+    top: 10rem;
+    background-color: rgba(24, 49, 45, .8);
+    padding: .5rem;
+    color: white;
+    border-radius: 4px;
+    max-width: calc(100% - (16px * 2));
+}
+
+@media (max-width: 900px) {
+    .imposter {
+        max-width: 90%;
+    }
+}
+
+@media (min-width: 899px) {
+    .imposter {
+        max-width: 50%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .imposter {
+        max-width: 33%;
+    }
 }
 
 .switcher {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     gap: 1rem;
 }
 
 .switcher > * {
     flex-grow: 1;
-    flex-basis: calc(( 30rem - 100%) * 999);
+    flex-basis: calc(( 40rem - 100%) * 999);
 }
 
-.switcher > :nth-last-child(n+ 6),
-.switcher > :nth-last-child(n+ 6) ~ * {
+.switcher > :nth-last-child(n+ 5),
+.switcher > :nth-last-child(n+ 5) ~ * {
     flex-basis: 100%;
-}
-
-@media (max-width: 700px) {
-    #navitems {
-        display:none;
-    }
-}
-
-@media (min-width: 699px) {
-    #hamburger {
-        display: none;
-    }
-}
-
-.center {
-    box-sizing: content-box;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    text-align: center;
-    max-width: var(--measure);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.grid {
-    display: grid;
-    grid-gap: 1rem;
-}
-
-@supports (width: min(250px, 100%)) {
-    .grid {
-        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
-    }
-}
-
-.imposter {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-90%, -50%);
-    background-color: rgb(24 49 45 / 0.85);
-    border-radius: 4px;
-    color: white;
-    padding: 1rem;
-}
-
-.imposter.contain {
-    --margin: 8px;
-    overflow: auto;
-    max-width: calc(100% - (var(--margin) * 2));
-    max-height: calc(100% - (var(--margin) * 2));
-}
-
-
-.hero-frame {
-    --n: 9;
-    --d: 24;
-    padding-bottom: calc(var(--n) / var(--d) * 100%);
-    position: relative;
-
-    margin-left: -2.5rem;
-    margin-right: -2.5rem;
-    margin-top: -1rem;
-}
-
-.hero-frame > * {
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hero-frame > img,
-.hero-frame > video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }

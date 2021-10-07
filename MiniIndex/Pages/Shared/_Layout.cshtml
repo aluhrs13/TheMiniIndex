@@ -47,6 +47,8 @@
 
     <environment include="Staging">
         <link rel="stylesheet" href="~/dist/site.css">
+        <link rel="stylesheet" href="~/dist/utility.css">
+        <link rel="stylesheet" href="~/dist/styles.css">
     </environment>
 
     <environment include="Development">
@@ -84,17 +86,61 @@
     </script>
 </head>
 <body>
-    <div class="stack">
+    <div>
         <nav>
-            <partial name="_NavBarPartial" />
+            <div class="cluster darkbg">
+                <div class="row">
+                    <a href="/">
+                        <img style="margin-right: .5rem;"width="40" height="40" src="https://beta.theminiindex.com/static/media/logo.6e92ad4f.svg" />
+                    </a>
+
+                    <div class="montserrat">
+                        <span class="xsmall">THE</span>
+                        <br />
+                        <span class="larger">MINI INDEX</span>
+                    </div>
+                </div>
+
+                <div class="cluster">
+                    <div class="center"><a class="btn" href="/Minis">Minis</a></div>
+                    <div class="center"><a class="btn" href="/Creators/Browse">Creators</a></div>
+                    <div class="center"><a class="btn" href="/Minis/Create">Add a Mini</a></div>
+                    <div class="center"><a class="btn" href="/Identity/Account/Register">Register</a></div>
+                    <div class="center"><a class="btn" href="/Identity/Account/Login">Login</a></div>
+                </div>
+            </div>
         </nav>
 
         <main>
-            @RenderBody()
+            <div class="stack">
+                @RenderBody()
+            </div>
         </main>
 
         <footer>
-            <partial name="_FooterPartial" />
+            <div class="darkbg center">
+                <div class="center-t">
+                    Everything you find here is thanks to someone who took the time to index and tag it. If you don't find what you're looking for, or just have some spare time, please try to improve the quality of The Mini Index by submitting a mini or improving tags.
+                </div>
+                <br />
+                <div class="cluster">
+                    <div>
+                        <a class="btn" href="#">Discord</a>
+                    </div>
+                    <div>
+                        <a class="btn" href="#">Github</a>
+                    </div>
+                    <div>
+                        <a class="btn" href="#">Form</a>
+                    </div>
+                    <div>
+                        <a class="btn" href="#">Reddit</a>
+                    </div>
+                    <div>
+                        <a class="btn" href="#">Privacy</a>
+                    </div>
+                </div>
+            </div>
         </footer>
     </div>
 

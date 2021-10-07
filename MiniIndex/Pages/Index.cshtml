@@ -8,29 +8,45 @@
 }
 
 
-<div style="position: relative">
-    <div class="hero-frame">
-        <img src="https://miniindex.blob.core.windows.net/react-images/hero.jpg"/>
+<div class="stack">
+    <div class="hero">
+        <div class="hero-frame">
+            <img src="https://miniindex.blob.core.windows.net/react-images/hero.jpg"/>
+        </div>
+        <div class="imposter">
+            <h1 class="center">Welcome to The Mini Index!</h1>
+            <p class="lead" align="center">
+                This is a <strong>crowd-sourced</strong> index of 3d printable files for minis, terrain tiles, and scatter terrain across
+                different websites for use with tabletop games like Dungeons and Dragons.
+                We have <b>@Model.MiniCount.ToString("N0") models</b> tagged with the important attributes of the mini in order to make it fast and easy to find exactly what you're looking for.
+                <br />
+            </p>
+            <a class="btn btn-primary" href="">Browse the Index</a>
+            <a class="btn btn-secondary" href="">I'm feeling lucky</a> 
+        </div>
     </div>
-    <div class="imposter">
-        <h1 class="center">Welcome to The Mini Index!</h1>
-        <p class="lead" align="center">
-            This is a <strong>crowd-sourced</strong> index of 3d printable files for minis, terrain tiles, and scatter terrain across
-            different websites for use with tabletop games like Dungeons and Dragons.
-            We have <b>@Model.MiniCount.ToString("N0") models</b> tagged with the important attributes of the mini in order to make it fast and easy to find exactly what you're looking for.
-            <br />
-        </p>
-        <a class="btn btn-primary" href="">Browse the Index</a>
-        <a class="btn btn-secondary" href="">I'm feeling lucky</a> 
+
+    <div>
+        <h2>Latest Minis</h2>
+        <div class="switcher">
+            @foreach (var mini in Model.Mini)
+            {
+                <tmi-mini-card
+                    miniid="@mini.ID"
+                    name="@mini.Name"
+                    thumbnail="@mini.Thumbnail"
+                    status="@mini.Status"
+                    creatorname="@mini.Creator.Name"
+                    creatorid="@mini.Creator.ID"
+                    sourcesite="@mini.Sources.First().Site.SiteName.ToLower()"
+                >
+                </tmi-mini-card>
+            }
+        </div>
     </div>
-</div>
 
-<div>
-    <h2>Latest Minis</h2>
-    @await Html.PartialAsync("MiniListView", Model.Mini)
-</div>
-
-<div>
-    <a href="/Minis/" class="btn btn-block btn-primary">Browse all...</a>
-    <a href="/Minis/Create" class="btn btn-block btn-secondary">Add new...</a>
+    <div class="row">
+        <a href="/Minis/" class="btn btn-block btn-primary">Browse all...</a>
+        <a href="/Minis/Create" class="btn btn-block btn-secondary">Add new...</a>
+    </div>
 </div>
