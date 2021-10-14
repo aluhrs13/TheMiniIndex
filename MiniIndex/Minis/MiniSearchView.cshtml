@@ -3,13 +3,17 @@
 <div>
     @using (Html.BeginForm(FormMethod.Get))
     {
+        @*
         @Html.HiddenFor(x => x.Tags, new { id = "tagsValue" })
+        *@
 
-        @Html.LabelFor(x => x.SearchString, "Find Minis")
-        @Html.TextBoxFor(x => x.SearchString, new { placeholder = "Search for..." })
-
-        <br/>
-
+        <h3>
+            @Html.LabelFor(x => x.SearchString, "Find Minis")
+        </h3>
+        <div class="row">
+             @Html.TextBoxFor(x => x.SearchString, new { @placeholder = "Search for...", @class = "full-width" })
+        </div>
+        @*
         <div id="advanced-search">
             @Html.LabelFor(x => x.Tags, "Filter by tags")
             <input id="tagsInput" type="text" placeholder="Find tags..." />
@@ -59,7 +63,9 @@
             <a href="/Tags/Browse/">Browse all tags</a>
             <hr />
         </div>
-
-        <input type="submit" value="Search" class="btn btn-primary btn-block" />
+        *@
+        <div class="row">
+            <input type="submit" value="Search" class="btn btn-primary btn-block" />
+        </div>
     }
 </div>

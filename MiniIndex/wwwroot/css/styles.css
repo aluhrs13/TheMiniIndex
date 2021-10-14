@@ -1,14 +1,42 @@
-﻿h1,
+/* Headers */
+h1,
 h2,
 h3 {
     font-family: 'Montserrat', sans-serif !important;
     font-weight:500;
 }
 
+h3 {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 1.25em;
+    line-height: 1em;
+    white-space: normal;
+}
+
+h4 {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 0.8em;
+}
+
 .montserrat {
     font-family: 'Montserrat', sans-serif !important;
 }
 
+.xsmall {
+    font-size: x-small;
+}
+
+.larger {
+    font-size: larger;
+    white-space: nowrap;
+    line-height: 0.4em;
+}
+
+.small{
+    font-size: small;
+}
+
+/* Buttons */
 .btn {
     font-family: 'Montserrat', sans-serif !important;
     font-weight: bolder;
@@ -46,6 +74,16 @@ h3 {
     margin: .5rem;
 }
 
+.full-width{
+    width: 100%;
+    margin: .5rem;
+}
+
+input.full-width {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 1.25rem;
+}
+
 .darkbg {
     color: #fff;
     background-color: var(--app-primary-color);
@@ -55,34 +93,83 @@ h3 {
     color: #fff;
 }
 
-.navfooter {
-    margin: -8px;
-    padding: .5rem;
+footer{
+    padding: 1rem;
 }
 
 body{
-    margin: 8px;
+    background-color: var(--app-primary-color);
+    padding: 0px;
+    margin: 0px;
 }
 
-.xsmall {
-    font-size: x-small;
+main{
+    background-color: white;
+    padding: var(--edge-offset);
+    margin: 0px;
 }
 
-.larger {
-    font-size: larger;
-    white-space: nowrap;
-    line-height: 0.4em;
-}
-
-.small{
-    font-size: small;
-}
-
-img{
-    margin-right: .5rem;
+.bleed{
+    margin: calc(var(--edge-offset)*-1) !important;
 }
 
 .lead {
     font-size: 1.25rem;
     font-weight: 100;
+}
+
+
+
+/*
+https://blog.udemy.com/css-grid-vs-flexbox/
+
+Flexbox is for one-dimensional layouts — anything that needs to be laid out in a straight line
+(or in a broken line, which would be a single straight line if they were joined back together).
+
+Grid is for two-dimensional layouts. It can be used as a low-powered flexbox substitute
+(we’re trying to make sure that a single-column/row grid acts very similar to a flexbox),
+but that’s not using its full power.
+
+Flexbox is appropriate for many layouts, and a lot of “page component” elements,
+as most of them are fundamentally linear. Grid is appropriate for the overall page layout
+and for complicated page components that aren’t linear in their design.
+
+http://howtocenterincss.com/
+
+*/
+
+a.card {
+    color: var(--app-primary-color);
+    height: 100%;
+}
+
+.card {
+    filter: drop-shadow(4px 4px 4px var(--app-primary-color));
+    background-color: white;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.card-thumbnail {
+    object-fit: cover;
+    border-radius: 4px 4px 0px 0px;
+    width: 100%;
+}
+
+.card-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.source-site-img {
+    max-width: 32px;
+    padding: 8px 12px 8px 8px;
+}
+
+.mini-name {
+    text-align: left;
+    line-height: 0.4em;
+    white-space: nowrap;
+    overflow: hidden;
 }

@@ -1,0 +1,27 @@
+﻿@using MiniIndex.Models
+@model Mini
+
+<!-- TODO: Thumbnail CDN logic -->
+<!-- TODO: No source site logic -->
+<!-- TODO: New tag logic -->
+<!-- TODO: Pending and Rejected logic -->
+
+<div class="card">
+    <div>
+        <a href="/Minis/Details?id=@Model.ID">
+            <img class="card-thumbnail" src="@Model.Thumbnail" width="314" height="236" />
+        </a>
+    </div>
+    <div class="card-text">
+        @if(@Model.Sources.Any()){
+        <img class="source-site-img" src="https://miniindex.blob.core.windows.net/react-images/@(Model.Sources.First().Site.SiteName.ToLower()).png" />
+        }
+
+        <div class="mini-name">
+            <h3>@Model.Name</h3>
+            <h4>
+            by <a href="/Creators/Details/?id=@Model.Creator.ID">@Model.Creator.Name</a>
+            </h4>
+        </div>
+    </div>
+</div>

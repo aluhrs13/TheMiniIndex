@@ -29,31 +29,31 @@
     </environment>
 }
 
-<div>
-    @if (User.IsInRole("Moderator"))
-    {
-        <tmi-admin-card
-            miniid="@Model.Mini.ID"
-            submitter="@ViewData["Submitter"]"
-            status="@Model.Mini.Status"
-            cost="@Model.Mini.Cost"
-            thumbnail="@Model.Mini.Thumbnail">
-        </tmi-admin-card>
-    }
-</div>
+@if (User.IsInRole("Moderator"))
+{
+    <tmi-admin-card
+        miniid="@Model.Mini.ID"
+        submitter="@ViewData["Submitter"]"
+        status="@Model.Mini.Status"
+        cost="@Model.Mini.Cost"
+        thumbnail="@Model.Mini.Thumbnail">
+    </tmi-admin-card>
+}
 
-<div class="container">
+<div>
+    <!-- TODO: Do this right? -->
     <p id="miniid" style="display:none;">@Model.Mini.ID</p>
 
-    <h2>
-        @Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a>
-    </h2>
+    <h1>
+        @Model.Mini.Name by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Model.Mini.Creator.Name</a>
+    </h1>
+
     <hr />
 
-    <div class="row">
-        <div class="col-md-6" align="center">
-            <div class="row">
-                <div class="col-md-8">
+    <div>
+        <div>
+            <div>
+                <div>
                     @if (Model.Mini.Sources.Any())
                     {
                         @foreach (var miniSource in Model.Mini.Sources)
@@ -67,7 +67,7 @@
                     }
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <a href="#" class="btn btn-block @(Model.IsStarred ? "btn-danger remove-star" : "btn-success add-star")" id="toggle-star" style="margin-top:10px;">
@@ -95,7 +95,7 @@
             }
         </div>
 
-        <div class="col-md-6">
+        <div>
             <h3>Tags</h3>
             <small>
                 Something look wrong? <a asp-page="./Edit" asp-route-id="@Model.Mini.ID">Tag this Mini</a>
@@ -122,7 +122,7 @@
     {
         <hr />
         <h3>Related Minis</h3>
-        <div class="row">
+        <div class="grid">
             @{
                 int relatedCount = 0;
             }
@@ -132,29 +132,9 @@
                 {
                     continue;
                 }
-                <div class="col-md-3" style="margin-bottom:5px">
-                    <div class="card shadow">
-                        <a href="/Minis/Details?id=@mini.ID">
-                            @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
-                            {
-                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"] + ".azureedge.net")" width="314" height="236" />
-                            }
-                            else
-                            {
-                                <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
-                            }
-                            <span></span>
-                        </a>
+                
+                @await Html.PartialAsync("_MiniPartial", mini)
 
-                        <div class="card-body">
-                            @Html.DisplayFor(modelItem => mini.Name)
-                            <br />
-                            <small class="text-muted">
-                                <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
-                            </small>
-                        </div>
-                    </div>
-                </div>
                 @if (relatedCount == 3)
                 {
                     break;

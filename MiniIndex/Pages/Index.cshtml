@@ -7,10 +7,9 @@
     ViewData["Title"] = "The Mini Index";
 }
 
-
 <div class="stack">
     <div class="hero">
-        <div class="hero-frame">
+        <div class="hero-frame bleed">
             <img src="https://miniindex.blob.core.windows.net/react-images/hero.jpg"/>
         </div>
         <div class="imposter">
@@ -21,8 +20,10 @@
                 We have <b>@Model.MiniCount.ToString("N0") models</b> tagged with the important attributes of the mini in order to make it fast and easy to find exactly what you're looking for.
                 <br />
             </p>
-            <a class="btn btn-primary" href="">Browse the Index</a>
-            <a class="btn btn-secondary" href="">I'm feeling lucky</a> 
+            <div class="row">
+                <a class="btn btn-block btn-primary" href="">Browse the Index</a>
+                <a class="btn btn-block btn-secondary" href="">I'm feeling lucky</a> 
+            </div>
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --app-primary-color: #18312d;
     --app-secondary-color: rgb(202, 227, 223);
     --edge-offset: .5rem;
@@ -206,8 +206,4 @@
 
 .approved-time {
     display: none;
-}
-
-#advanced-search{
-    /*display:none;*/
 }

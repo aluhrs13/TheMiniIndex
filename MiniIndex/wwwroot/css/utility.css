@@ -1,14 +1,10 @@
-﻿.darkbg {
-    margin-left: calc(var(--edge-offset) * -1);
-    padding-left: var(--edge-offset);
-    margin-right: calc(var(--edge-offset) * -1);
-    padding-right: var(--edge-offset);
-    padding-bottom: .5rem;
+.darkbg {
+    padding: var(--edge-offset);
 }
 
 nav >div:first-child {
-    margin-top: calc(var(--edge-offset) * -1);
-    padding-top: var(--edge-offset);
+    /* margin-top: calc(var(--edge-offset) * -1); */
+    /* padding-top: var(--edge-offset); */
 }
 
 footer >div:first-child {
@@ -66,10 +62,6 @@ footer >div:first-child {
     --d: 16;
     padding-bottom: calc(var(--n) / var(--d) * 100%);
     position: relative;
-
-    /* Custom */
-    margin-left: calc(var(--edge-offset)*-1);
-    margin-right: calc(var(--edge-offset)*-1);
 }
 
 /* Custom*/
@@ -87,8 +79,6 @@ footer >div:first-child {
     display: flex;
     justify-content: center;
     align-items: center;
-
-
 }
 
 .hero-frame > img,
@@ -114,7 +104,7 @@ footer >div:first-child {
 .stack {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: flex-start;    
 }
 
 .stack > * {

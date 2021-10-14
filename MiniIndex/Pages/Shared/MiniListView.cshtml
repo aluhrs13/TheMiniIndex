@@ -28,14 +28,12 @@
         <h2>If you find a mini that matches on Thingiverse or elsewhere, come back and <a href="/Minis/Create">add it here</a> so that the next person can find it easier :)</h2>
     </div>
 }else{
-    <div class="grid">
+    <div class="grid" id="gallery">
         @foreach (var mini in Model)
         {
-            <!-- TODO: Thumbnail CDN logic -->
-            <!-- TODO: No source site logic -->
-            <!-- TODO: New tag logic -->
-            <!-- TODO: Pending and Rejected logic -->
+            @await Html.PartialAsync("_MiniPartial", mini)
 
+            @*
             <tmi-mini-card
                 miniid="@mini.ID"
                 name="@mini.Name"
@@ -46,6 +44,7 @@
                 sourcesite="@mini.Sources.First().Site.SiteName.ToLower()"
             >
             </tmi-mini-card>
+            *@
         }
     </div>
 }
