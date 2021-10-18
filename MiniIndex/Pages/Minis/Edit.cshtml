@@ -29,18 +29,17 @@
     </environment>
 }
 
-<div>
-    @if (User.IsInRole("Moderator"))
-    {
-        <tmi-admin-card
-            miniid="@Model.Mini.ID"
-            submitter="@ViewData["Submitter"]"
-            status="@Model.Mini.Status"
-            cost="@Model.Mini.Cost"
-            thumbnail="@Model.Mini.Thumbnail">
-        </tmi-admin-card>
-    }
-</div>
+@if (User.IsInRole("Moderator"))
+{
+    <tmi-admin-card
+        miniid="@Model.Mini.ID"
+        submitter="@ViewData["Submitter"]"
+        status="@Model.Mini.Status"
+        cost="@Model.Mini.Cost"
+        thumbnail="@Model.Mini.Thumbnail">
+    </tmi-admin-card>
+}
+
 
 <div class="container">
     <p id="miniid" style="display:none;">@Model.Mini.ID</p>

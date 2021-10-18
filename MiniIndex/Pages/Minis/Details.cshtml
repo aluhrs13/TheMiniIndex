@@ -29,18 +29,18 @@
     </environment>
 }
 
-@if (User.IsInRole("Moderator"))
-{
-    <tmi-admin-card
-        miniid="@Model.Mini.ID"
-        submitter="@ViewData["Submitter"]"
-        status="@Model.Mini.Status"
-        cost="@Model.Mini.Cost"
-        thumbnail="@Model.Mini.Thumbnail">
-    </tmi-admin-card>
-}
+<div class="bounded">
+    @if (User.IsInRole("Moderator"))
+    {
+        <tmi-admin-card
+            miniid="@Model.Mini.ID"
+            submitter="@ViewData["Submitter"]"
+            status="@Model.Mini.Status"
+            cost="@Model.Mini.Cost"
+            thumbnail="@Model.Mini.Thumbnail">
+        </tmi-admin-card>
+    }
 
-<div>
     <!-- TODO: Do this right? -->
     <p id="miniid" style="display:none;">@Model.Mini.ID</p>
 
@@ -48,103 +48,99 @@
         @Model.Mini.Name by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Model.Mini.Creator.Name</a>
     </h1>
 
-    <hr />
+    <div class="switcher">
+        @if (Model.Mini.Sources.Any())
+        {
+            @foreach (var miniSource in Model.Mini.Sources)
+            {
+                <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary @miniSource.Site.SiteName">View On @miniSource.Site.SiteName</a>
+            }
+        }
+        else if (!String.IsNullOrEmpty(Model.Mini.Link))
+        {
+            <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary">View at source</a>
+        }
 
-    <div>
-        <div>
-            <div>
-                <div>
-                    @if (Model.Mini.Sources.Any())
-                    {
-                        @foreach (var miniSource in Model.Mini.Sources)
-                        {
-                            <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary @miniSource.Site.SiteName" style="margin-top:10px;">View On @miniSource.Site.SiteName</a>
-                        }
-                    }
-                    else if (!String.IsNullOrEmpty(Model.Mini.Link))
-                    {
-                        <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
-                    }
-                </div>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a href="#" class="btn btn-block @(Model.IsStarred ? "remove-star" : "add-star")" id="toggle-star">
+                @(Model.IsStarred ? "Remove from Favorites" : "Add to Favorites")
+            </a>
+        }
+        else
+        {
+            <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString" class="btn btn-block add-star">
+                Login to Favorite
+            </a>
+        }
+    </div>
 
-                <div>
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <a href="#" class="btn btn-block @(Model.IsStarred ? "btn-danger remove-star" : "btn-success add-star")" id="toggle-star" style="margin-top:10px;">
-                            <span class="oi oi-star"></span>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString" class="btn btn-block btn-success" style="margin-top:10px;" data-toggle="tooltip" data-placement="top" title="Create an account to save your favorites">
-                            <span class="oi oi-star"></span>
-                        </a>
-                    }
-                </div>
-            </div>
-
-            <hr />
-
+    <div class="switcher">
+        <div align="center">
             @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
             {
-                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
+                <img style="max-width:100%" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
             }
             else
             {
-                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail" />
+                <img style="max-width:100%" src="@Model.Mini.Thumbnail" />
             }
         </div>
 
         <div>
-            <h3>Tags</h3>
-            <small>
-                Something look wrong? <a asp-page="./Edit" asp-route-id="@Model.Mini.ID">Tag this Mini</a>
-            </small>
-            <hr />
+            <div class="row" style="align-items:flex-end;">
+                <h2 style="flex-grow:1;">Tags</h2>
+                <span class="small" style="padding-bottom:1.25rem;">
+                    Something look wrong? <a asp-page="./Edit" asp-route-id="@Model.Mini.ID">Tag this Mini</a>
+                </span>            
+            </div>
             @foreach (var MiniTag in Model.Mini.MiniTags.Where(mt => mt.Status == Status.Approved))
             {
                 @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
                 {
-                    <span class="badge badge-primary" style="font-size:large">
+                    <span class="badge badge-primary">
                         <b>@MiniTag.Tag.TagName</b>
                     </span>
                 }
                 else
                 {
-                    <span class="badge badge-primary" style="font-size:large; margin:2px;">
+                    <span class="badge badge-primary">
                         @MiniTag.Tag.Category: <b>@MiniTag.Tag.TagName</b>
                     </span>
                 }
             }
         </div>
     </div>
+
+    <!-- TODO: async this -->
     @if (Model.RelatedMinis.Count > 1)
     {
-        <hr />
-        <h3>Related Minis</h3>
-        <div class="grid">
-            @{
-                int relatedCount = 0;
-            }
-            @foreach (var mini in Model.RelatedMinis)
-            {
-                @if (mini.ID == Model.Mini.ID)
-                {
-                    continue;
+        <aside>
+            <hr />
+            <h2>Related Minis</h2>
+            <div class="grid">
+                @{
+                    int relatedCount = 0;
                 }
+                @foreach (var mini in Model.RelatedMinis)
+                {
+                    @if (mini.ID == Model.Mini.ID)
+                    {
+                        continue;
+                    }
                 
-                @await Html.PartialAsync("_MiniPartial", mini)
+                    @await Html.PartialAsync("_MiniPartial", mini)
 
-                @if (relatedCount == 3)
-                {
-                    break;
+                    @if (relatedCount == 3)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        relatedCount++;
+                    }
                 }
-                else
-                {
-                    relatedCount++;
-                }
-            }
-        </div>
+            </div>
+        </aside>
     }
-
 </div>

@@ -16,6 +16,7 @@ footer >div:first-child {
 .row {
     display: flex;
     flex-direction: row;
+    max-width: calc(100% - 4rem);
 }
 
 .cluster {
