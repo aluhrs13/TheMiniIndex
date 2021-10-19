@@ -123,20 +123,18 @@ function RefreshTagsEnd() {
         },
         success: function (response, status) {
             var newHTML = "";
-
-            //console.log(response);
-
             var prevStatus = "";
+
             response.forEach(function (tag) {
                 if (prevStatus != tag["status"]) {
-                    newHTML += "<h4>" + tag["status"] + "</h4>";
+                    newHTML += "<h3>" + tag["status"] + "</h3>";
                 }
                 newHTML +=
                     '<a href="#" id="' +
                     tag["id"] +
-                    '" class="btn btn-outline-danger remove-tag ' +
+                    '" class="btn remove-tag ' +
                     tag["status"] +
-                    '" style="margin-top:5px;">- <small>' +
+                    '">- <small>' +
                     tag["category"] +
                     ":</small> <b>" +
                     tag["tagName"] +
@@ -148,8 +146,6 @@ function RefreshTagsEnd() {
 
             $("#UsedTags").html(newHTML);
             $("#UsedTags").show();
-
-            //console.log(status + " - " + newHTML);
         },
     });
     $(".loading-spinner").hide();

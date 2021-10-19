@@ -16,6 +16,7 @@
 
 .Pending {
     background-color: #fff5a6 !important;
+    color: var(--app-primary-color) !important;
 }
 
 .Unindexed {
@@ -206,4 +207,16 @@
 
 .approved-time {
     display: none;
+}
+
+.add-tag{
+    background-color: var(--app-secondary-color);
+    color: var(--app-primary-color);
+    margin: .25rem !important;
+}
+
+.remove-tag{
+    background-color: darkred;
+    color: white;
+    margin: .25rem !important;
 }
