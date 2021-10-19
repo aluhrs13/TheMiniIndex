@@ -3,7 +3,16 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Browse Minis";
+    if(Model.Minis.TotalPages == 1){
+        ViewData["Title"] += Model.Minis.Count.ToString("N0");
+    }else{
+        ViewData["Title"] += (Model.Minis.TotalPages * Model.Minis.PageSize).ToString("N0");
+    }
+
+    if(!string.IsNullOrEmpty(Model.SearchModel.SearchString)){
+        ViewData["Title"] += " " + Model.SearchModel.SearchString;
+    }
+    ViewData["Title"] += " Minis";
 
     int pageRangeSize = 3;
 
