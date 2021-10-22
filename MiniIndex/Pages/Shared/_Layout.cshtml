@@ -105,8 +105,13 @@
                     <div class="center"><a class="btn" href="/Minis">Minis</a></div>
                     <div class="center"><a class="btn" href="/Creators/Browse">Creators</a></div>
                     <div class="center"><a class="btn" href="/Minis/Create">Add a Mini</a></div>
-                    <div class="center"><a class="btn" href="/Identity/Account/Register">Register</a></div>
-                    <div class="center"><a class="btn" href="/Identity/Account/Login">Login</a></div>
+                    @if (User.IsInRole("Moderator"))
+                    {
+                        <div class="center">
+                            <a class="btn" href="/Admin/">Moderator Dashboard</a>
+                        </div>
+                    }
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>

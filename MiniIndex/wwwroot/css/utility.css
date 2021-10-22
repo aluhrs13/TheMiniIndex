@@ -152,12 +152,29 @@ footer >div:first-child {
     gap: 1rem;
 }
 
-.switcher > * {
-    flex-grow: 1;
-    flex-basis: calc(( 40rem - 100%) * 999);
+    .switcher > * {
+        flex-grow: 1;
+        flex-basis: calc(( 40rem - 100%) * 999);
+    }
+
+    .switcher > :nth-last-child(n+ 5),
+    .switcher > :nth-last-child(n+ 5) ~ * {
+        flex-basis: 100%;
+    }
+
+.with-sidebar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s1);
 }
 
-.switcher > :nth-last-child(n+ 5),
-.switcher > :nth-last-child(n+ 5) ~ * {
-    flex-basis: 100%;
-}
+    .with-sidebar > :first-child {
+        flex-basis: 250px;
+        flex-grow: 1;
+    }
+
+    .with-sidebar > :last-child {
+        flex-basis: 0;
+        flex-grow: 999;
+        min-width: 50%;
+    }

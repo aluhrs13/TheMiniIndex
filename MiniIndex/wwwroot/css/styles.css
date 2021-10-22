@@ -211,12 +211,20 @@ a.card {
         max-width: 130ch;
         margin: auto;
     }
+    .bounded-identity {
+        max-width: 130ch;
+        width: 100%;
+        margin: auto;
+        min-height: 700px;
+    }
 }
 
 .moderator {
     background-color: #fff7b9 !important;
 }
 
+
+/* Identity */
 .form-control{
     width:100%;
     padding: .4rem;
@@ -237,7 +245,45 @@ a.card {
     list-style: none;
 }
 
+button.nav-link{
+    width:100%;
+    background-color: var(--app-secondary-color);
+    border: none;
+}
+
 .nav-link{
     display: block;
-    padding: .5rem 1rem;
+    padding: .75rem 1rem;
+    border-radius: .25rem;
+    margin: .5rem 0rem;
+    text-decoration: none;
+    color: var(--app-primary-color);
 }
+
+    .nav-link:hover {
+        background-color: var(--app-secondary-color);
+        color: var(--app-primary-color);
+    }
+
+.active{
+    background-color: var(--app-primary-color) !important;
+    color: white !important;
+}
+
+
+.alert {
+    border-radius: 1rem;
+    padding: 2rem;
+}
+    .alert-danger{
+        background-color: lightpink;
+        color: darkred;
+    }
+    .alert-success {
+        background-color: var(--app-secondary-color);
+        color: darkgreen;
+    }
+    .alert-warning{
+        background-color: lightyellow;
+        color: darkgoldenrod;
+    }
