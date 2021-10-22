@@ -46,7 +46,7 @@ export class TmiMiniCard {
     return (
       <div class="card">
         <div>
-          <a href={`https://beta.theminiindex.com/minis/${this.miniid}`}>
+          <a href={`/Minis/Details?id=${this.miniid}`}>
             <img class="card-thumbnail" src={fixCDN(this.thumbnail)} width="314" height="236" />
           </a>
         </div>
@@ -56,7 +56,7 @@ export class TmiMiniCard {
           <div class="mini-name">
             <h1>{this.name}</h1>
             <h2>
-              by <a href={`https://beta.theminiindex.com/creators/${this.creatorid}`}>{this.creatorname}</a>
+              by <a href={`/Creators/Details?id=${this.creatorid}`}>{this.creatorname}</a>
             </h2>
           </div>
         </div>

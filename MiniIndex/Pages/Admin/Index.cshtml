@@ -4,13 +4,11 @@
 @model MiniIndex.Pages.Admin.AdminModel
 @inject SignInManager<IdentityUser> SignInManager
 @{
-    ViewData["Title"] = "Approve Minis";
+    ViewData["Title"] = "Pending Minis";
 }
 
 @if (User.IsInRole("Moderator"))
 {
-    <h4>Approve Minis</h4> 
-
     @if (Model.Mini.Count > 0)
     {
         @foreach (var item in Model.Mini)

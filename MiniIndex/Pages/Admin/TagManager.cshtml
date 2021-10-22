@@ -2,13 +2,11 @@
 @model MiniIndex.Pages.Admin.TagManagerModel
 
 @{
-    ViewData["Title"] = "Tag Manager";
+    ViewData["Title"] = "Manage Tags";
 }
 
 @if (User.IsInRole("Moderator"))
 {
-    <h4>Tag Manager</h4>
-
     <table>
         <thead>
             <tr>

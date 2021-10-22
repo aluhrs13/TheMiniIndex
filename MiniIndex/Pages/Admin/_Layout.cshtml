@@ -4,14 +4,25 @@
 
 @if (User.IsInRole("Moderator"))
 {
-    <h1>Moderator Dashboard</h1>
+    <div class="cluster lightbg" style="margin:-.5rem; padding:.5rem;">
+        <div class="row">
+            <div class="montserrat">
+                <span class="xsmall">MODERATOR</span>
+                <br />
+                <span class="larger">TOOLS</span>
+            </div>
+        </div>
+
+        <div class="cluster">
+            <div class="center"><a class="btn" asp-page="./Index">Pending Minis</a></div>
+            <div class="center"><a class="btn" asp-page="./PendingTags">Pending Tags</a></div>
+            <div class="center"><a class="btn" asp-page="./TagManager">Manage Tags</a></div>
+        </div>
+    </div>
+
+    <h1>Moderator Dashboard - @ViewData["Title"]</h1>
     <div>
-        <div>
-            <partial name="_ManageNav" />
-        </div>
-        <div>
-            @RenderBody()
-        </div>
+        @RenderBody()
     </div>
 }
 

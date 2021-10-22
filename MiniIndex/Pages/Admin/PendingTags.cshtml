@@ -3,13 +3,10 @@
 @inject SignInManager<IdentityUser> SignInManager
 @{
     ViewData["Title"] = "Pending Tags";
-    ViewData["ActivePage"] = ManageNavPages.PendingTags;
 }
 
 @if (User.IsInRole("Moderator"))
 {
-    <h4>New Tags on Approved Minis</h4> 
-
     <table>
         <thead>
             <tr>

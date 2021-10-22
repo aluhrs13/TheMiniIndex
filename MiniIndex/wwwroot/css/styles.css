@@ -114,6 +114,15 @@ input.full-width {
     color: #fff;
 }
 
+.lightbg {
+    color: #000;
+    background-color: var(--app-secondary-color);
+}
+
+.lightbg a {
+    color: #000;
+}
+
 footer {
     padding: 1rem;
 }
@@ -287,3 +296,7 @@ button.nav-link{
         background-color: lightyellow;
         color: darkgoldenrod;
     }
+
+table{
+    width:100%;
+}
