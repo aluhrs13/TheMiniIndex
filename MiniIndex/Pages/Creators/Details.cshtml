@@ -10,73 +10,37 @@
     ViewData["Title"] = Model.Creator.Name + " Details";
 }
 
-<h1>@Html.DisplayFor(model => model.Creator.Name)</h1>
-
-@foreach (var site in Model.Creator.Sites)
+@if (User.IsInRole("Moderator"))
 {
-    <a href="@site.CreatorPageUri" class="btn btn-primary">@site.DisplayName</a>
-}
-
-<div">
-    @if (User.IsInRole("Moderator"))
-    {
-        <hr />
-        <div>
-            <div>
-                <h2>Scan Creator</h2>
-                Please don't spam scan a bunch of creators, some APIs have rate-limiting and requesting a lot of scans within a few minutes of each other can break things.
+    <div class="bounded">
+        <div class="card card-padded moderator">
+            <h2><b>Moderator:</b> Scan Creator</h2>
+            Please don't spam scan a bunch of creators, some APIs have rate-limiting and requesting a lot of scans within a few minutes of each other can break things.
+            <hr/>
+            <div class="switcher">
                 @foreach (var site in Model.Creator.Sites)
                 {
                     <a href="http://miniindexprofileparser.azurewebsites.net/api/ProfileParser?code=@Model.FunctionsCode&url=@site.CreatorPageUri" class="btn btn-primary">Scan @site.DisplayName</a>
                 }
             </div>
         </div>
+    </div>
+}
+
+<h1>@Html.DisplayFor(model => model.Creator.Name)</h1>
+
+<div class="switcher">
+    @foreach (var site in Model.Creator.Sites)
+    {
+        <a href="@site.CreatorPageUri" class="btn btn-block btn-primary @site.DisplayName">@site.DisplayName</a>
     }
 </div>
 
 <hr />
 
-<div>
+<div class="grid">
     @foreach (var mini in Model.AllCreatorsMinis)
     {
-        <div class="col-md-4" style="margin-bottom:5px">
-            <div class="card">
-
-                @if (mini.Sources.Any())
-                {
-                    @:<div class="thumb-wrapper @mini.Sources.First().Site.SiteName">
-                    }
-                    else
-                    {
-                        @:<div class="thumb-wrapper">
-                        }
-                <a href="/Minis/Details?id=@mini.ID">
-                    @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
-                    {
-                        <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
-                    }
-                    else
-                    {
-                        <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
-                    }
-                    <span></span>
-                </a>
-            </div>
-
-            <div class="card-body @mini.Status">
-                @Html.DisplayFor(modelItem => mini.Name)
-                <br />
-                <small class="text-muted">
-                    <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
-                </small>
-
-                @if (mini.Status == Status.Pending || mini.Status == Status.Unindexed)
-                {
-                    <p><b>Pending admin approval</b></p>
-                }
-            </div>
-
-        </div>
-    @:</div>
-}
+        @await Html.PartialAsync("_MiniPartial", mini)
+    }
 </div>

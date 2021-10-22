@@ -105,7 +105,8 @@ footer >div:first-child {
 .stack {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;    
+    justify-content: flex-start;
+    max-width: 100%;
 }
 
 .stack > * {

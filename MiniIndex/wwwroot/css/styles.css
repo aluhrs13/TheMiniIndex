@@ -2,24 +2,24 @@
 h1,
 h2,
 h3 {
-    font-family: 'Montserrat', sans-serif !important;
-    font-weight:500;
+    font-family: "Montserrat", sans-serif !important;
+    font-weight: 500;
 }
 
 h3 {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Montserrat", sans-serif !important;
     font-size: 1.25em;
     line-height: 1em;
     white-space: normal;
 }
 
 h4 {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Montserrat", sans-serif !important;
     font-size: 0.8em;
 }
 
 .montserrat {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Montserrat", sans-serif !important;
 }
 
 .xsmall {
@@ -32,13 +32,13 @@ h4 {
     line-height: 0.4em;
 }
 
-.small{
+.small {
     font-size: small;
 }
 
 /* Buttons */
 .btn {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Montserrat", sans-serif !important;
     font-weight: bolder;
     display: inline-block;
     text-align: center;
@@ -46,8 +46,8 @@ h4 {
     vertical-align: middle;
     user-select: none;
     border: 1px solid transparent;
-    padding: .5rem;
-    border-radius: .25rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
     margin: 0px;
     text-decoration: none;
 }
@@ -65,12 +65,12 @@ h4 {
     border-color: var(--app-primary-color);
 }
 
-.badge{
+.badge {
     display: inline-block;
-    padding: .5rem .5rem;
+    padding: 0.5rem 0.5rem;
     background-color: gray;
-    margin: .25rem;
-    border-radius: .25rem;
+    margin: 0.25rem;
+    border-radius: 0.25rem;
 }
 
 .badge-primary {
@@ -85,23 +85,23 @@ h4 {
     border-color: var(--app-primary-color);
 }
 
-.btn:hover{
+.btn:hover {
     opacity: 50%;
 }
 
 .btn-block {
     display: inline-block;
     width: 100%;
-    margin: .5rem;
+    margin: 0.5rem;
 }
 
-.full-width{
+.full-width {
     width: 100%;
-    margin: .5rem;
+    margin: 0.5rem;
 }
 
 input.full-width {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Montserrat", sans-serif !important;
     font-size: 1.25rem;
 }
 
@@ -110,35 +110,34 @@ input.full-width {
     background-color: var(--app-primary-color);
 }
 
-.darkbg a{
+.darkbg a {
     color: #fff;
 }
 
-footer{
+footer {
     padding: 1rem;
 }
 
-body{
+body {
     background-color: var(--app-primary-color);
     padding: 0px;
     margin: 0px;
 }
 
-main{
+main {
     background-color: white;
     padding: var(--edge-offset);
     margin: 0px;
 }
 
-.bleed{
-    margin: calc(var(--edge-offset)*-1) !important;
+.bleed {
+    margin: calc(var(--edge-offset) * -1) !important;
 }
 
 .lead {
     font-size: 1.25rem;
     font-weight: 100;
 }
-
 
 /*
 https://blog.udemy.com/css-grid-vs-flexbox/
@@ -166,7 +165,6 @@ a.card {
 .card {
     filter: drop-shadow(4px 4px 4px var(--app-primary-color));
     background-color: white;
-    text-align: center;
     border-radius: 4px;
 }
 
@@ -182,6 +180,10 @@ a.card {
     align-items: center;
 }
 
+.card-padded{
+    padding: .5rem;
+}
+
 .source-site-img {
     max-width: 32px;
     padding: 8px 12px 8px 8px;
@@ -194,19 +196,48 @@ a.card {
     overflow: hidden;
 }
 
-.add-star{
+.add-star {
     background-color: green;
     color: white;
 }
 
-.remove-star{
+.remove-star {
     background-color: darkred;
     color: white;
 }
 
 @media (min-width: 899px) {
-    .bounded{
+    .bounded {
         max-width: 130ch;
         margin: auto;
     }
+}
+
+.moderator {
+    background-color: #fff7b9 !important;
+}
+
+.form-control{
+    width:100%;
+    padding: .4rem;
+}
+
+.form-group {
+    padding-bottom: 1rem;
+    max-width: 90%;
+}
+
+.text-danger{
+    color:darkred !important;
+}
+
+.nav{
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-link{
+    display: block;
+    padding: .5rem 1rem;
 }
