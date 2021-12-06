@@ -1,4 +1,6 @@
 ﻿using AgileObjects.AgileMapper;
+using Lib.AspNetCore.ServerTiming;
+using Lib.AspNetCore.ServerTiming.Http.Headers;
 using MediatR;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
@@ -29,13 +31,16 @@ namespace MiniIndex.API
                 MiniIndexContext context,
                 IMapper mapper,
                 IMediator mediator,
-                TelemetryClient telemetry)
+                TelemetryClient telemetry,
+                IServerTiming serverTiming)
         {
             _userManager = userManager;
             _context = context;
             _mapper = mapper;
             _mediator = mediator;
             _telemetry = telemetry;
+            _serverTiming = serverTiming;
+
         }
 
         private readonly MiniIndexContext _context;
@@ -43,6 +48,8 @@ namespace MiniIndex.API
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly TelemetryClient _telemetry;
+        private readonly IServerTiming _serverTiming;
+
 
         // GET: api/<MinisController>
         [HttpGet]
@@ -52,6 +59,7 @@ namespace MiniIndex.API
             [FromQuery] int pageIndex = 1,
             [FromQuery] int creatorId = 0)
         {
+            DateTime startTime = DateTime.Now;
             //TODO: Move creator into MiniSearchModel?
             Creator creatorInfo = new Creator();
 
@@ -70,6 +78,8 @@ namespace MiniIndex.API
             _mapper.Map(search).Over(searchRequest);
             PaginatedList<Mini> searchResult = await _mediator.Send(searchRequest);
 
+            TimeSpan timeSpent = DateTime.Now - startTime;
+            _serverTiming.Metrics.Add(new ServerTimingMetric("Query", (decimal)timeSpent.TotalMilliseconds, "LINQ Query"));
             _telemetry.TrackEvent("MiniSearchAPI", new Dictionary<string, string> {
                                                             { "SearchString", searchRequest.SearchString },
                                                             { "HadResults", searchResult.Count>0 ? "True" : "False" },
