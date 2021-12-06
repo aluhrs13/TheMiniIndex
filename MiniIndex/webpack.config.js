@@ -9,7 +9,7 @@ module.exports = {
         stars: "./wwwroot/js/stars.js",
         latest: "./wwwroot/js/latest.js",
         admin: "./wwwroot/js/admin.js",
-        edit: "./wwwroot/js/edit.js",
+        edit: "./wwwroot/js/edit.js"
     },
     output: {
         filename: "[name].entry.js",

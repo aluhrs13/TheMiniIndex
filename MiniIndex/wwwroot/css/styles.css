@@ -65,6 +65,11 @@ h4 {
     border-color: var(--app-primary-color);
 }
 
+.btn-danger{
+    background-color: darkred;
+    color: white;
+}
+
 .badge {
     display: inline-block;
     padding: 0.5rem 0.5rem;
