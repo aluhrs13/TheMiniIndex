@@ -27,6 +27,14 @@
         updateDateCookie("LastVisit");
         fetch(`/api/overhead/Session/?since=-1`);
     }
+
+    //TODO: This fires later than I'd expect (after images load)
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get('SearchString');
+    if (myParam) {
+        document.getElementById("SearchString").value = myParam;
+    }
+
 });
 
 function flagNewMinis(lastVisitTimestamp) {

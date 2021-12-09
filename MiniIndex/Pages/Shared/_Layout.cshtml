@@ -80,29 +80,40 @@
     </script>
 
     <script>
-      function handleClick() {
-        document.getElementById('navitems').style.display = "block";
-      }
+        function handleClick() {
+            document.getElementById('navitems').style.display = "block";
+        }
+
+        function toggleMobile() {
+            var mobile = document.getElementById("mobileCluster");
+            mobile.style.display == "block" ? mobile.style.display = "none" : mobile.style.display = "block"; 
+        }
     </script>
 </head>
 <body>
     <div>
         <nav>
-            <div class="cluster darkbg">
-                <div class="row">
+            <div class="cluster darkbg" style="flex-wrap:nowrap">
+                <div class="row" style="padding-left:10px;">
                     <a href="/">
                         <img style="margin-right: .5rem;"width="40" height="40" src="https://beta.theminiindex.com/static/media/logo.6e92ad4f.svg" />
                     </a>
 
-                    <div class="montserrat">
+                    <div class="montserrat" id="logotype">
                         <span class="xsmall">THE</span>
                         <br />
                         <span class="larger">MINI INDEX</span>
                     </div>
                 </div>
 
-                <div class="cluster">
-                    <div class="center"><a class="btn" href="/Minis">Minis</a></div>
+                <form action="/Minis"style="margin-right:auto; width:100%;">
+                    <div class="row">
+                        <label for="nav-search"></label>
+                        <input type="text" name="SearchString" id="SearchString" placeholder="Search..." class="full-width" style="height:62px; margin: 0px; padding: 10px; box-sizing:border-box; border:0px; background-color:var(--app-primary-color); color:white;"/>
+                        <input type="submit" value="Search" class="btn btn-primary" style="border-radius:0px;" />
+                    </div>                        
+                </form>
+                <div class="cluster" id="menuCluster">
                     <div class="center"><a class="btn" href="/Creators/Browse">Creators</a></div>
                     <div class="center"><a class="btn" href="/Minis/Create">Add a Mini</a></div>
                     @if (User.IsInRole("Moderator"))
@@ -113,6 +124,18 @@
                     }
                     <partial name="_LoginPartial" />
                 </div>
+                <a href="#" class="btn" id="menuBtn" onclick="toggleMobile()">Menu</a>
+            </div>
+            <div class="cluster darkbg" id="mobileCluster" style="display:none;">
+                <div class="center"><a class="btn" href="/Creators/Browse">Creators</a></div>
+                <div class="center"><a class="btn" href="/Minis/Create">Add a Mini</a></div>
+                @if (User.IsInRole("Moderator"))
+                {
+                    <div class="center">
+                        <a class="btn" href="/Admin/">Moderator Dashboard</a>
+                    </div>
+                }
+                <partial name="_LoginPartial" />
             </div>
         </nav>
 

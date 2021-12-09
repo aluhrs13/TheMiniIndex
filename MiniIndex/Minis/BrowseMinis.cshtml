@@ -46,8 +46,6 @@
 }
 
 <div>
-    <h1>Search the Index</h1>
-
     <div>
         @if (Model.ShowRateResults)
         {
@@ -56,18 +54,7 @@
                 Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
             </div>
         }
-
-        @await Html.PartialAsync("MiniSearchView", Model.SearchModel)
-
         <div>
-            @if (String.IsNullOrWhiteSpace(Model.SearchModel.SearchString))
-            {
-                <h2>Most Recent Results</h2>
-            }
-            else
-            {
-                <h2>Most Relevant Results</h2>
-            }
             @await Html.PartialAsync("MiniListView", Model.Minis)
         </div>
     </div>
