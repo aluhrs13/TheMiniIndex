@@ -5,49 +5,108 @@
 
 @{
     ViewData["Title"] = "The Mini Index";
+    Layout = "";
 }
 
-<div class="stack">
-    <div class="hero">
-        <div class="hero-frame bleed">
-            <img src="https://miniindex.blob.core.windows.net/react-images/hero.jpg"/>
-        </div>
-        <div class="imposter">
-            <h1 class="center">Welcome to The Mini Index!</h1>
-            <p class="lead" align="center">
-                This is a <strong>crowd-sourced</strong> index of 3d printable files for minis, terrain tiles, and scatter terrain across
-                different websites for use with tabletop games like Dungeons and Dragons.
-                We have <b>@Model.MiniCount.ToString("N0") models</b> tagged with the important attributes of the mini in order to make it fast and easy to find exactly what you're looking for.
-                <br />
-            </p>
-            <div class="row">
-                <a class="btn btn-block btn-primary" href="">Browse the Index</a>
-                <a class="btn btn-block btn-secondary" href="">I'm feeling lucky</a> 
+@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - The Mini Index</title>
+
+        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="~/images/icons/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/images/icons/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/images/icons/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/images/icons/apple-touch-icon-144x144.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="60x60" href="~/images/icons/apple-touch-icon-60x60.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="~/images/icons/apple-touch-icon-120x120.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="76x76" href="~/images/icons/apple-touch-icon-76x76.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="~/images/icons/apple-touch-icon-152x152.png" />
+
+        <link rel="icon" type="image/png" href="~/images/icons/favicon-196x196.png" sizes="196x196" />
+        <link rel="icon" type="image/png" href="~/images/icons/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/png" href="~/images/icons/favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="~/images/icons/favicon-16x16.png" sizes="16x16" />
+        <link rel="icon" type="image/png" href="~/images/icons/favicon-128.png" sizes="128x128" />
+    
+        <meta name="application-name" content="The Mini Index" />
+        <meta name="msapplication-TileColor" content="#FFFFFF" />
+        <meta name="msapplication-TileImage" content="~/images/icons/mstile-144x144.png" />
+        <meta name="msapplication-square70x70logo" content="~/images/icons/mstile-70x70.png" />
+        <meta name="msapplication-square150x150logo" content="~/images/icons/mstile-150x150.png" />
+        <meta name="msapplication-wide310x150logo" content="~/images/icons/mstile-310x150.png" />
+        <meta name="msapplication-square310x310logo" content="~/images/icons/mstile-310x310.png" />
+
+        <meta property="og:site_name" content="The Mini Index" />
+        <meta property="og:image" content="https://theminiindex.com/images/banner.png">
+        <meta property="og:title" content="@ViewData["Title"] - The Mini Index" />
+        <meta property="og:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
+        <meta property="fb:app_id" content="217005809246433" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:image:src" content="https://theminiindex.com/images/banner.png">
+        <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
+        <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
+
+        <environment include="Staging">
+            <link rel="stylesheet" href="~/dist/site.css">
+            <link rel="stylesheet" href="~/dist/utility.css">
+            <link rel="stylesheet" href="~/dist/styles.css">
+        </environment>
+
+        <environment include="Development">
+            <link rel="stylesheet" href="~/css/site.css">
+            <link rel="stylesheet" href="~/css/utility.css">
+            <link rel="stylesheet" href="~/css/styles.css">
+
+        </environment>
+
+        <environment include="Production">
+            <script type="module" src="https://miniindex.azureedge.net/site.entry.js" defer></script>
+            <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
+        </environment>
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+        <script type="text/javascript">
+            var appInsights = window.appInsights || function (a) {
+                function b(a) { c[a] = function () { var b = arguments; c.queue.push(function () { c[a].apply(c, b) }) } } var c = { config: a }, d = document, e = window; setTimeout(function () { var b = d.createElement("script"); b.src = a.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js", d.getElementsByTagName("script")[0].parentNode.appendChild(b) }); try { c.cookie = d.cookie } catch (a) { } c.queue = []; for (var f = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; f.length;)b("track" + f.pop()); if (b("setAuthenticatedUserContext"), b("clearAuthenticatedUserContext"), b("startTrackEvent"), b("stopTrackEvent"), b("startTrackPage"), b("stopTrackPage"), b("flush"), !a.disableExceptionTracking) { f = "onerror", b("_" + f); var g = e[f]; e[f] = function (a, b, d, e, h) { var i = g && g(a, b, d, e, h); return !0 !== i && c["_" + f](a, b, d, e, h), i } } return c
+            }({
+                instrumentationKey: "70f322c0-7e67-4ac4-9b55-72cad669d574"
+            });
+
+            window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();
+        </script>
+    </head>
+    <body id="indexBody">
+        <img style="position:absolute; left:20px; top: 20px;"width="40" height="40" src="https://beta.theminiindex.com/static/media/logo.6e92ad4f.svg" style="" />
+
+        <div id="heroContainer">
+            <div class="stack" id="hero">
+                <h1>Welcome to <strong>The Mini Index</strong>!</h1>
+
+                <p class="lead">
+                    This is a <strong>crowd-sourced</strong> index of 3d printable files for minis, terrain tiles, and scatter terrain across
+                    different websites for use with tabletop games like Dungeons and Dragons.
+                    We have <b>@Model.MiniCount.ToString("N0") models</b> tagged with the important attributes of the mini in order to make it fast and easy to find exactly what you're looking for.
+                </p>
+
+                <form action="/Minis"style="margin-right:auto; width:100%;">
+                    <div class="row">
+                        <label for="nav-search"></label>
+                        <input type="text" name="SearchString" id="SearchString" placeholder="Search..." class="full-width" style="padding:.5rem; margin-top:0px; margin-bottom:0px;"/>
+                        <input type="submit" value="Search" class="btn btn-primary"/>
+                    </div>                        
+                </form>
+                <div class="cluster" id="indexButtons">
+                    <a class="btn btn-block btn-primary" href="/Minis">Browse the Index</a>
+                    <a class="btn btn-block btn-primary" href="/Creators/Browse">Browse Creators</a> 
+                    <a class="btn btn-block btn-primary" href="/Minis/Create" >Add a Mini</a>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div>
-        <h2>Latest Minis</h2>
-        <div class="switcher">
-            @foreach (var mini in Model.Mini)
-            {
-                <tmi-mini-card
-                    miniid="@mini.ID"
-                    name="@mini.Name"
-                    thumbnail="@mini.Thumbnail"
-                    status="@mini.Status"
-                    creatorname="@mini.Creator.Name"
-                    creatorid="@mini.Creator.ID"
-                    sourcesite="@mini.Sources.First().Site.SiteName.ToLower()"
-                >
-                </tmi-mini-card>
-            }
-        </div>
-    </div>
-
-    <div class="row">
-        <a href="/Minis/" class="btn btn-block btn-primary">Browse all...</a>
-        <a href="/Minis/Create" class="btn btn-block btn-secondary">Add new...</a>
-    </div>
-</div>
+    </body>
+</html>

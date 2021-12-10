@@ -24,7 +24,7 @@ footer >div:first-child {
     display: flex;
     flex-wrap: nowrap;
     gap: var(--space, 1rem);
-    justify-content: flex-star;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -88,19 +88,6 @@ footer >div:first-child {
     width: 100%;
     height: 28rem;
     object-fit: cover;
-}
-  
-
-@media (max-width: 700px) {
-    #navitems {
-        display: none;
-    }
-}
-
-@media (min-width: 699px) {
-    #hamburger {
-        display: none;
-    }
 }
 
 .stack {

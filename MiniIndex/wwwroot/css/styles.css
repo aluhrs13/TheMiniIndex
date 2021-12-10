@@ -310,3 +310,41 @@ button.nav-link{
 table{
     width:100%;
 }
+
+#heroContainer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+#hero {
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+    color: white;
+}
+
+#indexBody {
+    background: rgb(0,0,0);
+    background: linear-gradient(133deg, rgba(0,0,0,1) 0%, rgba(13,27,25,1) 23%, rgba(24,49,45,1) 33%, rgba(20,40,37,0.8536847014925373) 65%, rgba(202,227,223,1) 100%);
+}
+
+html, body {
+    height: 100%;
+}
+
+#indexButtons{
+    flex-wrap:wrap;
+}
+
+@media (min-width: 850px) {
+    #hero {
+        width: 80%;
+    }
+
+    #indexButtons{
+        flex-wrap:nowrap;
+    }
+}
