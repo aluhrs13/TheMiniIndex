@@ -25,7 +25,7 @@
             <h1>@Model.Tag.TagName (@Model.Tag.ID)</h1>
 
             <a href="/Minis/?Tags=@Model.Tag.TagName" class="btn btn-primary" target="_blank">View @Model.MiniCount Tagged</a>
-            <a href="/Tags/Delete?id=@Model.Tag.ID" class="btn btn-danger">Delete Tag</a>
+            <a href="/Tags/Delete?id=@Model.Tag.ID" class="btn style-danger">Delete Tag</a>
 
             
             <h2>Tag Category</h2>
@@ -48,7 +48,7 @@
                             <a href="/Tags/Manage?id=@item.Tag2.ID">@Html.DisplayFor(modelItem => item.Tag2.TagName)</a>
                         </td>
                         <td>
-                            <a href="#" id="@item.ID" class="remove-pair btn btn-danger btn-block">
+                            <a href="#" id="@item.ID" class="remove-pair btn style-danger btn-block">
                                 Delete
                             </a>
                         </td>

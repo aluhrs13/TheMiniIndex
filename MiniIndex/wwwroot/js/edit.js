@@ -1,6 +1,6 @@
 ﻿import $ from "jquery";
 
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", (event) => {
     RefreshTagsStart();
     RefreshTagsEnd();
 });
