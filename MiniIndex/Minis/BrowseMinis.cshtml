@@ -13,14 +13,6 @@
         ViewData["Title"] += " " + Model.SearchModel.SearchString;
     }
     ViewData["Title"] += " Minis";
-
-    int pageRangeSize = 3;
-
-    var pagesToLink = Enumerable.Range(1, Model.Minis.TotalPages)
-        .Where(i => i <= pageRangeSize || Math.Abs(Model.Minis.PageIndex - i) <= pageRangeSize || Math.Abs(Model.Minis.TotalPages - i) < pageRangeSize)
-        .Distinct()
-        .OrderBy(x => x)
-        .BoxWhile((a, b) => b - a == 1);
 }
 
 @section Scripts

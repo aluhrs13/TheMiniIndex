@@ -25,8 +25,6 @@ namespace MiniIndex.Minis.Handlers
             IQueryable<Mini> search = _context
                 .Set<Mini>()
                 .Include(m => m.Creator)
-                .Include(m => m.Sources)
-                    .ThenInclude(s => s.Site)
                 .OrderByDescending(m => m.ApprovedTime)
                     .ThenByDescending(m => m.ID);
 

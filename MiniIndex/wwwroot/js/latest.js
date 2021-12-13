@@ -4,7 +4,10 @@ window.addEventListener("hashchange", (event) => {
 
 document.addEventListener("DOMContentLoaded", (event) => {
     //Next Page Listener
-    document.getElementById("nextPageBtn").addEventListener("click", nextPage);
+    var nextPageBtn = document.getElementById("nextPageBtn");
+    if (nextPageBtn) {
+        nextPageBtn.addEventListener("click", nextPage);
+    }
 
     //Set the search box text. This needs to be above the searchMinis() below.
     //TODO: This fires later than I'd expect (after images load)
@@ -38,26 +41,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
 
     updateDateCookie("CurrentVisit");
+    flagNewMinis();
+});
+
+function flagNewMinis() {
     var lastVisitTimestamp = getCookie("LastVisit");
 
     if (lastVisitTimestamp != "") {
-        flagNewMinis(lastVisitTimestamp);
+        var approvedMinis = document.getElementsByClassName("Approved");
+        for (
+            var i = 0, len = approvedMinis.length | 0;
+            i < len;
+            i = (i + 1) | 0
+        ) {
+            var approvedTime =
+                approvedMinis[i].children[approvedMinis[i].children.length - 1]
+                    .innerText;
+
+            if (Number(lastVisitTimestamp) < Number(approvedTime)) {
+                approvedMinis[i].children[
+                    approvedMinis[i].children.length - 2
+                ].classList.remove("hidden");
+            }
+        }
     } else {
         updateDateCookie("LastVisit");
         fetch(`/api/overhead/Session/?since=-1`);
-    }
-});
-
-function flagNewMinis(lastVisitTimestamp) {
-    var approvedMinis = document.getElementsByClassName("Approved");
-    for (var i = 0, len = approvedMinis.length | 0; i < len; i = (i + 1) | 0) {
-        var approvedTime =
-            approvedMinis[i].children[approvedMinis[i].children.length - 1]
-                .textContent;
-
-        if (Number(lastVisitTimestamp) < Number(approvedTime)) {
-            approvedMinis[i].children[2].classList.remove("hidden");
-        }
     }
 }
 
@@ -135,14 +144,24 @@ async function fetchStuff(galleryElement, searchString, pageIndex) {
             //TODO: Map or ForEach?
             //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
             data.forEach((item) => {
-                const newHTML = `
+                let newHTML = `
                     <div class="card ${item.status}">
                         <div>
                             <a href="/Minis/Details?id=${item.id}">
-                                <img class="card-thumbnail" src="${item.thumbnail}" width="314" height="236" />
+                                <img class="card-thumbnail" src="${item.thumbnail}" width="314" height="236"/>
                             </a>
-                        </div>
-                        <div class="card-text">
+                        </div>`;
+                if (item.status == "Pending") {
+                    newHTML += `<div class="mini-banner">
+                            This Mini needs tags!
+                        </div>`;
+                }
+                if (item.status == "Rejected" || item.status == "Deleted") {
+                    newHTML += `<div class="mini-banner style-danger">
+                            There is something wrong with this Mini.
+                        </div>`;
+                }
+                newHTML += `<div class="card-text">
                             <div class="mini-name">
                                 <h3>${item.name}</h3>
                                 <h4>
@@ -150,9 +169,13 @@ async function fetchStuff(galleryElement, searchString, pageIndex) {
                                 </h4>
                             </div>
                         </div>
+                        <div class="new-tag hidden"><span class="new-tag-span">New!</span></div>
+                        <div class="approved-time">${item.linuxTime}</div>
                     </div>
                 `;
                 galleryElement.insertAdjacentHTML("beforeend", newHTML);
+
+                flagNewMinis();
             });
         })
         .catch((error) => {

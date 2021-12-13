@@ -8,19 +8,6 @@
         "Helvetica Neue", sans-serif;
 }
 
-.Pending {
-    background-color: #fff5a6 !important;
-    color: var(--app-primary-color) !important;
-}
-
-.Unindexed {
-    background-color: #fff5a6;
-}
-
-.Rejected {
-    background-color: #dc3545;
-}
-
 #loading-spinner {
     background: transparent url("../images/loading.gif");
     background-repeat: no-repeat;

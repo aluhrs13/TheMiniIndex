@@ -78,7 +78,7 @@ footer {
 }
 
 .style-danger {
-    background-color: darkred;
+    background-color: darkred !important;
     color: white;
 }
 
@@ -187,6 +187,40 @@ a.card {
 .mini-name > h3,
 .mini-name > h4 {
     margin: 0.5rem;
+}
+
+.new-tag {
+    width: 0;
+    height: 0;
+    border-bottom: 60px solid #00201c;
+    border-left: 80px solid transparent;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 99;
+    -webkit-filter: drop-shadow(-2px -2px 4px #40a076);
+    filter: drop-shadow(-2px -2px 4px #40a076);
+}
+
+.new-tag-span {
+    position: relative;
+    bottom: -29px;
+    right: 55px;
+    z-index: 100;
+    width: 60px;
+    text-align: center;
+    font-size: 13px;
+    font-family: arial;
+    transform: rotate(-37deg);
+    font-weight: 600;
+    color: white;
+    display: block;
+}
+
+.mini-banner {
+    background-color: #fff7b9;
+    margin-top: -4px;
+    padding: 0.5rem;
 }
 
 /* Limit width of pages that look awkward when extremely wide. */

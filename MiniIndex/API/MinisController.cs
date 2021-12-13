@@ -18,8 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace MiniIndex.API
 {
     [Route("api/[controller]")]
@@ -92,10 +90,10 @@ namespace MiniIndex.API
                         {
                             ID = m.ID,
                             Name = m.Name,
-                            Link = m.Link,
-                            Status = m.Status,
+                            Status = m.Status.ToString(),
                             Creator = new { name = m.Creator.Name, id = m.Creator.ID },
-                            Thumbnail = m.Thumbnail
+                            Thumbnail = m.Thumbnail,
+                            LinuxTime = m.ApprovedLinuxTime()
                         }
                     )
                 );

@@ -1,16 +1,26 @@
 ﻿@using MiniIndex.Models
 @model Mini
 
+<!-- If you edit this, also edit the JS that uses it -->
 <!-- TODO: Thumbnail CDN logic -->
-<!-- TODO: "New"  logic -->
-<!-- TODO: Pending and Rejected logic -->
 
-<div class="card @Model.Status">
+<div class="card @Model.Status.ToString()">
     <div>
         <a href="/Minis/Details?id=@Model.ID">
             <img class="card-thumbnail" src="@Model.Thumbnail" width="314" height="236" />
         </a>
     </div>
+    @if(Model.Status == Status.Pending){
+    <div class="mini-banner">
+        This Mini needs tags!
+    </div>
+    }
+
+    @if(Model.Status == Status.Rejected || Model.Status == Status.Deleted){
+    <div class="mini-banner style-danger">
+        There is something wrong with this Mini.
+    </div>
+    }
     <div class="card-text">
         <div class="mini-name">
             <h3>@Model.Name</h3>
@@ -19,4 +29,6 @@
             </h4>
         </div>
     </div>
+    <div class="new-tag hidden"><span class="new-tag-span">New!</span></div>
+    <div class="approved-time">@Model.ApprovedLinuxTime()</div>
 </div>
