@@ -1,29 +1,37 @@
-﻿import $ from "jquery";
-
-document.addEventListener("DOMContentLoaded", (event) => {
+﻿document.addEventListener("DOMContentLoaded", () => {
     RefreshTagsStart();
     RefreshTagsEnd();
 });
 
 //When typing into the tag search box
-//Hid all the .add-tag items that aren't the input text
-$("#tagSearch").on("input", function (e) {
-    $(".add-tag").hide();
-    $(".add-tag-div").hide();
-    var tagFilter = $(this).val().trim().toLowerCase();
+//Hide all the .add-tag items that aren't the input text
+document.getElementById("tagSearch").addEventListener("input", function (e) {
+    e.preventDefault();
 
-    $(".add-tag").each(function () {
-        if ($(this).text().toLocaleLowerCase().indexOf(tagFilter) >= 0) {
-            $(this).show();
-            $(this).parent().show();
+    let addTagHeaders = document.querySelectorAll(".add-tag-div");
+    let addTagHeadersArray = Array.prototype.slice.call(addTagHeaders);
+    addTagHeadersArray.forEach(function (ele) {
+        hideEle(ele);
+    });
+
+    var tagFilter = this.value.trim().toLowerCase();
+
+    let addTagBtns = document.querySelectorAll(".add-tag");
+    let addTagBtnsArray = Array.prototype.slice.call(addTagBtns);
+    addTagBtnsArray.forEach(function (ele) {
+        if (ele.innerHTML.toLocaleLowerCase().indexOf(tagFilter) >= 0) {
+            showEle(ele);
+            showEle(ele.parentNode);
+        } else {
+            hideEle(ele);
         }
     });
-
     return false;
 });
 
-//When the user clicks "Add New Tag"
-$("#AddNewTag").click(function () {
+//Add a new tag with what's in the search box
+document.getElementById("AddNewTag").addEventListener("click", function (e) {
+    e.preventDefault();
     RefreshTagsStart();
 
     var data = {
@@ -31,34 +39,7 @@ $("#AddNewTag").click(function () {
             ID: document.getElementById("miniid").innerHTML * 1,
         },
         Tag: {
-            TagName: $("#tagSearch").val(),
-        },
-    };
-
-    fetch("/api/MiniTags/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    }).then((response) => {
-        RefreshTagsEnd();
-        $(this).fadeOut();
-    });
-
-    return false;
-});
-
-$("#UnusedTags").on("click", ".add-tag", function () {
-    RefreshTagsStart();
-    console.log("Adding " + this.innerHTML);
-
-    var data = {
-        Mini: {
-            ID: document.getElementById("miniid").innerHTML * 1,
-        },
-        Tag: {
-            ID: this.id * 1,
+            TagName: document.getElementById("tagSearch").value,
         },
     };
 
@@ -71,61 +52,114 @@ $("#UnusedTags").on("click", ".add-tag", function () {
     }).then((response) => {
         RefreshTagsEnd();
     });
-
-    //TODO - Fix this to reset all .add-tags too
-
     return false;
 });
 
-$("#UsedTags").on("click", ".remove-tag", function () {
-    RefreshTagsStart();
-    console.log("Removing " + this.innerHTML);
+//Add listeners to every "Add Tag" button
+//TODO: Should this listen on #UnusedTags then parse through that instead of a lot of listeners?
+let addTagBtns = document.querySelectorAll(".add-tag");
+let addTagBtnsArray = Array.prototype.slice.call(addTagBtns);
 
-    var data = {
-        Mini: {
-            ID: document.getElementById("miniid").innerHTML * 1,
-        },
-        Tag: {
-            ID: this.id * 1,
-        },
-    };
+addTagBtnsArray.forEach(function (ele) {
+    ele.addEventListener("click", function (e) {
+        e.preventDefault();
+        RefreshTagsStart();
 
-    fetch("/api/MiniTags/", {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    }).then((response) => {
-        RefreshTagsEnd();
+        var data = {
+            Mini: {
+                ID: document.getElementById("miniid").innerHTML * 1,
+            },
+            Tag: {
+                ID: this.id * 1,
+            },
+        };
+
+        fetch("/api/MiniTags/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }).then((response) => {
+            RefreshTagsEnd();
+        });
     });
-    return false;
 });
 
-function RefreshTagsStart() {
-    $(".loading-spinner").show();
-    $("#UsedTags").hide();
-    $(".add-tag-div").show();
-    $(".add-tag").show();
+//Add listeners to every "Remove Tag" button.
+//Separate function since it needs to be run after current tags is propagated
+function RefreshEventListeners() {
+    let removeTagBtns = document.querySelectorAll(".remove-tag");
+    let removeTagBtnsArray = Array.prototype.slice.call(removeTagBtns);
+
+    removeTagBtnsArray.forEach(function (ele) {
+        ele.addEventListener("click", function (e) {
+            e.preventDefault();
+            RefreshTagsStart();
+            console.log("Removing " + this.innerHTML);
+
+            var data = {
+                Mini: {
+                    ID: document.getElementById("miniid").innerHTML * 1,
+                },
+                Tag: {
+                    ID: this.id * 1,
+                },
+            };
+
+            fetch("/api/MiniTags/", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }).then((response) => {
+                RefreshTagsEnd();
+            });
+        });
+    });
 }
 
+//Hide buttons and show spinner when refreshing tags
+//Also sets the height of the container to prevent a bouncy shift when there's a lot of tags
+function RefreshTagsStart() {
+    var tagContainerEle = document.getElementById("tagContainer");
+    tagContainerEle.style.height = tagContainerEle.clientHeight + "px";
+    showEle(document.getElementById("loading-spinner"));
+    hideEle(document.getElementById("UsedTags"));
+
+    let addTagHeaders = document.querySelectorAll(".add-tag-div");
+    let addTagHeadersArray = Array.prototype.slice.call(addTagHeaders);
+    addTagHeadersArray.forEach(function (ele) {
+        showEle(ele);
+    });
+
+    let addTagBtns = document.querySelectorAll(".add-tag");
+    let addTagBtnsArray = Array.prototype.slice.call(addTagBtns);
+    addTagBtnsArray.forEach(function (ele) {
+        showEle(ele);
+    });
+}
+
+//Reset everything and show the current existing tags
 function RefreshTagsEnd() {
-    $("#tagSearch").val("");
+    document.getElementById("tagSearch").value = "";
 
-    $.getJSON({
-        url:
-            "/api/Minis/" +
-            document.getElementById("miniid").innerHTML +
-            "/Tags",
-        complete: function (response, status) {},
-        error: function () {
-            //TODO - Error styling
-        },
-        success: function (response, status) {
-            var newHTML = "";
-            var prevStatus = "";
+    fetch(
+        "/api/Minis/" + document.getElementById("miniid").innerHTML + "/Tags",
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    ).then((response) => {
+        var newHTML = "";
+        var prevStatus = "";
+        document.getElementById("UsedTags").innerHTML = "";
 
-            response.forEach(function (tag) {
+        response.json().then((data) => {
+            data.forEach(function (tag) {
                 if (prevStatus != tag["status"]) {
                     newHTML += "<h3>" + tag["status"] + "</h3>";
                 }
@@ -141,14 +175,32 @@ function RefreshTagsEnd() {
                     "</b></a>";
                 prevStatus = tag["status"];
 
-                $(".add-tag#" + tag["ID"]).hide();
+                var existingEle = document.getElementById(tag["id"]);
+                if (existingEle) {
+                    existingEle.remove();
+                }
             });
 
-            $("#UsedTags").html(newHTML);
-            $("#UsedTags").show();
-        },
+            document.getElementById("UsedTags").innerHTML = newHTML;
+            RefreshEventListeners();
+            document
+                .getElementById("tagContainer")
+                .style.removeProperty("height");
+            showEle(document.getElementById("UsedTags"));
+            hideEle(document.getElementById("loading-spinner"));
+            return false;
+        });
     });
-    $(".loading-spinner").hide();
+}
 
-    return false;
+function hideEle(ele) {
+    if (!ele.classList.contains("hidden")) {
+        ele.classList.add("hidden");
+    }
+}
+
+function showEle(ele) {
+    if (ele.classList.contains("hidden")) {
+        ele.classList.remove("hidden");
+    }
 }

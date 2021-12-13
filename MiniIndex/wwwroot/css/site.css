@@ -21,14 +21,14 @@
     background-color: #dc3545;
 }
 
-.loading-spinner {
+#loading-spinner {
     background: transparent url("../images/loading.gif");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .approved-time {

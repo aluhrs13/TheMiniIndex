@@ -28,18 +28,18 @@
     <title>@ViewData["Title"] - The Mini Index</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <environment include="Staging, Development">
-        <script type="module" src="~/dist/site.entry.js" async></script>
-    </environment>
-
     <environment include="Staging">
         <link rel="stylesheet" href="~/dist/site.css">
         <link rel="stylesheet" href="~/dist/styles.css">
+
+        <script type="module" src="~/dist/site.entry.js" async></script>
     </environment>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css">
         <link rel="stylesheet" href="~/css/styles.css">
+
+        <script type="module" src="~/js/site.js" async></script>
     </environment>
 
     <script type="module" src="~/components/miniindex-components/miniindex-components.esm.js" async></script>

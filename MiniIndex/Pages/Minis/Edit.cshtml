@@ -20,7 +20,12 @@
 
 @section Scripts
 {
-    <environment include="Development, Staging">
+    <environment include="Development">
+        <script type="module" src="~/js/edit.js" defer></script>
+        <link rel="stylesheet" href="~/css/mini.css">
+    </environment>
+
+    <environment include="Staging">
         <script type="module" src="~/dist/edit.entry.js" defer></script>
         <link rel="stylesheet" href="~/css/mini.css">
     </environment>
@@ -97,11 +102,11 @@
                 <img style="max-width:100%" src="@Model.Mini.Thumbnail" />
             }
         </div>
-        <div>
+        <div id="tagContainer">
             <h2>Tags</h2>
 
             <div align="center">
-                <div class="loading-spinner" style="display:none;width:64px;height:64px;"></div>
+                <div id="loading-spinner" class="hidden" style="width:64px;height:64px;"></div>
             </div>
         
             <div id="UsedTags">
