@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", (event) => {
     var currentVisitTimestamp = getCookie("CurrentVisit");
 
     // Maintain a current visit and last visit. Every browse pageview will update CurrentVisit.
@@ -78,12 +78,13 @@ window.addEventListener("hashchange", (event) => {
     searchMinis();
 });
 
-function nextPage() {
+function nextPage(e) {
     if (window.location.hash == "") {
         window.location.hash = 2;
     } else {
         window.location.hash = Number(window.location.hash.substr(1)) + 1;
     }
+    return false;
 }
 
 async function searchMinis() {
@@ -151,16 +152,21 @@ async function fetchStuff(galleryElement, searchString, pageIndex) {
                 const sourceSite = urlParts[urlParts.length - 2];
 
                 const newHTML = `
-            <tmi-mini-card
-                miniid="${item.id}"
-                name="${item.name}"
-                thumbnail="${item.thumbnail}"
-                status="${item.status}"
-                creatorname="${item.creator.name}"
-                creatorid="${item.creator.id}"
-                sourcesite="${sourceSite}"
-            >
-            </tmi-mini-card>
+            <div class="card ${item.status}">
+                <div>
+                    <a href="/Minis/Details?id=${item.id}">
+                        <img class="card-thumbnail" src="${item.thumbnail}" width="314" height="236" />
+                    </a>
+                </div>
+                <div class="card-text">
+                    <div class="mini-name">
+                        <h3>${item.name}</h3>
+                        <h4>
+                        by <a style="color:var(--app-primary-color)" href="/Creators/Details/?id=${item.creator.id}">${item.creator.name}</a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
         `;
 
                 galleryElement.insertAdjacentHTML("beforeend", newHTML);

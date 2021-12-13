@@ -53,20 +53,18 @@
 
         <environment include="Staging">
             <link rel="stylesheet" href="~/dist/site.css">
-            <link rel="stylesheet" href="~/dist/utility.css">
             <link rel="stylesheet" href="~/dist/styles.css">
         </environment>
 
         <environment include="Development">
             <link rel="stylesheet" href="~/css/site.css">
-            <link rel="stylesheet" href="~/css/utility.css">
             <link rel="stylesheet" href="~/css/styles.css">
-
         </environment>
 
         <environment include="Production">
-            <script type="module" src="https://miniindex.azureedge.net/site.entry.js" defer></script>
+            <script type="module" src="https://miniindex.azureedge.net/site.entry.js" async></script>
             <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
+            <link rel="stylesheet" href="https://miniindex.azureedge.net/styles.css">
         </environment>
 
         <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
@@ -80,9 +78,66 @@
 
             window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();
         </script>
+
+        <style>
+            h1{
+                font-family: "Montserrat", sans-serif !important;
+                font-weight: 500;
+            }
+            .btn{
+                font-family: "Montserrat", sans-serif !important;
+            }
+            input.full-width{
+                font-family: "Montserrat", sans-serif !important;
+            }
+            .lead{
+                font-family: "Montserrat", sans-serif !important;
+            }
+
+            #heroContainer {
+                align-items: center;
+                display: flex;
+                justify-content: center;
+                height: 100%;
+                width: 100%;
+            }
+
+            #hero {
+                width: 100%;
+                padding: 2rem;
+                text-align: center;
+                color: white;
+            }
+
+            #indexBody {
+                background: rgb(0, 0, 0);
+                background: linear-gradient(
+                    133deg,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(13, 27, 25, 1) 23%,
+                    rgba(24, 49, 45, 1) 33%,
+                    rgba(20, 40, 37, 0.8536847014925373) 65%,
+                    rgba(202, 227, 223, 1) 100%
+                );
+            }
+
+            #indexButtons {
+                flex-wrap: wrap;
+            }
+
+            @@media (min-width: 850px) {
+                #hero {
+                    width: 80%;
+                }
+
+                #indexButtons {
+                    flex-wrap: nowrap;
+                }
+            }
+        </style>
     </head>
     <body id="indexBody">
-        <img style="position:absolute; left:20px; top: 20px;"width="40" height="40" src="https://beta.theminiindex.com/static/media/logo.6e92ad4f.svg" style="" />
+        <img style="position:absolute; left:20px; top: 20px; z-index:-1"width="40" height="40" src="https://beta.theminiindex.com/static/media/logo.6e92ad4f.svg" style="" />
 
         <div id="heroContainer">
             <div class="stack" id="hero">
@@ -98,13 +153,13 @@
                     <div class="row">
                         <label for="nav-search"></label>
                         <input type="text" name="SearchString" id="SearchString" placeholder="Search..." class="full-width" style="padding:.5rem; margin-top:0px; margin-bottom:0px;"/>
-                        <input type="submit" value="Search" class="btn btn-primary"/>
+                        <input type="submit" value="Search The Index" class="btn style-primary-border"/>
                     </div>                        
                 </form>
                 <div class="cluster" id="indexButtons">
-                    <a class="btn btn-block btn-primary" href="/Minis">Browse the Index</a>
-                    <a class="btn btn-block btn-primary" href="/Creators/Browse">Browse Creators</a> 
-                    <a class="btn btn-block btn-primary" href="/Minis/Create" >Add a Mini</a>
+                    <a class="btn btn-block style-secondary-border" href="/Minis">Browse the Index</a>
+                    <a class="btn btn-block style-secondary-border" href="/Creators/Browse">Browse Creators</a> 
+                    <a class="btn btn-block style-secondary-border" href="/Minis/Create" >Add a Mini</a>
                 </div>
             </div>
         </div>

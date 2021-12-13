@@ -269,13 +269,18 @@ namespace MiniIndex.API
             }
         }
 
+        //TODO: Probably should [Authorize] this, but enabling programmatic case
         // POST api/<MinisController>
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Post([FromBody] string url)
         {
-            //TODO: Handle programmatic case(s)
             IdentityUser user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                user = await _userManager.Users.FirstAsync(u => u.Email == "admin@theminiindex.com");
+            }
+
             Mini mini = await _mediator.Send(new MiniSubmissionRequest(new Uri(url), user));
 
             if (mini != null)

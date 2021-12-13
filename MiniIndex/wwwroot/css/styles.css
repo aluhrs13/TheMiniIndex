@@ -1,140 +1,21 @@
-/* Headers */
-body{
+html,
+body {
+    height: 100%;
+}
+
+body {
     font-size: 14px;
     font-weight: 400;
 }
-h1,
-h2,
-h3 {
-    font-family: "Montserrat", sans-serif !important;
-    font-weight: 500;
-}
 
 h3 {
-    font-family: "Montserrat", sans-serif !important;
     font-size: 1.25em;
     line-height: 1em;
     white-space: normal;
 }
 
 h4 {
-    font-family: "Montserrat", sans-serif !important;
     font-size: 0.8em;
-}
-
-.montserrat {
-    font-family: "Montserrat", sans-serif !important;
-}
-
-.xsmall {
-    font-size: x-small;
-}
-
-.larger {
-    font-size: larger;
-    white-space: nowrap;
-    line-height: 0.4em;
-}
-
-.small {
-    font-size: small;
-}
-
-/* Buttons */
-.btn {
-    font-family: "Montserrat", sans-serif !important;
-    font-weight: bolder;
-    display: inline-block;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    user-select: none;
-    border: 1px solid transparent;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    margin: 0px;
-    text-decoration: none;
-}
-
-/* TODO: Merge btn and badge styles  */
-.btn-primary {
-    color: #fff;
-    background-color: var(--app-primary-color);
-    border-color: var(--app-secondary-color);
-}
-
-.btn-secondary {
-    color: #000;
-    background-color: var(--app-secondary-color);
-    border-color: var(--app-primary-color);
-}
-
-.btn-danger{
-    background-color: darkred;
-    color: white;
-}
-
-.badge {
-    display: inline-block;
-    padding: 0.5rem 0.5rem;
-    background-color: gray;
-    margin: 0.25rem;
-    border-radius: 0.25rem;
-}
-
-.badge-primary {
-    color: #fff;
-    background-color: var(--app-primary-color);
-    border-color: var(--app-secondary-color);
-}
-
-.badge-secondary {
-    /* color: #000; */
-    /* background-color: var(--app-secondary-color); */
-    /* border-color: var(--app-primary-color); */
-}
-
-.btn:hover {
-    opacity: 50%;
-}
-
-.btn-block {
-    display: inline-block;
-    width: 100%;
-    margin: 0.5rem;
-}
-
-.full-width {
-    width: 100%;
-    margin: 0.5rem;
-}
-
-input.full-width {
-    font-family: "Montserrat", sans-serif !important;
-    font-size: 1.25rem;
-    width:100%;
-}
-
-.darkbg {
-    color: #fff;
-    background-color: var(--app-primary-color);
-}
-
-.darkbg a {
-    color: #fff;
-}
-
-.lightbg {
-    color: #000;
-    background-color: var(--app-secondary-color);
-}
-
-.lightbg a {
-    color: #000;
-}
-
-footer {
-    padding: 1rem;
 }
 
 body {
@@ -149,14 +30,105 @@ main {
     margin: 0px;
 }
 
-.bleed {
-    margin: calc(var(--edge-offset) * -1) !important;
+table {
+    width: 100%;
 }
 
-.lead {
-    font-size: 1.25rem;
-    font-weight: 100;
+footer {
+    padding: 1rem;
 }
+
+.xsmall {
+    font-size: x-small;
+}
+
+.small {
+    font-size: small;
+}
+
+.larger {
+    font-size: larger;
+    white-space: nowrap;
+    line-height: 0.4em;
+}
+
+/* Generic Styling for button/badge */
+.style-primary-border,
+.btn-primary {
+    color: #fff;
+    background-color: var(--app-primary-color);
+    border-color: var(--app-secondary-color);
+}
+
+.style-secondary-border,
+.btn-secondary {
+    color: #000;
+    background-color: var(--app-secondary-color);
+    border-color: var(--app-primary-color);
+}
+
+.style-primary {
+    color: #fff;
+    background-color: var(--app-primary-color);
+}
+
+.style-secondary {
+    color: #000;
+    background-color: var(--app-secondary-color);
+}
+
+.style-danger {
+    background-color: darkred;
+    color: white;
+}
+
+.style-moderator {
+    background-color: #fff7b9 !important;
+}
+
+/* Buttons */
+.btn {
+    font-weight: bolder;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.5rem !important;
+    border-radius: 0.25rem;
+    margin: 4px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    opacity: 50%;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.5rem 0.5rem;
+    margin: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+/* Gives various form options full width */
+.full-width {
+    width: 100%;
+    margin: 0.5rem;
+}
+
+input.full-width {
+    font-size: 1.25rem;
+    width: 100%;
+}
+
+/* Cards */
 
 /*
 https://blog.udemy.com/css-grid-vs-flexbox/
@@ -184,12 +156,12 @@ a.card {
 .card {
     filter: drop-shadow(4px 4px 4px var(--app-primary-color));
     background-color: white;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .card-thumbnail {
     object-fit: cover;
-    border-radius: 4px 4px 0px 0px;
+    border-radius: 2px 2px 0px 0px;
     width: 100%;
 }
 
@@ -197,15 +169,11 @@ a.card {
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
 }
 
-.card-padded{
-    padding: .5rem;
-}
-
-.source-site-img {
-    max-width: 32px;
-    padding: 8px 12px 8px 8px;
+.card-padded {
+    padding: 0.5rem;
 }
 
 .mini-name {
@@ -213,18 +181,15 @@ a.card {
     line-height: 0.4em;
     white-space: nowrap;
     overflow: hidden;
+    margin: 0 !important;
 }
 
-.add-star {
-    background-color: green;
-    color: white;
+.mini-name > h3,
+.mini-name > h4 {
+    margin: 0.5rem;
 }
 
-.remove-star {
-    background-color: darkred;
-    color: white;
-}
-
+/* Limit width of pages that look awkward when extremely wide. */
 @media (min-width: 899px) {
     .bounded {
         max-width: 130ch;
@@ -238,15 +203,10 @@ a.card {
     }
 }
 
-.moderator {
-    background-color: #fff7b9 !important;
-}
-
-
 /* Identity */
-.form-control{
-    width:100%;
-    padding: .4rem;
+.form-control {
+    width: 100%;
+    padding: 0.4rem;
 }
 
 .form-group {
@@ -254,97 +214,51 @@ a.card {
     max-width: 90%;
 }
 
-.text-danger{
-    color:darkred !important;
+.text-danger {
+    color: darkred !important;
 }
 
-.nav{
+/* Alerts are used in profile pages */
+.alert {
+    border-radius: 1rem;
+    padding: 2rem;
+}
+.alert-danger {
+    background-color: lightpink;
+    color: darkred;
+}
+.alert-success {
+    background-color: var(--app-secondary-color);
+    color: darkgreen;
+}
+.alert-warning {
+    background-color: lightyellow;
+    color: darkgoldenrod;
+}
+
+/* Nav Bar */
+.nav {
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
 }
 
-button.nav-link{
-    width:100%;
+button.nav-link {
+    width: 100%;
     background-color: var(--app-secondary-color);
     border: none;
 }
 
-.nav-link{
+.nav-link {
     display: block;
-    padding: .75rem 1rem;
-    border-radius: .25rem;
-    margin: .5rem 0rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    margin: 0.5rem 0rem;
     text-decoration: none;
     color: var(--app-primary-color);
 }
 
-    .nav-link:hover {
-        background-color: var(--app-secondary-color);
-        color: var(--app-primary-color);
-    }
-
-.active{
-    background-color: var(--app-primary-color) !important;
-    color: white !important;
-}
-
-
-.alert {
-    border-radius: 1rem;
-    padding: 2rem;
-}
-    .alert-danger{
-        background-color: lightpink;
-        color: darkred;
-    }
-    .alert-success {
-        background-color: var(--app-secondary-color);
-        color: darkgreen;
-    }
-    .alert-warning{
-        background-color: lightyellow;
-        color: darkgoldenrod;
-    }
-
-table{
-    width:100%;
-}
-
-#heroContainer {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-}
-
-#hero {
-    width: 100%;
-    padding: 2rem;
-    text-align: center;
-    color: white;
-}
-
-#indexBody {
-    background: rgb(0,0,0);
-    background: linear-gradient(133deg, rgba(0,0,0,1) 0%, rgba(13,27,25,1) 23%, rgba(24,49,45,1) 33%, rgba(20,40,37,0.8536847014925373) 65%, rgba(202,227,223,1) 100%);
-}
-
-html, body {
-    height: 100%;
-}
-
-#indexButtons{
-    flex-wrap:wrap;
-}
-
-@media (min-width: 850px) {
-    #hero {
-        width: 80%;
-    }
-
-    #indexButtons{
-        flex-wrap:nowrap;
-    }
+.nav-link:hover {
+    background-color: var(--app-secondary-color);
+    color: var(--app-primary-color);
 }

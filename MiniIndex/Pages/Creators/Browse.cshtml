@@ -4,6 +4,18 @@
 @{
     ViewData["Title"] = "Browse Creators";
 }
+
+@section Scripts
+{
+    <environment include="Development, Staging">
+        <link rel="stylesheet" href="~/css/mini.css">
+    </environment>
+
+    <environment include="Production">
+        <link rel="stylesheet" href="~/css/mini.css">
+    </environment>
+}
+
 <div class="bounded">
     <h1>All Creators</h1>
 

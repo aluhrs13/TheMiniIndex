@@ -22,10 +22,12 @@
 {
     <environment include="Development, Staging">
         <script type="module" src="~/dist/edit.entry.js" defer></script>
+        <link rel="stylesheet" href="~/css/mini.css">
     </environment>
 
     <environment include="Production">
         <script type="module" src="https://miniindex.azureedge.net/edit.entry.js" defer></script>
+        <link rel="stylesheet" href="~/css/mini.css">
     </environment>
 }
 

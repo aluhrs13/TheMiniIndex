@@ -21,11 +21,13 @@
 @section Scripts
 {
     <environment include="Development, Staging">
-        <script type="module" src="~/dist/stars.entry.js" defer></script>
+        <script type="module" src="~/dist/mini.entry.js" defer></script>
+        <link rel="stylesheet" href="~/css/mini.css">
     </environment>
 
     <environment include="Production">
-        <script type="module" src="https://miniindex.azureedge.net/stars.entry.js" defer></script>
+        <script type="module" src="https://miniindex.azureedge.net/mini.entry.js" defer></script>
+        <link rel="stylesheet" href="~/css/mini.css">
     </environment>
 }
 
@@ -53,12 +55,12 @@
         {
             @foreach (var miniSource in Model.Mini.Sources)
             {
-                <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary @miniSource.Site.SiteName">View On @miniSource.Site.SiteName</a>
+                <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block style-primary @miniSource.Site.SiteName">View On @miniSource.Site.SiteName</a>
             }
         }
         else if (!String.IsNullOrEmpty(Model.Mini.Link))
         {
-            <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary">View at source</a>
+            <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block style-primary-border">View at source</a>
         }
 
         @if (SignInManager.IsSignedIn(User))
@@ -98,13 +100,13 @@
             {
                 @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
                 {
-                    <span class="badge badge-primary">
+                    <span class="badge style-primary">
                         <b>@MiniTag.Tag.TagName</b>
                     </span>
                 }
                 else
                 {
-                    <span class="badge badge-primary">
+                    <span class="badge style-primary">
                         @MiniTag.Tag.Category: <b>@MiniTag.Tag.TagName</b>
                     </span>
                 }
@@ -131,7 +133,7 @@
                 
                     @await Html.PartialAsync("_MiniPartial", mini)
 
-                    @if (relatedCount == 3)
+                    @if (relatedCount == 2)
                     {
                         break;
                     }

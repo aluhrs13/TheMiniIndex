@@ -10,6 +10,17 @@
     ViewData["Title"] = Model.Creator.Name + " Details";
 }
 
+@section Scripts
+{
+    <environment include="Development, Staging">
+        <link rel="stylesheet" href="~/css/mini.css">
+    </environment>
+
+    <environment include="Production">
+        <link rel="stylesheet" href="~/css/mini.css">
+    </environment>
+}
+
 @if (User.IsInRole("Moderator"))
 {
     <div class="bounded">
@@ -29,10 +40,10 @@
 
 <h1>@Html.DisplayFor(model => model.Creator.Name)</h1>
 
-<div class="switcher">
+<div class="cluster">
     @foreach (var site in Model.Creator.Sites)
     {
-        <a href="@site.CreatorPageUri" class="btn btn-block btn-primary @site.DisplayName">@site.DisplayName</a>
+        <a href="@site.CreatorPageUri" class="btn btn-primary @site.DisplayName">@site.DisplayName</a>
     }
 </div>
 

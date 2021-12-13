@@ -1,17 +1,11 @@
 :root {
     --app-primary-color: #18312d;
     --app-secondary-color: rgb(202, 227, 223);
-    --edge-offset: .5rem;
+    --edge-offset: 0.5rem;
     --s1: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-}
-
-.navbar-brand {
-    font-family: "Montserrat", sans-serif;
-}
-
-.add-tagify {
-    margin-bottom: 5px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
 }
 
 .Pending {
@@ -27,196 +21,165 @@
     background-color: #dc3545;
 }
 
-.card-img-top {
-    object-fit: contain;
-}
-
-.Thingiverse {
-    background-color: #3f8cfe !important;
-    border-color: #3f8cfe !important;
-}
-
-.thumb-wrapper.Thingiverse span {
-    background: transparent url("../images/SourceSiteIcons/Thingiverse.png")
-        no-repeat;
-}
-
-.Patreon {
-    background-color: #e85b46 !important;
-    border-color: #e85b46 !important;
-    color: white !important;
-}
-
-.MyMiniFactory {
-    background-color: #3fbc9c !important;
-    border-color: #3fbc9c !important;
-    color: white !important;
-}
-
-.thumb-wrapper.MyMiniFactory span {
-    background: transparent url("../images/SourceSiteIcons/MyMiniFactory.png")
-        no-repeat;
-}
-
-.Shapeways {
-    background-color: #ff4b5a !important;
-    border-color: #ff4b5a !important;
-    color: white !important;
-}
-
-.thumb-wrapper.Shapeways span {
-    background: transparent url("../images/SourceSiteIcons/Shapeways.png")
-        no-repeat;
-}
-
-.Gumroad {
-    background-color: #198c8c !important;
-    border-color: #198c8c !important;
-    color: white !important;
-}
-
-.thumb-wrapper.Gumroad span {
-    background: transparent url("../images/SourceSiteIcons/Gumroad.png")
-        no-repeat;
-}
-
-.Cults3d {
-    background-color: #822ef5 !important;
-    border-color: #822ef5 !important;
-    color: white !important;
-}
-
-.thumb-wrapper.Cults3d span {
-    background: transparent url("../images/SourceSiteIcons/Cults3d.png")
-        no-repeat;
-}
-
-.thumb-wrapper.Wargaming3d span {
-    background: transparent url("../images/SourceSiteIcons/Wargaming3d.png")
-        no-repeat;
-}
-
-.Wargaming3d {
-    background-color: #41533b !important;
-    border-color: #41533b !important;
-    color: white !important;
-}
-
-.thumb-wrapper.DuncanShadow span {
-    background: transparent url("../images/SourceSiteIcons/DuncanShadow.png")
-        no-repeat;
-}
-
-.DuncanShadow {
-    background-color: #4e2b07 !important;
-    border-color: #4e2b07 !important;
-    color: white !important;
-}
-
-.thumb-wrapper.PrusaPrinters span {
-    background: transparent url("../images/SourceSiteIcons/PrusaPrinters.png")
-        no-repeat;
-}
-
-.PrusaPrinters {
-    background-color: #fa6831 !important;
-    border-color: #fa6831 !important;
-    color: white !important;
-}
-
-.thumb-wrapper.AtelierStoria span {
-    background: transparent url("../images/SourceSiteIcons/AtelierStoria.png")
-        no-repeat;
-}
-
-.AtelierStoria {
-    background-color: #5f7e23 !important;
-    border-color: #5f7e23 !important;
-    color: white !important;
-}
-
-.thumb-wrapper {
-    position: relative;
-}
-
-.thumb-wrapper img {
-    width: 100%;
-    height: auto;
-}
-
-.thumb-wrapper span {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 32px;
-    height: 32px;
-    z-index: 100;
-    background-position: center;
-    background-size: 32px 32px;
-    -webkit-filter: drop-shadow(3px 3px 3px #222);
-    filter: drop-shadow(5px 5px 5px #222);
-}
-
 .loading-spinner {
     background: transparent url("../images/loading.gif");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
-.badge-True {
-    background-color: green;
-    color: white;
-}
-
-.badge-False {
-    background-color: red;
-    color: white;
-}
-
 .hidden {
     display: none;
-}
-
-.new-tag {
-    width: 0;
-    height: 0;
-    border-bottom: 60px solid #00201c;
-    border-left: 80px solid transparent;
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    z-index: 99;
-    -webkit-filter: drop-shadow(-2px -2px 4px #40a076);
-    filter: drop-shadow(-2px -2px 4px #40a076);
-}
-
-.new-tag-span {
-    position: relative;
-    bottom: -29px;
-    right: 55px;
-    z-index: 100;
-    width: 60px;
-    text-align: center;
-    font-size: 13px;
-    font-family: arial;
-    transform: rotate(-37deg);
-    font-weight: 600;
-    color: white;
-    display: block;
 }
 
 .approved-time {
     display: none;
 }
 
-.add-tag{
-    background-color: var(--app-secondary-color);
-    color: var(--app-primary-color);
-    margin: .25rem !important;
+/* Navbar stuff */
+#mobileCluster {
+    flex-direction: column;
 }
 
-.remove-tag{
-    background-color: darkred;
-    color: white;
-    margin: .25rem !important;
+#menuBtn {
+    display: block !important;
+}
+#menuCluster {
+    display: none !important;
+    flex-wrap: nowrap !important;
+}
+#logotype {
+    display: none !important;
+}
+
+@media (min-width: 850px) {
+    #menuBtn {
+        display: none !important;
+    }
+    #menuCluster {
+        display: flex !important;
+    }
+    #logotype {
+        display: block !important;
+    }
+    #mobileCluster {
+        display: none !important;
+    }
+}
+
+#SearchString {
+    height: 42px;
+    margin: 10px 10px 10px 0px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 0px;
+    border-radius: 4px;
+    background-color: var(--app-secondary-color);
+    color: black;
+}
+
+#NavSearchBtn {
+    margin: 10px 0px 10px 0px;
+}
+
+/* Utility CSS */
+footer > div:first-child {
+    padding-top: 0.5rem;
+    margin-bottom: calc(var(--edge-offset) * -1);
+    padding-bottom: var(--edge-offset);
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    /* width: 100%; */
+}
+
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space, 1rem);
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.center {
+    box-sizing: content-box;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.center-t {
+    box-sizing: content-box;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.grid {
+    display: grid;
+    grid-gap: 1rem;
+}
+
+@supports (width: min(250px, 100%)) {
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+    }
+}
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 100%;
+}
+
+.stack > * {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.stack > * + * {
+    margin-top: var(--space, 1.5rem);
+}
+
+.switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.switcher > * {
+    flex-grow: 1;
+    flex-basis: calc((40rem - 100%) * 999);
+}
+
+.switcher > :nth-last-child(n + 5),
+.switcher > :nth-last-child(n + 5) ~ * {
+    flex-basis: 100%;
+}
+
+.with-sidebar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s1);
+}
+
+.with-sidebar > :first-child {
+    flex-basis: 250px;
+    flex-grow: 1;
+}
+
+.with-sidebar > :last-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-width: 50%;
 }
