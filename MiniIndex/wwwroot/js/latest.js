@@ -1,9 +1,28 @@
+window.addEventListener("hashchange", (event) => {
+    searchMinis();
+});
+
 document.addEventListener("DOMContentLoaded", (event) => {
-    var currentVisitTimestamp = getCookie("CurrentVisit");
+    //Next Page Listener
+    document.getElementById("nextPageBtn").addEventListener("click", nextPage);
+
+    //Set the search box text. This needs to be above the searchMinis() below.
+    //TODO: This fires later than I'd expect (after images load)
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get("SearchString");
+    if (myParam) {
+        document.getElementById("SearchString").value = myParam;
+    }
+
+    //We came here from a back button or something. Do something kinda smart and load the latest page
+    if (window.location.hash.startsWith("#")) {
+        searchMinis(true);
+    }
 
     // Maintain a current visit and last visit. Every browse pageview will update CurrentVisit.
     // If the CurrentVisit is stale (2 hours), then we'll assume that's the last time the user was here.
     // Move that value to LastVisit and highlight Minis that are new since then.
+    var currentVisitTimestamp = getCookie("CurrentVisit");
     if (currentVisitTimestamp != "") {
         if (Date.now() - currentVisitTimestamp > 3600000 * 2) {
             fetch(
@@ -27,14 +46,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         updateDateCookie("LastVisit");
         fetch(`/api/overhead/Session/?since=-1`);
     }
-
-    //TODO: This fires later than I'd expect (after images load)
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('SearchString');
-    if (myParam) {
-        document.getElementById("SearchString").value = myParam;
-    }
-
 });
 
 function flagNewMinis(lastVisitTimestamp) {
@@ -74,58 +85,36 @@ function updateDateCookie(cookieName) {
         60 * 60 * 24 * 28;
 }
 
-window.addEventListener("hashchange", (event) => {
-    searchMinis();
-});
-
-function nextPage(e) {
-    if (window.location.hash == "") {
-        window.location.hash = 2;
-    } else {
-        window.location.hash = Number(window.location.hash.substr(1)) + 1;
-    }
-    return false;
-}
-
-async function searchMinis() {
+async function searchMinis(freshLoad) {
     var searchString = document.getElementById("SearchString").value;
     let galleryElement = document.getElementById("gallery");
+    var pageIndex = 1;
 
-    //Reset If needed
-    /*
-    var currentParams = new URLSearchParams(
-        document.location.search.substring(1)
-    );
-
-    if (currentParams.get("searchString") != searchString) {
-        currentParams.set("searchString", searchString);
-        window.history.pushState(
-            "",
-            "",
-            document.location + "/?" + currentParams
-        );
-        galleryElement.innerHTML = "";
-    }
-    */
     if (window.location.hash.startsWith("#")) {
         pageIndex = window.location.hash.substr(1);
-    } else {
-        pageIndex = 1;
     }
 
+    //TODO: There's a bit of layout shifting here, probably can refactor to make it cleaner
     //Handle page refresh or back scenario
-    if (galleryElement.children.length == 0 && pageIndex > 1) {
-        //TODO: Loop through pages here
-        for (x = 1; x <= pageIndex; x++) {
-            await fetchStuff(galleryElement, searchString, x);
-        }
-    } else {
-        fetchStuff(galleryElement, searchString, pageIndex);
+    if (freshLoad) {
+        galleryElement.replaceChildren();
+        var backButtonHTML = `
+                <div class="card" align="center">
+                    <div style="display:flex; flex-direction:column; justify-content:center; height:100%;">
+                        Resuming previous search from where you last left off...
+                        <br/><br/>
+                        <a href="/Minis?SearchString=${searchString}" class="btn style-primary-border">Restart from first page</a>
+                    </div>
+                </div>
+            `;
+        galleryElement.insertAdjacentHTML("beforeend", backButtonHTML);
     }
+
+    fetchStuff(galleryElement, searchString, pageIndex);
 }
 
 async function fetchStuff(galleryElement, searchString, pageIndex) {
-    //TODO: Await is for refresh case, does it cause perf problems in normal case?
+    //TODO: Does this need to be awaited?
     await fetch(
         `/api/Minis?pageIndex=${pageIndex}&SearchString=${searchString}`
     )
@@ -136,43 +125,46 @@ async function fetchStuff(galleryElement, searchString, pageIndex) {
             return response.json();
         })
         .then((data) => {
+            if (data.length == 0) {
+                document.getElementById("nextPageBtn").classList.add("hidden");
+            }
+
             //TODO: Is CreateElement or insertAdjacentHTML better?
             //https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-            //let newCard = document.createElement("tmi-mini-card");
 
             //TODO: Map or ForEach?
             //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
             data.forEach((item) => {
-                var urlParts = item.link
-                    .replace("http://", "")
-                    .replace("https://", "")
-                    .split(/[/?#]/)[0]
-                    .split(".");
-
-                const sourceSite = urlParts[urlParts.length - 2];
-
                 const newHTML = `
-            <div class="card ${item.status}">
-                <div>
-                    <a href="/Minis/Details?id=${item.id}">
-                        <img class="card-thumbnail" src="${item.thumbnail}" width="314" height="236" />
-                    </a>
-                </div>
-                <div class="card-text">
-                    <div class="mini-name">
-                        <h3>${item.name}</h3>
-                        <h4>
-                        by <a style="color:var(--app-primary-color)" href="/Creators/Details/?id=${item.creator.id}">${item.creator.name}</a>
-                        </h4>
+                    <div class="card ${item.status}">
+                        <div>
+                            <a href="/Minis/Details?id=${item.id}">
+                                <img class="card-thumbnail" src="${item.thumbnail}" width="314" height="236" />
+                            </a>
+                        </div>
+                        <div class="card-text">
+                            <div class="mini-name">
+                                <h3>${item.name}</h3>
+                                <h4>
+                                by <a style="color:var(--app-primary-color)" href="/Creators/Details/?id=${item.creator.id}">${item.creator.name}</a>
+                                </h4>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        `;
-
+                `;
                 galleryElement.insertAdjacentHTML("beforeend", newHTML);
             });
         })
         .catch((error) => {
             console.error("Error getting Minis:", error);
         });
+}
+
+function nextPage(e) {
+    e.preventDefault();
+    if (window.location.hash == "") {
+        window.location.hash = 2;
+    } else {
+        window.location.hash = Number(window.location.hash.substr(1)) + 1;
+    }
 }

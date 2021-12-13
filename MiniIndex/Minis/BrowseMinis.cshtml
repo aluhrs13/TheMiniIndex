@@ -25,16 +25,16 @@
 
 @section Scripts
 {
-    <environment include="Development,">
-        <script src="~/js/latest.js" defer></script>
+    <environment include="Development">
+        <script type="module" src="~/js/latest.js"></script>
     </environment>
 
     <environment include="Staging">
-        <script src="~/dist/latest.entry.js" defer></script>
+        <script src="~/dist/latest.entry.js"></script>
     </environment>
 
     <environment include="Production">
-        <script src="https://miniindex.azureedge.net/latest.entry.js" defer></script>
+        <script src="https://miniindex.azureedge.net/latest.entry.js"></script>
     </environment>
 }
 
@@ -52,7 +52,9 @@
         </div>
     </div>
 
-    <div style="text-align: center; margin: 16px">
-        <a href="#" onclick="nextPage()" class="btn btn-block style-primary-border">Next Page</a>
-    </div>
+    @if(Model.Minis.HasNextPage){
+        <div style="text-align: center; margin: 16px">
+            <a href="#" id="nextPageBtn" class="btn btn-block style-primary-border">Next Page</a>
+        </div>
+    }
 </div>
