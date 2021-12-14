@@ -27,7 +27,7 @@ body {
 main {
     background-color: white;
     padding: var(--edge-offset);
-    margin: 0px;
+    margin: 2px;
 }
 
 table {
@@ -295,4 +295,9 @@ button.nav-link {
 .nav-link:hover {
     background-color: var(--app-secondary-color);
     color: var(--app-primary-color);
+}
+
+#secondary-nav {
+    margin: -0.5rem;
+    padding: 0.5rem;
 }

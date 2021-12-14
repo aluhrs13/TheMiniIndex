@@ -102,6 +102,12 @@ namespace MiniIndex.Minis.Handlers
                 }
             }
 
+            //TODO: Just hacking this in for now. We're double sorting...
+            if(request.SortType == "newest")
+            {
+                search = search.OrderByDescending(m => m.ID);
+            }
+
             return await PaginatedList.CreateAsync(search, request.PageInfo);
         }
     }

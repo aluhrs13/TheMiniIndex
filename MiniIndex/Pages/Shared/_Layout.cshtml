@@ -38,8 +38,6 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css">
         <link rel="stylesheet" href="~/css/styles.css">
-
-        <script type="module" src="~/js/site.js" async></script>
     </environment>
 
     <script type="module" src="~/components/miniindex-components/miniindex-components.esm.js" async></script>
@@ -120,7 +118,7 @@
                     </div>
                 </div>
 
-                <form action="/Minis"style="margin-right:auto; width:100%;">
+                <form action="/Minis" style="margin-right:auto; width:100%;" id="searchForm" name="searchForm">
                     <div class="row">
                         <label for="nav-search"></label>
                         <input type="text" name="SearchString" id="SearchString" placeholder="Search..." class="full-width"/>

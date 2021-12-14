@@ -95,7 +95,6 @@ function updateDateCookie(cookieName) {
 }
 
 async function searchMinis(freshLoad) {
-    var searchString = document.getElementById("SearchString").value;
     let galleryElement = document.getElementById("gallery");
     var pageIndex = 1;
 
@@ -112,20 +111,26 @@ async function searchMinis(freshLoad) {
                     <div style="display:flex; flex-direction:column; justify-content:center; height:100%;">
                         Resuming previous search from where you last left off...
                         <br/><br/>
-                        <a href="/Minis?SearchString=${searchString}" class="btn style-primary-border">Restart from first page</a>
+                        <a href="/Minis?SearchString=${
+                            document.getElementById("SearchString").value
+                        }" class="btn style-primary-border">Restart from first page</a>
                     </div>
                 </div>
             `;
         galleryElement.insertAdjacentHTML("beforeend", backButtonHTML);
     }
 
-    fetchStuff(galleryElement, searchString, pageIndex);
+    fetchStuff(galleryElement, pageIndex);
 }
 
-async function fetchStuff(galleryElement, searchString, pageIndex) {
+async function fetchStuff(galleryElement, pageIndex) {
+    var searchString = document.getElementById("SearchString").value;
+    var freeOnly = document.getElementById("FreeOnly").checked;
+    var sortType = document.getElementById("SortType").value;
+
     //TODO: Does this need to be awaited?
     await fetch(
-        `/api/Minis?pageIndex=${pageIndex}&SearchString=${searchString}`
+        `/api/Minis?pageIndex=${pageIndex}&SearchString=${searchString}&FreeOnly=${freeOnly}&SortType=${sortType}`
     )
         .then((response) => {
             if (!response.ok) {

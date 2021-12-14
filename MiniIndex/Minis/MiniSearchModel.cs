@@ -11,5 +11,7 @@ namespace MiniIndex.Minis
 
         public bool FreeOnly { get; set; }
 
+        public string SortType { get; set; }
+
     }
 }

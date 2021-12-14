@@ -30,23 +30,46 @@
     </environment>
 }
 
-<div>
-    <div>
-        @if (Model.ShowRateResults)
-        {
-            <div>
-                <h2>Happy with your search results?</h2>
-                Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
-            </div>
-        }
-        <div>
-            @await Html.PartialAsync("MiniListView", Model.Minis)
+<div class="cluster style-secondary" id="secondary-nav">
+    <div class="row">
+        <div class="montserrat">
+            <span class="xsmall">ADVANCED</span>
+            <br />
+            <span class="larger">SEARCH</span>
         </div>
     </div>
 
-    @if(Model.Minis.HasNextPage){
-        <div style="text-align: center; margin: 16px">
-            <a href="#" id="nextPageBtn" class="btn btn-block style-primary-border">Next Page</a>
-        </div>
-    }
+    <div>
+        <input type="checkbox"
+                id="FreeOnly"
+                name="FreeOnly"
+                value="true"
+                form="searchForm"
+                @(Model.SearchModel.FreeOnly ? "checked" : "")
+        >
+        <label for="FreeOnly">Only Free Minis</label>
+        <br/>
+        <label for="SortType">Sort by: </label>
+        <select form="searchForm" name="SortType" id="SortType">
+            <!option value="relevant" @(Model.SearchModel.SortType=="relevant" ? "selected" : "")>Relevant</>
+            <!option value="newest" @(Model.SearchModel.SortType=="newest" ? "selected" : "")>Newest</>
+        </select>
+    </div>
 </div>
+
+@if (Model.ShowRateResults)
+{
+    <div>
+        <h2>Happy with your search results?</h2>
+        Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
+    </div>
+}
+<div>
+    @await Html.PartialAsync("MiniListView", Model.Minis)
+</div>
+
+@if(Model.Minis.HasNextPage){
+    <div style="text-align: center; margin: 16px">
+        <a href="#" id="nextPageBtn" class="btn btn-block style-primary-border">Next Page</a>
+    </div>
+}
