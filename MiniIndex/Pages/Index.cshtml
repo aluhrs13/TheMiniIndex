@@ -52,19 +52,13 @@
         <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
 
         <environment include="Staging">
-            <link rel="stylesheet" href="~/dist/site.css">
-            <link rel="stylesheet" href="~/dist/styles.css">
-        </environment>
-
-        <environment include="Development">
-            <link rel="stylesheet" href="~/css/site.css">
-            <link rel="stylesheet" href="~/css/styles.css">
-        </environment>
-
-        <environment include="Production">
-            <script type="module" src="https://miniindex.azureedge.net/site.entry.js" async></script>
-            <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
-            <link rel="stylesheet" href="https://miniindex.azureedge.net/styles.css">
+            <script type="text/javascript">
+                (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "9qtfnv49nn");
+            </script>
         </environment>
 
         <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
@@ -79,8 +73,20 @@
             window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();
         </script>
 
+        <!-- Fathom - beautiful, simple website analytics -->
+        <script src="https://cdn.usefathom.com/script.js" data-site="JXSVBMWZ" defer></script>
+        <!-- / Fathom -->
+
         <style>
-            h1{
+            :root {
+                --app-primary-color: #18312d;
+                --app-secondary-color: rgb(202, 227, 223);
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+                    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+                    "Helvetica Neue", sans-serif;
+            }
+
+            h1,h2{
                 font-family: "Montserrat", sans-serif !important;
                 font-weight: 500;
             }
@@ -100,6 +106,7 @@
                 justify-content: center;
                 height: 100%;
                 width: 100%;
+                margin-top: 7rem;
             }
 
             #hero {
@@ -107,18 +114,6 @@
                 padding: 2rem;
                 text-align: center;
                 color: white;
-            }
-
-            #indexBody {
-                background: rgb(0, 0, 0);
-                background: linear-gradient(
-                    133deg,
-                    rgba(0, 0, 0, 1) 0%,
-                    rgba(13, 27, 25, 1) 23%,
-                    rgba(24, 49, 45, 1) 33%,
-                    rgba(20, 40, 37, 0.8536847014925373) 65%,
-                    rgba(202, 227, 223, 1) 100%
-                );
             }
 
             #indexButtons {
@@ -134,9 +129,123 @@
                     flex-wrap: nowrap;
                 }
             }
+
+            #whatsNew {
+                list-style-type: none;
+                padding-inline-start: 0px;
+                color: white;
+                text-align: left;
+                border-radius: 4px;
+            }
+
+            .small-badge {
+                display: inline-block;
+                padding: 0.25rem;
+                margin: 0.25rem;
+                margin-right: 1rem;
+                border-radius: 0.25rem;
+            }
+
+            .badge-new {
+                background-color: greenyellow;
+                color: black;
+            }
+
+            .badge-bug {
+                background-color: darkred;
+                color: white;
+            }
+
+            .badge-site {
+                background-color: yellow;
+                color: black;
+            }
+
+            .stack {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                max-width: 100%;
+            }
+
+            .stack > * {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+
+            .stack > * + * {
+                margin-top: var(--space, 1.5rem);
+            }
+
+            body {
+                font-size: 14px;
+                font-weight: 400;
+                background-color: var(--app-primary-color);
+                padding: 0px;
+                margin: 0px;
+            }
+
+            .btn {
+                font-weight: bolder;
+                display: inline-block;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                user-select: none;
+                border: 1px solid transparent;
+                padding: 0.5rem !important;
+                border-radius: 0.25rem;
+                margin: 4px;
+                text-decoration: none;
+                color: #000;
+                background-color: var(--app-secondary-color);
+            }
+
+            .btn:hover {
+                opacity: 50%;
+            }
+
+            .btn-block {
+                width: 100%;
+            }
+
+            .full-width {
+                width: 100%;
+                margin: 0.5rem;
+            }
+
+            input.full-width {
+                font-size: 1.25rem;
+                width: 100%;
+            }
+
+            .row {
+                display: flex;
+                flex-direction: row;
+                max-width: 100%;
+            }
+
+            .cluster {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--space, 1rem);
+                justify-content: flex-start;
+                align-items: center;
+            }
+
+            #SearchString {
+                height: 42px;
+                margin: 10px 10px 10px 0px;
+                padding: 10px;
+                box-sizing: border-box;
+                border: 0px;
+                border-radius: 4px;
+                background-color: var(--app-secondary-color);
+                color: black;
+            }
         </style>
     </head>
-    <body id="indexBody">
+    <body>
         <img style="position:absolute; left:20px; top: 20px; z-index:-1"width="40" height="40" src="https://beta.theminiindex.com/static/media/logo.6e92ad4f.svg" style="" />
 
         <div id="heroContainer">
@@ -160,6 +269,19 @@
                     <a class="btn btn-block style-secondary-border" href="/Minis">Browse the Index</a>
                     <a class="btn btn-block style-secondary-border" href="/Creators/Browse">Browse Creators</a> 
                     <a class="btn btn-block style-secondary-border" href="/Minis/Create" >Add a Mini</a>
+                </div>
+
+                <div align="left">
+                    <h2>What's new</h2>
+                    <ul id="whatsNew">
+                        <li><span class="small-badge badge-new">New</span>Pretty much every page has been re-designed to be faster, better, and easier for us to improve in the future!</li>
+                        <li><span class="small-badge badge-new">New</span>Search results can now be ordered by relevancy or most recent.</li>
+                        <li><span class="small-badge badge-bug">Bug Fix</span>Automatically added tags will now be removed from the "Add Tags" list.</li>
+
+
+                        <!--<li><span class="small-badge badge-bug">Bug Fix</span> Fixed a crazy bugs.</li>-->
+                        <!--<li><span class="small-badge badge-warning">Warning</span> Something is broken :(</li>-->
+                    </ul>
                 </div>
             </div>
         </div>

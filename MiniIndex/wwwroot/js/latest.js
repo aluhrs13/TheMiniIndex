@@ -94,6 +94,15 @@ function updateDateCookie(cookieName) {
         60 * 60 * 24 * 28;
 }
 
+function constructFetchString() {
+    var searchString = document.getElementById("SearchString").value;
+    var freeOnly = document.getElementById("FreeOnly").checked;
+    var sortType = document.getElementById("SortType").value;
+    var tags = document.getElementById("tagsValue").value;
+
+    return `SearchString=${searchString}&FreeOnly=${freeOnly}&SortType=${sortType}&Tags=${tags}`;
+}
+
 async function searchMinis(freshLoad) {
     let galleryElement = document.getElementById("gallery");
     var pageIndex = 1;
@@ -111,9 +120,7 @@ async function searchMinis(freshLoad) {
                     <div style="display:flex; flex-direction:column; justify-content:center; height:100%;">
                         Resuming previous search from where you last left off...
                         <br/><br/>
-                        <a href="/Minis?SearchString=${
-                            document.getElementById("SearchString").value
-                        }" class="btn style-primary-border">Restart from first page</a>
+                        <a href="/Minis?${constructFetchString()}" class="btn style-primary-border">Restart from first page</a>
                     </div>
                 </div>
             `;
@@ -124,13 +131,9 @@ async function searchMinis(freshLoad) {
 }
 
 async function fetchStuff(galleryElement, pageIndex) {
-    var searchString = document.getElementById("SearchString").value;
-    var freeOnly = document.getElementById("FreeOnly").checked;
-    var sortType = document.getElementById("SortType").value;
-
     //TODO: Does this need to be awaited?
     await fetch(
-        `/api/Minis?pageIndex=${pageIndex}&SearchString=${searchString}&FreeOnly=${freeOnly}&SortType=${sortType}`
+        `/api/Minis?pageIndex=${pageIndex}&${constructFetchString()}`
     )
         .then((response) => {
             if (!response.ok) {
@@ -150,7 +153,7 @@ async function fetchStuff(galleryElement, pageIndex) {
             //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
             data.forEach((item) => {
                 let newHTML = `
-                    <div class="card ${item.status}">
+                    <div class="card ${item.status}" id="${item.id}">
                         <div>
                             <a href="/Minis/Details?id=${item.id}">
                                 <img class="card-thumbnail" src="${item.thumbnail}" width="314" height="236"/>

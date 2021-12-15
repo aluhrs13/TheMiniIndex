@@ -20,6 +20,7 @@ whitelistTags.push(
     "Accessory"
 );
 
+
 var tagify = new Tagify(tagsInput, {
     enforceWhitelist: true,
     dropdown: {
@@ -31,10 +32,14 @@ var tagify = new Tagify(tagsInput, {
 
 tagify.on("input", onInput);
 
-var parentForm = tagsInput.closest("form");
+console.log(tagify);
+
+var parentForm = document.getElementById("searchForm");
 
 parentForm.onsubmit = onFormSubmitted;
 
+
+//TODO: Don't modify settings
 function onInput(e) {
     console.log(tagsInput.value);
     var value = e.detail.value;
@@ -62,7 +67,8 @@ function onFormSubmitted(e) {
         tagsValue.value = "";
     }
 }
-
+/*
 $(".add-tagify").click(function () {
     tagify.addTags($(this).text());
 });
+*/

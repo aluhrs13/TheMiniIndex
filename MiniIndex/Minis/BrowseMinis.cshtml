@@ -19,14 +19,21 @@
 {
     <environment include="Development">
         <script type="module" src="~/js/latest.js"></script>
+         <script type="module" src="~/dist/tags.entry.js" defer></script>
+         <link rel="stylesheet" href="~/dist/tags.css">
     </environment>
 
     <environment include="Staging">
         <script src="~/dist/latest.entry.js"></script>
+        <script type="module" src="~/dist/tags.entry.js" defer></script>
+        <link rel="stylesheet" href="~/dist/tags.css">
     </environment>
+
 
     <environment include="Production">
         <script src="https://miniindex.azureedge.net/latest.entry.js"></script>
+        <script type="module" src="https://miniindex.azureedge.net/tags.entry.js" defer></script>
+        <link rel="stylesheet" href="https://miniindex.azureedge.net/tags.css">
     </environment>
 }
 
@@ -55,11 +62,21 @@
             <!option value="newest" @(Model.SearchModel.SortType=="newest" ? "selected" : "")>Newest</>
         </select>
     </div>
+
+    <div style="margin-right:auto;">
+        Filter by tags:<br/>
+        <input form="searchForm" id="tagsInput" type="text" placeholder="Find tags..." />
+        <input form="searchForm" id="tagsValue" name="Tags" type="hidden" value="@Model.SearchModel.Tags" />
+    </div>
+
+    <div>
+        <input type="submit" value="Apply Changes" form="searchForm" class="btn style-primary-border" />
+    </div>
 </div>
 
 @if (Model.ShowRateResults)
 {
-    <div>
+    <div class="card" style="padding-left:1rem; padding-bottom:1rem;">
         <h2>Happy with your search results?</h2>
         Please take a second to <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URTIxTVpVOVdBUDFHUkhHR1RFT1RGSzZSSi4u">rate the results</a> below and give us any feedback.
     </div>

@@ -6,6 +6,9 @@ body {
 body {
     font-size: 14px;
     font-weight: 400;
+    background-color: var(--app-primary-color);
+    padding: 0px;
+    margin: 0px;
 }
 
 h3 {
@@ -16,12 +19,6 @@ h3 {
 
 h4 {
     font-size: 0.8em;
-}
-
-body {
-    background-color: var(--app-primary-color);
-    padding: 0px;
-    margin: 0px;
 }
 
 main {
@@ -300,4 +297,15 @@ button.nav-link {
 #secondary-nav {
     margin: -0.5rem;
     padding: 0.5rem;
+}
+
+tags {
+    min-width: 300px !important;
+    width: 100% !important;
+    background-color: var(--app-secondary-color) !important;
+    --tag-bg: var(--app-primary-color) !important;
+    --tag-text-color: white !important;
+    --tag-hover: #18312d50 !important;
+    border-color: var(--app-primary-color) !important;
+    border-radius: 4px !important;
 }

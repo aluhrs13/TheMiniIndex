@@ -18,7 +18,6 @@
                 type="@item.Status"
                 name="@item.Name"
                 thumbnail="@item.Thumbnail"
-                source="@item.Sources.First().Site.DisplayName"
                 tagdata="@JsonConvert.SerializeObject(item.MiniTags.Select(mt=>mt.Tag.TagName))">
             </tmi-admin-mini-row>
             <hr/>

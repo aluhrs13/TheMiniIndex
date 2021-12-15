@@ -32,7 +32,13 @@
         <link rel="stylesheet" href="~/dist/site.css">
         <link rel="stylesheet" href="~/dist/styles.css">
 
-        <script type="module" src="~/dist/site.entry.js" async></script>
+        <script type="text/javascript">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "9qtfnv49nn");
+        </script>
     </environment>
 
     <environment include="Development">
@@ -45,8 +51,7 @@
     <link rel="stylesheet" href="~/components/miniindex-components/miniindex-components.css" />
 
     <environment include="Production">
-        <link rel="preconnect" href="https://miniindexblobakamai.azureedge.net/">
-        <script type="module" src="https://miniindex.azureedge.net/site.entry.js" async></script>
+        <link rel="preconnect" href="https://miniindex.azureedge.net/">
         <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
         <link rel="stylesheet" href="https://miniindex.azureedge.net/styles.css">
     </environment>
@@ -67,6 +72,10 @@
             mobile.style.display == "block" ? mobile.style.display = "none" : mobile.style.display = "block"; 
         }
     </script>
+
+    <!-- Fathom - beautiful, simple website analytics -->
+    <script src="https://cdn.usefathom.com/script.js" data-site="JXSVBMWZ" defer></script>
+    <!-- / Fathom -->
 
     <style>
         h1,
@@ -127,28 +136,44 @@
                 </form>
 
                 <div class="cluster" id="menuCluster">
-                    <div class="center"><a class="btn style-primary" href="/Creators/Browse">Creators</a></div>
-                    <div class="center"><a class="btn style-primary" href="/Minis/Create">Add a Mini</a></div>
                     @if (User.IsInRole("Moderator"))
                     {
                         <div class="center">
                             <a class="btn style-primary" href="/Admin/">Moderator Dashboard</a>
                         </div>
-                    }
+                    }                         
+                    <div class="center"><a class="btn style-primary" href="/Creators/Browse">Creators</a></div>
+                    <div class="center"><a class="btn style-primary" href="/Minis/Create">Add a Mini</a></div>
+                    <div class="icon-no-container">
+                        <a href="/Starred/">
+                            <div class="icon icon-heart"></div>
+                        </a>
+                    </div>
+                    <div class="icon-no-container">
+                        <a href="/Minis/Help/">
+                            <div class="icon icon-random"></div>
+                        </a>
+                    </div>
                     <partial name="_LoginPartial" />
                 </div>
-                <a href="#" class="btn style-primary" id="menuBtn" onclick="toggleMobile()">Menu</a>
+                <div class="icon-no-container" style="padding-right:.75rem;">
+                    <a href="#" id="menuBtn" onclick="toggleMobile()">
+                        <div class="icon icon-menu"></div>
+                    </a>
+                </div>
             </div>
 
             <div class="cluster style-primary" id="mobileCluster" style="display:none;">
-                <div class="center"><a class="btn style-primary" href="/Creators/Browse">Creators</a></div>
-                <div class="center"><a class="btn style-primary" href="/Minis/Create">Add a Mini</a></div>
                 @if (User.IsInRole("Moderator"))
                 {
                     <div class="center">
                         <a class="btn style-primary" href="/Admin/">Moderator Dashboard</a>
                     </div>
                 }
+                <div class="center"><a class="btn style-primary" href="/Creators/Browse">Creators</a></div>
+                <div class="center"><a class="btn style-primary" href="/Minis/Create">Add a Mini</a></div>
+                <div class="center"><a class="btn style-primary" href="/Starred/">Favorites</a></div>
+                <div class="center"><a class="btn style-primary" href="/Minis/Help">Tag a Random Mini</a></div>
                 <partial name="_LoginPartial" />
             </div>
         </nav>

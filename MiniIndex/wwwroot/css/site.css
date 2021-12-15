@@ -170,3 +170,35 @@ footer > div:first-child {
     flex-grow: 999;
     min-width: 50%;
 }
+
+.icon-container {
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--app-secondary-color);
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.icon {
+    filter: invert(97%) sepia(7%) saturate(488%) hue-rotate(108deg)
+        brightness(91%) contrast(96%);
+    /* filter: invert(16%) sepia(44%) saturate(358%) hue-rotate(121deg) brightness(95%) contrast(100%); /* Uncomment to make primary color instead of secondary */
+    height: 28px;
+    width: 28px;
+}
+
+.icon-heart {
+    background-image: url("../images/IconFont/heart.svg");
+}
+
+.icon-menu {
+    background-image: url("../images/IconFont/bars.svg");
+}
+
+.icon-random {
+    background-image: url("../images/IconFont/random.svg");
+}
+
+.icon-profile {
+    background-image: url("../images/IconFont/user-circle.svg");
+}

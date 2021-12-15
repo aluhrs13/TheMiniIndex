@@ -12,28 +12,33 @@
 
 @section Scripts
 {
-    <environment include="Development, Staging">
+    <environment include="Development">
         <link rel="stylesheet" href="~/css/mini.css">
     </environment>
 
-    <environment include="Production">
-        <link rel="stylesheet" href="~/css/mini.css">
+    <environment include="Staging, Production">
+        <link rel="stylesheet" href="~/dist/mini.css">
     </environment>
 }
 
 @if (User.IsInRole("Moderator"))
 {
-    <div class="bounded">
-        <div class="card card-padded moderator">
-            <h2><b>Moderator:</b> Scan Creator</h2>
-            Please don't spam scan a bunch of creators, some APIs have rate-limiting and requesting a lot of scans within a few minutes of each other can break things.
-            <hr/>
-            <div class="switcher">
-                @foreach (var site in Model.Creator.Sites)
-                {
-                    <a href="http://miniindexprofileparser.azurewebsites.net/api/ProfileParser?code=@Model.FunctionsCode&url=@site.CreatorPageUri" class="btn btn-primary">Scan @site.DisplayName</a>
-                }
+    <div class="cluster style-secondary" id="secondary-nav">
+        <div class="row">
+            <div class="montserrat">
+                <span class="xsmall">MODERATOR</span>
+                <br />
+                <span class="larger">TOOLS</span>
             </div>
+        </div>
+        <div class="cluster">
+            @foreach (var site in Model.Creator.Sites)
+            {
+                @if (site.DisplayName == "Thingiverse" || site.DisplayName == "Gumroad" || site.DisplayName == "MyMiniFactory")
+                {
+                    <div class="center"><a href="http://miniindexprofileparser.azurewebsites.net/api/ProfileParser?code=@Model.FunctionsCode&url=@site.CreatorPageUri" class="btn style-secondary" target="_blank">Scan @site.DisplayName</a></div>
+                }
+            }
         </div>
     </div>
 }
@@ -43,7 +48,8 @@
 <div class="cluster">
     @foreach (var site in Model.Creator.Sites)
     {
-        <a href="@site.CreatorPageUri" class="btn btn-primary @site.DisplayName">@site.DisplayName</a>
+
+    <a href="@site.CreatorPageUri" class="btn btn-primary @site.DisplayName">@site.DisplayName</a>
     }
 </div>
 

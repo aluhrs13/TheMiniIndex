@@ -64,6 +64,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="wwwroot\images\NewFolder\" />
     <Folder Include="wwwroot\js\components\" />
   </ItemGroup>
 

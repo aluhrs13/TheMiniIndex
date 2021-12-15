@@ -15,6 +15,7 @@
 
         <div class="cluster">
             <div class="center"><a class="btn style-secondary" asp-page="./Index">Pending Minis</a></div>
+            <div class="center"><a class="btn style-secondary" asp-page="./Unindexed">Unindexed Minis</a></div>
             <div class="center"><a class="btn style-secondary" asp-page="./PendingTags">Pending Tags</a></div>
             <div class="center"><a class="btn style-secondary" asp-page="./TagManager">Manage Tags</a></div>
         </div>
@@ -35,4 +36,6 @@
     <environment include="Production">
         <script type="module" src="https://miniindex.azureedge.net/admin.entry.js" defer></script>
     </environment>
+
+    @RenderSection("Scripts2", required: false)
 }

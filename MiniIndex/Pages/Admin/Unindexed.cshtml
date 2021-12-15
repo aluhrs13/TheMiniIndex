@@ -1,0 +1,76 @@
+﻿@page
+@using MiniIndex.Models
+@using Newtonsoft.Json
+@model MiniIndex.Pages.Admin.UnindexedModel
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Unindexed Minis";
+}
+
+
+
+@if (User.IsInRole("Moderator"))
+{
+    @section Scripts2
+    {
+        <script type="text/javascript">
+            function makeAllVisible(){
+                document.getElementById("allVisibleBtn").disabled = true;
+
+                let cards = document.querySelectorAll(".card");
+                let cardsArray = Array.prototype.slice.call(cards);
+
+                cardsArray.forEach(function (ele) {
+                    makeVisible(ele.id);
+                })
+            }
+
+            function makeVisible(id){
+                var data = '{"id": '+id+', "status": 0}';
+
+                fetch("/api/Minis", {method: "PATCH", body: data,     headers: {
+                  'Content-Type': 'application/json'
+                } })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+
+                    return response.json();
+                  })
+                  .then(() => {
+                    document.getElementById(id).style.backgroundColor = "green";
+                  })
+                  .catch(error => {
+                    console.error(error);
+                    document.getElementById(id).style.backgroundColor = "red";
+                  });
+            }
+
+        </script>
+    }
+
+    @if (Model.Mini.Count > 0)
+    {
+        <div class="grid" id="gallery">
+            @foreach (var mini in Model.Mini)
+            {
+                @await Html.PartialAsync("_MiniPartial", mini)
+            }
+        </div>
+
+        <div class="center alert alert-warning">
+            <p>If you opened and rejected any Minis on this page, please make sure to refresh the page before hitting the button below.</p>
+            <button class="btn style-primary-border" onclick="makeAllVisible()" id="allVisibleBtn">Make all Visible</button>
+        </div>
+    }
+    else
+    {
+        <div class="center">
+            <h2>
+                All submissions have been moderated!
+            </h2>
+        </div>
+    }
+}
+
