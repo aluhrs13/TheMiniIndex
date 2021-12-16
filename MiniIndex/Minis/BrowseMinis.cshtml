@@ -13,6 +13,7 @@
         ViewData["Title"] += " " + Model.SearchModel.SearchString;
     }
     ViewData["Title"] += " Minis";
+    ViewData["SearchString"] = Model.SearchModel.SearchString;
 }
 
 @section Scripts
@@ -65,7 +66,7 @@
 
     <div style="margin-right:auto;">
         Filter by tags:<br/>
-        <input form="searchForm" id="tagsInput" type="text" placeholder="Find tags..." />
+        <input form="searchForm" id="tagsInput" type="text" placeholder="Find tags..." disabled />
         <input form="searchForm" id="tagsValue" name="Tags" type="hidden" value="@Model.SearchModel.Tags" />
     </div>
 
@@ -87,6 +88,6 @@
 
 @if(Model.Minis.HasNextPage){
     <div style="text-align: center; margin: 16px">
-        <a href="#" id="nextPageBtn" class="btn btn-block style-primary-border">Next Page</a>
+        <button id="nextPageBtn" class="btn btn-block style-primary-border">Next Page</button>
     </div>
 }

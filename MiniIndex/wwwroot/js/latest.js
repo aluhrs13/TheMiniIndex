@@ -9,14 +9,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         nextPageBtn.addEventListener("click", nextPage);
     }
 
-    //Set the search box text. This needs to be above the searchMinis() below.
-    //TODO: This fires later than I'd expect (after images load)
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get("SearchString");
-    if (myParam) {
-        document.getElementById("SearchString").value = myParam;
-    }
-
     //We came here from a back button or something. Do something kinda smart and load the latest page
     if (window.location.hash.startsWith("#")) {
         searchMinis(true);
@@ -132,9 +124,7 @@ async function searchMinis(freshLoad) {
 
 async function fetchStuff(galleryElement, pageIndex) {
     //TODO: Does this need to be awaited?
-    await fetch(
-        `/api/Minis?pageIndex=${pageIndex}&${constructFetchString()}`
-    )
+    await fetch(`/api/Minis?pageIndex=${pageIndex}&${constructFetchString()}`)
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -182,7 +172,9 @@ async function fetchStuff(galleryElement, pageIndex) {
                     </div>
                 `;
                 galleryElement.insertAdjacentHTML("beforeend", newHTML);
-
+                var btn = document.getElementById("nextPageBtn");
+                btn.disabled = false;
+                btn.innerHTML = "Next Page";
                 flagNewMinis();
             });
         })
@@ -193,6 +185,9 @@ async function fetchStuff(galleryElement, pageIndex) {
 
 function nextPage(e) {
     e.preventDefault();
+    var btn = document.getElementById("nextPageBtn");
+    btn.disabled = true;
+    btn.innerHTML = "Loading...";
     if (window.location.hash == "") {
         window.location.hash = 2;
     } else {

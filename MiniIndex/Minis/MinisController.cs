@@ -1,6 +1,4 @@
 ﻿using AgileObjects.AgileMapper;
-using Lib.AspNetCore.ServerTiming;
-using Lib.AspNetCore.ServerTiming.Http.Headers;
 using MediatR;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
@@ -20,20 +18,18 @@ namespace MiniIndex.Minis
     [Route("/Minis")] 
     public class MinisController : Controller
     {
-        public MinisController(MiniIndexContext context, IMapper mapper, IMediator mediator, TelemetryClient telemetry, IServerTiming serverTiming)
+        public MinisController(MiniIndexContext context, IMapper mapper, IMediator mediator, TelemetryClient telemetry)
         {
             _context = context;
             _mapper = mapper;
             _mediator = mediator;
             _telemetry = telemetry;
-            _serverTiming = serverTiming;
         }
 
         private readonly MiniIndexContext _context;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly TelemetryClient _telemetry;
-        private readonly IServerTiming _serverTiming;
 
         [HttpGet("")]
         public async Task<IActionResult> BrowseMinis(
@@ -41,7 +37,6 @@ namespace MiniIndex.Minis
             [FromQuery]int pageSize = 21,
             [FromQuery]int pageIndex = 1)
         {
-            DateTime startTime = DateTime.Now;
             //Mild hack - There's some case where pageIndex is hitting 0 and I can't tell how/why. (GitHub #182)
             if (pageIndex == 0)
             {
@@ -59,14 +54,13 @@ namespace MiniIndex.Minis
 
             BrowseModel model = new BrowseModel(search, searchResult);
 
-            TimeSpan timeSpent = DateTime.Now - startTime;
-            _serverTiming.Metrics.Add(new ServerTimingMetric("Query", (decimal)timeSpent.TotalMilliseconds, "LINQ Query"));
             _telemetry.TrackEvent("NewMiniSearch", new Dictionary<string, string> {
                                                             { "SearchString", searchRequest.SearchString },
                                                             { "Tags", String.Join(",", searchRequest.Tags) },
                                                             { "FreeOnly", searchRequest.FreeOnly.ToString() },
                                                             { "HadResults", searchResult.Count>0 ? "True" : "False" },
-                                                            { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()}
+                                                            { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()},
+                                                            { "SortType", searchRequest.SortType}
                                                         });
 
             return View("BrowseMinis", model);

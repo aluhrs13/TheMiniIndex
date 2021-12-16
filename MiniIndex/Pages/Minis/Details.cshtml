@@ -5,7 +5,8 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Mini.Name + " Details";
+
     @if (User.IsInRole("Administrator"))
     {
         ViewData["Submitter"] = @Model.Mini.User.Email;
@@ -114,7 +115,7 @@
         }
         else
         {
-            <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString" class="btn btn-block add-star">
+            <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString" class="btn btn-block add-star" id="toggle-star">
                 Login to Favorite
             </a>
         }

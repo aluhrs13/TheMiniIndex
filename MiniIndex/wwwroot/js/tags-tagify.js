@@ -1,6 +1,5 @@
 ﻿import Tagify from "@yaireo/tagify";
 import "@yaireo/tagify/dist/tagify.css";
-import $ from "jquery";
 
 var controller;
 
@@ -20,7 +19,6 @@ whitelistTags.push(
     "Accessory"
 );
 
-
 var tagify = new Tagify(tagsInput, {
     enforceWhitelist: true,
     dropdown: {
@@ -32,12 +30,9 @@ var tagify = new Tagify(tagsInput, {
 
 tagify.on("input", onInput);
 
-console.log(tagify);
-
 var parentForm = document.getElementById("searchForm");
 
 parentForm.onsubmit = onFormSubmitted;
-
 
 //TODO: Don't modify settings
 function onInput(e) {

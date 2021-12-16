@@ -26,7 +26,6 @@
 	<PackageReference Include="Lamar" Version="5.0.3" />
     <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="5.0.3" />
 	<PackageReference Include="Google.Cloud.RecaptchaEnterprise.V1" Version="1.3.0" />
-	<PackageReference Include="Lib.AspNetCore.ServerTiming" Version="4.2.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />

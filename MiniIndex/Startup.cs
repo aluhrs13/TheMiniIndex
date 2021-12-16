@@ -1,6 +1,4 @@
 using Lamar;
-using Lib.AspNetCore.ServerTiming;
-using Lib.AspNetCore.ServerTiming.Http.Headers;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -74,8 +72,6 @@ namespace MiniIndex
 
             services.AddDbContext<MiniIndexContext>(ConfigureEntityFramework);
 
-            services.AddServerTiming();
-
             string facebookAppId = Configuration["Authentication:Facebook:AppId"];
             string facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
 
@@ -127,8 +123,6 @@ namespace MiniIndex
             //Response Compression - https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-5.0
             app.UseResponseCompression();
             app.UseStatusCodePages();
-
-            app.UseServerTiming();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

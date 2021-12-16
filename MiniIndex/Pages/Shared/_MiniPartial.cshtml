@@ -1,13 +1,19 @@
 ﻿@using MiniIndex.Models
 @model Mini
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 <!-- If you edit this, also edit the JS that uses it (latest.js)-->
-<!-- TODO: Thumbnail CDN logic -->
-
 <div class="card @Model.Status.ToString()" id="@Model.ID">
     <div>
         <a href="/Minis/Details?id=@Model.ID">
+            @if (Model.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
+            {
+            <img class="card-thumbnail" src="@Model.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
+            }
+            else{
             <img class="card-thumbnail" src="@Model.Thumbnail" width="314" height="236" />
+            }
         </a>
     </div>
     @if(Model.Status == Status.Pending){

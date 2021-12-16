@@ -1,12 +1,11 @@
 ﻿using AgileObjects.AgileMapper;
-using Lib.AspNetCore.ServerTiming;
-using Lib.AspNetCore.ServerTiming.Http.Headers;
 using MediatR;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MiniIndex.Core.Minis.Search;
 using MiniIndex.Core.Pagination;
 using MiniIndex.Core.Submissions;
@@ -30,14 +29,14 @@ namespace MiniIndex.API
                 IMapper mapper,
                 IMediator mediator,
                 TelemetryClient telemetry,
-                IServerTiming serverTiming)
+                IConfiguration configuration)
         {
             _userManager = userManager;
             _context = context;
             _mapper = mapper;
             _mediator = mediator;
             _telemetry = telemetry;
-            _serverTiming = serverTiming;
+            _configuration = configuration;
 
         }
 
@@ -46,8 +45,7 @@ namespace MiniIndex.API
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly TelemetryClient _telemetry;
-        private readonly IServerTiming _serverTiming;
-
+        private readonly IConfiguration _configuration;
 
         // GET: api/<MinisController>
         [HttpGet]
@@ -57,7 +55,6 @@ namespace MiniIndex.API
             [FromQuery] int pageIndex = 1,
             [FromQuery] int creatorId = 0)
         {
-            DateTime startTime = DateTime.Now;
             //TODO: Move creator into MiniSearchModel?
             Creator creatorInfo = new Creator();
 
@@ -76,12 +73,13 @@ namespace MiniIndex.API
             _mapper.Map(search).Over(searchRequest);
             PaginatedList<Mini> searchResult = await _mediator.Send(searchRequest);
 
-            TimeSpan timeSpent = DateTime.Now - startTime;
-            _serverTiming.Metrics.Add(new ServerTimingMetric("Query", (decimal)timeSpent.TotalMilliseconds, "LINQ Query"));
             _telemetry.TrackEvent("MiniSearchAPI", new Dictionary<string, string> {
                                                             { "SearchString", searchRequest.SearchString },
+                                                            { "Tags", String.Join(",", searchRequest.Tags) },
+                                                            { "FreeOnly", searchRequest.FreeOnly.ToString() },
                                                             { "HadResults", searchResult.Count>0 ? "True" : "False" },
-                                                            { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()}
+                                                            { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()},
+                                                            { "SortType", searchRequest.SortType}
                                                         });
             //TODO: Remove thumbnail?
             return Ok(
@@ -92,7 +90,7 @@ namespace MiniIndex.API
                             Name = m.Name,
                             Status = m.Status.ToString(),
                             Creator = new { name = m.Creator.Name, id = m.Creator.ID },
-                            Thumbnail = m.Thumbnail,
+                            Thumbnail = m.Thumbnail.Replace("miniindex.blob.core.windows.net", _configuration["CDNURL"] + ".azureedge.net"),
                             LinuxTime = m.ApprovedLinuxTime()
                         }
                     )
