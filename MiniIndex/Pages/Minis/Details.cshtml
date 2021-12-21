@@ -21,7 +21,7 @@
 @section Scripts
 {
     <environment include="Development">
-        <script type="module" src="~/dist/mini.entry.js" defer></script>
+        <script type="module" src="~/js/mini.js"></script>
         <link rel="stylesheet" href="~/css/mini.css">
     </environment>
 
@@ -184,34 +184,14 @@
     </div>
 
     <!-- TODO: async this -->
-    @if (Model.RelatedMinis.Count > 1)
-    {
-        <aside>
-            <hr />
-            <h2>Related Minis</h2>
-            <div class="grid">
-                @{
-                    int relatedCount = 0;
-                }
-                @foreach (var mini in Model.RelatedMinis)
-                {
-                    @if (mini.ID == Model.Mini.ID)
-                    {
-                        continue;
-                    }
-                
-                    @await Html.PartialAsync("_MiniPartial", mini)
+    <aside>
+        <hr />
+        <h2>Related Minis</h2>
+        <div align="center">
+            <div id="loading-spinner" style="width:64px;height:64px;"></div>
+        </div>
+        <div class="grid hidden"id="related-minis">
 
-                    @if (relatedCount == 2)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        relatedCount++;
-                    }
-                }
-            </div>
-        </aside>
-    }
+        </div>
+    </aside>
 </div>
