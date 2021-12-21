@@ -151,6 +151,7 @@ namespace MiniIndex.API
             }
         }
 
+        //TODO: Perf on this isn't good.
         [HttpGet("{id}/Related")]
         public async Task<IActionResult> Related(int id)
         {
@@ -232,7 +233,9 @@ namespace MiniIndex.API
             RelatedMinis = RelatedMinis.Distinct()
                                 .Where(m => m.Status == Status.Approved)
                                 .Where(m => m.ID != mini.ID)
-                                .OrderByDescending(m => m.ApprovedTime).ToList();
+                                .OrderByDescending(m => m.ApprovedTime)
+                                .Take(6)
+                                .ToList();
             
             return Ok(RelatedMinis);
         }
@@ -271,7 +274,7 @@ namespace MiniIndex.API
         public async Task<IActionResult> FixThumbnail(int id)
         {
             Mini currentMini = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.ID == id);
-            Mini mini = await _mediator.Send(new MiniSubmissionRequest(new Uri(currentMini.Link), user, true));
+            Mini mini = await _mediator.Send(new MiniSubmissionRequest(new Uri(currentMini.Link), null, true));
 
             if (mini != null)
             {
