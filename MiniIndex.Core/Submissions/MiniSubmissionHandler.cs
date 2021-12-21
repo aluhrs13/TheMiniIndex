@@ -35,6 +35,11 @@ namespace MiniIndex.Core.Submissions
 
             if (mini != null)
             {
+                if (request.JustThumbnail)
+                {
+                    _context.Add(mini);
+                    await UploadThumbnail(mini);
+                }
                 return mini;
             }
 
@@ -55,28 +60,29 @@ namespace MiniIndex.Core.Submissions
 
             if (checkDupe != null)
             {
+                if (request.JustThumbnail)
+                {
+                    _context.Add(checkDupe);
+                    await UploadThumbnail(checkDupe);
+                }
                 return checkDupe;
             }
 
-
-            mini.User = request.User;
-            mini.Status = Status.Unindexed;
-
-            _context.Add(mini);
-
-            await CorrectMiniCreator(mini, cancellationToken);
-
-            //TODO - Another dupe check here based on name and creator
-
-            await _context.SaveChangesAsync();
-
-            if (!String.IsNullOrEmpty(storageConfig.AccountName))
+            if (!request.JustThumbnail)
             {
-                if (await UploadThumbnail(mini))
-                {
-                    await _context.SaveChangesAsync();
-                }
+                mini.User = request.User;
+                mini.Status = Status.Unindexed;
+
+                _context.Add(mini);
+
+                await CorrectMiniCreator(mini, cancellationToken);
+
+                //TODO - Another dupe check here based on name and creator
+
+                await _context.SaveChangesAsync();
             }
+
+            await UploadThumbnail(mini);
 
             return mini;
         }
@@ -121,17 +127,25 @@ namespace MiniIndex.Core.Submissions
 
         private async Task<bool> UploadThumbnail(Mini mini)
         {
-            string imgURL = mini.Thumbnail;
-            string MiniID = mini.ID.ToString();
-
-            if(await StorageHelper.UploadFileToStorage(mini.Thumbnail, MiniID, storageConfig))
+            if (!String.IsNullOrEmpty(storageConfig.AccountName))
             {
-                mini.Thumbnail = "https://" +
-                                    storageConfig.AccountName +
-                                    ".blob.core.windows.net/" +
-                                    storageConfig.ImageContainer +
-                                    "/"+ MiniID + ".jpg";
-                return true;
+                string imgURL = mini.Thumbnail;
+                string MiniID = mini.ID.ToString();
+
+                if (await StorageHelper.UploadFileToStorage(mini.Thumbnail, MiniID, storageConfig))
+                {
+                    mini.Thumbnail = "https://" +
+                                        storageConfig.AccountName +
+                                        ".blob.core.windows.net/" +
+                                        storageConfig.ImageContainer +
+                                        "/" + MiniID + ".jpg";
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {

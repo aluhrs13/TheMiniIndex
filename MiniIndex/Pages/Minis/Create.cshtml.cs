@@ -55,7 +55,7 @@ namespace MiniIndex.Pages.Minis
 
             IdentityUser user = await _userManager.GetUserAsync(User);
 
-            Mini mini = await _mediator.Send(new MiniSubmissionRequest(URL, user));
+            Mini mini = await _mediator.Send(new MiniSubmissionRequest(URL, user, false));
 
             //TODO: Display an error....
             if (mini is null)

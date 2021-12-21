@@ -265,7 +265,25 @@ namespace MiniIndex.API
         }
 
         //TODO: Probably should [Authorize] this, but enabling programmatic case
-        // POST api/<MinisController>
+        // PATCH api/<MinisController>
+        [HttpPatch("{id}/FixThumbnail")]
+        [Authorize]
+        public async Task<IActionResult> FixThumbnail(int id)
+        {
+            Mini currentMini = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.ID == id);
+            Mini mini = await _mediator.Send(new MiniSubmissionRequest(new Uri(currentMini.Link), user, true));
+
+            if (mini != null)
+            {
+                //TODO: look at using UrlHelper or LinkGenerator for this
+                return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
+            }
+            else
+            {
+                return new StatusCodeResult(501);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] string url)
         {
@@ -276,7 +294,7 @@ namespace MiniIndex.API
                 user = await _userManager.Users.FirstAsync(u => u.Email == "admin@theminiindex.com");
             }
 
-            Mini mini = await _mediator.Send(new MiniSubmissionRequest(new Uri(url), user));
+            Mini mini = await _mediator.Send(new MiniSubmissionRequest(new Uri(url), user, false));
 
             if (mini != null)
             {

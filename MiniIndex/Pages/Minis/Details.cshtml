@@ -61,6 +61,31 @@
                     document.getElementById("currStatus").innerHTML = "ERROR.";
                   });
             }
+
+            function updateThumbnail(){
+                var id = document.getElementById("miniid").innerHTML;
+
+                fetch("/api/Minis/"+id+"/FixThumbnail", {
+                    method: "PATCH",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    } 
+                })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+
+                    return response.json();
+                  })
+                  .then(() => {
+                    location.reload();
+                  })
+                  .catch(error => {
+                    console.error(error);
+                    document.getElementById("secondary-nav").style.backgroundColor = "red";
+                  });
+            }
         </script>
     }
 }
@@ -83,6 +108,7 @@
             <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(1)">Approve</a></div>
             <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(0)">Visible</a></div>
             <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(2)">Reject</a></div>
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateThumbnail()">Update Thumbnail</a></div>
         </div>
     </div>
 }
