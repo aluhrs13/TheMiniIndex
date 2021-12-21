@@ -37,7 +37,6 @@ namespace MiniIndex.API
             _mediator = mediator;
             _telemetry = telemetry;
             _configuration = configuration;
-
         }
 
         private readonly MiniIndexContext _context;
