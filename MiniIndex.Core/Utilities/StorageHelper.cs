@@ -49,7 +49,7 @@ namespace MiniIndex.Core.Utilities
             image.SaveAsJpeg(uploadStream);
 
             uploadStream.Position = 0;
-            await blobClient.UploadAsync(uploadStream);
+            await blobClient.UploadAsync(uploadStream, true);
 
             return await Task.FromResult(true);
         }
