@@ -17,6 +17,11 @@ using MiniIndex.Core.Utilities;
 using MiniIndex.Persistence;
 using MiniIndex.Services;
 using WebPWrecover.Services;
+using Hangfire;
+using Hangfire.SqlServer;
+using System;
+using Hangfire.Dashboard;
+using MiniIndex.Models;
 
 namespace MiniIndex
 {
@@ -65,6 +70,20 @@ namespace MiniIndex
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniIndexContext>();
 
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }));
+            services.AddHangfireServer();
+
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
@@ -106,13 +125,14 @@ namespace MiniIndex
                 
                 app.UseSwagger();
 
+                app.UseHangfireDashboard();
+
                 // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
-                
             }
             else
             {
