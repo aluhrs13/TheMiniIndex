@@ -54,7 +54,7 @@ namespace MiniIndex.API
         [Authorize(Roles ="Moderator")]
         public async Task<IActionResult> Patch([FromBody] Tag value)
         {
-            Tag Tag = await _context.Tag.FirstOrDefaultAsync(t=> t.ID == value.ID);
+            Tag Tag = await _context.Tag.FindAsync(value.ID);
 
             if (Tag == null)
             {
@@ -91,7 +91,7 @@ namespace MiniIndex.API
         public async Task<IActionResult> Delete(int id)
         {
             //TODO: Delete MiniTags too? Maybe only work if there's no approved MiniTags
-            Tag Tag = await _context.Tag.FirstOrDefaultAsync(t => t.ID == id);
+            Tag Tag = await _context.Tag.FindAsync(id);
             _context.Remove(Tag);
 
             try
@@ -120,9 +120,9 @@ namespace MiniIndex.API
         [HttpGet("{id}/Pairs")]
         public async Task<IActionResult> Get(int id)
         {
-            Tag selectedTag = _context.Tag.FirstOrDefault(t => t.ID == id);
+            Tag selectedTag = await _context.Tag.FindAsync(id);
                 
-            List<TagPair> pairs = _context.TagPair
+            List<TagPair> pairs = _context.TagPair.AsNoTracking()
                     .Where(tp => tp.Tag1 ==selectedTag || tp.Tag2 == selectedTag)
                     .Include(tp=>tp.Tag2)
                     .Include(tp=>tp.Tag1)
@@ -136,16 +136,16 @@ namespace MiniIndex.API
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> PairPost(int tag1, int tag2, [FromQuery] int type)
         {
-            Tag Tag1 = _context.Tag.FirstOrDefault(t => t.ID == tag1);
-            Tag Tag2 = _context.Tag.FirstOrDefault(t => t.ID == tag2);
+            Tag Tag1 = await _context.Tag.FindAsync(tag1);
+            Tag Tag2 = await _context.Tag.FindAsync(tag2);
             PairType pairType = (PairType)type;
 
             //This is a hack. 99 means "child" from the tag manager, so we're swapping them.
             //It's a dumb hack, but I'm tired.
             if (type == 99)
             {
-                Tag1 = _context.Tag.FirstOrDefault(t => t.ID == tag2);
-                Tag2 = _context.Tag.FirstOrDefault(t => t.ID == tag1);
+                Tag1 = await _context.Tag.FindAsync(tag2);
+                Tag2 = await _context.Tag.FindAsync(tag1);
                 pairType = PairType.Parent;
             }
 
@@ -161,12 +161,12 @@ namespace MiniIndex.API
                 Type = pairType
             };
 
-            if (_context.TagPair.Any(tp => (tp.Tag1 == Tag1 && tp.Tag2 == Tag2)))
+            if (await _context.TagPair.AnyAsync(tp => (tp.Tag1 == Tag1 && tp.Tag2 == Tag2)))
             {
                 return NotFound();
             }
 
-            _context.TagPair.Add(newPair);
+            await _context.TagPair.AddAsync(newPair);
 
             await _context.SaveChangesAsync();
             return Ok("{}");

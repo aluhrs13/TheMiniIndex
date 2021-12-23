@@ -59,9 +59,8 @@ namespace MiniIndex.API
 
             if (creatorId > 0)
             {
-                creatorInfo = await _context.Mini
+                creatorInfo = await _context.Mini.AsNoTracking().TagWith("Minis API Search")
                                 .Include(m => m.Creator)
-                                    .ThenInclude(c => c.Sites)
                                 .Select(m => m.Creator)
                                 .FirstOrDefaultAsync(c => c.ID == creatorId);
             }
@@ -80,7 +79,6 @@ namespace MiniIndex.API
                                                             { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()},
                                                             { "SortType", searchRequest.SortType}
                                                         });
-            //TODO: Remove thumbnail?
             return Ok(
                 searchResult.Select(
                     m => new
@@ -101,7 +99,7 @@ namespace MiniIndex.API
         public async Task<IActionResult> Get(int id)
         {
             //TODO: Remove Link, propagate sources
-            Mini mini = await _context.Mini
+            Mini mini = await _context.Mini.AsNoTracking().TagWith("Minis API View")
                                         .Include(m => m.Creator)
                                         .FirstOrDefaultAsync(m => m.ID == id);
 
@@ -120,7 +118,10 @@ namespace MiniIndex.API
         [HttpGet("{id}/Redirect")]
         public async Task<IActionResult> Redirect(int id)
         {
-            Mini mini = await _context.Mini.Include(m => m.Sources).Include(m => m.Creator).FirstOrDefaultAsync(m => m.ID == id);
+            Mini mini = await _context.Mini.AsNoTracking().TagWith("Minis API Redirect")
+                                    .Include(m => m.Sources)
+                                    .Include(m => m.Creator)
+                                    .FirstOrDefaultAsync(m => m.ID == id);
 
             if (mini == null)
             {
@@ -156,8 +157,9 @@ namespace MiniIndex.API
         public async Task<IActionResult> Related(int id)
         {
             List<Mini> RelatedMinis = new List<Mini> { };
-            Mini mini = await _context.Mini
+            Mini mini = await _context.Mini.TagWith("Minis API Related #1")
                             .Include(m => m.Creator)
+                            .AsNoTracking()
                             .FirstOrDefaultAsync(m => m.ID == id);
 
             //Find Related Minis. This is fairly hacky right now, but good for common cases.
@@ -170,7 +172,7 @@ namespace MiniIndex.API
                 {
                     foreach (Tag creatureTag in creatureTags)
                     {
-                        List<Mini> creatureRelatedMinis = _context.Mini
+                        List<Mini> creatureRelatedMinis = _context.Mini.AsNoTracking().TagWith("Minis API Related #2")
                                                             .Include(m => m.Creator)
                                                             .Where(m => m.MiniTags.Where(mt => mt.Status == Status.Approved).Any(mt => mt.Tag == creatureTag))
                                                             .ToList();
@@ -187,7 +189,7 @@ namespace MiniIndex.API
                 {
                     foreach (Tag classTag in classTags)
                     {
-                        IEnumerable<Mini> classRelatedMinis = _context.Mini
+                        IEnumerable<Mini> classRelatedMinis = _context.Mini.AsNoTracking().TagWith("Minis API Related #3")
                                                                     .Include(m => m.Creator)
                                                                     .Include(m => m.MiniTags)
                                                                         .ThenInclude(mt => mt.Tag)
@@ -196,8 +198,6 @@ namespace MiniIndex.API
                         foreach (Tag raceTag in raceTags)
                         {
                             List<Mini> raceClassRelatedMinis = classRelatedMinis.Where(m => m.MiniTags.Select(mt => mt.Tag).Contains(raceTag)).ToList();
-
-
                             RelatedMinis = RelatedMinis.Concat(raceClassRelatedMinis).ToList();
                         }
                     }
@@ -214,7 +214,7 @@ namespace MiniIndex.API
                 {
                     foreach (Tag creatureTypeTag in creatureTypeTags)
                     {
-                        List<Mini> creatureRelatedMinis = _context.Mini
+                        List<Mini> creatureRelatedMinis = _context.Mini.AsNoTracking().TagWith("Minis API Related #5")
                                                             .Include(m => m.Creator)
                                                             .Where(m => m.MiniTags.Where(mt => mt.Status == Status.Approved).Any(mt => mt.Tag == creatureTypeTag))
                                                             .ToList();
@@ -225,7 +225,10 @@ namespace MiniIndex.API
 
                 if (RelatedMinis.Count == 0)
                 {
-                    RelatedMinis = RelatedMinis.Concat(_context.Mini.Where(m => m.Creator == mini.Creator).ToList()).ToList();
+                    RelatedMinis = _context.Mini.AsNoTracking().TagWith("Minis API Related #5")
+                                                .Include(m => m.Creator)                                            
+                                                .Where(m => m.Creator == mini.Creator)
+                                                .ToList();
                 }
             }
 
@@ -243,7 +246,7 @@ namespace MiniIndex.API
         [HttpGet("{id}/Tags")]
         public async Task<IActionResult> Tags(int id)
         {
-            Mini selectedMini = await _context.Set<Mini>()
+            Mini selectedMini = await _context.Mini.AsNoTracking()
                             .Include(m => m.MiniTags)
                             .ThenInclude(mt => mt.Tag)
                             .FirstOrDefaultAsync(c => c.ID == id);
@@ -273,12 +276,11 @@ namespace MiniIndex.API
         [Authorize]
         public async Task<IActionResult> FixThumbnail(int id)
         {
-            Mini currentMini = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.ID == id);
+            Mini currentMini = await _context.Mini.FindAsync(id);
             Mini mini = await _mediator.Send(new MiniSubmissionRequest(new Uri(currentMini.Link), null, true));
 
             if (mini != null)
             {
-                //TODO: look at using UrlHelper or LinkGenerator for this
                 return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
             }
             else
@@ -301,7 +303,6 @@ namespace MiniIndex.API
 
             if (mini != null)
             {
-                //TODO: look at using UrlHelper or LinkGenerator for this
                 return Ok($"https://www.theminiindex.com/Minis/Details?id={mini.ID}");
             }
             else

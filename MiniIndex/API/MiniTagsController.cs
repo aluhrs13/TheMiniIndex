@@ -48,7 +48,7 @@ namespace MiniIndex.API
         [Authorize(Roles="Moderator")]
         public async Task<IActionResult> Patch([FromBody] MiniTag value)
         {
-            MiniTag MiniTag = await _context.MiniTag.FirstOrDefaultAsync(m => m.MiniID == value.MiniID && m.TagID == value.TagID);
+            MiniTag MiniTag = await _context.MiniTag.FindAsync(value.MiniID, value.TagID);
 
             if (MiniTag == null)
             {
@@ -77,8 +77,7 @@ namespace MiniIndex.API
         public async Task<IActionResult> Delete([FromBody] MiniTag value)
         {
             //TODO: Propagate deletion to paired tags. Possibly with a new state for "Autoadded"
-            MiniTag MiniTag = await _context.MiniTag.FirstOrDefaultAsync(m => m.MiniID == value.Mini.ID && m.TagID == value.Tag.ID);
-
+            MiniTag MiniTag = await _context.MiniTag.FindAsync(value.Mini.ID, value.Tag.ID);
 
             if (User.IsInRole("Moderator"))
             {

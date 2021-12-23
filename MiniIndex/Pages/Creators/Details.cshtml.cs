@@ -53,6 +53,7 @@ namespace MiniIndex.Pages.Creators
 
             Creator = await _context
                 .Set<Creator>()
+                .AsNoTracking()
                 .Include(x => x.Sites)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
@@ -63,76 +64,11 @@ namespace MiniIndex.Pages.Creators
 
             _telemetry.TrackEvent("ViewedCreator", new Dictionary<string, string> { { "CreatorId", Creator.ID.ToString() } });
 
-            AllCreatorsMinis = new List<Mini>();
-            AllCreatorsMinis = _context.Mini.Where(m => m.Creator.ID == Creator.ID).Where(m => (m.Status!=Status.Deleted && m.Status!=Status.Rejected)).OrderByDescending(m=>m.ID).ToList();
+            AllCreatorsMinis = _context.Mini.AsNoTracking().TagWith("Creator Mini List")
+                                        .Where(m => m.Creator.ID == Creator.ID)
+                                        .Where(m => (m.Status!=Status.Deleted && m.Status!=Status.Rejected))
+                                        .OrderByDescending(m=>m.ID).ToList();
 
-            //TODO: minor hack; review this logic.
-            string thingiverseUrlString = Creator.Sites.FirstOrDefault(s => s is ThingiverseSource)?.CreatorPageUri?.ToString();
-
-            if (!String.IsNullOrEmpty(thingiverseUrlString))
-            {
-                ThingiverseError = "Thingiverse is currently having API issues and as a result we've temporarily disabled this feature, sorry for the inconvenience.";
-                ThingiverseMiniList = new List<Mini>();
-
-                /*
-                using (HttpClient client = new HttpClient())
-                {
-                    if (String.IsNullOrEmpty(PageNumber))
-                    {
-                        ParsedPageNumber = 1;
-                    }
-                    else
-                    {
-                        ParsedPageNumber = Int32.Parse(PageNumber);
-
-                        if (ParsedPageNumber <= 0)
-                        {
-                            ParsedPageNumber = 1;
-                        }
-                    }
-
-                    string ThingiverseUserName = thingiverseUrlString.Split('/').Last();
-                    HttpResponseMessage response = await client.GetAsync("https://api.thingiverse.com/users/" + ThingiverseUserName + "/things?access_token=" + _configuration["ThingiverseToken"] + "&page=" + ParsedPageNumber);
-                    HttpContent responseContent = response.Content;
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        using (StreamReader reader = new StreamReader(await responseContent.ReadAsStreamAsync()))
-                        {
-                            string result = await reader.ReadToEndAsync();
-                            dynamic returnList = JsonConvert.DeserializeObject(result);
-
-                            foreach (dynamic CurrentMini in returnList)
-                            {
-                                Mini NewMini = new Mini();
-                                string CurrentLink = CurrentMini["public_url"].ToString();
-
-                                if (_context.Mini.Any(m => m.Link == CurrentLink))
-                                {
-                                    NewMini = _context.Mini.FirstOrDefault(m => m.Link == CurrentLink);
-                                }
-                                else
-                                {
-                                    NewMini.Name = CurrentMini["name"].ToString();
-                                    NewMini.Link = CurrentLink;
-                                    NewMini.Thumbnail = CurrentMini["thumbnail"].ToString();
-                                    NewMini.Status = Status.Unindexed;
-                                }
-
-                                ThingiverseMiniList.Add(NewMini);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        ThingiverseError = "Received an error from Thingiverse's API. This is generally a problem with connectivity to Thingiverse on their side, please try again later.";
-                        _telemetry.TrackEvent("ThingiverseError", new Dictionary<string, string> {
-                            { "StatusCode", response.StatusCode.ToString() },
-                            { "ReasonPhrase", response.ReasonPhrase.ToString() }
-                        });
-                    }
-                }
-                */
-            }
             return Page();
         }
     }

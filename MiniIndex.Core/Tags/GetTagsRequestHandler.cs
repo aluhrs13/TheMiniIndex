@@ -21,8 +21,7 @@ namespace MiniIndex.Core.Tags
 
         public async Task<IEnumerable<string>> Handle(GetTagsRequest request, CancellationToken cancellationToken)
         {
-            IQueryable<Tag> tagsQuery = _context.Set<Tag>()
-                .OrderBy(t => t.TagName);
+            IQueryable<Tag> tagsQuery = _context.Tag.TagWith("Tag Search").AsNoTracking().OrderBy(t => t.TagName);
 
             if (!String.IsNullOrEmpty(request.SearchTerm?.Trim()))
             {

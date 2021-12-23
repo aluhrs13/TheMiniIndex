@@ -54,10 +54,11 @@ namespace MiniIndex.API
         {
             //TODO: Use Mediatr and Pagination classes
             //TODO: Telemetry
-            List<Creator> countQuery = await _context.Set<Mini>()
-                .Include(m => m.Creator).ThenInclude(c => c.Sites)
-                .Select(m => m.Creator)
-                .ToListAsync();
+            List<Creator> countQuery = await _context.Mini.AsNoTracking().TagWith("Creator API List")
+                                                .Include(m => m.Creator)
+                                                    .ThenInclude(c => c.Sites)
+                                                .Select(m => m.Creator)
+                                                .ToListAsync();
 
             Dictionary<Creator, int> CreatorCounts = new Dictionary<Creator, int>();
 
@@ -97,7 +98,9 @@ namespace MiniIndex.API
         [HttpGet("{id}/Scan")]
         public async Task<IActionResult> AddScan(int id)
         {
-            List<SourceSite> sites = _context.Set<SourceSite>().Where(x => x.Creator.ID == id).AsNoTracking().ToList();
+            List<SourceSite> sites = await _context.Set<SourceSite>().AsNoTracking().TagWith("Creator Scan API")
+                                            .Where(x => x.Creator.ID == id)
+                                            .ToListAsync();
 
             foreach(SourceSite site in sites)
             {
@@ -105,11 +108,6 @@ namespace MiniIndex.API
             }
 
             return Ok();
-        }
-
-        public async Task ScanSourceSite(Uri site)
-        {
-            Console.WriteLine(site);
         }
     }
 }

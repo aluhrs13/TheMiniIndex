@@ -24,6 +24,7 @@ namespace MiniIndex.Pages.Tags
         public async Task OnGetAsync()
         {
             Tag = _context.MiniTag
+                .AsNoTracking().TagWith("Browse Tags")
                 .Include(t => t.Tag)
                 .AsEnumerable()
                 .GroupBy(t => t.Tag)

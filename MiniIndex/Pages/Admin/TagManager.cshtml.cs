@@ -34,7 +34,8 @@ namespace MiniIndex.Pages.Admin
         {
             if (User.IsInRole("Moderator"))
             {
-                Tag = _context.MiniTag
+                Tag = _context.MiniTag.TagWith("Tag Manager")
+                    .AsNoTracking()
                     .Include(t=>t.Tag)
                     .AsEnumerable()
                     .GroupBy(t=>t.Tag)
