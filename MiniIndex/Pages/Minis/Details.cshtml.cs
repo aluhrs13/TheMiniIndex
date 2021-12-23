@@ -37,6 +37,7 @@ namespace MiniIndex.Pages.Minis
             }
 
             Mini = await _context.Mini
+                .AsNoTracking().TagWith("Viewwed Mini")
                 .Include(m => m.MiniTags)
                     .ThenInclude(mt => mt.Tag)
                 .Include(m => m.Creator)
@@ -54,7 +55,7 @@ namespace MiniIndex.Pages.Minis
 
             if (User.Identity.IsAuthenticated)
             {
-                IsStarred = _context.Set<Models.Starred>().Any(m => m.Mini.ID == Mini.ID && m.User.Id == CurrentUser.Id);
+                IsStarred = _context.Starred.AsNoTracking().Any(m => m.Mini.ID == Mini.ID && m.User.Id == CurrentUser.Id);
             }
             else
             {

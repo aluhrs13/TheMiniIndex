@@ -44,6 +44,7 @@ namespace MiniIndex.Pages.Minis
             }
 
             Mini = await _context.Mini
+                .AsNoTracking().TagWith("Edited Mini")
                 .Include(m => m.MiniTags)
                     .ThenInclude(mt => mt.Tag)
                 .Include(m => m.Creator)
@@ -61,8 +62,11 @@ namespace MiniIndex.Pages.Minis
 
             UnusedTags = _context
                 .Tag
+                .AsNoTracking()
+                .TagWith("Unused Tags")
                 .AsEnumerable()
-                .Except(Mini.MiniTags.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending)).Select(mt => mt.Tag))
+                .Except(Mini.MiniTags.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending))
+                .Select(mt => mt.Tag))
                 .OrderBy(m => m.Category.ToString())
                 .ThenBy(m => m.TagName)
                 .ToList();

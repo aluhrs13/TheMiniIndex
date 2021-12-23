@@ -24,7 +24,7 @@ namespace MiniIndex.Pages
 
         public void OnGet()
         {
-            MiniCount = _context.Set<Mini>().Count();
+            MiniCount = _context.Mini.AsNoTracking().Count();
         }
     }
 }

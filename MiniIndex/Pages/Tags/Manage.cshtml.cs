@@ -52,17 +52,18 @@ namespace MiniIndex.Pages.Tags
                     return Page();
                 }
 
-                Tag = await _context.Tag.FirstOrDefaultAsync(m => m.ID == id);
+                Tag = await _context.Tag.FindAsync(id);
 
-                MiniCount = _context.Mini.Where(m => m.MiniTags.Any(mt => mt.TagID == Tag.ID)).ToList().Count;
+                MiniCount = _context.Mini.AsNoTracking().Where(m => m.MiniTags.Any(mt => mt.TagID == Tag.ID)).ToList().Count;
 
                 TagPairs = _context.TagPair
+                                    .AsNoTracking()
                                     .Where(tp => (tp.Tag1 == Tag || tp.Tag2 == Tag))
                                     .Include(tp => tp.Tag1)
                                     .Include(tp => tp.Tag2)
                                     .ToList();
 
-                IList<Tag> allTags = _context.Tag.OrderBy(t => t.TagName).ToList();
+                IList<Tag> allTags = _context.Tag.AsNoTracking().OrderBy(t => t.TagName).ToList();
 
                 TagOptions = new SelectList(allTags, "ID", "TagName");
 

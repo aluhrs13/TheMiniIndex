@@ -49,11 +49,11 @@ namespace MiniIndex.API
         {
             Starred newStarred = new Starred
             {
-                Mini = _context.Mini.Where(m => m.ID == id).First(),
+                Mini = await _context.Mini.FindAsync(id),
                 User = await _userManager.GetUserAsync(User)
             };
 
-            _context.Set<Starred>().Add(newStarred);
+            await _context.Starred.AddAsync(newStarred);
             await _context.SaveChangesAsync();
             return Ok("{}");
         }
@@ -64,11 +64,11 @@ namespace MiniIndex.API
         public async Task<IActionResult> Delete(int id)
         {
             IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
-            Starred Starred = await _context.Set<Starred>().FindAsync(id, CurrentUser.Id);
+            Starred Starred = await _context.Starred.FindAsync(id, CurrentUser.Id);
 
             if (Starred != null)
             {
-                _context.Set<Starred>().Remove(Starred);
+                _context.Starred.Remove(Starred);
                 await _context.SaveChangesAsync();
                 return Ok("{}");
             }

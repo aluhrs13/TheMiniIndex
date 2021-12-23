@@ -23,7 +23,8 @@ namespace MiniIndex.Pages.Admin
 
         public async Task OnGetAsync()
         {
-            UserTags = _context.MiniTag
+            UserTags = _context.MiniTag.TagWith("Pending Tags")
+                .AsNoTracking()
                 .Include(mt => mt.Tagger)
                 .Include(mt => mt.Mini)
                 .Include(mt => mt.Tag)
