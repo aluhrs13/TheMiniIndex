@@ -31,18 +31,7 @@ namespace MiniIndex.Core.Submissions
         public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
             //TODO - This should look at MiniSourceSite, not m.Link.
-            Mini mini = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
-
-            if (mini != null)
-            {
-                if (request.JustThumbnail)
-                {
-                    _context.Add(mini);
-                    await UploadThumbnail(mini);
-                }
-                return mini;
-            }
-
+            Mini mini = await _context.Mini.FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
             IParser parser = _parsers.FirstOrDefault(p => p.CanParse(request.Url));
 
             if (parser is null)
@@ -52,17 +41,30 @@ namespace MiniIndex.Core.Submissions
                 return null;
             }
 
+            if (mini != null)
+            {
+                if (request.JustThumbnail)
+                {
+                    Mini updatedMini = await parser.ParseFromUrl(request.Url);
+                    mini.Thumbnail = updatedMini.Thumbnail;
+                    _context.Attach(mini).State = EntityState.Modified;
+                    await UploadThumbnail(mini);
+                }
+                return mini;
+            }
+
             mini = await parser.ParseFromUrl(request.Url);
 
             //TODO - This should look at MiniSourceSite, not m.Link.
             //Now that we've parsed it, check if the parsed URL is different from the original URL and if we have that.
-            Mini checkDupe = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.Link == mini.Link, cancellationToken);
+            Mini checkDupe = await _context.Mini.FirstOrDefaultAsync(m => m.Link == mini.Link, cancellationToken);
 
             if (checkDupe != null)
             {
                 if (request.JustThumbnail)
                 {
-                    _context.Add(checkDupe);
+                    checkDupe.Thumbnail = mini.Thumbnail;
+                    _context.Attach(mini).State = EntityState.Modified;
                     await UploadThumbnail(checkDupe);
                 }
                 return checkDupe;
