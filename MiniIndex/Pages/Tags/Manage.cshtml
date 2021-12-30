@@ -6,7 +6,11 @@
 
 @section Scripts
 {
-    <environment include="Development, Staging">
+    <environment include="Development">
+        <script type="module" src="~/js/admin.js" defer></script>
+    </environment>
+
+    <environment include="Staging">
         <script type="module" src="~/dist/admin.entry.js" defer></script>
     </environment>
 
@@ -18,23 +22,28 @@
 @if (User.IsInRole("Moderator"))
 {
         <div class="bounded">
+            <input id="miniid" type="hidden" value="@Model.Tag.ID"/>
             <div>
                 <a asp-page="/Admin/TagManager">Back to all tags</a>
             </div>
 
             <h1>@Model.Tag.TagName (@Model.Tag.ID)</h1>
-
             <a href="/Minis/?Tags=@Model.Tag.TagName" class="btn btn-primary" target="_blank">View @Model.MiniCount Tagged</a>
             <a href="/Tags/Delete?id=@Model.Tag.ID" class="btn style-danger">Delete Tag</a>
 
+            <h2>Rename Tag</h2>
+            <div class="row">
+                <input name="newName" id="newName" type="text" value="@Model.Tag.TagName" />
+                <button id="updateNameBtn" class="btn btn-primary">Update</button>
+            </div>
             
             <h2>Tag Category</h2>
-            <select id="@Model.Tag.ID" asp-for="@Model.Tag.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category full-width">
+            <select asp-for="@Model.Tag.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category full-width">
                 <option selected="selected" value="" class="full-width"></option>
             </select>
 
             <h2>Tag Pairs</h2>
-            <table class="table">
+            <table class="table" id="pairTable">
                 @foreach (var item in Model.TagPairs)
                 {
                     <tr id="@item.ID">
@@ -68,7 +77,7 @@
                         </select>
                     </td>
                     <td>
-                        <a href="#" id="@Model.Tag.ID" class="new-pair btn btn-block btn-primary">
+                        <a href="#" class="new-pair btn btn-block btn-primary">
                             Add
                         </a>
                     </td>

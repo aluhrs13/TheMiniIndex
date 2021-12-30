@@ -87,10 +87,12 @@ function updateDateCookie(cookieName) {
 }
 
 function constructFetchString() {
-    var searchString = document.getElementById("SearchString").value;
+    var searchString = encodeURIComponent(
+        document.getElementById("SearchString").value
+    );
     var freeOnly = document.getElementById("FreeOnly").checked;
     var sortType = document.getElementById("SortType").value;
-    var tags = document.getElementById("tagsValue").value;
+    var tags = encodeURIComponent(document.getElementById("tagsValue").value);
 
     return `SearchString=${searchString}&FreeOnly=${freeOnly}&SortType=${sortType}&Tags=${tags}`;
 }

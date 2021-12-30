@@ -57,6 +57,7 @@ namespace MiniIndex.Pages.Minis
 
             Mini mini = await _mediator.Send(new MiniSubmissionRequest(URL, user));
 
+            //TODO: Display an error....
             if (mini is null)
             {
                 return Page();
