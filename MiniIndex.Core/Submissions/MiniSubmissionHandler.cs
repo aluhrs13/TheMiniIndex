@@ -17,16 +17,18 @@ namespace MiniIndex.Core.Submissions
 {
     public class MiniSubmissionHandler : IRequestHandler<MiniSubmissionRequest, Mini>
     {
-        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers, IOptions<AzureStorageConfig> config)
+        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers, IOptions<AzureStorageConfig> config, HttpClient httpClient)
         {
             _context = context;
             _parsers = parsers;
             storageConfig = config.Value;
+            _httpClient = httpClient;
         }
 
         private readonly AzureStorageConfig storageConfig = null;
         private readonly MiniIndexContext _context;
         private readonly IEnumerable<IParser> _parsers;
+        private readonly HttpClient _httpClient;
 
         public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
@@ -134,7 +136,7 @@ namespace MiniIndex.Core.Submissions
                 string imgURL = mini.Thumbnail;
                 string MiniID = mini.ID.ToString();
 
-                if (await StorageHelper.UploadFileToStorage(mini.Thumbnail, MiniID, storageConfig))
+                if (await StorageHelper.UploadFileToStorage(mini.Thumbnail, MiniID, storageConfig, _httpClient))
                 {
                     mini.Thumbnail = "https://" +
                                         storageConfig.AccountName +
