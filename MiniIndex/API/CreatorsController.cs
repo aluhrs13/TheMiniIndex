@@ -1,7 +1,9 @@
 ﻿using AgileObjects.AgileMapper;
 using Hangfire;
+using Hangfire.Storage;
 using MediatR;
 using Microsoft.ApplicationInsights;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +30,8 @@ namespace MiniIndex.API
         IMediator mediator,
         TelemetryClient telemetry,
         IRecurringJobManager recurringJobManager,
-        HttpClient httpClient)
+        HttpClient httpClient,
+        IConfiguration configuration)
         {
             _userManager = userManager;
             _context = context;
@@ -37,6 +40,7 @@ namespace MiniIndex.API
             _telemetry = telemetry;
             _recurringJobManager = recurringJobManager;
             _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         private readonly MiniIndexContext _context;
@@ -46,6 +50,8 @@ namespace MiniIndex.API
         private readonly TelemetryClient _telemetry;
         private readonly IRecurringJobManager _recurringJobManager;
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
+
         // GET: api/<CreatorsController>
         [HttpGet]
         public async Task<IActionResult> Get(
@@ -96,15 +102,101 @@ namespace MiniIndex.API
         }
 
         [HttpGet("{id}/Scan")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> AddScan(int id)
         {
             List<SourceSite> sites = await _context.Set<SourceSite>().AsNoTracking().TagWith("Creator Scan API")
                                             .Where(x => x.Creator.ID == id)
                                             .ToListAsync();
 
-            foreach(SourceSite site in sites)
+            List<RecurringJobDto> recurringJobs = new List<RecurringJobDto>();
+            recurringJobs = JobStorage.Current.GetConnection().GetRecurringJobs().ToList();
+
+            //Default value
+            string cronString = "0 0 * * 1";
+
+            if (recurringJobs.Any())
             {
-                _recurringJobManager.AddOrUpdate(site.ID.ToString(), () => _httpClient.GetAsync("http://miniindexprofileparser.azurewebsites.net/api/ProfileParser?code=<CODE LOGIC HERE>&url="+site.CreatorPageUri), Cron.Weekly, null);
+                cronString = CalculateNextCron(recurringJobs.OrderBy(j => j.CreatedAt).Last().Cron);
+            }
+
+            foreach (SourceSite site in sites)
+            {
+                if(recurringJobs.Any(j=>j.Id == site.ID.ToString())){
+                    continue;
+                }
+                _recurringJobManager.AddOrUpdate(site.ID.ToString(), () => _httpClient.GetAsync("http://miniindexprofileparser.azurewebsites.net/api/ProfileParser?code="+ _configuration["FunctionsCode"] + "&url="+site.CreatorPageUri), cronString, null);
+                cronString = CalculateNextCron(cronString);
+            }
+
+            return Ok();
+        }
+
+        public string CalculateNextCron(string cronString)
+        {
+            /*
+             * Cron syntax: <minute> <hour> * * <day of week>
+             * For every 15 minutes, here are the meaningful cases
+             * 0 0 * * 1
+             * ...
+             * 45 0 * * 1
+             * 0 1 * * 1
+             * ...
+             * 45 23 * * 1
+             * 0 0 * * 2
+             * ...
+             * 45 23 * * 7
+             * 0 0 * * 1
+             */
+            string[] cronFields = cronString.Split(' ');
+
+            int minutes = Int32.Parse(cronFields[0]);
+            int hours = Int32.Parse(cronFields[1]);
+            int days = Int32.Parse(cronFields[4]);
+
+            if (minutes == 45)
+            {
+                minutes = 0;
+                if (hours == 23)
+                {
+                    hours = 0;
+                    if (days == 7)
+                    {
+                        days = 1;
+                    }
+                    else
+                    {
+                        days++;
+                    }
+                }
+                else
+                {
+                    hours++;
+                }
+            }
+            else
+            {
+                minutes += 15;
+            }
+
+            cronFields[0] = minutes.ToString();
+            cronFields[1] = hours.ToString();
+            cronFields[4] = days.ToString();
+
+            return String.Join(" ", cronFields);
+        }
+
+        [HttpDelete("{id}/Scan")]
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> RemoveScan(int id)
+        {
+            List<SourceSite> sites = await _context.Set<SourceSite>().AsNoTracking().TagWith("Creator Scan API")
+                                            .Where(x => x.Creator.ID == id)
+                                            .ToListAsync();
+
+            foreach (SourceSite site in sites)
+            {
+                _recurringJobManager.RemoveIfExists(site.ID.ToString());
             }
 
             return Ok();

@@ -83,6 +83,16 @@ footer {
     background-color: #fff7b9 !important;
 }
 
+.style-dull {
+    background-color: gray !important;
+    color: black !important;
+}
+
+.style-green{
+    background-color: darkgreen !important;
+    color: white !important;
+}
+
 /* Buttons */
 .btn {
     font-weight: bolder;

@@ -37,7 +37,7 @@ namespace MiniIndex.Pages.Minis
             }
 
             Mini = await _context.Mini
-                .AsNoTracking().TagWith("Viewwed Mini")
+                .AsNoTracking().TagWith("Viewed Mini")
                 .Include(m => m.MiniTags)
                     .ThenInclude(mt => mt.Tag)
                 .Include(m => m.Creator)

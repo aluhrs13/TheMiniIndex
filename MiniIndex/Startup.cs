@@ -125,8 +125,6 @@ namespace MiniIndex
                 
                 app.UseSwagger();
 
-                app.UseHangfireDashboard();
-
                 // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
                 // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c =>
@@ -152,6 +150,12 @@ namespace MiniIndex
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangFireAuthorizationFilter() }
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
