@@ -28,7 +28,9 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
             HtmlNode urlNode = htmlDoc.DocumentNode.SelectNodes("//meta[@property=\"og:url\"]").First();
             HtmlNode costNode = htmlDoc.DocumentNode.SelectNodes("//meta[@property=\"product:price:amount\"]").First();
 
-            string creatorName = new Uri(urlNode.GetAttributeValue("content", url.ToString())).Host.Split('.').First().Split('/').Last();
+            Uri link = new Uri(urlNode.GetAttributeValue("content", url.ToString()));
+
+            string creatorName = link.Host.Split('.').First().Split('/').Last();
 
             Creator creator = new Creator
             {
@@ -42,7 +44,7 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
                 Creator = creator,
                 Name = System.Web.HttpUtility.HtmlDecode(nameNode.GetAttributeValue("content", null)),
                 Thumbnail = imageNode.GetAttributeValue("content", null),
-                Link = urlNode.GetAttributeValue("content", url.ToString())
+                Link = "https://gumroad.com" + link.AbsolutePath
             };
 
             mini.Cost = Convert.ToInt32(Math.Round(Convert.ToDouble(costNode.GetAttributeValue("content", "0"))));

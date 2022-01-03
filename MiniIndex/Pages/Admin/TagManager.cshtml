@@ -22,11 +22,11 @@
             <tr id="@item.Tag.ID">
                 <td>
                     <a href="/Tags/Manage?id=@item.Tag.ID">
-                        @Html.DisplayFor(modelItem => item.Tag.TagName)
+                        @item.Tag.TagName
                     </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Tag.Category)
+                    @item.Tag.Category
                 </td>
                 <td>
                     @item.Count

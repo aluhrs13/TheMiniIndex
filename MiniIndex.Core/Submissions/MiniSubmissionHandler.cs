@@ -33,7 +33,7 @@ namespace MiniIndex.Core.Submissions
         public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
             //TODO - This should look at MiniSourceSite, not m.Link.
-            Mini mini = await _context.Mini.FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
+            Mini mini = await _context.Mini.TagWith("MiniSubmissionHandler.cs 1").FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
             IParser parser = _parsers.FirstOrDefault(p => p.CanParse(request.Url));
 
             if (parser is null)
@@ -96,7 +96,7 @@ namespace MiniIndex.Core.Submissions
             MiniSourceSite currentSource = mini.Sources.Single();
 
             //Find a SourceSite that has both the same UserName and SiteName as the Mini's current
-            SourceSite matchingSource = await _context.Set<SourceSite>()
+            SourceSite matchingSource = await _context.Set<SourceSite>().TagWith("MiniSubmissionHandler.cs 2")
                 .Include(s => s.Creator).ThenInclude(c => c.Sites)
                 .FirstOrDefaultAsync((s => s.CreatorUserName == currentSource.Site.CreatorUserName && s.SiteName == currentSource.Site.SiteName), cancellationToken);
 
@@ -114,7 +114,7 @@ namespace MiniIndex.Core.Submissions
             }
 
             //If we didn't find a "perfect" match, try matching just off of the creator's names
-            foundCreator = await _context.Set<Creator>()
+            foundCreator = await _context.Set<Creator>().TagWith("MiniSubmissionHandler.cs 3")
                 .Include(c => c.Sites)
                 .FirstOrDefaultAsync(c => c.Name == mini.Creator.Name, cancellationToken);
 
