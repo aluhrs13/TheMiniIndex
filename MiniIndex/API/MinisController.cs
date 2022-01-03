@@ -288,6 +288,7 @@ namespace MiniIndex.API
                 return new StatusCodeResult(501);
             }
         }
+        // POST api/<MinisController>
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] string url)
