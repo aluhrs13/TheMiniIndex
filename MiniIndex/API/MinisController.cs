@@ -159,6 +159,8 @@ namespace MiniIndex.API
             List<Mini> RelatedMinis = new List<Mini> { };
             Mini mini = await _context.Mini.TagWith("Minis API Related #1")
                             .Include(m => m.Creator)
+                            .Include(m => m.MiniTags)
+                                .ThenInclude(mt => mt.Tag)
                             .AsNoTracking()
                             .FirstOrDefaultAsync(m => m.ID == id);
 
