@@ -4,14 +4,11 @@
 @model MiniIndex.Pages.Admin.AdminModel
 @inject SignInManager<IdentityUser> SignInManager
 @{
-    ViewData["Title"] = "Approve Minis";
-    ViewData["ActivePage"] = ManageNavPages.Minis;
+    ViewData["Title"] = "Pending Minis";
 }
 
 @if (User.IsInRole("Moderator"))
 {
-    <h4>Approve Minis</h4> 
-
     @if (Model.Mini.Count > 0)
     {
         @foreach (var item in Model.Mini)
@@ -21,7 +18,6 @@
                 type="@item.Status"
                 name="@item.Name"
                 thumbnail="@item.Thumbnail"
-                source="@item.Sources.First().Site.DisplayName"
                 tagdata="@JsonConvert.SerializeObject(item.MiniTags.Select(mt=>mt.Tag.TagName))">
             </tmi-admin-mini-row>
             <hr/>
@@ -29,13 +25,10 @@
     }
     else
     {
-        <tr>
-            <td colspan="5" align="center">
-                <h1 style="color:slategray">
-                    All submissions have been moderated!
-                </h1>
-            </td>
-        </tr>
-
+        <div class="center">
+            <h2>
+                All submissions have been moderated!
+            </h2>
+        </div>
     }
 }

@@ -18,7 +18,7 @@ namespace MiniIndex.Pages.Admin
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly MiniIndexContext _context;
-        public IList<IGrouping<Tag,MiniTag>> Tag { get; set; }
+        public IOrderedQueryable<TagListItem> Tag { get; set; }
 
         public TagManagerModel(
                 UserManager<IdentityUser> userManager,
@@ -34,13 +34,21 @@ namespace MiniIndex.Pages.Admin
         {
             if (User.IsInRole("Moderator"))
             {
-                Tag = _context.MiniTag
-                    .Include(t=>t.Tag)
-                    .AsEnumerable()
-                    .GroupBy(t=>t.Tag)
-                    .OrderByDescending(t=>t.Count())
-                    .ToList();
+                Tag = _context.Tag.TagWith("Tag Manager")
+                    .AsNoTracking()
+                    .Select(g => new TagListItem
+                    {
+                        Tag = g,
+                        Count = g.MiniTags.Count
+                    })
+                    .OrderByDescending(m => m.Count);
             }
         }
+    }
+
+    public class TagListItem
+    {
+        public Tag Tag { get; set; }
+        public int Count { get; set; }
     }
 }

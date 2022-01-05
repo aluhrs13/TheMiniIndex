@@ -20,91 +20,158 @@
 
 @section Scripts
 {
-    <script type="module" src="~/dist/edit.entry.js" defer></script>
-}
+    <environment include="Development">
+        <script type="module" src="~/js/edit.js" defer></script>
+        <link rel="stylesheet" href="~/css/mini.css">
+    </environment>
 
-<div>
+    <environment include="Staging">
+        <script type="module" src="~/dist/edit.entry.js" defer></script>
+        <link rel="stylesheet" href="~/dist/mini.css">
+    </environment>
+
+    <environment include="Production">
+        <script type="module" src="https://miniindex.azureedge.net/edit.entry.js" defer></script>
+        <link rel="stylesheet" href="~/dist/mini.css">
+    </environment>
+
     @if (User.IsInRole("Moderator"))
     {
-        <tmi-admin-card
-            miniid="@Model.Mini.ID"
-            submitter="@ViewData["Submitter"]"
-            status="@Model.Mini.Status"
-            cost="@Model.Mini.Cost"
-            thumbnail="@Model.Mini.Thumbnail">
-        </tmi-admin-card>
+        <script type="text/javascript">
+            function updateStatus(status){
+                var id = document.getElementById("miniid").innerHTML;
+                var data = '{"id": '+id+', "status": '+status+'}';
+
+                fetch("/api/Minis", {method: "PATCH", body: data,     headers: {
+                  'Content-Type': 'application/json'
+                } })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+
+                    return response.json();
+                  })
+                  .then(() => {
+                    location.reload();
+                  })
+                  .catch(error => {
+                    console.error(error);
+                    document.getElementById("secondary-nav").style.backgroundColor = "red";
+                    document.getElementById("currStatus").innerHTML = "ERROR.";
+                  });
+            }
+
+            function updateThumbnail(){
+                var id = document.getElementById("miniid").innerHTML;
+
+                fetch("/api/Minis/"+id+"/FixThumbnail", {
+                    method: "PATCH",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    } 
+                })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+                  })
+                  .then(() => {
+                    location.reload();
+                  })
+                  .catch(error => {
+                    console.error(error);
+                    document.getElementById("secondary-nav").style.backgroundColor = "red";
+                  });
+            }
+        </script>
     }
-</div>
-
-<div class="container">
-    <p id="miniid" style="display:none;">@Model.Mini.ID</p>
-    <div>
-        <a asp-page="./Details" asp-route-id="@Model.Mini.ID">Back to Mini</a>
+}
+@if (User.IsInRole("Moderator"))
+{
+    <div class="cluster style-secondary" id="secondary-nav">
+        <div class="row">
+            <div class="montserrat">
+                <span class="xsmall">MODERATOR</span>
+                <br />
+                <span class="larger">TOOLS</span>
+            </div>
+        </div>
+        <div>
+            <b>Submitted by: </b>@ViewData["Submitter"]
+            <br/>
+            <b>Status: </b><span id="currStatus">@Model.Mini.Status</span>
+        </div>
+        <div class="cluster">
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(1)">Approve</a></div>
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(0)">Visible</a></div>
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(2)">Reject</a></div>
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateThumbnail()">Update Thumbnail</a></div>
+        </div>
     </div>
+}
+<div class="bounded">
+    <!-- TODO: Do this right? -->
+    <p id="miniid" style="display:none;">@Model.Mini.ID</p>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h2 class="card-title">Tag Guidance</h2>
-            <p>
-                <b>Thanks for contributing to The Mini Index!</b><br />
-                We have some guidelines written about how to make your
-                tags great, please read through them <a href="https://github.com/aluhrs13/TheMiniIndex/wiki/How-to-tag-Minis">here.</a> At a minimum, please make sure you include
-                the genre, use, and any notable descriptions like the creature's name and type or race and gender.
-                Your Mini and tags will show up once a moderator gets a chance to look and approve it. If you're submitting a bunch of Minis from a single creator, we'll approve at
-                most a few a day to not flood the front page with a single creator. See <a href="https://github.com/aluhrs13/TheMiniIndex/wiki/How-Approval-Works">this page </a>
-                for more information on our approval process, and feel free to email admin@theminiindex.com with any questions.
-            </p>
+    <a asp-page="./Details" asp-route-id="@Model.Mini.ID">Back to Mini</a>
 
-            <p><b>We're also experimenting with automatic tag additions, when adding a tag you may notice more tags than the one you clicked getting added. Feel free to remove those, and if they
-                appear extremely wrong, hit the "Something's wrong" button below and let us know what you don't like!</b></p>
+    <div class="card" style="padding:1rem;">
+        <h2>Tagging Guidance</h2>
+        <p>
+            <b>Thanks for contributing to The Mini Index!</b><br />
+            We have some guidelines written about how to make your
+            tags great, please read through them <a href="https://github.com/aluhrs13/TheMiniIndex/wiki/How-to-tag-Minis">here.</a> At a minimum, please make sure you include
+            the genre, use, and any notable descriptions like the creature's name and type or race and gender.
+            Your Mini and tags will show up once a moderator gets a chance to look and approve it. If you're submitting a bunch of Minis from a single creator, we'll approve at
+            most a few a day to not flood the front page with a single creator. See <a href="https://github.com/aluhrs13/TheMiniIndex/wiki/How-Approval-Works">this page </a>
+            for more information on our approval process, and feel free to email admin@theminiindex.com with any questions.
+        </p>
 
+        <p><b>We're also experimenting with automatic tag additions, when adding a tag you may notice more tags than the one you clicked getting added. Feel free to remove those, and if they
+            appear extremely wrong, hit the "Something's wrong" button below and let us know what you don't like!</b></p>
+
+        <div class="switcher">
             <a href="/Minis/Help" class="btn btn-primary">Tag another Mini</a>
             <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1URVo3SDNGWTlENU5FNkw3VjRaNVJPVkVDRy4u" target="_blank" class="btn btn-secondary">
                 Something's wrong
             </a>
         </div>
     </div>
-    <br />
 
-    <h2>@Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a></h2>
-    <hr />
+    <h1>
+        @Model.Mini.Name by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Model.Mini.Creator.Name</a>
+    </h1>
 
-    <div class="row">
-        <div class="col-md-4" align="center">
-            <div class="row">
-                <div class="col-md-12">
-                    @if (Model.Mini.Sources.Any())
-                    {
-                        @foreach (var miniSource in Model.Mini.Sources)
-                        {
-                            <a href="@miniSource.Link" class="btn btn-block btn-primary @miniSource.Site.SiteName" style="margin-top:10px;">View On @miniSource.Site.SiteName</a>
-                        }
-                    }
-                    else if (!String.IsNullOrEmpty(Model.Mini.Link))
-                    {
-                        <a href="@Html.DisplayFor(modelItem => Model.Mini.Link)" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
-                    }
-                </div>
-            </div>
-
-            <hr />
-
+        @if (Model.Mini.Sources.Any())
+        {
+            @foreach (var miniSource in Model.Mini.Sources)
+            {
+                <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary @miniSource.Site.SiteName">View On @miniSource.Site.SiteName</a>
+            }
+        }
+        else if (!String.IsNullOrEmpty(Model.Mini.Link))
+        {
+            <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary">View at source</a>
+        }
+    <div class="switcher">
+        <div align="center">
             @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
             {
-                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
+                <img style="max-width:100%" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
             }
             else
             {
-                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail" />
+                <img style="max-width:100%" src="@Model.Mini.Thumbnail" />
             }
         </div>
+        <div id="tagContainer">
+            <h2>Tags</h2>
 
-        <div class="col-md-6">
-            <h3>Tags</h3>
-            <hr />
             <div align="center">
-                <div class="loading-spinner" style="display:none;width:64px;height:64px;"  />
+                <div id="loading-spinner" class="hidden" style="width:64px;height:64px;"></div>
             </div>
+        
             <div id="UsedTags">
 
             </div>
@@ -112,105 +179,103 @@
     </div>
 
 
-    <div class="row">
-        <div class="col-md-12">
+    <div>
+        <h2>Add Tags</h2>
+        Filter <input id="tagSearch" type="text" />
 
-            <hr />
+        <hr />
 
-            <h2>Add Tags</h2>
-            Filter <input id="tagSearch" type="text" />
-
-            <hr />
-
-            <div id="UnusedTags">
-                    @if (User.IsInRole("Moderator"))
-                    {
-                        @if (Model.TargetedCreatureTags.Count > 0)
-                        {
-                            <div class="add-tag-div">
-                                <h3 class="add-tag-header">SUPER SMART Quick Tag</h3>
-                                @foreach (var Tag in Model.TargetedCreatureTags)
-                                {
-                                    <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                                }
-                            </div>
-
-                            <hr />
-                        }
-                    }
-
-                @if (Model.RecommendedTags.Count > 0)
+        <div id="UnusedTags">
+            @if (User.IsInRole("Moderator"))
+            {
+                @if (Model.TargetedCreatureTags.Count > 0)
                 {
                     <div class="add-tag-div">
-                        <h3 class="add-tag-header">Quick Tag</h3>
-                        @foreach (var Tag in Model.RecommendedTags)
+                        <h3 class="add-tag-header">SUPER SMART Quick Tag</h3>
+                        @foreach (var Tag in Model.TargetedCreatureTags)
                         {
-                            <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                            <a href="#" id="@Tag.ID" class="btn add-tag">+ @Tag.TagName</a>
                         }
                     </div>
 
                     <hr />
                 }
+            }
 
+            @if (Model.RecommendedTags.Count > 0)
+            {
                 <div class="add-tag-div">
-                    <h3 class="add-tag-header">Genre</h3>
-                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Genre"))
+                    <h3 class="add-tag-header">Quick Tag</h3>
+                    @foreach (var Tag in Model.RecommendedTags)
                     {
-                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                        <a href="#" id="@Tag.ID" class="btn add-tag">+ @Tag.TagName</a>
                     }
                 </div>
 
-                <div class="add-tag-div">
-                    <h3 class="add-tag-header">Use</h3>
-                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Use"))
-                    {
-                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                    }
-                </div>
-
-                @{var PreviousCategory = "";}
-                <div class="add-tag-div">
-
-                    @foreach (var Tag in Model.UnusedTags
-               .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
-                   && m.Category != TagCategory.Genre
-                   && m.Category != TagCategory.OtherDescription
-                   && m.Category != TagCategory.CreatureName
-                   && m.Category != TagCategory.Use))
-                    {
-                        @if (Tag.Category.ToString() != PreviousCategory)
-                        {
-                        @:</div>
-                        @:<div class="add-tag-div">
-                            if (string.IsNullOrEmpty(Tag.Category.ToString()))
-                            {
-                                <hr />
-                            }
-                            else
-                            {
-                                <h3 class="add-tag-header">@Tag.Category</h3>
-                            }
-
-                        }
-                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                        PreviousCategory = Tag.Category.ToString();
-                    }
-                </div>
-                <div class="add-tag-div">
-                    <h3 class="add-tag-header">Creature Name</h3>
-                    @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "CreatureName"))
-                    {
-                        <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
-                    }
-                </div>
                 <hr />
-                <h3>Other Tags</h3>
-                @foreach (var Tag in Model.UnusedTags.Where(m => string.IsNullOrEmpty(m.Category.ToString()) || m.Category.ToString() == "OtherDescription"))
+            }
+
+            <div class="add-tag-div">
+                <h3 class="add-tag-header">Genre</h3>
+                @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Genre"))
                 {
-                    <a href="#" id="@Tag.ID" class="btn btn-outline-success add-tag" style="margin-top:5px;">+ @Tag.TagName</a>
+                    <a href="#" id="@Tag.ID" class="btn add-tag">+ @Tag.TagName</a>
                 }
             </div>
-            <a href="#" id="AddNewTag" class="btn btn-success" style="margin-top:5px;">+ Add as new tag</a>
+
+            <div class="add-tag-div">
+                <h3 class="add-tag-header">Use</h3>
+                @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "Use"))
+                {
+                    <a href="#" id="@Tag.ID" class="btn add-tag">+ @Tag.TagName</a>
+                }
+            </div>
+
+            @{var PreviousCategory = "";}
+            <div class="add-tag-div">
+
+            @foreach (var Tag in Model.UnusedTags
+            .Where(m => !string.IsNullOrEmpty(m.Category.ToString())
+            && m.Category != TagCategory.Genre
+            && m.Category != TagCategory.OtherDescription
+            && m.Category != TagCategory.CreatureName
+            && m.Category != TagCategory.Use))
+            {
+                @if (Tag.Category.ToString() != PreviousCategory)
+                {
+                    @:</div>
+                    @:<div class="add-tag-div">
+                    if (string.IsNullOrEmpty(Tag.Category.ToString()))
+                    {
+                        <hr />
+                    }
+                    else
+                    {
+                        <h3 class="add-tag-header">@Tag.Category</h3>
+                    }
+                }
+                <a href="#" id="@Tag.ID" class="btn add-tag">+ @Tag.TagName</a>
+                PreviousCategory = Tag.Category.ToString();
+            }
+            </div>
+            <div class="add-tag-div">
+                <h3 class="add-tag-header">Creature Name</h3>
+                @foreach (var Tag in Model.UnusedTags.Where(m => m.Category.ToString() == "CreatureName"))
+                {
+                    <a href="#" id="@Tag.ID" class="btn add-tag">+ @Tag.TagName</a>
+                }
+            </div>
+
+            <hr />
+
+            <h3>Other Tags</h3>
+            @foreach (var Tag in Model.UnusedTags.Where(m => string.IsNullOrEmpty(m.Category.ToString()) || m.Category.ToString() == "OtherDescription"))
+            {
+                <a href="#" id="@Tag.ID" class="btn add-tag">+ @Tag.TagName</a>
+            }
         </div>
+        
+        <a href="#" id="AddNewTag" class="btn btn-primary btn-block">+ Add as new tag</a>
+        
     </div>
 </div>

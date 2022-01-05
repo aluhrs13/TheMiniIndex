@@ -5,21 +5,18 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-link navbar-btn navbar-link">Hello @UserManager.GetUserName(User)!</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
-            </li>
-        </ul>
-    </form>
+<div class="icon-no-container center">
+    <a href="/Identity/Account/Manage">
+        <div class="icon icon-profile"></div>
+    </a>
+</div>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <a href="/Identity/Account/Register" class="btn btn-link navbar-btn navbar-link">Register</a>
-        <a href="/Identity/Account/Login?ReturnUrl=@Context.Request.Path@Context.Request.QueryString" class="btn btn-link navbar-btn navbar-link">Login</a>
-    </ul>
+<div class="center">
+    <a href="/Identity/Account/Register" class="btn style-primary">Register</a>
+</div>
+<div class ="center">
+    <a href="/Identity/Account/Login?ReturnUrl=@Context.Request.Path@Context.Request.QueryString" class="btn style-primary">Login</a>
+</div>
 }

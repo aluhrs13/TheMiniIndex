@@ -1,0 +1,339 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-size: 14px;
+    font-weight: 400;
+    background-color: var(--app-primary-color);
+    padding: 0px;
+    margin: 0px;
+}
+
+h3 {
+    font-size: 1.25em;
+    line-height: 1em;
+    white-space: normal;
+}
+
+h4 {
+    font-size: 0.8em;
+}
+
+main {
+    background-color: white;
+    padding: var(--edge-offset);
+    margin: 2px;
+}
+
+table {
+    width: 100%;
+}
+
+footer {
+    padding: 1rem;
+}
+
+.xsmall {
+    font-size: x-small;
+}
+
+.small {
+    font-size: small;
+}
+
+.larger {
+    font-size: larger;
+    white-space: nowrap;
+    line-height: 0.4em;
+}
+
+/* Generic Styling for button/badge */
+.style-primary-border,
+.btn-primary {
+    color: #fff;
+    background-color: var(--app-primary-color);
+    border-color: var(--app-secondary-color);
+}
+
+.style-secondary-border,
+.btn-secondary {
+    color: #000;
+    background-color: var(--app-secondary-color);
+    border-color: var(--app-primary-color);
+}
+
+.style-primary {
+    color: #fff;
+    background-color: var(--app-primary-color);
+}
+
+.style-secondary {
+    color: #000;
+    background-color: var(--app-secondary-color);
+}
+
+.style-danger {
+    background-color: darkred !important;
+    color: white;
+}
+
+.style-moderator {
+    background-color: #fff7b9 !important;
+}
+
+.style-dull {
+    background-color: gray !important;
+    color: black !important;
+}
+
+.style-green{
+    background-color: darkgreen !important;
+    color: white !important;
+}
+
+/* Buttons */
+.btn {
+    font-weight: bolder;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.5rem !important;
+    border-radius: 0.25rem;
+    margin: 4px;
+    text-decoration: none;
+}
+
+.btn:disabled {
+    background-color: gray;
+    opacity: 100% !important;
+}
+
+.btn:hover {
+    opacity: 50%;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.5rem 0.5rem;
+    margin: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+/* Gives various form options full width */
+.full-width {
+    width: 100%;
+    margin: 0.5rem;
+}
+
+input.full-width {
+    font-size: 1.25rem;
+    width: 100%;
+}
+
+/* Cards */
+
+/*
+https://blog.udemy.com/css-grid-vs-flexbox/
+
+Flexbox is for one-dimensional layouts — anything that needs to be laid out in a straight line
+(or in a broken line, which would be a single straight line if they were joined back together).
+
+Grid is for two-dimensional layouts. It can be used as a low-powered flexbox substitute
+(we’re trying to make sure that a single-column/row grid acts very similar to a flexbox),
+but that’s not using its full power.
+
+Flexbox is appropriate for many layouts, and a lot of “page component” elements,
+as most of them are fundamentally linear. Grid is appropriate for the overall page layout
+and for complicated page components that aren’t linear in their design.
+
+http://howtocenterincss.com/
+
+*/
+
+a.card {
+    color: var(--app-primary-color);
+    height: 100%;
+}
+
+.card {
+    filter: drop-shadow(4px 4px 4px var(--app-primary-color));
+    background-color: white;
+    border-radius: 2px;
+}
+
+.card-thumbnail {
+    object-fit: cover;
+    border-radius: 2px 2px 0px 0px;
+    width: 100%;
+}
+
+.card-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.card-padded {
+    padding: 0.5rem;
+}
+
+.mini-name {
+    text-align: left;
+    line-height: 0.4em;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0 !important;
+}
+
+.mini-name > h3,
+.mini-name > h4 {
+    margin: 0.5rem;
+}
+
+.new-tag {
+    width: 0;
+    height: 0;
+    border-bottom: 60px solid #00201c;
+    border-left: 80px solid transparent;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 99;
+    -webkit-filter: drop-shadow(-2px -2px 4px #40a076);
+    filter: drop-shadow(-2px -2px 4px #40a076);
+}
+
+.new-tag-span {
+    position: relative;
+    bottom: -29px;
+    right: 55px;
+    z-index: 100;
+    width: 60px;
+    text-align: center;
+    font-size: 13px;
+    font-family: arial;
+    transform: rotate(-37deg);
+    font-weight: 600;
+    color: white;
+    display: block;
+}
+
+.mini-banner {
+    background-color: #fff7b9;
+    margin-top: -4px;
+    padding: 0.5rem;
+}
+
+/* Limit width of pages that look awkward when extremely wide. */
+@media (min-width: 899px) {
+    .bounded {
+        max-width: 130ch;
+        margin: auto;
+    }
+    .bounded-identity {
+        max-width: 130ch;
+        width: 100%;
+        margin: auto;
+        min-height: 700px;
+    }
+}
+
+/* Identity */
+.form-control {
+    width: 100%;
+    padding: 0.4rem;
+}
+
+.form-group {
+    padding-bottom: 1rem;
+    max-width: 90%;
+}
+
+.text-danger {
+    color: darkred !important;
+}
+
+/* Alerts are used in profile pages */
+.alert {
+    border-radius: 1rem;
+    padding: 2rem;
+}
+.alert-danger {
+    background-color: lightpink;
+    color: darkred;
+}
+.alert-success {
+    background-color: var(--app-secondary-color);
+    color: darkgreen;
+}
+.alert-warning {
+    background-color: lightyellow;
+    color: darkgoldenrod;
+}
+
+/* Nav Bar */
+.nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+button.nav-link {
+    width: 100%;
+    background-color: var(--app-secondary-color);
+    border: none;
+}
+
+.nav-link {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    margin: 0.5rem 0rem;
+    text-decoration: none;
+    color: var(--app-primary-color);
+}
+
+.nav-link:hover {
+    background-color: var(--app-secondary-color);
+    color: var(--app-primary-color);
+}
+
+#secondary-nav {
+    margin: -0.5em;
+    padding: 0.5em;
+}
+
+#tagsInput {
+    font-size: 14px;
+    display: block;
+    width: 300px;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0.6rem 0.6rem;
+    background-color: var(--app-secondary-color);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+tags {
+    min-width: 300px !important;
+    width: 100% !important;
+    background-color: var(--app-secondary-color) !important;
+    --tag-bg: var(--app-primary-color) !important;
+    --tag-text-color: white !important;
+    --tag-hover: #18312d50 !important;
+    border-color: var(--app-primary-color) !important;
+    border-radius: 4px !important;
+}

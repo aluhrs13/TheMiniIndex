@@ -22,29 +22,29 @@ namespace MiniIndex.Minis.Handlers
 
         public async Task<PaginatedList<Mini>> Handle(MiniSearchRequest request, CancellationToken cancellationToken)
         {
+            /*
+             * 
+             * Section 1: No filtering, most recently approved first, then IDs
+             * 
+             */
             IQueryable<Mini> search = _context
                 .Set<Mini>()
                 .Include(m => m.Creator)
-                .Include(m => m.Sources)
-                    .ThenInclude(s => s.Site)
                 .OrderByDescending(m => m.ApprovedTime)
                     .ThenByDescending(m => m.ID);
 
+            /*
+             * 
+             * Section 2: Basic filtering on creator and Free Only
+             * 
+             */
             if(request.Creator!=null && request.Creator.ID > 0)
             {
                 search = search.Where(m => m.Creator == request.Creator);
             }
             else
             {
-                //If we're searching by creator, show all their minis not just approved or pending
-                if (request.Tags.Count() == 0)
-                {
-                    search = search.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending));
-                }
-                else
-                {
-                    search = search.Where(m => m.Status == Status.Approved);
-                }
+                search = search.Where(m => (m.Status == Status.Approved || m.Status == Status.Pending));
             }
 
             if (request.FreeOnly)
@@ -52,6 +52,13 @@ namespace MiniIndex.Minis.Handlers
                 search = search.Where(m => m.Cost == 0);
             }
 
+            //TODO: Move this section lower
+            //TODO: Tag status needs to be approved lol
+            /*
+             * 
+             * Section 3: Only Minis with the given tag(s)
+             * 
+             */
             foreach (var tag in request.Tags)
             {
                 search = search
@@ -62,9 +69,36 @@ namespace MiniIndex.Minis.Handlers
                     );
             }
 
+            /*
+             * 
+             * Section 4: Analyze the search terms
+             * 
+             */
+            //TODO: If SearchString can be deconstructed into tags, do it and then do a tag search (swap this section and the one above).
+
+            /*
+             * 
+             * Section 5: Text search
+             * 
+             */
+
+            /*
+             * 
+             * Section 6: Sort each result set
+             * 
+             */
+
+            /*
+             * 
+             * Section 7: Concat the two sets of results
+             * 
+             */
+
+
             if (!String.IsNullOrEmpty(request.SearchString))
             {
-                var searchTerms = request.SearchString
+                //TODO: Also include pairs of words here.
+                string[] searchTerms = request.SearchString
                     .Split(" ", StringSplitOptions.RemoveEmptyEntries)
                     .Distinct()
                     .Select(s => s.Trim().ToUpperInvariant())
@@ -73,7 +107,8 @@ namespace MiniIndex.Minis.Handlers
 
                 IQueryable<Mini> tagSearch = search;
 
-                foreach (var term in searchTerms)
+                //TODO: Move sort to end
+                foreach (string term in searchTerms)
                 {
                     search = search
                         .Where(m => m.Name.Contains(term))
@@ -100,8 +135,14 @@ namespace MiniIndex.Minis.Handlers
 
                 if (request.Tags.Count() == 0)
                 {
-                    search = search.Union(tagSearch);
+                    search = tagSearch.Union(search);
                 }
+            }
+
+            //TODO: Just hacking this in for now. We're double sorting...
+            if(request.SortType == "newest")
+            {
+                search = search.OrderByDescending(m => m.ID);
             }
 
             return await PaginatedList.CreateAsync(search, request.PageInfo);

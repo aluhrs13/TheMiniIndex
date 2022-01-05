@@ -4,22 +4,39 @@
 
 @if (User.IsInRole("Moderator"))
 {
-    <h1>Moderator Dashboard</h1>
-
-    <div>
-        <hr />
+    <div class="cluster style-secondary" id="secondary-nav">
         <div class="row">
-            <div class="col-md-3">
-                <partial name="_ManageNav" />
-            </div>
-            <div class="col-md-9">
-                @RenderBody()
+            <div class="montserrat">
+                <span class="xsmall">MODERATOR</span>
+                <br />
+                <span class="larger">TOOLS</span>
             </div>
         </div>
+
+        <div class="cluster">
+            <div class="center"><a class="btn style-secondary" asp-page="./Index">Pending Minis</a></div>
+            <div class="center"><a class="btn style-secondary" asp-page="./Unindexed">Unindexed Minis</a></div>
+            <div class="center"><a class="btn style-secondary" asp-page="./PendingTags">Pending Tags</a></div>
+            <div class="center"><a class="btn style-secondary" asp-page="./TagManager">Manage Tags</a></div>
+            <div class="center"><a class="btn style-secondary" asp-page="./ManageCreators">Manage Creators</a></div>
+        </div>
+    </div>
+
+    <h1>Moderator Dashboard - @ViewData["Title"]</h1>
+    <div>
+        @RenderBody()
     </div>
 }
 
 @section Scripts
 {
-    <script type="module" src="~/dist/admin.entry.js" defer></script>
+    <environment include="Development, Staging">
+        <script type="module" src="~/dist/admin.entry.js" defer></script>
+    </environment>
+
+    <environment include="Production">
+        <script type="module" src="https://miniindex.azureedge.net/admin.entry.js" defer></script>
+    </environment>
+
+    @RenderSection("Scripts2", required: false)
 }

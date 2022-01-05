@@ -1,0 +1,82 @@
+.Thingiverse {
+    background-color: #3f8cfe !important;
+    border-color: #3f8cfe !important;
+}
+
+.Patreon {
+    background-color: #e85b46 !important;
+    border-color: #e85b46 !important;
+    color: white !important;
+}
+
+.MyMiniFactory {
+    background-color: #3fbc9c !important;
+    border-color: #3fbc9c !important;
+    color: white !important;
+}
+
+.Shapeways {
+    background-color: #ff4b5a !important;
+    border-color: #ff4b5a !important;
+    color: white !important;
+}
+
+.Gumroad {
+    background-color: #198c8c !important;
+    border-color: #198c8c !important;
+    color: white !important;
+}
+
+.Cults3d {
+    background-color: #822ef5 !important;
+    border-color: #822ef5 !important;
+    color: white !important;
+}
+
+.Wargaming3d {
+    background-color: #41533b !important;
+    border-color: #41533b !important;
+    color: white !important;
+}
+
+.DuncanShadow {
+    background-color: #4e2b07 !important;
+    border-color: #4e2b07 !important;
+    color: white !important;
+}
+
+.PrusaPrinters {
+    background-color: #fa6831 !important;
+    border-color: #fa6831 !important;
+    color: white !important;
+}
+
+.AtelierStoria {
+    background-color: #5f7e23 !important;
+    border-color: #5f7e23 !important;
+    color: white !important;
+}
+
+/* Star/Unstar button styling */
+.add-star {
+    background-color: green;
+    color: white;
+}
+
+.remove-star {
+    background-color: darkred;
+    color: white;
+}
+
+/* Edit Stuff */
+.add-tag {
+    background-color: var(--app-secondary-color);
+    color: var(--app-primary-color);
+    margin: 0.25rem !important;
+}
+
+.remove-tag {
+    background-color: darkred;
+    color: white;
+    margin: 0.25rem !important;
+}

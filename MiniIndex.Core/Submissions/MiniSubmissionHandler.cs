@@ -17,27 +17,23 @@ namespace MiniIndex.Core.Submissions
 {
     public class MiniSubmissionHandler : IRequestHandler<MiniSubmissionRequest, Mini>
     {
-        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers, IOptions<AzureStorageConfig> config)
+        public MiniSubmissionHandler(MiniIndexContext context, IEnumerable<IParser> parsers, IOptions<AzureStorageConfig> config, HttpClient httpClient)
         {
             _context = context;
             _parsers = parsers;
             storageConfig = config.Value;
+            _httpClient = httpClient;
         }
 
         private readonly AzureStorageConfig storageConfig = null;
         private readonly MiniIndexContext _context;
         private readonly IEnumerable<IParser> _parsers;
+        private readonly HttpClient _httpClient;
 
         public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
             //TODO - This should look at MiniSourceSite, not m.Link.
-            Mini mini = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
-
-            if (mini != null)
-            {
-                return mini;
-            }
-
+            Mini mini = await _context.Mini.TagWith("MiniSubmissionHandler.cs 1").FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
             IParser parser = _parsers.FirstOrDefault(p => p.CanParse(request.Url));
 
             if (parser is null)
@@ -47,36 +43,50 @@ namespace MiniIndex.Core.Submissions
                 return null;
             }
 
+            if (mini != null)
+            {
+                if (request.JustThumbnail)
+                {
+                    Mini updatedMini = await parser.ParseFromUrl(request.Url);
+                    mini.Thumbnail = updatedMini.Thumbnail;
+                    _context.Attach(mini).State = EntityState.Modified;
+                    await UploadThumbnail(mini);
+                }
+                return mini;
+            }
+
             mini = await parser.ParseFromUrl(request.Url);
 
             //TODO - This should look at MiniSourceSite, not m.Link.
             //Now that we've parsed it, check if the parsed URL is different from the original URL and if we have that.
-            Mini checkDupe = await _context.Set<Mini>().FirstOrDefaultAsync(m => m.Link == mini.Link, cancellationToken);
+            Mini checkDupe = await _context.Mini.FirstOrDefaultAsync(m => m.Link == mini.Link, cancellationToken);
 
             if (checkDupe != null)
             {
+                if (request.JustThumbnail)
+                {
+                    checkDupe.Thumbnail = mini.Thumbnail;
+                    _context.Attach(mini).State = EntityState.Modified;
+                    await UploadThumbnail(checkDupe);
+                }
                 return checkDupe;
             }
 
-
-            mini.User = request.User;
-            mini.Status = Status.Unindexed;
-
-            _context.Add(mini);
-
-            await CorrectMiniCreator(mini, cancellationToken);
-
-            //TODO - Another dupe check here based on name and creator
-
-            await _context.SaveChangesAsync();
-
-            if (!String.IsNullOrEmpty(storageConfig.AccountName))
+            if (!request.JustThumbnail)
             {
-                if (await UploadThumbnail(mini))
-                {
-                    await _context.SaveChangesAsync();
-                }
+                mini.User = request.User;
+                mini.Status = Status.Unindexed;
+
+                _context.Add(mini);
+
+                await CorrectMiniCreator(mini, cancellationToken);
+
+                //TODO - Another dupe check here based on name and creator
+
+                await _context.SaveChangesAsync();
             }
+
+            await UploadThumbnail(mini);
 
             return mini;
         }
@@ -86,7 +96,7 @@ namespace MiniIndex.Core.Submissions
             MiniSourceSite currentSource = mini.Sources.Single();
 
             //Find a SourceSite that has both the same UserName and SiteName as the Mini's current
-            SourceSite matchingSource = await _context.Set<SourceSite>()
+            SourceSite matchingSource = await _context.Set<SourceSite>().TagWith("MiniSubmissionHandler.cs 2")
                 .Include(s => s.Creator).ThenInclude(c => c.Sites)
                 .FirstOrDefaultAsync((s => s.CreatorUserName == currentSource.Site.CreatorUserName && s.SiteName == currentSource.Site.SiteName), cancellationToken);
 
@@ -104,7 +114,7 @@ namespace MiniIndex.Core.Submissions
             }
 
             //If we didn't find a "perfect" match, try matching just off of the creator's names
-            foundCreator = await _context.Set<Creator>()
+            foundCreator = await _context.Set<Creator>().TagWith("MiniSubmissionHandler.cs 3")
                 .Include(c => c.Sites)
                 .FirstOrDefaultAsync(c => c.Name == mini.Creator.Name, cancellationToken);
 
@@ -121,17 +131,25 @@ namespace MiniIndex.Core.Submissions
 
         private async Task<bool> UploadThumbnail(Mini mini)
         {
-            string imgURL = mini.Thumbnail;
-            string MiniID = mini.ID.ToString();
-
-            if(await StorageHelper.UploadFileToStorage(mini.Thumbnail, MiniID, storageConfig))
+            if (!String.IsNullOrEmpty(storageConfig.AccountName))
             {
-                mini.Thumbnail = "https://" +
-                                    storageConfig.AccountName +
-                                    ".blob.core.windows.net/" +
-                                    storageConfig.ImageContainer +
-                                    "/"+ MiniID + ".jpg";
-                return true;
+                string imgURL = mini.Thumbnail;
+                string MiniID = mini.ID.ToString();
+
+                if (await StorageHelper.UploadFileToStorage(mini.Thumbnail, MiniID, storageConfig, _httpClient))
+                {
+                    mini.Thumbnail = "https://" +
+                                        storageConfig.AccountName +
+                                        ".blob.core.windows.net/" +
+                                        storageConfig.ImageContainer +
+                                        "/" + MiniID + ".jpg";
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {

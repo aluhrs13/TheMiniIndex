@@ -2,17 +2,13 @@
 using Azure.Storage.Blobs;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace MiniIndex.Core.Utilities
 {
     public static class StorageHelper
     {
-        public static async Task<bool> UploadFileToStorage(string url, string MiniID, AzureStorageConfig _storageConfig)
+        public static async Task<bool> UploadFileToStorage(string url, string MiniID, AzureStorageConfig _storageConfig, HttpClient httpClient)
         {
-            Stream fileStream;
             MemoryStream uploadStream = new MemoryStream();
 
             //Configure blob and connect
@@ -27,14 +23,10 @@ namespace MiniIndex.Core.Utilities
 
             BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
 
-            //Get the current image into a stream
-            using (System.Net.WebClient webClient = new System.Net.WebClient())
-            {
-                fileStream = webClient.OpenRead(url);
-            }
+            Stream fileStream = await httpClient.GetStreamAsync(url);
 
             //Load image and resize it before uploading
-            Image image = Image.Load(fileStream);
+            Image image = await Image.LoadAsync(fileStream);
 
             //Resizing to 0 automatically maintains aspect ratio
             if (image.Width > image.Height)
@@ -46,10 +38,10 @@ namespace MiniIndex.Core.Utilities
                 image.Mutate(x => x.Resize(0, 480));
             }
 
-            image.SaveAsJpeg(uploadStream);
+            await image.SaveAsJpegAsync(uploadStream);
 
             uploadStream.Position = 0;
-            await blobClient.UploadAsync(uploadStream);
+            await blobClient.UploadAsync(uploadStream, true);
 
             return await Task.FromResult(true);
         }

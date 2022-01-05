@@ -17,6 +17,11 @@ using MiniIndex.Core.Utilities;
 using MiniIndex.Persistence;
 using MiniIndex.Services;
 using WebPWrecover.Services;
+using Hangfire;
+using Hangfire.SqlServer;
+using System;
+using Hangfire.Dashboard;
+using MiniIndex.Models;
 
 namespace MiniIndex
 {
@@ -65,6 +70,20 @@ namespace MiniIndex
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniIndexContext>();
 
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }));
+            services.AddHangfireServer();
+
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
@@ -103,7 +122,7 @@ namespace MiniIndex
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-
+                
                 app.UseSwagger();
 
                 // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
@@ -131,6 +150,12 @@ namespace MiniIndex
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangFireAuthorizationFilter() }
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

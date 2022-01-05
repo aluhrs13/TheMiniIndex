@@ -31,14 +31,9 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
                 .FirstOrDefault()
                 .GetAttributeValue("data-sw-tracking-target-entity-id", null);
 
-            Dictionary<string, string> miniProperties = htmlDoc.DocumentNode.SelectNodes("//div[@itemtype=\"http://schema.org/Product\"]/meta")
-                .Select(node => new
-                {
-                    property = node.GetAttributeValue("itemprop", null),
-                    content = node.GetAttributeValue("content", null)
-                })
-                .Where(node => !String.IsNullOrWhiteSpace(node.property))
-                .ToDictionary(k => k.property, v => v.content);
+            HtmlNode nameNode = htmlDoc.DocumentNode.SelectNodes("//h1[@data-coyote-locator=\"product-title-header\"]").First();
+            HtmlNode imageNode = htmlDoc.DocumentNode.SelectNodes("//meta[@property=\"og:image\"]").First();
+            HtmlNode linkNode = htmlDoc.DocumentNode.SelectNodes("//link[@rel=\"canonical\"]").First();
 
             Creator creator = new Creator
             {
@@ -50,9 +45,9 @@ namespace MiniIndex.Core.Minis.Parsers.Shapeways
             Mini mini = new Mini()
             {
                 Creator = creator,
-                Name = System.Web.HttpUtility.HtmlDecode(miniProperties["name"]),
-                Thumbnail = miniProperties["image"],
-                Link = miniProperties["url"]
+                Name = System.Web.HttpUtility.HtmlDecode(nameNode.InnerText),
+                Thumbnail = imageNode.GetAttributeValue("content", null),
+                Link = linkNode.GetAttributeValue("href", url.ToString())
             };
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
 

@@ -6,12 +6,12 @@
 @inject IConfiguration Configuration
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add a Mini";
 }
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="container" style="padding:50px;">
+    <div class="bounded" style="padding-bottom: 20rem;">
         @if (Configuration["CreateWarningMessage"] != "")
         {
             <div class="alert alert-danger shadow-sm">
@@ -21,37 +21,29 @@
                     </p>
             </div>
         }
-        <div class="row">
-            <div class="colo-md-12">
-                <h1>
-                    Add a mini
-                </h1>
-                <p font-size="smaller">
-                    Thank you for submitting a mini! Just paste a link to a model on one of our supported sites below to get started. Please make sure you take a few seconds once completed to add some useful tags.
-                </p>
-            </div>
+        <div>
+            <h1>
+                Add a mini
+            </h1>
+            <p>
+                Thank you for submitting a mini! Just paste a link to a model on one of our supported sites below to get started. Please make sure you take a few seconds once completed to add some useful tags.
+            </p>
         </div>
         <form action="/Minis/Create" method="post">
             @Html.AntiForgeryToken()
-            <div class="row" align="center">
-                <div class="col-md-8">
-                    <h3><input type="text" name="URL" style="width:100%;" placeholder="Link to the mini's page" value="@Model.URL" /></h3>
-                </div>
-                <div class="col-md-4">
-                    <input type="submit" class="btn btn-primary" value="Add Mini" style="width:100%;" />
-                </div>
-            </div>
             <div class="row">
-                <div class="col-md-12">
-                    <small>Supported sites:</small>
-                    <ul>
-                        @foreach (var site in serviceInfo.SupportedSites)
-                        {
-                            <li><small>@site</small></li>
-                        }
-                    </ul>
-                    <small>If there's a site you like to use that isn't listed here, feel free to request it on <a href="https://github.com/aluhrs13/TheMiniIndex">our GitHub page</a> or <a href="https://www.reddit.com/r/theminiindex/">our official subreddit</a>.</small>
-                </div>
+                <input class="full-width" style="margin:0px; padding: .4rem; margin-right: .5rem;" type="text" name="URL" placeholder="Link to the mini's page" value="@Model.URL" />
+                <input class="btn btn-primary" style="padding: 0rem 2rem;" type="submit" value="Add Mini"/>
+            </div>
+            <div>
+                <h3>Supported Sites:</h3>
+                <ul>
+                    @foreach (var site in serviceInfo.SupportedSites)
+                    {
+                        <li><p>@site</p></li>
+                    }
+                </ul>
+                <p>If there's a site you like to use that isn't listed here, feel free to request it on <a href="https://github.com/aluhrs13/TheMiniIndex">our GitHub page</a> or <a href="https://www.reddit.com/r/theminiindex/">our official subreddit</a>.</p>
             </div>
         </form>
     </div>

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- 
+
     <meta name="application-name" content="The Mini Index" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="~/images/icons/mstile-144x144.png" />
@@ -26,21 +26,41 @@
     <meta name="twitter:title" content="@ViewData["Title"] - The Mini Index" />
 
     <title>@ViewData["Title"] - The Mini Index</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="preconnect" href="https://miniindexblobakamai.azureedge.net/">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <environment include="Staging, Production">
+    <environment include="Staging">
         <link rel="stylesheet" href="~/dist/site.css">
+        <link rel="stylesheet" href="~/dist/styles.css">
+
+        <script type="text/javascript">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "9qtfnv49nn");
+        </script>
     </environment>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css">
+        <link rel="stylesheet" href="~/css/styles.css">
     </environment>
 
-    <script type="module" src="~/dist/site.entry.js" async></script>
-    <script type="module" src="~/dist/bootstrapjs.entry.js" async></script>
     <script type="module" src="~/components/miniindex-components/miniindex-components.esm.js" async></script>
     <script nomodule src="~/components/miniindex-components/miniindex-components.js" async></script>
+    <link rel="stylesheet" href="~/components/miniindex-components/miniindex-components.css" />
+
+    <environment include="Production">
+        <link rel="preconnect" href="https://miniindexblobakamai.azureedge.net/">
+        <link rel="preconnect" href="https://miniindex.azureedge.net/">
+        <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
+        <link rel="stylesheet" href="https://miniindex.azureedge.net/styles.css">
+        <!-- Fathom - beautiful, simple website analytics -->
+        <script src="https://happy-intuitive.theminiindex.com/script.js" data-site="JXSVBMWZ" defer></script>
+        <!-- / Fathom -->
+    </environment>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 
     <script type="text/javascript">
         var appInsights = window.appInsights || function (a) {
@@ -50,11 +70,32 @@
         });
 
         window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();
+
+        function toggleMobile() {
+            var mobile = document.getElementById("mobileCluster");
+            mobile.style.display == "block" ? mobile.style.display = "none" : mobile.style.display = "block"; 
+        }
     </script>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap">
-    <link rel="stylesheet" href="~/components/miniindex-components/miniindex-components.css" />
-    
+    <style>
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: "Montserrat", sans-serif !important;
+            font-weight: 500;
+        }
+        .montserrat {
+            font-family: "Montserrat", sans-serif !important;
+        }
+        .btn{
+            font-family: "Montserrat", sans-serif !important;
+        }
+        input.full-width{
+            font-family: "Montserrat", sans-serif !important;
+        }
+    </style>
+   
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="~/images/icons/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/images/icons/apple-touch-icon-114x114.png" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/images/icons/apple-touch-icon-72x72.png" />
@@ -71,67 +112,101 @@
     <link rel="icon" type="image/png" href="~/images/icons/favicon-128.png" sizes="128x128" />
 </head>
 <body>
-
-    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="/">
-            <img src="~/images/icons/apple-touch-icon-57x57.png" style="height:40px;" />
-            <div style="margin-left:7px; float:right; line-height:1;">
-                <span style="font-size:x-small;">THE</span><br />
-                MINI INDEX
-            </div>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis">Browse Minis</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Creators/Browse">Browse Creators</a>
-                </li>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Starred">Starred Minis</a>
-                    </li>
-                }
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis/Help">Tag a Mini</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Minis/Create">Add a Mini</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Feedback
+    <div>
+        <nav>
+            <div class="cluster style-primary" style="flex-wrap:nowrap">
+                <div class="row" style="padding-left:10px;">
+                    <a href="/">
+                        <img style="margin-right: .5rem;"width="40" height="40" src="/images/icons/apple-touch-icon-57x57.png" />
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="https://github.com/aluhrs13/TheMiniIndex" target="_blank"><span class="oi oi-code"></span> View our GitHub</a>
-                        <a class="dropdown-item" href="https://discordapp.com/invite/FDtYRDP" target="_blank"><span class="oi oi-chat"></span> Join us on Disord</a>
-                        <a class="dropdown-item" href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1UMDNUNlVURVhEQzlFUFI5UlEwR0ZISlk5Vi4u" target="_blank"><span class="oi oi-bullhorn"></span> Give us feedback</a>
+
+                    <div class="montserrat" id="logotype">
+                        <span class="xsmall">THE</span>
+                        <br />
+                        <span class="larger">MINI INDEX</span>
                     </div>
-                </li>
+                </div>
+
+                <form action="/Minis" style="margin-right:auto; width:100%;" id="searchForm" name="searchForm">
+                    <div class="row">
+                        <label for="nav-search"></label>
+                        <input type="text" name="SearchString" id="SearchString" placeholder="Search..." class="full-width" value="@ViewData["SearchString"]"/>
+                        <input type="submit" value="Search" id="NavSearchBtn" class="btn style-secondary-border" />
+                    </div>                        
+                </form>
+
+                <div class="cluster" id="menuCluster">
+                    @if (User.IsInRole("Moderator"))
+                    {
+                        <div class="center">
+                            <a class="btn style-primary" href="/Admin/">Moderator Dashboard</a>
+                        </div>
+                    }                         
+                    <div class="center"><a class="btn style-primary" href="/Creators/Browse">Creators</a></div>
+                    <div class="center"><a class="btn style-primary" href="/Minis/Create">Add a Mini</a></div>
+                    <div class="icon-no-container">
+                        <a href="/Starred/">
+                            <div class="icon icon-heart"></div>
+                        </a>
+                    </div>
+                    <div class="icon-no-container">
+                        <a href="/Minis/Help/">
+                            <div class="icon icon-random"></div>
+                        </a>
+                    </div>
+                    <partial name="_LoginPartial" />
+                </div>
+                <div class="icon-no-container" style="padding-right:.75rem;">
+                    <a href="#" id="menuBtn" onclick="toggleMobile()">
+                        <div class="icon icon-menu"></div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="cluster style-primary" id="mobileCluster" style="display:none;">
                 @if (User.IsInRole("Moderator"))
                 {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Admin/">Moderator Dashboard</a>
-                    </li>
+                    <div class="center">
+                        <a class="btn style-primary" href="/Admin/">Moderator Dashboard</a>
+                    </div>
                 }
-            </ul>
-            <partial name="_LoginPartial" />
-        </div>
-    </nav>
+                <div class="center"><a class="btn style-primary" href="/Creators/Browse">Creators</a></div>
+                <div class="center"><a class="btn style-primary" href="/Minis/Create">Add a Mini</a></div>
+                <div class="center"><a class="btn style-primary" href="/Starred/">Favorites</a></div>
+                <div class="center"><a class="btn style-primary" href="/Minis/Help">Tag a Random Mini</a></div>
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
 
-    <main role="main" class="container-fluid">
-        <div style="padding: 3rem 1.5rem;">
-            @RenderBody()
-        </div>
-    </main>
+        <main>
+            <div class="stack">
+                @RenderBody()
+            </div>
+        </main>
+
+        <footer>
+            <div class="style-primary center">
+                <div class="center-t">
+                    Everything you find here is thanks to someone who took the time to index and tag it. If you don't find what you're looking for, or just have some spare time, please try to improve the quality of The Mini Index by submitting a mini or improving tags.
+                </div>
+                <br />
+                <div class="cluster">
+                    <div>
+                        <a class="btn style-primary" target="_blank" href="https://discordapp.com/invite/FDtYRDP">Discord</a>
+                    </div>
+                    <div>
+                        <a class="btn style-primary" target="_blank" href="https://github.com/aluhrs13/TheMiniIndex">Github</a>
+                    </div>
+                    <div>
+                        <a class="btn style-primary" target="_blank" href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1UMDNUNlVURVhEQzlFUFI5UlEwR0ZISlk5Vi4u">Feedback Form</a>
+                    </div>
+                    <div>
+                        <a class="btn style-primary" target="_blank" href="https://reddit.com/r/TheMiniIndex">Reddit</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
 
     @RenderSection("Scripts", required: false)
 </body>

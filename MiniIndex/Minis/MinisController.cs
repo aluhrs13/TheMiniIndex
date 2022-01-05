@@ -31,7 +31,6 @@ namespace MiniIndex.Minis
         private readonly IMediator _mediator;
         private readonly TelemetryClient _telemetry;
 
-
         [HttpGet("")]
         public async Task<IActionResult> BrowseMinis(
             [FromQuery]MiniSearchModel search = null,
@@ -53,15 +52,6 @@ namespace MiniIndex.Minis
             _mapper.Map(search).Over(searchRequest);
             PaginatedList<Mini> searchResult = await _mediator.Send(searchRequest);
 
-            SearchSupportingInfo searchInfo = await _mediator.Send(new GetSearchInfoRequest());
-
-            var allTags = searchInfo.Tags
-                .OrderBy(t => t.Category.ToString())
-                .ThenBy(t => t.TagName)
-                .ToList();
-
-            search.TagOptions = new SelectList(allTags, "TagName", "TagName", null, "Category");
-
             BrowseModel model = new BrowseModel(search, searchResult);
 
             _telemetry.TrackEvent("NewMiniSearch", new Dictionary<string, string> {
@@ -69,7 +59,8 @@ namespace MiniIndex.Minis
                                                             { "Tags", String.Join(",", searchRequest.Tags) },
                                                             { "FreeOnly", searchRequest.FreeOnly.ToString() },
                                                             { "HadResults", searchResult.Count>0 ? "True" : "False" },
-                                                            { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()}
+                                                            { "PageIndex", searchRequest.PageInfo.PageIndex.ToString()},
+                                                            { "SortType", searchRequest.SortType}
                                                         });
 
             return View("BrowseMinis", model);

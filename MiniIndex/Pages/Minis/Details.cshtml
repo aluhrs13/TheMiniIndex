@@ -5,7 +5,8 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Mini.Name + " Details";
+
     @if (User.IsInRole("Administrator"))
     {
         ViewData["Submitter"] = @Model.Mini.User.Email;
@@ -20,145 +21,176 @@
 
 @section Scripts
 {
-    <script type="module" src="~/dist/stars.entry.js" defer></script>
-}
+    <environment include="Development">
+        <script type="module" src="~/js/mini.js"></script>
+        <link rel="stylesheet" href="~/css/mini.css">
+    </environment>
 
-<div>
+    <environment include="Staging">
+        <script type="module" src="~/dist/mini.entry.js" defer></script>
+        <link rel="stylesheet" href="~/dist/mini.css">
+    </environment>
+
+    <environment include="Production">
+        <script type="module" src="https://miniindex.azureedge.net/mini.entry.js" defer></script>
+        <link rel="stylesheet" href="~/dist/mini.css">
+    </environment>
     @if (User.IsInRole("Moderator"))
     {
-        <tmi-admin-card
-            miniid="@Model.Mini.ID"
-            submitter="@ViewData["Submitter"]"
-            status="@Model.Mini.Status"
-            cost="@Model.Mini.Cost"
-            thumbnail="@Model.Mini.Thumbnail">
-        </tmi-admin-card>
-    }
-</div>
+        <script type="text/javascript">
+            function updateStatus(status){
+                var id = document.getElementById("miniid").innerHTML;
+                var data = '{"id": '+id+', "status": '+status+'}';
 
-<div class="container">
+                fetch("/api/Minis", {method: "PATCH", body: data,     headers: {
+                  'Content-Type': 'application/json'
+                } })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+
+                    return response.json();
+                  })
+                  .then(() => {
+                    location.reload();
+                  })
+                  .catch(error => {
+                    console.error(error);
+                    document.getElementById("secondary-nav").style.backgroundColor = "red";
+                    document.getElementById("currStatus").innerHTML = "ERROR.";
+                  });
+            }
+
+            function updateThumbnail(){
+                var id = document.getElementById("miniid").innerHTML;
+
+                fetch("/api/Minis/"+id+"/FixThumbnail", {
+                    method: "PATCH",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    } 
+                })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+                  })
+                  .then(() => {
+                    location.reload();
+                  })
+                  .catch(error => {
+                    console.error(error);
+                    document.getElementById("secondary-nav").style.backgroundColor = "red";
+                  });
+            }
+        </script>
+    }
+}
+@if (User.IsInRole("Moderator"))
+{
+    <div class="cluster style-secondary" id="secondary-nav">
+        <div class="row">
+            <div class="montserrat">
+                <span class="xsmall">MODERATOR</span>
+                <br />
+                <span class="larger">TOOLS</span>
+            </div>
+        </div>
+        <div>
+            <b>Submitted by: </b>@ViewData["Submitter"]
+            <br/>
+            <b>Status: </b><span id="currStatus">@Model.Mini.Status</span>
+        </div>
+        <div class="cluster">
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(1)">Approve</a></div>
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(0)">Visible</a></div>
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateStatus(2)">Reject</a></div>
+            <div class="center"><a href="#" class="btn style-secondary" onclick="updateThumbnail()">Update Thumbnail</a></div>
+        </div>
+    </div>
+}
+<div class="bounded">
+    <!-- TODO: Do this right? -->
     <p id="miniid" style="display:none;">@Model.Mini.ID</p>
 
-    <h2>
-        @Html.DisplayFor(model => model.Mini.Name) by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Html.DisplayFor(model => model.Mini.Creator.Name)</a>
-    </h2>
-    <hr />
+    <h1>
+        @Model.Mini.Name by <a href="/Creators/Details?id=@Model.Mini.Creator.ID">@Model.Mini.Creator.Name</a>
+    </h1>
 
-    <div class="row">
-        <div class="col-md-6" align="center">
-            <div class="row">
-                <div class="col-md-8">
-                    @if (Model.Mini.Sources.Any())
-                    {
-                        @foreach (var miniSource in Model.Mini.Sources)
-                        {
-                            <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary @miniSource.Site.SiteName" style="margin-top:10px;">View On @miniSource.Site.SiteName</a>
-                        }
-                    }
-                    else if (!String.IsNullOrEmpty(Model.Mini.Link))
-                    {
-                        <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block btn-primary" style="margin-top:10px;">View at source</a>
-                    }
-                </div>
+    <div class="switcher">
+        @if (Model.Mini.Sources.Any())
+        {
+            @foreach (var miniSource in Model.Mini.Sources)
+            {
+                <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block style-primary @miniSource.Site.SiteName">View On @miniSource.Site.SiteName</a>
+            }
+        }
+        else if (!String.IsNullOrEmpty(Model.Mini.Link))
+        {
+            <a href="/api/Minis/@Model.Mini.ID/Redirect" class="btn btn-block style-primary-border">View at source</a>
+        }
 
-                <div class="col-md-4">
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <a href="#" class="btn btn-block @(Model.IsStarred ? "btn-danger remove-star" : "btn-success add-star")" id="toggle-star" style="margin-top:10px;">
-                            <span class="oi oi-star"></span>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString" class="btn btn-block btn-success" style="margin-top:10px;" data-toggle="tooltip" data-placement="top" title="Create an account to save your favorites">
-                            <span class="oi oi-star"></span>
-                        </a>
-                    }
-                </div>
-            </div>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a href="#" class="btn btn-block @(Model.IsStarred ? "remove-star" : "add-star")" id="toggle-star">
+                @(Model.IsStarred ? "Remove from Favorites" : "Add to Favorites")
+            </a>
+        }
+        else
+        {
+            <a href="/Identity/Account/Login?ReturnUrl=@HttpContext.Request.Path@HttpContext.Request.QueryString" class="btn btn-block add-star" id="toggle-star">
+                Login to Favorite
+            </a>
+        }
+    </div>
 
-            <hr />
-
+    <div class="switcher">
+        <div align="center">
             @if (Model.Mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
             {
-                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
+                <img style="max-width:100%" src="@Model.Mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" />
             }
             else
             {
-                <img class="img-fluid rounded" src="@Model.Mini.Thumbnail" />
+                <img style="max-width:100%" src="@Model.Mini.Thumbnail" />
             }
         </div>
 
-        <div class="col-md-6">
-            <h3>Tags</h3>
-            <small>
-                Something look wrong? <a asp-page="./Edit" asp-route-id="@Model.Mini.ID">Tag this Mini</a>
-            </small>
-            <hr />
+        <div>
+            <div class="row" style="align-items:flex-end;">
+                <h2 style="flex-grow:1;">Tags</h2>
+                <span class="small" style="padding-bottom:1.25rem;">
+                    Something look wrong? <a asp-page="./Edit" asp-route-id="@Model.Mini.ID">Tag this Mini</a>
+                </span>            
+            </div>
             @foreach (var MiniTag in Model.Mini.MiniTags.Where(mt => mt.Status == Status.Approved))
             {
                 @if (string.IsNullOrEmpty(MiniTag.Tag.Category.ToString()))
                 {
-                    <span class="badge badge-primary" style="font-size:large">
+                    <span class="badge style-primary">
                         <b>@MiniTag.Tag.TagName</b>
                     </span>
                 }
                 else
                 {
-                    <span class="badge badge-primary" style="font-size:large; margin:2px;">
+                    <span class="badge style-primary">
                         @MiniTag.Tag.Category: <b>@MiniTag.Tag.TagName</b>
                     </span>
                 }
             }
         </div>
     </div>
-    @if (Model.RelatedMinis.Count > 1)
-    {
+
+    <!-- TODO: async this -->
+    <aside>
         <hr />
-        <h3>Related Minis</h3>
-        <div class="row">
-            @{
-                int relatedCount = 0;
-            }
-            @foreach (var mini in Model.RelatedMinis)
-            {
-                @if (mini.ID == Model.Mini.ID)
-                {
-                    continue;
-                }
-                <div class="col-md-3" style="margin-bottom:5px">
-                    <div class="card shadow">
-                        <a href="/Minis/Details?id=@mini.ID">
-                            @if (mini.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
-                            {
-                                <img class="card-img-top" src="@mini.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"] + ".azureedge.net")" width="314" height="236" />
-                            }
-                            else
-                            {
-                                <img class="card-img-top" src="@mini.Thumbnail" width="314" height="236" />
-                            }
-                            <span></span>
-                        </a>
-
-                        <div class="card-body">
-                            @Html.DisplayFor(modelItem => mini.Name)
-                            <br />
-                            <small class="text-muted">
-                                <a href="/Creators/Details?id=@mini.Creator.ID">by @Html.DisplayFor(modelItem => mini.Creator.Name)</a>
-                            </small>
-                        </div>
-                    </div>
-                </div>
-                @if (relatedCount == 3)
-                {
-                    break;
-                }
-                else
-                {
-                    relatedCount++;
-                }
-            }
+        <h2>Related Minis</h2>
+        <div align="center">
+            <div id="loading-spinner" style="width:64px;height:64px;"></div>
         </div>
-    }
+        <div class="grid hidden"id="related-minis">
 
+        </div>
+    </aside>
 </div>

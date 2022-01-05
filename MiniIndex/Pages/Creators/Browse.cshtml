@@ -5,39 +5,36 @@
     ViewData["Title"] = "Browse Creators";
 }
 
-<h1>All Creators</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Number of Minis
-            </th>
-            <th>
-                Links
-            </th>
+@section Scripts
+{
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/mini.css">
+    </environment>
 
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var creatorCount in Model.CreatorCounts)
-        {
-            <tr>
-                <td>
+    <environment include="Production, Staging">
+        <link rel="stylesheet" href="~/dist/mini.css">
+    </environment>
+}
+
+<div class="bounded">
+    <h1>All Creators</h1>
+
+    @foreach (var creatorCount in Model.CreatorCounts)
+    {
+        <div class="stack card card-padded" style="margin:1rem;">
+            <div>
+                <h2 style="line-height:0px; margin:1rem;">
                     <a asp-page="./Details" asp-route-id="@creatorCount.Key.ID">@Html.DisplayFor(modelItem => creatorCount.Key.Name)</a>
-                </td>
-                <td>
-                    @creatorCount.Value
-                </td>
-                <td>
-                    @foreach (var site in creatorCount.Key.Sites)
-                    {
-                        <a href="@site.CreatorPageUri" class="btn btn-primary @site.DisplayName">@site.DisplayName</a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </h2>
+                <span class="small" style="margin-left:1rem;">@creatorCount.Value Minis</span>
+            </div>
+            <div class="cluster">
+                @foreach (var site in creatorCount.Key.Sites)
+                {
+                    <a href="@site.CreatorPageUri" class="btn btn-primary @site.DisplayName">@site.DisplayName</a>
+                }
+            </div>
+        </div>
+    }
+
+</div>

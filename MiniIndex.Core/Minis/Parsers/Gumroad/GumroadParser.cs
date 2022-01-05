@@ -15,41 +15,22 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
 
         public bool CanParse(Uri url)
         {
-            bool isGumroadUrl = url.Host.Replace("www.", "").Equals("gumroad.com", StringComparison.OrdinalIgnoreCase);
-
-            if (!isGumroadUrl)
-            {
-                return false;
-            }
-
-            return IsLFormatUrl(url) || IsHashFormatUrl(url);
+            return url.Host.EndsWith("gumroad.com", StringComparison.OrdinalIgnoreCase);
         }
 
         public async Task<Mini> ParseFromUrl(Uri url)
         {
-            if (IsHashFormatUrl(url))
-            {
-                string id = url.ToString().Split('#').Last();
-                url = new Uri($"https://www.gumroad.com/l/{id}");
-            }
-
             HtmlWeb web = new HtmlWeb();
             HtmlDocument htmlDoc = await web.LoadFromWebAsync(url, null, null);
 
-            HtmlNode creatorLink = htmlDoc.DocumentNode.SelectNodes("//a[@class=\"js-creator-profile-link\"]")
-                .FirstOrDefault();
+            HtmlNode nameNode = htmlDoc.DocumentNode.SelectNodes("//meta[@property=\"og:title\"]").First();
+            HtmlNode imageNode = htmlDoc.DocumentNode.SelectNodes("//meta[@property=\"og:image\"]").First();
+            HtmlNode urlNode = htmlDoc.DocumentNode.SelectNodes("//meta[@property=\"og:url\"]").First();
+            HtmlNode costNode = htmlDoc.DocumentNode.SelectNodes("//meta[@property=\"product:price:amount\"]").First();
 
-            string creatorUrl = creatorLink.GetAttributeValue("href", null);
-            string creatorName = new Uri(creatorUrl).AbsolutePath.Skip(1).AsString();
+            Uri link = new Uri(urlNode.GetAttributeValue("content", url.ToString()));
 
-            Dictionary<string, string> miniProperties = htmlDoc.DocumentNode.SelectNodes("//*[@itemprop]")
-                .Select(node => new
-                {
-                    property = node.GetAttributeValue("itemprop", null),
-                    value = GetNodeContent(node)
-                })
-                .Where(node => !String.IsNullOrWhiteSpace(node.property))
-                .ToDictionary(k => k.property, v => v.value);
+            string creatorName = link.Host.Split('.').First().Split('/').Last();
 
             Creator creator = new Creator
             {
@@ -61,58 +42,16 @@ namespace MiniIndex.Core.Minis.Parsers.Gumroad
             Mini mini = new Mini()
             {
                 Creator = creator,
-                Name = System.Web.HttpUtility.HtmlDecode(miniProperties["name"]),
-                Thumbnail = miniProperties["image"],
-                Link = miniProperties["url"]
+                Name = System.Web.HttpUtility.HtmlDecode(nameNode.GetAttributeValue("content", null)),
+                Thumbnail = imageNode.GetAttributeValue("content", null),
+                Link = "https://gumroad.com" + link.AbsolutePath
             };
 
-            mini.Cost = Int32.Parse(miniProperties["price"].Split(".").First());
+            mini.Cost = Convert.ToInt32(Math.Round(Convert.ToDouble(costNode.GetAttributeValue("content", "0"))));
+;
             mini.Sources.Add(new MiniSourceSite(mini, source, url));
 
             return mini;
-        }
-
-        public string GetNodeContent(HtmlNode node)
-        {
-            switch (node.GetAttributeValue("itemprop", null))
-            {
-                case "url":
-                    return node.GetAttributeValue("href", null);
-
-                case "image":
-                    return node.GetAttributeValue("src", null);
-
-                default:
-                    string directText = node.GetDirectInnerText().Trim();
-
-                    if (!String.IsNullOrWhiteSpace(directText))
-                    {
-                        return directText;
-                    }
-
-                    foreach (HtmlNode innerNode in node.ChildNodes)
-                    {
-                        string innerText = GetNodeContent(innerNode);
-
-                        if (!String.IsNullOrWhiteSpace(innerText))
-                        {
-                            return innerText;
-                        }
-                    }
-                    return node.GetAttributeValue("content", null);
-            }
-        }
-
-        private static bool IsHashFormatUrl(Uri url)
-        {
-            return !String.IsNullOrWhiteSpace(url.Fragment)
-                            && url.Fragment.StartsWith("#");
-        }
-
-        private static bool IsLFormatUrl(Uri url)
-        {
-            return !String.IsNullOrWhiteSpace(url.LocalPath)
-                && url.LocalPath.StartsWith("/l/");
         }
     }
 }

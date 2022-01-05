@@ -4,7 +4,6 @@
     "description": "",
     "dependencies": {
         "@yaireo/tagify": "^3.2.6",
-        "bootstrap": "^4.4.1",
         "jquery": "^3.4.1",
         "jquery-validation": "^1.19.1",
         "jquery-validation-unobtrusive": "^3.2.11",
@@ -15,7 +14,6 @@
     "devDependencies": {
         "sass-loader": "8.0.2",
         "style-loader": "1.1.3",
-        "node-sass": "4.13.1",
         "postcss-loader": "3.0.0",
         "autoprefixer": "9.7.4",
         "css-loader": "^3.4.2",

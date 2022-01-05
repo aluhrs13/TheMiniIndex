@@ -1,0 +1,110 @@
+﻿@page
+@model MiniIndex.Pages.Admin.ManageCreatorsModel
+@{
+    ViewData["Title"] = "Manage Creators";
+}
+
+@section Scripts2
+{
+    <script type="text/javascript">
+        function addScan(event, id){
+            event.preventDefault();
+            var buttonCell = document.getElementById(id);
+            var buttons = buttonCell.children;
+
+            fetch("/api/Creators/"+id+"/scan", {method: "GET", headers: {
+                'Content-Type': 'application/json'
+            } })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return "";
+                })
+                .then(() => {
+                    for(var i=0; i<buttons.length; i++){
+                        var child = buttons[i];
+                        child.classList.remove("style-dull");
+                        child.classList.add("style-green");
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    for(var i=0; i<buttons.length; i++){
+                        var child = buttons[i];
+                        child.classList.remove("style-dull");
+                        child.classList.add("style-danger");
+                    }
+                });
+            return false;
+        }
+
+        function removeScan(event, id){
+            event.preventDefault();
+            var buttonCell = document.getElementById(id);
+            var buttons = buttonCell.children;
+
+            fetch("/api/Creators/"+id+"/scan", {method: "DELETE", headers: {
+                'Content-Type': 'application/json'
+            } })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return "";
+                })
+                .then(() => {
+                    for(var i=0; i<buttons.length; i++){
+                        var child = buttons[i];
+                        child.classList.add("style-dull");
+                        child.classList.remove("style-green");
+                    }                })
+                .catch(error => {
+                    console.error(error);
+                    for(var i=0; i<buttons.length; i++){
+                        var child = buttons[i];
+                        child.classList.remove("style-green");
+                        child.classList.add("style-danger");
+                    }
+                });
+        }
+    </script>
+}
+
+@if (User.IsInRole("Moderator"))
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Creator Name</th>
+                <th>Scanning Status</th>
+                <th>Add/Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var creator in Model.Creators)
+            {
+            <tr>
+                <td>
+                    <a href="/Creators/Details?id=@creator.ID">
+                        @creator.Name
+                    </a>
+                </td>
+                <td id="@creator.ID">
+                    @foreach (var site in creator.Sites){
+                        @if(Model.HangFireJobs.Any(x=>x.Id == site.ID.ToString())){
+                            <a class="btn style-green" href="@site.CreatorPageUri" target="_blank">@site.DisplayName</a>
+                        }else{
+                            <a class="btn style-dull" href="@site.CreatorPageUri" target="_blank">@site.DisplayName</a>
+                        }
+                    }
+                </td>
+                <td>
+                    <a href="#" class="btn btn-primary" onclick="addScan(event, @creator.ID)">Add Scanning</a>
+                    <a href="#" class="btn btn-secondary" onclick="removeScan(event, @creator.ID)">Remove Scanning</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

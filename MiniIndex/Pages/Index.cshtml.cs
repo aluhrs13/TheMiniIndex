@@ -24,18 +24,7 @@ namespace MiniIndex.Pages
 
         public void OnGet()
         {
-            Mini = _context.Set<Mini>()
-                .Include(m => m.Creator)
-                .Include(m => m.Sources)
-                    .ThenInclude(s => s.Site)
-                .Where(m => m.Status == Status.Approved)
-                .OrderByDescending(m => m.ApprovedTime)
-                    .ThenByDescending(m=>m.ID)
-                .Take(4)
-                .ToList();
-
-            MiniCount = _context.Set<Mini>().Where(m => m.Status==Status.Approved).Count();
-            UntaggedMiniCount = _context.Set<Mini>().Where(m => m.Status == Status.Pending).Count();
+            MiniCount = _context.Mini.AsNoTracking().Count();
         }
     }
 }

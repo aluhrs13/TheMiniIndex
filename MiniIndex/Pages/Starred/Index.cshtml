@@ -4,33 +4,24 @@
 
 
 @{
-    ViewData["Title"] = "Starred Minis";
+    ViewData["Title"] = "Favorite Minis";
 }
-<h1>Starred Minis</h1>
+<h1>Favorite Minis</h1>
 
-<div class="album py-5 bg-light">
-    <div class="container">
-        <div class="row" align="center">
-            @if (Model.Starred.Count() == 0)
-            {
-                <div class="col-md-12" align="center">
-                    <h1>Your starred Minis will show up here!</h1>
-                    <hr />
-                    <h2>Go try starring one!</h2>
-                </div>
-            }
-
-            @foreach (var item in Model.Starred)
-            {
-
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <a asp-page="/Minis/Details" asp-route-id="@item.Mini.ID">
-                            <img class="card-img-top" src="@item.Mini.Thumbnail" width="314" height="236" />
-                        </a>
-                    </div>
-                </div>
-            }
-        </div>
+@if (Model.Starred.Count() == 0)
+{
+    <div align="center">
+        <h1>Your favortie Minis will show up here!</h1>
+        <hr />
+        <h2>Go try favoriting one!</h2>
     </div>
-</div>
+}
+else
+{
+    <div class="grid" id="gallery">
+        @foreach (var mini in Model.Starred)
+        {
+            @await Html.PartialAsync("_MiniPartial", mini.Mini)
+        }
+    </div>
+}

@@ -11,7 +11,7 @@ namespace MiniIndex.Minis
 
         public bool FreeOnly { get; set; }
 
-        public SearchSupportingInfo SupportingInfo { get; set; }
-        public SelectList TagOptions { get; internal set; }
+        public string SortType { get; set; }
+
     }
 }

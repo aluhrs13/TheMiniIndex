@@ -6,34 +6,44 @@
 
 @section Scripts
 {
-    <script type="module" src="~/dist/admin.entry.js" defer></script>
+    <environment include="Development">
+        <script type="module" src="~/js/admin.js" defer></script>
+    </environment>
+
+    <environment include="Staging">
+        <script type="module" src="~/dist/admin.entry.js" defer></script>
+    </environment>
+
+    <environment include="Production">
+        <script type="module" src="https://miniindex.azureedge.net/admin.entry.js" defer></script>
+    </environment>
 }
 
 @if (User.IsInRole("Moderator"))
 {
-    <div class="row">
-        <div class="col-md-2">
-
-        </div>
-
-        <div class="col-md-8">
+        <div class="bounded">
+            <input id="miniid" type="hidden" value="@Model.Tag.ID"/>
             <div>
                 <a asp-page="/Admin/TagManager">Back to all tags</a>
             </div>
 
-            <h1>@Model.Tag.ID - @Model.Tag.TagName</h1>
+            <h1>@Model.Tag.TagName (@Model.Tag.ID)</h1>
+            <a href="/Minis/?Tags=@Model.Tag.TagName" class="btn btn-primary" target="_blank">View @Model.MiniCount Tagged</a>
+            <a href="/Tags/Delete?id=@Model.Tag.ID" class="btn style-danger">Delete Tag</a>
 
-            <select id="@Model.Tag.ID" asp-for="@Model.Tag.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category">
-                <option selected="selected" value=""></option>
+            <h2>Rename Tag</h2>
+            <div class="row">
+                <input name="newName" id="newName" type="text" value="@Model.Tag.TagName" />
+                <button id="updateNameBtn" class="btn btn-primary">Update</button>
+            </div>
+            
+            <h2>Tag Category</h2>
+            <select asp-for="@Model.Tag.Category" asp-items="Html.GetEnumSelectList<MiniIndex.Models.TagCategory>().OrderBy(m => m.Text)" class="change-category full-width">
+                <option selected="selected" value="" class="full-width"></option>
             </select>
 
-            <a href="/Minis/?Tags=@Model.Tag.TagName" class="btn btn-primary" target="_blank">View @Model.MiniCount Tagged</a>
-            <a href="/Tags/Delete?id=@Model.Tag.ID" class="btn btn-danger">Delete Tag</a>
-
-            <hr />
-
             <h2>Tag Pairs</h2>
-            <table class="table">
+            <table class="table" id="pairTable">
                 @foreach (var item in Model.TagPairs)
                 {
                     <tr id="@item.ID">
@@ -47,8 +57,8 @@
                             <a href="/Tags/Manage?id=@item.Tag2.ID">@Html.DisplayFor(modelItem => item.Tag2.TagName)</a>
                         </td>
                         <td>
-                            <a href="#" id="@item.ID" class="remove-pair btn btn-danger btn-block">
-                                <span class="oi oi-trash"></span>
+                            <a href="#" id="@item.ID" class="remove-pair btn style-danger btn-block">
+                                Delete
                             </a>
                         </td>
                     </tr>
@@ -67,16 +77,11 @@
                         </select>
                     </td>
                     <td>
-                        <a href="#" id="@Model.Tag.ID" class="new-pair btn btn-block btn-secondary">
-                            <span class="oi oi-plus"></span>
+                        <a href="#" class="new-pair btn btn-block btn-primary">
+                            Add
                         </a>
                     </td>
                 </tr>
             </table>
-
         </div>
-        <div class="col-md-2">
-
-        </div>
-    </div>
 }
