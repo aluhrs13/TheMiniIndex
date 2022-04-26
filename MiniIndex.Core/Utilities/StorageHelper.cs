@@ -2,6 +2,10 @@
 using Azure.Storage.Blobs;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MiniIndex.Core.Utilities
 {
