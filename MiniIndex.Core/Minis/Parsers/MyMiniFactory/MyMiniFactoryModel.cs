@@ -194,7 +194,7 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             public Thumbnail thumbnail { get; set; }
             public Standard standard { get; set; }
             public Large large { get; set; }
-            public bool is_print_image_selected { get; set; }
+            public bool? is_print_image_selected { get; set; }
         }
 
         public class Original

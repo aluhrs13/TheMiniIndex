@@ -66,8 +66,12 @@ namespace Supporting.ProfileParsing
                 log.LogInformation("[Parsing URL] MyMiniFactory URL, looking for links...");
                 MyMiniFactoryParserAsync(log, url);
             }
-            else
+            else if (URLHost.Equals("patreon.com", StringComparison.OrdinalIgnoreCase))
             {
+                log.LogInformation("[Parsing URL] Ignoring Patrone...");
+            }
+            else
+                    {
                 log.LogError("[Parsing URL] Invalid URL - " +url.ToString());
             }
         }
@@ -239,7 +243,7 @@ namespace Supporting.ProfileParsing
                 }
                 else
                 {
-                    log.LogError("[MyMiniTfactory Parsing] Error loading JSON - " + response.StatusCode);
+                    log.LogError("[MyMiniFactory Parsing] Error loading JSON - " + response.StatusCode);
                 }
 
                 TryWait(log, page);

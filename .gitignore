@@ -337,7 +337,7 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
-# BeatPulse healthcheck temp database 
+# BeatPulse healthcheck temp database
 healthchecksdb
 
 # npm
@@ -352,3 +352,5 @@ node_modules/
 */wwwroot/components
 */wwwroot/loader
 localsettings.json
+profile.arm.json
+dotnet-tools.json

@@ -233,7 +233,7 @@ namespace Supporting.ProfileParsing.JSONClasses
         public Thumbnail thumbnail { get; set; }
         public Standard standard { get; set; }
         public Large large { get; set; }
-        public bool is_print_image_selected { get; set; }
+        public bool? is_print_image_selected { get; set; }
     }
 
     public class Original
@@ -288,7 +288,7 @@ namespace Supporting.ProfileParsing.JSONClasses
         public Thumbnail1 thumbnail { get; set; }
         public Standard1 standard { get; set; }
         public Large1 large { get; set; }
-        public bool is_print_image_selected { get; set; }
+        public bool? is_print_image_selected { get; set; }
     }
 
     public class Original1
