@@ -7,7 +7,7 @@ var tagsInput = document.querySelector("input#tagsInput");
 var tagsValue = document.querySelector("input#tagsValue");
 
 tagsInput.value = tagsValue.value;
-var currentTags = tagsValue.value.split(",");
+var currentTags = tagsValue.value.split(";");
 var whitelistTags = currentTags;
 whitelistTags.push(
     "Fantasy",
@@ -20,6 +20,7 @@ whitelistTags.push(
 );
 
 var tagify = new Tagify(tagsInput, {
+    delimiters: ";",
     enforceWhitelist: true,
     dropdown: {
         enabled: 1,
@@ -57,7 +58,7 @@ function onFormSubmitted(e) {
     if (tagsInput.value != "") {
         tagsValue.value = JSON.parse(tagsInput.value)
             .map((x) => x.value)
-            .join();
+            .join(";");
     } else {
         tagsValue.value = "";
     }

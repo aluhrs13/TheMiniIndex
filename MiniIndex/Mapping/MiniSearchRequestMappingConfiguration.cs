@@ -17,7 +17,7 @@ namespace MiniIndex.Mapping
                 .From<MiniSearchModel>()
                 .To<MiniSearchRequest>()
                 .Map(x => x.Source.Tags
-                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                    .Split(";", StringSplitOptions.RemoveEmptyEntries)
                     .Select(t => t.AsNullIfWhiteSpaceOrEmpty())
                     )
                 .To(x => x.Tags);
