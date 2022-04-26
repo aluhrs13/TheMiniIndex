@@ -19,7 +19,7 @@ document.getElementById("tagSearch").addEventListener("input", function (e) {
     let addTagBtns = document.querySelectorAll(".add-tag");
     let addTagBtnsArray = Array.prototype.slice.call(addTagBtns);
     addTagBtnsArray.forEach(function (ele) {
-        if (ele.innerHTML.toLocaleLowerCase().indexOf(tagFilter) >= 0) {
+        if (ele.innerText.toLocaleLowerCase().indexOf(tagFilter) >= 0) {
             showEle(ele);
             showEle(ele.parentNode);
         } else {
