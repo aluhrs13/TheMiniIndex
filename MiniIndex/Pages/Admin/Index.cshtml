@@ -9,6 +9,7 @@
 
 @if (User.IsInRole("Moderator"))
 {
+    <my-element></my-element>
     @if (Model.Mini.Count > 0)
     {
         @foreach (var item in Model.Mini)

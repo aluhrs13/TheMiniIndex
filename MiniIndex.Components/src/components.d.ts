@@ -28,42 +28,6 @@ export namespace Components {
         "tmistyle": string;
         "url": string;
     }
-    interface TmiMiniCard {
-        /**
-          * Creator Details
-         */
-        "creatorid": number;
-        /**
-          * Creator Details
-         */
-        "creatorname": string;
-        /**
-          * Id of the Mini
-         */
-        "miniid": number;
-        /**
-          * Name of the Mini
-         */
-        "name": string;
-        /**
-          * Source site
-         */
-        "sourcesite": string;
-        /**
-          * Approval status of the Mini
-         */
-        "status": number;
-        /**
-          * Thumbnail URL
-         */
-        "thumbnail": string;
-    }
-    interface TmiNavBar {
-        /**
-          * Current selected page
-         */
-        "currentpage": string;
-    }
 }
 declare global {
     interface HTMLTmiAdminCardElement extends Components.TmiAdminCard, HTMLStencilElement {
@@ -84,24 +48,10 @@ declare global {
         prototype: HTMLTmiDoSomethingButtonElement;
         new (): HTMLTmiDoSomethingButtonElement;
     };
-    interface HTMLTmiMiniCardElement extends Components.TmiMiniCard, HTMLStencilElement {
-    }
-    var HTMLTmiMiniCardElement: {
-        prototype: HTMLTmiMiniCardElement;
-        new (): HTMLTmiMiniCardElement;
-    };
-    interface HTMLTmiNavBarElement extends Components.TmiNavBar, HTMLStencilElement {
-    }
-    var HTMLTmiNavBarElement: {
-        prototype: HTMLTmiNavBarElement;
-        new (): HTMLTmiNavBarElement;
-    };
     interface HTMLElementTagNameMap {
         "tmi-admin-card": HTMLTmiAdminCardElement;
         "tmi-admin-mini-row": HTMLTmiAdminMiniRowElement;
         "tmi-do-something-button": HTMLTmiDoSomethingButtonElement;
-        "tmi-mini-card": HTMLTmiMiniCardElement;
-        "tmi-nav-bar": HTMLTmiNavBarElement;
     }
 }
 declare namespace LocalJSX {
@@ -128,48 +78,10 @@ declare namespace LocalJSX {
         "tmistyle"?: string;
         "url"?: string;
     }
-    interface TmiMiniCard {
-        /**
-          * Creator Details
-         */
-        "creatorid"?: number;
-        /**
-          * Creator Details
-         */
-        "creatorname"?: string;
-        /**
-          * Id of the Mini
-         */
-        "miniid"?: number;
-        /**
-          * Name of the Mini
-         */
-        "name"?: string;
-        /**
-          * Source site
-         */
-        "sourcesite"?: string;
-        /**
-          * Approval status of the Mini
-         */
-        "status"?: number;
-        /**
-          * Thumbnail URL
-         */
-        "thumbnail"?: string;
-    }
-    interface TmiNavBar {
-        /**
-          * Current selected page
-         */
-        "currentpage"?: string;
-    }
     interface IntrinsicElements {
         "tmi-admin-card": TmiAdminCard;
         "tmi-admin-mini-row": TmiAdminMiniRow;
         "tmi-do-something-button": TmiDoSomethingButton;
-        "tmi-mini-card": TmiMiniCard;
-        "tmi-nav-bar": TmiNavBar;
     }
 }
 export { LocalJSX as JSX };
@@ -179,8 +91,6 @@ declare module "@stencil/core" {
             "tmi-admin-card": LocalJSX.TmiAdminCard & JSXBase.HTMLAttributes<HTMLTmiAdminCardElement>;
             "tmi-admin-mini-row": LocalJSX.TmiAdminMiniRow & JSXBase.HTMLAttributes<HTMLTmiAdminMiniRowElement>;
             "tmi-do-something-button": LocalJSX.TmiDoSomethingButton & JSXBase.HTMLAttributes<HTMLTmiDoSomethingButtonElement>;
-            "tmi-mini-card": LocalJSX.TmiMiniCard & JSXBase.HTMLAttributes<HTMLTmiMiniCardElement>;
-            "tmi-nav-bar": LocalJSX.TmiNavBar & JSXBase.HTMLAttributes<HTMLTmiNavBarElement>;
         }
     }
 }
