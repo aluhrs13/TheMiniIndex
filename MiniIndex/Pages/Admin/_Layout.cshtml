@@ -32,11 +32,13 @@
 {
     <environment include="Development, Staging">
         <script type="module" src="~/dist/admin.entry.js" defer></script>
+        <script type="module" src="~/dist/tmi-mini-card.js"></script>
     </environment>
 
     <environment include="Production">
         <script type="module" src="https://miniindex.azureedge.net/admin.entry.js" defer></script>
     </environment>
+
 
     @RenderSection("Scripts2", required: false)
 }

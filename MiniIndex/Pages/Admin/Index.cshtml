@@ -9,7 +9,7 @@
 
 @if (User.IsInRole("Moderator"))
 {
-    <my-element></my-element>
+    <tmi-mini-card></tmi-mini-card>
     @if (Model.Mini.Count > 0)
     {
         @foreach (var item in Model.Mini)

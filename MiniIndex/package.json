@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "dependencies": {
+        "@spectrum-web-components/card": "^0.10.10",
         "@yaireo/tagify": "^3.2.6",
         "jquery": "^3.4.1",
         "jquery-validation": "^1.19.1",
@@ -27,7 +28,7 @@
         "webpack-cli": "^3.3.10"
     },
     "scripts": {
-        "build": "tsc && webpack"
+        "build": "tsc && webpack --profile --json > stats.json"
     },
     "author": "",
     "license": ""

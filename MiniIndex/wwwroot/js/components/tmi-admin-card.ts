@@ -1,8 +1,15 @@
 ﻿import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-@customElement('my-element')
-export class MyElement extends LitElement {
+/**
+ * An example element.
+ *
+ * @fires count-changed - Indicates when the count changes
+ * @slot - This element has a slot
+ * @csspart button - The button
+ */
+@customElement('tmi-admin-card')
+export class AdminCard extends LitElement {
     static override styles = css`
     :host {
       display: block;
@@ -40,6 +47,6 @@ export class MyElement extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'my-element': MyElement;
+        'tmi-admin-card': AdminCard;
     }
 }

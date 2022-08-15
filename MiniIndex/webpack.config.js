@@ -9,7 +9,7 @@ module.exports = {
         tags: "./wwwroot/js/tags-tagify.js",
         mini: ["./wwwroot/js/mini.js", "./wwwroot/css/mini.css"],
         latest: "./wwwroot/js/latest.js",
-        admin: ["./wwwroot/js/admin.js", "/wwwroot/dist/my-element.js"],
+        admin: ["./wwwroot/js/admin.js", "/wwwroot/dist/tmi-admin-card.js", "./wwwroot/dist/tmi-mini-card.js"],
         edit: "./wwwroot/js/edit.js"
     },
     output: {
