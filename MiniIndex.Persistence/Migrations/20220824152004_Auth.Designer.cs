@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniIndex.Persistence;
 
@@ -11,9 +12,10 @@ using MiniIndex.Persistence;
 namespace MiniIndex.Migrations
 {
     [DbContext(typeof(MiniIndexContext))]
-    partial class MiniIndexContextModelSnapshot : ModelSnapshot
+    [Migration("20220824152004_Auth")]
+    partial class Auth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

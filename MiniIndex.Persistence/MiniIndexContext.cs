@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Duende.IdentityServer.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MiniIndex.Models;
 
 namespace MiniIndex.Persistence
 {
-    public class MiniIndexContext : IdentityDbContext
+    public class MiniIndexContext : ApiAuthorizationDbContext<IdentityUser>
     {
-        public MiniIndexContext(DbContextOptions<MiniIndexContext> options)
-            : base(options)
+        public MiniIndexContext(DbContextOptions<MiniIndexContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions)
+            : base(options, operationalStoreOptions)
         {
         }
 
