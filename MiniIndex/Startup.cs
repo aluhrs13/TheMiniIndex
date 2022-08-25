@@ -51,7 +51,7 @@ namespace MiniIndex
                 options.AddPolicy("SpecificOrigins",
                     builder =>
                     {
-                        builder.WithOrigins("https://tmireact.azurewebsites.net", "https://theminiindex.com", "https://wwww.theminiindex.com", "http://localhost:3000")
+                        builder.WithOrigins("https://tmireact.azurewebsites.net", "https://theminiindex.com", "https://wwww.theminiindex.com", "https://localhost:44410")
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });

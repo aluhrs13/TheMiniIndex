@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ using System.Threading.Tasks;
 namespace MiniIndex.API
 {
     [Route("api/[controller]")]
+    [EnableCors("SpecificOrigins")]
     [ApiController]
     public class MinisController : ControllerBase
     {
@@ -48,6 +50,7 @@ namespace MiniIndex.API
 
         // GET: api/<MinisController>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Get(
             [FromQuery] MiniSearchModel search = null,
             [FromQuery] int pageSize = 21,
