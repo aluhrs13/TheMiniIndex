@@ -165,6 +165,7 @@ namespace MiniIndex
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("index.html");
             });
         }
 
