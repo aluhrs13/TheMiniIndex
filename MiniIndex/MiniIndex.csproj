@@ -6,6 +6,9 @@
     <ApplicationInsightsResourceId>/subscriptions/3fc98a8d-8b5e-4228-83c4-fcce1e1a9143/resourcegroups/MiniIndex/providers/microsoft.insights/components/MiniIndex</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/3fc98a8d-8b5e-4228-83c4-fcce1e1a9143/resourcegroups/MiniIndex/providers/microsoft.insights/components/MiniIndex</ApplicationInsightsAnnotationResourceId>
     <WWWRoot>wwwroot\</WWWRoot>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <SpaClientUrl>http://127.0.0.1:5173/</SpaClientUrl>
+    <SpaLaunchCommand>npm start</SpaLaunchCommand>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +25,7 @@
   <ItemGroup>
     <PackageReference Include="AgileObjects.AgileMapper" Version="1.8.0" />
     <PackageReference Include="Anaximander.Linq" Version="4.0.0" />
+    <PackageReference Include="AspNetCore.SpaYarp" Version="1.0.0" />
     <PackageReference Include="Hangfire" Version="1.7.28" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
     <PackageReference Include="Hangfire.Core" Version="1.7.28" />

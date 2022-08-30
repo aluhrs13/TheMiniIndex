@@ -96,6 +96,9 @@ namespace MiniIndex
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddRazorOptions(ConfigureRazor);
 
+            //https://github.com/berhir/AspNetCore.SpaYarp
+            services.AddSpaYarp();
+
             string facebookAppId = Configuration["Authentication:Facebook:AppId"];
             string facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
 
@@ -161,10 +164,16 @@ namespace MiniIndex
                 Authorization = new[] { new HangFireAuthorizationFilter() }
             });
 
+            //https://github.com/berhir/AspNetCore.SpaYarp
+            app.UseSpaYarpMiddleware();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+
+                //https://github.com/berhir/AspNetCore.SpaYarp
+                endpoints.MapSpaYarp();
                 endpoints.MapFallbackToFile("index.html");
             });
         }
