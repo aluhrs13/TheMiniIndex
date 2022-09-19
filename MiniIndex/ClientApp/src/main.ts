@@ -1,23 +1,106 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import { setupCounter } from './counter'
+import './components/pages/my-element'
+import authService from './components/api-authorization/AuthorizeService'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+if (await authService.isAuthenticated()) {
+    console.log("Authenticated:");
+    console.log(await authService.getUser())
+} else {
+    console.log("Not Authenticated...");
+    //await authService.signIn("https://localhost:44386/");
+}
+
+import { LitElement, css, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { Router } from '@vaadin/router';
+//import './script/pages/app-home';
+//import './script/components/header';
+//import './styles/global.css';
+
+@customElement('app-index')
+export class AppIndex extends LitElement {
+    static get styles() {
+        return css`
+      main {
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 16px;
+      }
+      #routerOutlet > * {
+        width: 100% !important;
+      }
+
+      #routerOutlet > .leaving {
+        animation: 160ms fadeOut ease-in-out;
+      }
+
+      #routerOutlet > .entering {
+        animation: 160ms fadeIn linear;
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+
+        to {
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0.2;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+    `;
+    }
+
+    constructor() {
+        super();
+    }
+
+    firstUpdated() {
+        // this method is a lifecycle even in lit
+        // for more info check out the lit docs https://lit.dev/docs/components/lifecycle/
+
+        // For more info on using the @vaadin/router check here https://vaadin.com/router
+        const router = new Router(this.shadowRoot?.querySelector('#routerOutlet'));
+        router.setRoutes([
+            // temporarily cast to any because of a Type bug with the router
+            {
+                path: (import.meta as any).env.BASE_URL,
+                animate: true,
+                children: [
+                    { path: '', component: 'my-element' },
+                    {
+                        path: "/authentication/login/:action",
+                        component: 'app-login',
+                        action: async () => {
+                            await import('./components/pages/app-login.js');
+                        },
+                    },
+                    {
+                        path: "/authentication/logout/:action",
+                        component: 'app-logout',
+                        action: async () => {
+                            await import('./components/pages/app-logout.js');
+                        },
+                    }
+                ],
+            } as any,
+        ]);
+    }
+
+    render() {
+        return html`
+        <main>
+          <div id="routerOutlet"></div>
+        </main>
+    `;
+    }
+}

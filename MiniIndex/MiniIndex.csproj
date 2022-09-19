@@ -8,7 +8,7 @@
     <WWWRoot>wwwroot\</WWWRoot>
     <SpaRoot>ClientApp\</SpaRoot>
     <SpaClientUrl>http://127.0.0.1:5173/</SpaClientUrl>
-    <SpaLaunchCommand>npm start</SpaLaunchCommand>
+    <SpaLaunchCommand>npm run dev</SpaLaunchCommand>
   </PropertyGroup>
 
   <ItemGroup>
