@@ -78,6 +78,20 @@ export class AppIndex extends LitElement {
         children: [
           { path: "", component: "my-element" },
           {
+            path: "/Minis",
+            component: "tmi-mini-list",
+            action: async () => {
+              await import("./pages/tmi-mini-list.js");
+            },
+          },
+          {
+            path: "/Mini/:id",
+            component: "tmi-mini-page",
+            action: async () => {
+              await import("./pages/tmi-mini-page.js");
+            },
+          },
+          {
             path: "/authentication/login/:action",
             component: "app-login",
             action: async () => {

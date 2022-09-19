@@ -104,6 +104,8 @@ namespace MiniIndex.API
             //TODO: Remove Link, propagate sources
             Mini mini = await _context.Mini.AsNoTracking().TagWith("Minis API View")
                                         .Include(m => m.Creator)
+                                        .Include(m => m.MiniTags)
+                                            .ThenInclude(mt=>mt.Tag)
                                         .FirstOrDefaultAsync(m => m.ID == id);
 
             _telemetry.TrackEvent("ViewedMiniAPI", new Dictionary<string, string> { { "MiniId", mini.ID.ToString() } });

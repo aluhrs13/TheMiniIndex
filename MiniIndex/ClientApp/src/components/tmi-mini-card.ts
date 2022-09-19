@@ -1,0 +1,226 @@
+import { LitElement, html, css } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { Router } from "@vaadin/router";
+
+@customElement("tmi-mini-card")
+export class TMIMiniCard extends LitElement {
+  static override styles = css`
+    :host {
+      display: block;
+    }
+    a.card {
+      color: var(--app-primary-color);
+      height: 100%;
+    }
+
+    h3 {
+      font-size: 1.25em;
+      line-height: 1em;
+      white-space: normal;
+    }
+
+    h4 {
+      font-size: 0.8em;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: "Montserrat", sans-serif !important;
+      font-weight: 500;
+    }
+
+    .montserrat {
+      font-family: "Montserrat", sans-serif !important;
+    }
+
+    .btn {
+      font-family: "Montserrat", sans-serif !important;
+    }
+
+    input.full-width {
+      font-family: "Montserrat", sans-serif !important;
+    }
+
+    .card {
+      filter: drop-shadow(4px 4px 4px var(--app-primary-color));
+      background-color: white;
+      border-radius: 2px;
+    }
+
+    .card-thumbnail {
+      object-fit: cover;
+      border-radius: 2px 2px 0px 0px;
+      width: 100%;
+    }
+
+    .card-text {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+    }
+
+    .card-padded {
+      padding: 0.5rem;
+    }
+
+    .mini-name {
+      text-align: left;
+      line-height: 0.4em;
+      white-space: nowrap;
+      overflow: hidden;
+      margin: 0 !important;
+    }
+
+    .mini-name > h3,
+    .mini-name > h4 {
+      margin: 0.5rem;
+    }
+
+    .new-tag {
+      width: 0;
+      height: 0;
+      border-bottom: 60px solid #00201c;
+      border-left: 80px solid transparent;
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
+      z-index: 99;
+      -webkit-filter: drop-shadow(-2px -2px 4px #40a076);
+      filter: drop-shadow(-2px -2px 4px #40a076);
+    }
+
+    .new-tag-span {
+      position: relative;
+      bottom: -29px;
+      right: 55px;
+      z-index: 100;
+      width: 60px;
+      text-align: center;
+      font-size: 13px;
+      font-family: arial;
+      transform: rotate(-37deg);
+      font-weight: 600;
+      color: white;
+      display: block;
+    }
+
+    .mini-banner {
+      background-color: #fff7b9;
+      margin-top: -4px;
+      padding: 0.5rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .approved-time {
+      display: none;
+    }
+  `;
+  @property() name = "";
+  @property() status = "";
+  @property() miniId = "";
+  @property() thumbnail = "";
+  @property() creatorId = "";
+  @property() creatorName = "";
+  @property() approvedTime = "";
+
+  async view(id: string) {
+    Router.go(`/Mini/${id}`);
+  }
+
+  override render() {
+    console.log(this);
+    return html`
+      <div class="card ${this.status}" id="${this.miniId}">
+        <div>
+          <a @click="${() => this.view(this.miniId)}">
+            <img
+              class="card-thumbnail"
+              src="${this.thumbnail}"
+              width="314"
+              height="236"
+            />
+          </a>
+        </div>
+
+        <div class="card-text">
+          <div class="mini-name">
+            <h3>${this.name}</h3>
+            <h4>
+              by
+              <a
+                style="color:var(--app-primary-color)"
+                href="/Creators/Details/?id=${this.creatorId}"
+                >${this.creatorName}</a
+              >
+            </h4>
+          </div>
+        </div>
+        <div class="new-tag hidden"><span class="new-tag-span">New!</span></div>
+        <div class="approved-time">${this.approvedTime}</div>
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "tmi-mini-card": TMIMiniCard;
+  }
+}
+
+/*
+        ${if(this.status == "Pending"){
+
+        }}
+        <div class="mini-banner">This Mini needs tags!</div>
+        } @if(Model.Status == Status.Rejected || Model.Status ==
+        Status.Deleted){
+        <div class="mini-banner style-danger">
+          There is something wrong with this Mini.
+        </div>
+        }
+
+/*
+<div class="card @Model.Status.ToString()" id="@Model.ID">
+    <div>
+        <a href="/Minis/Details?id=@Model.ID">
+            @if (Model.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
+            {
+            <img class="card-thumbnail" src="@Model.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
+            }
+            else{
+            <img class="card-thumbnail" src="@Model.Thumbnail" width="314" height="236" />
+            }
+        </a>
+    </div>
+    @if(Model.Status == Status.Pending){
+    <div class="mini-banner">
+        This Mini needs tags!
+    </div>
+    }
+
+    @if(Model.Status == Status.Rejected || Model.Status == Status.Deleted){
+    <div class="mini-banner style-danger">
+        There is something wrong with this Mini.
+    </div>
+    }
+    <div class="card-text">
+        <div class="mini-name">
+            <h3>@Model.Name</h3>
+            @if(Model.Creator != null){
+                <h4>
+                by <a style="color:var(--app-primary-color)" href="/Creators/Details/?id=@Model.Creator.ID">@Model.Creator.Name</a>
+                </h4>
+            }
+        </div>
+    </div>
+    <div class="new-tag hidden"><span class="new-tag-span">New!</span></div>
+    <div class="approved-time">@Model.ApprovedLinuxTime()</div>
+</div>
+*/

@@ -30,7 +30,7 @@ namespace MiniIndex.Minis
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly TelemetryClient _telemetry;
-
+        /*
         [HttpGet("")]
         public async Task<IActionResult> BrowseMinis(
             [FromQuery]MiniSearchModel search = null,
@@ -65,5 +65,6 @@ namespace MiniIndex.Minis
 
             return View("BrowseMinis", model);
         }
+        */
     }
 }

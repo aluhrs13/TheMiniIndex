@@ -21,6 +21,7 @@ using WebPWrecover.Services;
 using Hangfire;
 using Hangfire.SqlServer;
 using System;
+using System.Text.Json.Serialization;
 
 namespace MiniIndex
 {
@@ -94,7 +95,13 @@ namespace MiniIndex
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddRazorOptions(ConfigureRazor);
+                .AddRazorOptions(ConfigureRazor)
+                //Prevent JSON Serialization loops
+                    .AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    });
 
             //https://github.com/berhir/AspNetCore.SpaYarp
             services.AddSpaYarp();
