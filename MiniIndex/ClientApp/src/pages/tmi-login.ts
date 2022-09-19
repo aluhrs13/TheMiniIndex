@@ -9,6 +9,7 @@ import { AuthenticationResultStatus } from "../utils/AuthorizeService.js";
 // This is the starting point for the login process. Any component that needs to authenticate
 // a user can simply perform a redirect to this component with a returnUrl query parameter and
 // let the component perform the login and return back to the return url.
+//TODO: Rename class and element name
 @customElement("app-login")
 export class AppLogin extends LitElement implements BeforeEnterObserver {
   @state()

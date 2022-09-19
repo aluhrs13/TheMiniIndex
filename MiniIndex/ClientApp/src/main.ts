@@ -1,12 +1,12 @@
 import "./pages/my-element";
 import authService from "./utils/AuthorizeService";
-import { perfMark, perfMeasure, logError } from "./utils/PerformanceMarks";
+import { perfMark, perfMeasure, logMsg } from "./utils/PerformanceMarks";
 
 if (await authService.isAuthenticated()) {
-  logError("Authenticated:");
-  logError(await authService.getUser());
+  logMsg("Authenticated:");
+  logMsg(await authService.getUser());
 } else {
-  logError("Not Authenticated...");
+  logMsg("Not Authenticated...");
   //await authService.signIn("https://localhost:44386/");
 }
 

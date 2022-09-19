@@ -2,6 +2,7 @@
 <html>
   <head>
     <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/components/tmi-authCluster.ts"></script>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -278,14 +279,6 @@
           </form>
 
           <div class="cluster" id="menuCluster">
-            <!--
-                    <div class="center">
-                                    <a class="btn style-primary" href="/Admin/"
-                                      >Moderator Dashboard</a
-                                    >
-                                  </div>
-                                -->
-
             <div class="center">
               <a class="btn style-primary" href="/Creators/Browse">Creators</a>
             </div>
@@ -302,7 +295,7 @@
                 <div class="icon icon-random"></div>
               </a>
             </div>
-            <!--<partial name="_LoginPartial" />-->
+            <tmi-auth-cluster>Login</tmi-auth-cluster>
           </div>
           <div class="icon-no-container" style="padding-right: 0.75rem">
             <a href="#" id="menuBtn" onclick="toggleMobile()">
@@ -316,14 +309,6 @@
           id="mobileCluster"
           style="display: none"
         >
-          <!--
-                <div class="center">
-                                <a class="btn style-primary" href="/Admin/"
-                                  >Moderator Dashboard</a
-                                >
-                              </div>
-                            -->
-
           <div class="center">
             <a class="btn style-primary" href="/Creators/Browse">Creators</a>
           </div>
@@ -338,7 +323,7 @@
               >Tag a Random Mini</a
             >
           </div>
-          <!--<partial name="_LoginPartial" />-->
+          <tmi-auth-cluster>Login</tmi-auth-cluster>
         </div>
       </nav>
 

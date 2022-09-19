@@ -8,6 +8,7 @@ import { AuthenticationResultStatus } from "../utils/AuthorizeService.js";
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
 // user clicks on the logout button on the LoginMenu component.
+//TODO: Rename class and element name
 @customElement("app-logout")
 export class AppLogout extends LitElement implements BeforeEnterObserver {
   @state()

@@ -18,18 +18,30 @@ export class AuthorizeService {
   }
 
   async getUser() {
+    perfMark("tmi-getUser-start");
     if (this._user && this._user.profile) {
+      perfMark("tmi-getUser-end");
+      perfMeasure("tmi-getUser-fast", "tmi-getUser-start", "tmi-getUser-end");
       return this._user.profile;
     }
 
     await this.ensureUserManagerInitialized();
     const user = await this.userManager.getUser();
+    perfMark("tmi-getUser-end");
+    perfMeasure("tmi-getUser-slow", "tmi-getUser-start", "tmi-getUser-end");
     return user && user.profile;
   }
 
   async getAccessToken() {
+    perfMark("tmi-getAccessToken-start");
     await this.ensureUserManagerInitialized();
     const user = await this.userManager.getUser();
+    perfMark("tmi-getAccessToken-end");
+    perfMeasure(
+      "tmi-getAccessToken",
+      "tmi-getAccessToken-start",
+      "tmi-getAccessToken-end"
+    );
     return user && user.access_token;
   }
 

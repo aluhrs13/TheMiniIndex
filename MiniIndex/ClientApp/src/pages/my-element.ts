@@ -1,5 +1,8 @@
 ﻿import { LitElement, html, css } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
+
+import authService from "../utils/AuthorizeService.js";
+import { perfMark, perfMeasure } from "../utils/PerformanceMarks";
 
 @customElement("my-element")
 export class MyElement extends LitElement {
@@ -13,29 +16,34 @@ export class MyElement extends LitElement {
     }
   `;
 
-  @property()
+  @state()
   name = "World";
 
-  @property({ type: Number })
-  count = 0;
+  @state()
+  data = "";
 
   override render() {
     return html`
-      <h1>${this.sayHello(this.name)}!</h1>
-      <button @click=${this._onClick} part="button">
-        Click Count: ${this.count}
-      </button>
-      <slot></slot>
+      <h1>Hello, ${this.name}!</h1>
+      <button @click=${this._getData} part="button">Get Data!</button>
+      <br />
+      <slot>${this.data}</slot>
     `;
   }
 
-  private _onClick() {
-    this.count++;
-    this.dispatchEvent(new CustomEvent("count-changed"));
-  }
-
-  sayHello(name: string): string {
-    return `Hello, ${name}`;
+  async _getData() {
+    perfMark("tmi-genericGetData-start");
+    const token = await authService.getAccessToken();
+    const response = await fetch("https://localhost:44386/api/minis", {
+      headers: !token ? {} : { Authorization: `Bearer ${token}` },
+    });
+    this.data = await response.json();
+    perfMark("tmi-genericGetData-end");
+    perfMeasure(
+      "tmi-genericGetData",
+      "tmi-genericGetData-start",
+      "tmi-genericGetData-end"
+    );
   }
 }
 

@@ -13,3 +13,7 @@ export function perfMeasure(
 export function logError(errorDetails: string) {
   console.error(errorDetails);
 }
+
+export function logMsg(text: string) {
+  console.log(text);
+}
