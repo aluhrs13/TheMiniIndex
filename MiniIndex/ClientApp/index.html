@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <script type="module" src="/src/main.ts"></script>
 
     <meta charset="utf-8" />
@@ -8,30 +8,48 @@
 
     <meta name="application-name" content="The Mini Index" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
-    <meta name="msapplication-TileImage"
-          content="/images/icons/mstile-144x144.png" />
-    <meta name="msapplication-square70x70logo"
-          content="/images/icons/mstile-70x70.png" />
-    <meta name="msapplication-square150x150logo"
-          content="/images/icons/mstile-150x150.png" />
-    <meta name="msapplication-wide310x150logo"
-          content="/images/icons/mstile-310x150.png" />
-    <meta name="msapplication-square310x310logo"
-          content="/images/icons/mstile-310x310.png" />
+    <meta
+      name="msapplication-TileImage"
+      content="/images/icons/mstile-144x144.png"
+    />
+    <meta
+      name="msapplication-square70x70logo"
+      content="/images/icons/mstile-70x70.png"
+    />
+    <meta
+      name="msapplication-square150x150logo"
+      content="/images/icons/mstile-150x150.png"
+    />
+    <meta
+      name="msapplication-wide310x150logo"
+      content="/images/icons/mstile-310x150.png"
+    />
+    <meta
+      name="msapplication-square310x310logo"
+      content="/images/icons/mstile-310x310.png"
+    />
 
     <meta property="og:site_name" content="The Mini Index" />
-    <meta property="og:image"
-          content="https://theminiindex.com/images/banner.png" />
+    <meta
+      property="og:image"
+      content="https://theminiindex.com/images/banner.png"
+    />
     <meta property="og:title" content="The Mini Index" />
-    <meta property="og:description"
-          content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
+    <meta
+      property="og:description"
+      content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons."
+    />
     <meta property="fb:app_id" content="217005809246433" />
 
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:image:src"
-          content="https://theminiindex.com/images/banner.png" />
-    <meta name="twitter:description"
-          content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
+    <meta
+      name="twitter:image:src"
+      content="https://theminiindex.com/images/banner.png"
+    />
+    <meta
+      name="twitter:description"
+      content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons."
+    />
     <meta name="twitter:title" content="The Mini Index" />
 
     <title>The Mini Index</title>
@@ -41,190 +59,226 @@
     <link rel="stylesheet" href="/css/site.css" />
     <link rel="stylesheet" href="/css/styles.css" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
-          rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
 
     <script type="text/javascript">
-        var appInsights =
-            window.appInsights ||
-            (function (a) {
-                function b(a) {
-                    c[a] = function () {
-                        var b = arguments;
-                        c.queue.push(function () {
-                            c[a].apply(c, b);
-                        });
-                    };
-                }
-                var c = { config: a },
-                    d = document,
-                    e = window;
-                setTimeout(function () {
-                    var b = d.createElement("script");
-                    (b.src =
-                        a.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js"),
-                        d.getElementsByTagName("script")[0].parentNode.appendChild(b);
-                });
-                try {
-                    c.cookie = d.cookie;
-                } catch (a) { }
-                c.queue = [];
-                for (
-                    var f = [
-                        "Event",
-                        "Exception",
-                        "Metric",
-                        "PageView",
-                        "Trace",
-                        "Dependency",
-                    ];
-                    f.length;
+      var appInsights =
+        window.appInsights ||
+        (function (a) {
+          function b(a) {
+            c[a] = function () {
+              var b = arguments;
+              c.queue.push(function () {
+                c[a].apply(c, b);
+              });
+            };
+          }
+          var c = { config: a },
+            d = document,
+            e = window;
+          setTimeout(function () {
+            var b = d.createElement("script");
+            (b.src =
+              a.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js"),
+              d.getElementsByTagName("script")[0].parentNode.appendChild(b);
+          });
+          try {
+            c.cookie = d.cookie;
+          } catch (a) {}
+          c.queue = [];
+          for (
+            var f = [
+              "Event",
+              "Exception",
+              "Metric",
+              "PageView",
+              "Trace",
+              "Dependency",
+            ];
+            f.length;
 
-                )
-                    b("track" + f.pop());
-                if (
-                    (b("setAuthenticatedUserContext"),
-                        b("clearAuthenticatedUserContext"),
-                        b("startTrackEvent"),
-                        b("stopTrackEvent"),
-                        b("startTrackPage"),
-                        b("stopTrackPage"),
-                        b("flush"),
-                        !a.disableExceptionTracking)
-                ) {
-                    (f = "onerror"), b("_" + f);
-                    var g = e[f];
-                    e[f] = function (a, b, d, e, h) {
-                        var i = g && g(a, b, d, e, h);
-                        return !0 !== i && c["_" + f](a, b, d, e, h), i;
-                    };
-                }
-                return c;
-            })({
-                instrumentationKey: "70f322c0-7e67-4ac4-9b55-72cad669d574",
-            });
+          )
+            b("track" + f.pop());
+          if (
+            (b("setAuthenticatedUserContext"),
+            b("clearAuthenticatedUserContext"),
+            b("startTrackEvent"),
+            b("stopTrackEvent"),
+            b("startTrackPage"),
+            b("stopTrackPage"),
+            b("flush"),
+            !a.disableExceptionTracking)
+          ) {
+            (f = "onerror"), b("_" + f);
+            var g = e[f];
+            e[f] = function (a, b, d, e, h) {
+              var i = g && g(a, b, d, e, h);
+              return !0 !== i && c["_" + f](a, b, d, e, h), i;
+            };
+          }
+          return c;
+        })({
+          instrumentationKey: "70f322c0-7e67-4ac4-9b55-72cad669d574",
+        });
 
-        (window.appInsights = appInsights),
-            appInsights.queue &&
-            0 === appInsights.queue.length &&
-            appInsights.trackPageView();
+      (window.appInsights = appInsights),
+        appInsights.queue &&
+          0 === appInsights.queue.length &&
+          appInsights.trackPageView();
 
-        function toggleMobile() {
-            var mobile = document.getElementById("mobileCluster");
-            mobile.style.display == "block"
-                ? (mobile.style.display = "none")
-                : (mobile.style.display = "block");
-        }
+      function toggleMobile() {
+        var mobile = document.getElementById("mobileCluster");
+        mobile.style.display == "block"
+          ? (mobile.style.display = "none")
+          : (mobile.style.display = "block");
+      }
     </script>
 
     <style>
-        h1,
-        h2,
-        h3,
-        h4 {
-            font-family: "Montserrat", sans-serif !important;
-            font-weight: 500;
-        }
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Montserrat", sans-serif !important;
+        font-weight: 500;
+      }
 
-        .montserrat {
-            font-family: "Montserrat", sans-serif !important;
-        }
+      .montserrat {
+        font-family: "Montserrat", sans-serif !important;
+      }
 
-        .btn {
-            font-family: "Montserrat", sans-serif !important;
-        }
+      .btn {
+        font-family: "Montserrat", sans-serif !important;
+      }
 
-        input.full-width {
-            font-family: "Montserrat", sans-serif !important;
-        }
+      input.full-width {
+        font-family: "Montserrat", sans-serif !important;
+      }
     </style>
 
-    <link rel="apple-touch-icon-precomposed"
-          sizes="57x57"
-          href="/images/icons/apple-touch-icon-57x57.png" />
-    <link rel="apple-touch-icon-precomposed"
-          sizes="114x114"
-          href="/images/icons/apple-touch-icon-114x114.png" />
-    <link rel="apple-touch-icon-precomposed"
-          sizes="72x72"
-          href="/images/icons/apple-touch-icon-72x72.png" />
-    <link rel="apple-touch-icon-precomposed"
-          sizes="144x144"
-          href="/images/icons/apple-touch-icon-144x144.png" />
-    <link rel="apple-touch-icon-precomposed"
-          sizes="60x60"
-          href="/images/icons/apple-touch-icon-60x60.png" />
-    <link rel="apple-touch-icon-precomposed"
-          sizes="120x120"
-          href="/images/icons/apple-touch-icon-120x120.png" />
-    <link rel="apple-touch-icon-precomposed"
-          sizes="76x76"
-          href="/images/icons/apple-touch-icon-76x76.png" />
-    <link rel="apple-touch-icon-precomposed"
-          sizes="152x152"
-          href="/images/icons/apple-touch-icon-152x152.png" />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="57x57"
+      href="/images/icons/apple-touch-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="114x114"
+      href="/images/icons/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="72x72"
+      href="/images/icons/apple-touch-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="144x144"
+      href="/images/icons/apple-touch-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="60x60"
+      href="/images/icons/apple-touch-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="120x120"
+      href="/images/icons/apple-touch-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="76x76"
+      href="/images/icons/apple-touch-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="152x152"
+      href="/images/icons/apple-touch-icon-152x152.png"
+    />
 
-    <link rel="icon"
-          type="image/png"
-          href="/images/icons/favicon-196x196.png"
-          sizes="196x196" />
-    <link rel="icon"
-          type="image/png"
-          href="/images/icons/favicon-96x96.png"
-          sizes="96x96" />
-    <link rel="icon"
-          type="image/png"
-          href="/images/icons/favicon-32x32.png"
-          sizes="32x32" />
-    <link rel="icon"
-          type="image/png"
-          href="/images/icons/favicon-16x16.png"
-          sizes="16x16" />
-    <link rel="icon"
-          type="image/png"
-          href="/images/icons/favicon-128.png"
-          sizes="128x128" />
-</head>
-<body>
+    <link
+      rel="icon"
+      type="image/png"
+      href="/images/icons/favicon-196x196.png"
+      sizes="196x196"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/images/icons/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/images/icons/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/images/icons/favicon-16x16.png"
+      sizes="16x16"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/images/icons/favicon-128.png"
+      sizes="128x128"
+    />
+  </head>
+  <body>
     <div>
-        <nav>
-            <div class="cluster style-primary" style="flex-wrap: nowrap">
-                <div class="row" style="padding-left: 10px">
-                    <a href="/">
-                        <img style="margin-right: 0.5rem"
-                             width="40"
-                             height="40"
-                             src="/images/icons/apple-touch-icon-57x57.png" />
-                    </a>
+      <nav>
+        <div class="cluster style-primary" style="flex-wrap: nowrap">
+          <div class="row" style="padding-left: 10px">
+            <a href="/">
+              <img
+                style="margin-right: 0.5rem"
+                width="40"
+                height="40"
+                src="/images/icons/apple-touch-icon-57x57.png"
+              />
+            </a>
 
-                    <div class="montserrat" id="logotype">
-                        <span class="xsmall">THE</span>
-                        <br />
-                        <span class="larger">MINI INDEX</span>
-                    </div>
-                </div>
+            <div class="montserrat" id="logotype">
+              <span class="xsmall">THE</span>
+              <br />
+              <span class="larger">MINI INDEX</span>
+            </div>
+          </div>
 
-                <form action="/Minis"
-                      style="margin-right: auto; width: 100%"
-                      id="searchForm"
-                      name="searchForm">
-                    <div class="row">
-                        <label for="nav-search"></label>
-                        <input type="text"
-                               name="SearchString"
-                               id="SearchString"
-                               placeholder="Search..."
-                               class="full-width"
-                               value="TODO" />
-                        <input type="submit"
-                               value="Search"
-                               id="NavSearchBtn"
-                               class="btn style-secondary-border" />
-                    </div>
-                </form>
+          <form
+            action="/Minis"
+            style="margin-right: auto; width: 100%"
+            id="searchForm"
+            name="searchForm"
+          >
+            <div class="row">
+              <label for="nav-search"></label>
+              <input
+                type="text"
+                name="SearchString"
+                id="SearchString"
+                placeholder="Search..."
+                class="full-width"
+                value="TODO"
+              />
+              <input
+                type="submit"
+                value="Search"
+                id="NavSearchBtn"
+                class="btn style-secondary-border"
+              />
+            </div>
+          </form>
 
-                <div class="cluster" id="menuCluster">
-                    <!--
+          <div class="cluster" id="menuCluster">
+            <!--
                     <div class="center">
                                     <a class="btn style-primary" href="/Admin/"
                                       >Moderator Dashboard</a
@@ -232,35 +286,37 @@
                                   </div>
                                 -->
 
-                    <div class="center">
-                        <a class="btn style-primary" href="/Creators/Browse">Creators</a>
-                    </div>
-                    <div class="center">
-                        <a class="btn style-primary" href="/Minis/Create">Add a Mini</a>
-                    </div>
-                    <div class="icon-no-container">
-                        <a href="/Starred/">
-                            <div class="icon icon-heart"></div>
-                        </a>
-                    </div>
-                    <div class="icon-no-container">
-                        <a href="/Minis/Help/">
-                            <div class="icon icon-random"></div>
-                        </a>
-                    </div>
-                    <!--<partial name="_LoginPartial" />-->
-                </div>
-                <div class="icon-no-container" style="padding-right: 0.75rem">
-                    <a href="#" id="menuBtn" onclick="toggleMobile()">
-                        <div class="icon icon-menu"></div>
-                    </a>
-                </div>
+            <div class="center">
+              <a class="btn style-primary" href="/Creators/Browse">Creators</a>
             </div>
+            <div class="center">
+              <a class="btn style-primary" href="/Minis/Create">Add a Mini</a>
+            </div>
+            <div class="icon-no-container">
+              <a href="/Starred/">
+                <div class="icon icon-heart"></div>
+              </a>
+            </div>
+            <div class="icon-no-container">
+              <a href="/Minis/Help/">
+                <div class="icon icon-random"></div>
+              </a>
+            </div>
+            <!--<partial name="_LoginPartial" />-->
+          </div>
+          <div class="icon-no-container" style="padding-right: 0.75rem">
+            <a href="#" id="menuBtn" onclick="toggleMobile()">
+              <div class="icon icon-menu"></div>
+            </a>
+          </div>
+        </div>
 
-            <div class="cluster style-primary"
-                 id="mobileCluster"
-                 style="display: none">
-                <!--
+        <div
+          class="cluster style-primary"
+          id="mobileCluster"
+          style="display: none"
+        >
+          <!--
                 <div class="center">
                                 <a class="btn style-primary" href="/Admin/"
                                   >Moderator Dashboard</a
@@ -268,63 +324,77 @@
                               </div>
                             -->
 
-                <div class="center">
-                    <a class="btn style-primary" href="/Creators/Browse">Creators</a>
-                </div>
-                <div class="center">
-                    <a class="btn style-primary" href="/Minis/Create">Add a Mini</a>
-                </div>
-                <div class="center">
-                    <a class="btn style-primary" href="/Starred/">Favorites</a>
-                </div>
-                <div class="center">
-                    <a class="btn style-primary" href="/Minis/Help">Tag a Random Mini</a>
-                </div>
-                <!--<partial name="_LoginPartial" />-->
-            </div>
-        </nav>
+          <div class="center">
+            <a class="btn style-primary" href="/Creators/Browse">Creators</a>
+          </div>
+          <div class="center">
+            <a class="btn style-primary" href="/Minis/Create">Add a Mini</a>
+          </div>
+          <div class="center">
+            <a class="btn style-primary" href="/Starred/">Favorites</a>
+          </div>
+          <div class="center">
+            <a class="btn style-primary" href="/Minis/Help"
+              >Tag a Random Mini</a
+            >
+          </div>
+          <!--<partial name="_LoginPartial" />-->
+        </div>
+      </nav>
 
-        <main>
-            <app-index></app-index>
-            <script type="module" src="/src/main.ts"></script>
-        </main>
+      <main>
+        <app-index></app-index>
+        <script type="module" src="/src/main.ts"></script>
+      </main>
 
-        <footer>
-            <div class="style-primary center">
-                <div class="center-t">
-                    Everything you find here is thanks to someone who took the time to
-                    index and tag it. If you don't find what you're looking for, or just
-                    have some spare time, please try to improve the quality of The Mini
-                    Index by submitting a mini or improving tags.
-                </div>
-                <br />
-                <div class="cluster">
-                    <div>
-                        <a class="btn style-primary"
-                           target="_blank"
-                           href="https://discordapp.com/invite/FDtYRDP">Discord</a>
-                    </div>
-                    <div>
-                        <a class="btn style-primary"
-                           target="_blank"
-                           href="https://github.com/aluhrs13/TheMiniIndex">Github</a>
-                    </div>
-                    <div>
-                        <a class="btn style-primary"
-                           target="_blank"
-                           href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1UMDNUNlVURVhEQzlFUFI5UlEwR0ZISlk5Vi4u">Feedback Form</a>
-                    </div>
-                    <div>
-                        <a class="btn style-primary"
-                           target="_blank"
-                           href="https://reddit.com/r/TheMiniIndex">Reddit</a>
-                    </div>
-                </div>
+      <footer>
+        <div class="style-primary center">
+          <div class="center-t">
+            Everything you find here is thanks to someone who took the time to
+            index and tag it. If you don't find what you're looking for, or just
+            have some spare time, please try to improve the quality of The Mini
+            Index by submitting a mini or improving tags.
+          </div>
+          <br />
+          <div class="cluster">
+            <div>
+              <a
+                class="btn style-primary"
+                target="_blank"
+                href="https://discordapp.com/invite/FDtYRDP"
+                >Discord</a
+              >
             </div>
-        </footer>
+            <div>
+              <a
+                class="btn style-primary"
+                target="_blank"
+                href="https://github.com/aluhrs13/TheMiniIndex"
+                >Github</a
+              >
+            </div>
+            <div>
+              <a
+                class="btn style-primary"
+                target="_blank"
+                href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAYEBbR1UMDNUNlVURVhEQzlFUFI5UlEwR0ZISlk5Vi4u"
+                >Feedback Form</a
+              >
+            </div>
+            <div>
+              <a
+                class="btn style-primary"
+                target="_blank"
+                href="https://reddit.com/r/TheMiniIndex"
+                >Reddit</a
+              >
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
 
     <!--@RenderSection("Scripts", required: false)-->
-</body>
+  </body>
 </html>
 >

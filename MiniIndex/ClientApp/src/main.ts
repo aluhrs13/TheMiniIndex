@@ -1,26 +1,26 @@
-import './components/pages/my-element'
-import authService from './components/api-authorization/AuthorizeService'
-
+import "./pages/my-element";
+import authService from "./utils/AuthorizeService";
+import { perfMark, perfMeasure, logError } from "./utils/PerformanceMarks";
 
 if (await authService.isAuthenticated()) {
-    console.log("Authenticated:");
-    console.log(await authService.getUser())
+  logError("Authenticated:");
+  logError(await authService.getUser());
 } else {
-    console.log("Not Authenticated...");
-    //await authService.signIn("https://localhost:44386/");
+  logError("Not Authenticated...");
+  //await authService.signIn("https://localhost:44386/");
 }
 
-import { LitElement, css, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import { Router } from '@vaadin/router';
+import { LitElement, css, html } from "lit";
+import { customElement } from "lit/decorators.js";
+import { Router } from "@vaadin/router";
 //import './script/pages/app-home';
 //import './script/components/header';
 //import './styles/global.css';
 
-@customElement('app-index')
+@customElement("app-index")
 export class AppIndex extends LitElement {
-    static get styles() {
-        return css`
+  static get styles() {
+    return css`
       main {
         padding-left: 16px;
         padding-right: 16px;
@@ -58,49 +58,49 @@ export class AppIndex extends LitElement {
         }
       }
     `;
-    }
+  }
 
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    firstUpdated() {
-        // this method is a lifecycle even in lit
-        // for more info check out the lit docs https://lit.dev/docs/components/lifecycle/
+  firstUpdated() {
+    // this method is a lifecycle even in lit
+    // for more info check out the lit docs https://lit.dev/docs/components/lifecycle/
 
-        // For more info on using the @vaadin/router check here https://vaadin.com/router
-        const router = new Router(this.shadowRoot?.querySelector('#routerOutlet'));
-        router.setRoutes([
-            // temporarily cast to any because of a Type bug with the router
-            {
-                path: (import.meta as any).env.BASE_URL,
-                animate: true,
-                children: [
-                    { path: '', component: 'my-element' },
-                    {
-                        path: "/authentication/login/:action",
-                        component: 'app-login',
-                        action: async () => {
-                            await import('./components/pages/app-login.js');
-                        },
-                    },
-                    {
-                        path: "/authentication/logout/:action",
-                        component: 'app-logout',
-                        action: async () => {
-                            await import('./components/pages/app-logout.js');
-                        },
-                    }
-                ],
-            } as any,
-        ]);
-    }
+    // For more info on using the @vaadin/router check here https://vaadin.com/router
+    const router = new Router(this.shadowRoot?.querySelector("#routerOutlet"));
+    router.setRoutes([
+      // temporarily cast to any because of a Type bug with the router
+      {
+        path: (import.meta as any).env.BASE_URL,
+        animate: true,
+        children: [
+          { path: "", component: "my-element" },
+          {
+            path: "/authentication/login/:action",
+            component: "app-login",
+            action: async () => {
+              await import("./pages/tmi-login.js");
+            },
+          },
+          {
+            path: "/authentication/logout/:action",
+            component: "app-logout",
+            action: async () => {
+              await import("./pages/tmi-logout.js");
+            },
+          },
+        ],
+      } as any,
+    ]);
+  }
 
-    render() {
-        return html`
-        <main>
-          <div id="routerOutlet"></div>
-        </main>
+  render() {
+    return html`
+      <main>
+        <div id="routerOutlet"></div>
+      </main>
     `;
-    }
+  }
 }

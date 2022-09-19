@@ -1,5 +1,6 @@
 //Scaffolded from .NET's JWT React Sample
-import { UserManager, WebStorageStateStore } from 'oidc-client';
+import { UserManager, WebStorageStateStore } from "oidc-client";
+import { perfMark, perfMeasure, logError } from "./PerformanceMarks";
 
 export class AuthorizeService {
   _callbacks = [];
@@ -41,37 +42,68 @@ export class AuthorizeService {
   // 3) If the two methods above fail, we redirect the browser to the IdP to perform a traditional
   //    redirect flow.
   async signIn(state) {
+    perfMark("tmi-signin-start");
     await this.ensureUserManagerInitialized();
     try {
-      const silentUser = await this.userManager.signinSilent(this.createArguments());
+      const silentUser = await this.userManager.signinSilent(
+        this.createArguments()
+      );
       this.updateState(silentUser);
+      perfMark("tmi-signin-end-silent");
+      perfMeasure(
+        "tmi-signin-silent",
+        "tmi-signin-start",
+        "tmi-signin-end-silent"
+      );
       return this.success(state);
     } catch (silentError) {
       // User might not be authenticated, fallback to popup authentication
-      console.log("Silent authentication error: ", silentError);
+      logError("Silent authentication error: ", silentError);
 
       try {
         if (this._popUpDisabled) {
-          throw new Error('Popup disabled. Change \'AuthorizeService.js:AuthorizeService._popupDisabled\' to false to enable it.')
+          throw new Error(
+            "Popup disabled. Change 'AuthorizeService.js:AuthorizeService._popupDisabled' to false to enable it."
+          );
         }
 
-        const popUpUser = await this.userManager.signinPopup(this.createArguments());
+        const popUpUser = await this.userManager.signinPopup(
+          this.createArguments()
+        );
         this.updateState(popUpUser);
+        perfMark("tmi-signin-end-popup");
+        perfMeasure(
+          "tmi-signin-popup",
+          "tmi-signin-start",
+          "tmi-signin-end-popup"
+        );
         return this.success(state);
       } catch (popUpError) {
         if (popUpError.message === "Popup window closed") {
           // The user explicitly cancelled the login action by closing an opened popup.
           return this.error("The user closed the window.");
         } else if (!this._popUpDisabled) {
-          console.log("Popup authentication error: ", popUpError);
+          logError("Popup authentication error: ", popUpError);
         }
 
         // PopUps might be blocked by the user, fallback to redirect
         try {
           await this.userManager.signinRedirect(this.createArguments(state));
+          perfMark("tmi-signin-end-redirect");
+          perfMeasure(
+            "tmi-signin-redirect",
+            "tmi-signin-start",
+            "tmi-signin-end-redirect"
+          );
           return this.redirect();
         } catch (redirectError) {
-          console.log("Redirect authentication error: ", redirectError);
+          logError("Redirect authentication error: ", redirectError);
+          perfMark("tmi-signin-end-error");
+          perfMeasure(
+            "tmi-signin-error",
+            "tmi-signin-start",
+            "tmi-signin-end-error"
+          );
           return this.error(redirectError);
         }
       }
@@ -85,8 +117,8 @@ export class AuthorizeService {
       this.updateState(user);
       return this.success(user && user.state);
     } catch (error) {
-      console.log('There was an error signing in: ', error);
-      return this.error('There was an error signing in.');
+      logError("There was an error signing in: ", error);
+      return this.error("There was an error signing in.");
     }
   }
 
@@ -99,19 +131,21 @@ export class AuthorizeService {
     await this.ensureUserManagerInitialized();
     try {
       if (this._popUpDisabled) {
-        throw new Error('Popup disabled. Change \'AuthorizeService.js:AuthorizeService._popupDisabled\' to false to enable it.')
+        throw new Error(
+          "Popup disabled. Change 'AuthorizeService.js:AuthorizeService._popupDisabled' to false to enable it."
+        );
       }
 
       await this.userManager.signoutPopup(this.createArguments());
       this.updateState(undefined);
       return this.success(state);
     } catch (popupSignOutError) {
-      console.log("Popup signout error: ", popupSignOutError);
+      logError("Popup signout error: ", popupSignOutError);
       try {
         await this.userManager.signoutRedirect(this.createArguments(state));
         return this.redirect();
       } catch (redirectSignOutError) {
-        console.log("Redirect signout error: ", redirectSignOutError);
+        logError("Redirect signout error: ", redirectSignOutError);
         return this.error(redirectSignOutError);
       }
     }
@@ -124,7 +158,7 @@ export class AuthorizeService {
       this.updateState(null);
       return this.success(response && response.data);
     } catch (error) {
-      console.log(`There was an error trying to log out '${error}'.`);
+      logError(`There was an error trying to log out '${error}'.`);
       return this.error(error);
     }
   }
@@ -136,16 +170,25 @@ export class AuthorizeService {
   }
 
   subscribe(callback) {
-    this._callbacks.push({ callback, subscription: this._nextSubscriptionId++ });
+    this._callbacks.push({
+      callback,
+      subscription: this._nextSubscriptionId++,
+    });
     return this._nextSubscriptionId - 1;
   }
 
   unsubscribe(subscriptionId) {
     const subscriptionIndex = this._callbacks
-      .map((element, index) => element.subscription === subscriptionId ? { found: true, index } : { found: false })
-      .filter(element => element.found === true);
+      .map((element, index) =>
+        element.subscription === subscriptionId
+          ? { found: true, index }
+          : { found: false }
+      )
+      .filter((element) => element.found === true);
     if (subscriptionIndex.length !== 1) {
-      throw new Error(`Found an invalid number of subscriptions ${subscriptionIndex.length}`);
+      throw new Error(
+        `Found an invalid number of subscriptions ${subscriptionIndex.length}`
+      );
     }
 
     this._callbacks.splice(subscriptionIndex[0].index, 1);
@@ -181,14 +224,14 @@ export class AuthorizeService {
 
     let response = await fetch("/_configuration/DotNetJWTTest");
     if (!response.ok) {
-        throw new Error(`Could not load settings for 'DotNetJWTTest'`);
+      throw new Error(`Could not load settings for 'DotNetJWTTest'`);
     }
 
     let settings = await response.json();
     settings.automaticSilentRenew = true;
     settings.includeIdTokenInSilentRenew = true;
     settings.userStore = new WebStorageStateStore({
-      prefix: ApplicationName
+      prefix: "DotNetJWTTest",
     });
 
     this.userManager = new UserManager(settings);
@@ -199,7 +242,9 @@ export class AuthorizeService {
     });
   }
 
-  static get instance() { return authService }
+  static get instance() {
+    return authService;
+  }
 }
 
 const authService = new AuthorizeService();
@@ -207,7 +252,7 @@ const authService = new AuthorizeService();
 export default authService;
 
 export const AuthenticationResultStatus = {
-  Redirect: 'redirect',
-  Success: 'success',
-  Fail: 'fail'
+  Redirect: "redirect",
+  Success: "success",
+  Fail: "fail",
 };
