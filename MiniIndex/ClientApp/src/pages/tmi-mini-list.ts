@@ -2,8 +2,6 @@ import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
 import { getMinis, Mini } from "../utils/minis.js";
-import authService from "../utils/AuthorizeService.js";
-import { perfMark, perfMeasure } from "../utils/PerformanceMarks";
 import "../components/tmi-mini-card.js";
 
 @customElement("tmi-mini-list")
@@ -45,6 +43,7 @@ export class TMIMiniList extends LitElement {
 
   async firstUpdated() {
     this.data = await getMinis();
+    console.log(this.data);
     this.loading = false;
   }
 
@@ -56,13 +55,13 @@ export class TMIMiniList extends LitElement {
             ${this.data.map((item) => {
               return html`<li>
                 <tmi-mini-card
-                  name=${item.name}
-                  status=${item.status}
-                  miniId=${item.id}
-                  thumbnail=${item.thumbnail}
-                  creatorId=${item.creator.id}
-                  creatorName=${item.creator.name}
-                  approvedTime=${item.linuxTime}
+                  name=${item.Name}
+                  status=${item.Status}
+                  miniId=${item.ID}
+                  thumbnail=${item.Thumbnail}
+                  creatorId=${item.Creator.id}
+                  creatorName=${item.Creator.name}
+                  approvedTime=${item.LinuxTime}
                 ></tmi-mini-card>
               </li>`;
             })}

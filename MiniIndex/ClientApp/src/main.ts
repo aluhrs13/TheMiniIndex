@@ -1,4 +1,4 @@
-import "./pages/my-element";
+import "./pages/tmi-mini-list";
 import authService from "./utils/AuthorizeService";
 import { perfMark, perfMeasure, logMsg } from "./utils/PerformanceMarks";
 
@@ -29,34 +29,6 @@ export class AppIndex extends LitElement {
       #routerOutlet > * {
         width: 100% !important;
       }
-
-      #routerOutlet > .leaving {
-        animation: 160ms fadeOut ease-in-out;
-      }
-
-      #routerOutlet > .entering {
-        animation: 160ms fadeIn linear;
-      }
-
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
-        }
-
-        to {
-          opacity: 0;
-        }
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0.2;
-        }
-
-        to {
-          opacity: 1;
-        }
-      }
     `;
   }
 
@@ -74,9 +46,9 @@ export class AppIndex extends LitElement {
       // temporarily cast to any because of a Type bug with the router
       {
         path: (import.meta as any).env.BASE_URL,
-        animate: true,
+        animate: false,
         children: [
-          { path: "", component: "my-element" },
+          { path: "", component: "tmi-mini-list" },
           {
             path: "/Minis",
             component: "tmi-mini-list",

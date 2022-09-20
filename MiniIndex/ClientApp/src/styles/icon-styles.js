@@ -1,6 +1,14 @@
 import { css } from "lit";
 
 export const iconStyles = css`
+  .icon-container {
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--app-secondary-color);
+    border-radius: 4px;
+    padding: 5px;
+  }
+
   .icon {
     filter: invert(97%) sepia(7%) saturate(488%) hue-rotate(108deg)
       brightness(91%) contrast(96%);

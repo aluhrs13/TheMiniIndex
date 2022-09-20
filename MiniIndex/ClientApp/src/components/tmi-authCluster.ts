@@ -1,8 +1,7 @@
 ﻿import { LitElement, html, css } from "lit";
 import { customElement, state } from "lit/decorators.js";
 
-import { buttonStyles } from "../utils/button-styles.js";
-import { logMsg } from "../utils/PerformanceMarks.js";
+import { buttonStyles } from "../styles/button-styles.js";
 import authService from "../utils/AuthorizeService";
 
 @customElement("tmi-auth-cluster")

@@ -99,7 +99,7 @@ namespace MiniIndex
                 //Prevent JSON Serialization loops
                     .AddJsonOptions(options =>
                     {
-                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                         options.JsonSerializerOptions.PropertyNamingPolicy = null;
                     });
 

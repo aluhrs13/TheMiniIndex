@@ -34,15 +34,15 @@ export async function getMiniDetail(id: number): Promise<DetailedMini> {
 }
 
 export type Mini = {
-  id: number;
-  name: string;
-  status: number;
-  creator: {
+  ID: number;
+  Name: string;
+  Status: number;
+  Creator: {
     id: number;
     name: string;
   };
-  thumbnail: string;
-  linuxTime: number;
+  Thumbnail: string;
+  LinuxTime: number;
 };
 
 export type DetailedMini = {
@@ -50,25 +50,43 @@ export type DetailedMini = {
   Name: string;
   Link: string;
   Thumbnail: string;
-  creator: {
+  Creator: {
     ID: number;
     Name: string;
   };
   Status: number;
-  MiniTags: {
-    $values: [
-      {
-        MiniID: number;
-        TagID: number;
-        Tag: { ID: number; Name: string };
-        CreatedTime: string;
-        ApprovedTime: string;
-        LastModifiedTime: string;
-      }
-    ];
-  };
-  Sources: {
-    $values: [];
-  };
+  MiniTags: MiniTag[];
+  Sources: string[];
   ApprovedTime: string;
 };
+
+export type MiniTag = {
+  MiniID: number;
+  TagID: number;
+  Tag: { ID: number; TagName: string; Category: string };
+  Status: number;
+  CreatedTime: string;
+  ApprovedTime: string;
+  LastModifiedTime: string;
+};
+
+export enum TagCategory {
+  Gender = 0,
+  Race,
+  Genre,
+  Use,
+  Size,
+  Alignment,
+  CreatureType,
+  CreatureName,
+  Class,
+  Weapon,
+  Armor,
+  Clothing,
+  Location,
+  OtherDescription,
+  Purpose,
+  Scale,
+  SourceBook,
+  BookSection,
+}

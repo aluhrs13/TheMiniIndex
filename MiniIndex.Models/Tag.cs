@@ -2,6 +2,7 @@
 
 namespace MiniIndex.Models
 {
+    //Make sure to keep in sync with front-end
     public enum TagCategory
     {
         Gender,
