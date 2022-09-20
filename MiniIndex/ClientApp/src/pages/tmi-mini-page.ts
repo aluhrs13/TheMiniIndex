@@ -7,6 +7,7 @@ import { buttonStyles } from "../styles/button-styles.js";
 import { switcherStyles, rowStyles } from "../styles/layout-styles.js";
 import { fontStyles } from "../styles/font-styles.js";
 import "../components/tmi-mini-card.js";
+import "../components/tmi-action-button.js";
 
 @customElement("tmi-mini-page")
 export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
@@ -32,20 +33,38 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
   @state() mini: DetailedMini = null;
   @state() loading: boolean = false;
   @state() initLoad: boolean = false;
+  //TODO: Favorites API and populate this
+  @state() isFavorite: boolean;
 
   constructor() {
     super();
+    this.isFavorite = false;
   }
 
   onBeforeEnter(location: RouterLocation) {
     this.id = location.params.id as string;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this._toggleFavorite = this._toggleFavorite.bind(this);
+    window.addEventListener("button-complete", this._toggleFavorite);
+  }
+  disconnectedCallback() {
+    window.removeEventListener("button-complete", this._toggleFavorite);
+    super.disconnectedCallback();
+  }
+
   async firstUpdated() {
     this.mini = await getMiniDetail(this.id);
-    console.log(this.mini);
     this.loading = false;
   }
+
+  private _toggleFavorite() {
+    this.isFavorite = !this.isFavorite;
+  }
+
+  async edit() {}
 
   override render() {
     return html`<div>
@@ -77,9 +96,18 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
                       >View at source</a
                     >`
               }
-              <a href="#" class="btn btn-block add-star" id="toggle-star">
-                Add to Favorites
-              </a>
+
+              <tmi-action-button
+                block="true"
+                url="/api/Starred/${this.id}"
+                styleName=${this.isFavorite ? "style-danger" : "style-green"}
+                method=${this.isFavorite ? "DELETE" : "POST"}
+                authRequired="true"
+              >
+                ${this.isFavorite
+                  ? "Remove from Favorites"
+                  : "Add to Favorites"}
+              </tmi-action-button>
             </div>
 
             <div class="switcher">

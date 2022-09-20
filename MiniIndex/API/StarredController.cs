@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ using System.Threading.Tasks;
 namespace MiniIndex.API
 {
     [Route("api/[controller]")]
+    [EnableCors("SpecificOrigins")]
     [ApiController]
     public class StarredController : ControllerBase
     {
@@ -50,7 +52,7 @@ namespace MiniIndex.API
             Starred newStarred = new Starred
             {
                 Mini = await _context.Mini.FindAsync(id),
-                User = await _userManager.GetUserAsync(User)
+                User = await _userManager.FindByIdAsync(User.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value)
             };
 
             await _context.Starred.AddAsync(newStarred);
@@ -63,7 +65,7 @@ namespace MiniIndex.API
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            IdentityUser CurrentUser = await _userManager.GetUserAsync(User);
+            IdentityUser CurrentUser = await _userManager.FindByIdAsync(User.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
             Starred Starred = await _context.Starred.FindAsync(id, CurrentUser.Id);
 
             if (Starred != null)

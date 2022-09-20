@@ -6,30 +6,20 @@ import { perfMark, perfMeasure } from "../utils/PerformanceMarks";
 
 @customElement("my-element")
 export class MyElement extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      border: solid 1px gray;
-      padding: 16px;
-      max-width: 800px;
-      color: black;
-    }
-  `;
+  static override styles = [
+    css`
+      :host {
+        display: block;
+        border: solid 1px gray;
+        padding: 16px;
+        max-width: 800px;
+        color: black;
+      }
+    `,
+  ];
 
-  @state()
-  name = "World";
-
-  @state()
-  data = "";
-
-  override render() {
-    return html`
-      <h1>Hello, ${this.name}!</h1>
-      <button @click=${this._getData} part="button">Get Data!</button>
-      <br />
-      <slot>${this.data}</slot>
-    `;
-  }
+  @state() name = "World";
+  @state() data = "";
 
   async _getData() {
     perfMark("tmi-genericGetData-start");
@@ -44,6 +34,15 @@ export class MyElement extends LitElement {
       "tmi-genericGetData-start",
       "tmi-genericGetData-end"
     );
+  }
+
+  override render() {
+    return html`
+      <h1>Hello, ${this.name}!</h1>
+      <button @click=${this._getData} part="button">Get Data!</button>
+      <br />
+      <slot>${this.data}</slot>
+    `;
   }
 }
 
