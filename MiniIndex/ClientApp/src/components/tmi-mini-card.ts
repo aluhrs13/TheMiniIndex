@@ -126,14 +126,16 @@ export class TMIMiniCard extends LitElement {
         <div class="card-text">
           <div class="mini-name">
             <h3>${this.name}</h3>
-            <h4>
-              by
-              <a
-                style="color:var(--app-primary-color)"
-                href="/Creators/Details/?id=${this.creatorId}"
-                >${this.creatorName}</a
-              >
-            </h4>
+            ${this.creatorName
+              ? html` <h4>
+                  by
+                  <a
+                    style="color:var(--app-primary-color)"
+                    href="/Creators/Details/?id=${this.creatorId}"
+                    >${this.creatorName}</a
+                  >
+                </h4>`
+              : ""}
           </div>
         </div>
         <div class="new-tag hidden"><span class="new-tag-span">New!</span></div>

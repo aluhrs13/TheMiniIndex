@@ -8,6 +8,7 @@ import { switcherStyles, rowStyles } from "../styles/layout-styles.js";
 import { fontStyles } from "../styles/font-styles.js";
 import "../components/tmi-mini-card.js";
 import "../components/tmi-action-button.js";
+import "../components/tmi-related-minis.js";
 
 @customElement("tmi-mini-page")
 export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
@@ -31,14 +32,13 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
   ];
   @property() id: string = "";
   @state() mini: DetailedMini = null;
-  @state() loading: boolean = false;
+  @state() loading: boolean = true;
   @state() initLoad: boolean = false;
   //TODO: Favorites API and populate this
   @state() isFavorite: boolean;
 
   constructor() {
     super();
-    this.isFavorite = false;
   }
 
   onBeforeEnter(location: RouterLocation) {
@@ -138,10 +138,7 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
             <aside>
               <hr />
               <h2>Related Minis</h2>
-              <div align="center">
-                <div id="loading-spinner" style="width:64px;height:64px;"></div>
-              </div>
-              <div class="grid hidden" id="related-minis"></div>
+              <tmi-related-minis miniId=${this.id}></tmi-related-minis>
             </aside>
           </div>`
         : html`<span>Not found</span>`}

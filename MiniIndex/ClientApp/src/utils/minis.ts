@@ -17,20 +17,24 @@ export async function getMinis(initLoad?: boolean): Promise<Mini[]> {
   return data;
 }
 
-export async function getMiniDetail(id: number): Promise<DetailedMini> {
+export async function getMiniDetail(id: number): Promise<DetailedMini | null> {
   perfMark("tmi-getMiniDetail-start");
   const token = await authService.getAccessToken();
   const response = await fetch("https://localhost:44386/api/minis/" + id, {
     headers: !token ? {} : { Authorization: `Bearer ${token}` },
   });
-  const data = await response.json();
+
   perfMark("tmi-getMiniDetail-end");
   perfMeasure(
     "tmi-getMiniDetail",
     "tmi-getMiniDetail-start",
     "tmi-getMiniDetail-end"
   );
-  return data;
+  if (response.ok) {
+    return await response.json();
+  } else {
+    return null;
+  }
 }
 
 export type Mini = {

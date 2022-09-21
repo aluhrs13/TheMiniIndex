@@ -1,33 +1,39 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
-import { getMinis, Mini } from "../utils/minis.js";
+import authService from "../utils/AuthorizeService.js";
+import { perfMark, perfMeasure } from "../utils/PerformanceMarks";
 import { miniListStyles } from "../styles/layout-styles.js";
 import "../components/tmi-mini-card.js";
 
-//TODO: Refactor this to take in an array of Minis as a property.
-@customElement("tmi-mini-list")
-export class TMIMiniList extends LitElement {
+@customElement("tmi-related-minis")
+export class TMIRelatedMinis extends LitElement {
   static override styles = [miniListStyles, css``];
 
-  @state() _data: Mini[] = null;
-  @state() _loading: boolean = true;
-
-  constructor() {
-    super();
-  }
+  @property() miniId = 0;
+  @state() _data = [];
 
   async firstUpdated() {
-    this._data = await getMinis();
-    console.log(this._data);
-    this._loading = false;
+    perfMark("tmi-getRelatedMinis-start");
+    const token = await authService.getAccessToken();
+    const response = await fetch(`/api/Minis/${this.miniId}/Related`, {
+      headers: !token ? {} : { Authorization: `Bearer ${token}` },
+    });
+    this._data = await response.json();
+    perfMark("tmi-getRelatedMinis-end");
+    perfMeasure(
+      "tmi-getRelatedMinis",
+      "tmi-getRelatedMinis-start",
+      "tmi-getRelatedMinis-end"
+    );
   }
 
   override render() {
+    console.log(this._data);
     return html`<div>
       ${this._loading
         ? html`<span>Loading</span>`
-        : this._data && this._data.length > 0
+        : this._data.length > 0
         ? html`<ul class="grid" id="gallery">
             ${this._data.map((item) => {
               return html`<li>
@@ -36,20 +42,17 @@ export class TMIMiniList extends LitElement {
                   status=${item.Status}
                   miniId=${item.ID}
                   thumbnail=${item.Thumbnail}
-                  creatorId=${item.Creator.id}
-                  creatorName=${item.Creator.name}
-                  approvedTime=${item.LinuxTime}
                 ></tmi-mini-card>
               </li>`;
             })}
           </ul>`
-        : html`<span>No Results</span>`}
+        : html`<span>No data</span>`}
     </div>`;
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "tmi-mini-list": TMIMiniList;
+    "tmi-related-minis": TMIRelatedMinis;
   }
 }

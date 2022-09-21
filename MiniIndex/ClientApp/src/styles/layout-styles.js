@@ -98,3 +98,30 @@ export const centerStyles = css`
     align-items: center;
   }
 `;
+
+export const miniListStyles = css`
+  :host {
+    display: block;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    text-dcoration: none;
+  }
+
+  .grid {
+    display: grid;
+    grid-gap: 1rem;
+  }
+
+  @supports (width: min(250px, 100%)) {
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+    }
+  }
+`;

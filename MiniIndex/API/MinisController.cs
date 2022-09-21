@@ -108,7 +108,7 @@ namespace MiniIndex.API
                                             .ThenInclude(mt => mt.Tag)
                                         .FirstOrDefaultAsync(m => m.ID == id);
 
-            _telemetry.TrackEvent("ViewedMiniAPI", new Dictionary<string, string> { { "MiniId", mini.ID.ToString() } });
+            _telemetry.TrackEvent("ViewedMiniAPI", new Dictionary<string, string> { { "MiniId", id.ToString() } });
 
             if (mini == null)
             {
