@@ -16,6 +16,7 @@ export class TMIRelatedMinis extends LitElement {
 
   @property() miniId = 0;
   @state() _data = [];
+  @state() _loading = true;
 
   async firstUpdated() {
     perfMark("tmi-getRelatedMinis-start");
@@ -30,6 +31,7 @@ export class TMIRelatedMinis extends LitElement {
       "tmi-getRelatedMinis-start",
       "tmi-getRelatedMinis-end"
     );
+    this._loading = false;
   }
 
   override render() {

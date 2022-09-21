@@ -137,7 +137,7 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
             <aside>
               <hr />
               <h2>Related Minis</h2>
-              <tmi-related-minis miniId=${this.id}></tmi-related-minis>
+              <tmi-related-minis miniId=${this.miniId}></tmi-related-minis>
             </aside>
           </div>`
         : html`<span>Not found</span>`}
