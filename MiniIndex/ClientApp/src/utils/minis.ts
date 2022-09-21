@@ -98,3 +98,10 @@ export enum TagCategory {
   SourceBook,
   BookSection,
 }
+
+export type Tag = {
+  Status: string;
+  TagName: string;
+  ID: number;
+  Category: string;
+};

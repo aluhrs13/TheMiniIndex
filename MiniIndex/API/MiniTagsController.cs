@@ -38,7 +38,7 @@ namespace MiniIndex.API
         [Authorize]
         public async Task<IActionResult> Post([FromBody] MiniTag value)
         {
-            IdentityUser user = await _userManager.GetUserAsync(User);
+;            IdentityUser user = await _userManager.FindByIdAsync(User.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
             MiniTag newMT = await _mediator.Send(new MiniTagSubmissionRequest(value.Mini, value.Tag, user));
             return Ok("{}");
         }

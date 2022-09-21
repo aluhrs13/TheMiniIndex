@@ -7,9 +7,11 @@ import { BeforeEnterObserver, RouterLocation } from "@vaadin/router";
 import { getMiniDetail, DetailedMini, TagCategory } from "../utils/minis.js";
 
 //Style and Component Imports
-import "../components/tmi-mini-card.js";
 import "../components/tmi-action-button.js";
+import "../components/tmi-mini-card.js";
+//TODO: Can I delay loading some of these?
 import "../components/tmi-related-minis.js";
+import "../components/tmi-tag-manager.js";
 import { buttonStyles } from "../styles/button-styles.js";
 import { fontStyles } from "../styles/font-styles.js";
 import { switcherStyles, rowStyles } from "../styles/layout-styles.js";
@@ -39,6 +41,8 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
   @state() _loading: boolean = true;
   //TODO: Favorites API and populate this
   @state() _isFavorite: boolean | null = null;
+  //TODO: Save this between pages and sessions
+  @state() _isEditMode: boolean = true;
 
   onBeforeEnter(location: RouterLocation) {
     this.miniId = location.params.id;
@@ -63,7 +67,9 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
     this._isFavorite = !this._isFavorite;
   }
 
-  async edit() {}
+  private _toggleEdit() {
+    this._isEditMode = !this._isEditMode;
+  }
 
   override render() {
     return html`<div>
@@ -119,7 +125,7 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
                   <h2 style="flex-grow:1;">Tags</h2>
                   <span class="small" style="padding-bottom:1.25rem;">
                     Something look wrong?
-                    <a href="#">Tag this Mini</a>
+                    <button @click="${this._toggleEdit}">Tag this Mini</button>
                   </span>
                 </div>
                 ${this._data.MiniTags.map((tag) => {
@@ -136,8 +142,15 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
             </div>
             <aside>
               <hr />
-              <h2>Related Minis</h2>
-              <tmi-related-minis miniId=${this.miniId}></tmi-related-minis>
+              ${!this._isEditMode
+                ? html`
+                    <h2>Related Minis</h2>
+                    <tmi-related-minis
+                      miniId=${this.miniId}
+                    ></tmi-related-minis>
+                  `
+                : html`<h2>Edit Tags</h2>
+                    <tmi-tag-manager miniId=${this.miniId}></tmi-tag-manager>`}
             </aside>
           </div>`
         : html`<span>Not found</span>`}
