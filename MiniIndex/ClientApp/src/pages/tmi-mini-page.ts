@@ -1,14 +1,18 @@
+//3rd Party Imports
 import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { BeforeEnterObserver, Router, RouterLocation } from "@vaadin/router";
+import { BeforeEnterObserver, RouterLocation } from "@vaadin/router";
 
+//1st Party Imports
 import { getMiniDetail, DetailedMini, TagCategory } from "../utils/minis.js";
-import { buttonStyles } from "../styles/button-styles.js";
-import { switcherStyles, rowStyles } from "../styles/layout-styles.js";
-import { fontStyles } from "../styles/font-styles.js";
+
+//Style and Component Imports
 import "../components/tmi-mini-card.js";
 import "../components/tmi-action-button.js";
 import "../components/tmi-related-minis.js";
+import { buttonStyles } from "../styles/button-styles.js";
+import { fontStyles } from "../styles/font-styles.js";
+import { switcherStyles, rowStyles } from "../styles/layout-styles.js";
 
 @customElement("tmi-mini-page")
 export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
@@ -30,19 +34,14 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
       }
     `,
   ];
-  @property() id: string = "";
-  @state() mini: DetailedMini = null;
-  @state() loading: boolean = true;
-  @state() initLoad: boolean = false;
+  @property() miniId: number | null = null;
+  @state() _data: DetailedMini | null = null;
+  @state() _loading: boolean = true;
   //TODO: Favorites API and populate this
-  @state() isFavorite: boolean;
-
-  constructor() {
-    super();
-  }
+  @state() _isFavorite: boolean | null = null;
 
   onBeforeEnter(location: RouterLocation) {
-    this.id = location.params.id as string;
+    this.miniId = location.params.id;
   }
 
   connectedCallback() {
@@ -56,34 +55,34 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
   }
 
   async firstUpdated() {
-    this.mini = await getMiniDetail(this.id);
-    this.loading = false;
+    this._data = await getMiniDetail(this.miniId);
+    this._loading = false;
   }
 
   private _toggleFavorite() {
-    this.isFavorite = !this.isFavorite;
+    this._isFavorite = !this._isFavorite;
   }
 
   async edit() {}
 
   override render() {
     return html`<div>
-      ${this.loading
+      ${this._loading
         ? html`<span>Loading</span>`
-        : this.mini
+        : this._data
         ? html`<div class="bounded">
             <h1>
-              ${this.mini.Name} by
-              <a href="/Creators/Details?id=${this.mini.Creator.ID}"
-                >${this.mini.Creator.Name}</a
+              ${this._data.Name} by
+              <a href="/Creators/Details?id=${this._data.Creator.ID}"
+                >${this._data.Creator.Name}</a
               >
             </h1>
 
             <div class="switcher">
               ${
                 //TOOD: Do this.
-                this.mini.Sources && this.mini.Sources.length > 0
-                  ? this.mini.Sources.map((source) => {
+                this._data.Sources && this._data.Sources.length > 0
+                  ? this._data.Sources.map((source) => {
                       return html`<a
                         href="/api/Minis/@Model.Mini.ID/Redirect"
                         class="btn btn-block style-primary @miniSource.Site.SiteName"
@@ -91,7 +90,7 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
                       >`;
                     })
                   : html`<a
-                      href="/api/Minis/${this.mini.ID}/Redirect"
+                      href="/api/Minis/${this._data.ID}/Redirect"
                       class="btn btn-block style-primary-border"
                       >View at source</a
                     >`
@@ -100,11 +99,11 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
               <tmi-action-button
                 block="true"
                 url="/api/Starred/${this.id}"
-                styleName=${this.isFavorite ? "style-danger" : "style-green"}
-                method=${this.isFavorite ? "DELETE" : "POST"}
+                styleName=${this._isFavorite ? "style-danger" : "style-green"}
+                method=${this._isFavorite ? "DELETE" : "POST"}
                 authRequired="true"
               >
-                ${this.isFavorite
+                ${this._isFavorite
                   ? "Remove from Favorites"
                   : "Add to Favorites"}
               </tmi-action-button>
@@ -112,7 +111,7 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
 
             <div class="switcher">
               <div align="center">
-                <img style="max-width:100%" src="${this.mini.Thumbnail}" />
+                <img style="max-width:100%" src="${this._data.Thumbnail}" />
               </div>
 
               <div>
@@ -123,7 +122,7 @@ export class TMIMiniPage extends LitElement implements BeforeEnterObserver {
                     <a href="#">Tag this Mini</a>
                   </span>
                 </div>
-                ${this.mini.MiniTags.map((tag) => {
+                ${this._data.MiniTags.map((tag) => {
                   return tag.Status == 1
                     ? html` <span class="badge style-primary">
                         ${tag.Tag.Category

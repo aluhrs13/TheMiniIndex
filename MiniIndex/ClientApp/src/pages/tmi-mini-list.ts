@@ -1,21 +1,21 @@
+//3rd Party Imports
 import { LitElement, html, css } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 
+//1st Party Imports
 import { getMinis, Mini } from "../utils/minis.js";
-import { miniListStyles } from "../styles/layout-styles.js";
+
+//Style and Component Imports
 import "../components/tmi-mini-card.js";
+import { miniListStyles } from "../styles/layout-styles.js";
 
 //TODO: Refactor this to take in an array of Minis as a property.
 @customElement("tmi-mini-list")
 export class TMIMiniList extends LitElement {
   static override styles = [miniListStyles, css``];
 
-  @state() _data: Mini[] = null;
+  @state() _data: Mini[] | null = null;
   @state() _loading: boolean = true;
-
-  constructor() {
-    super();
-  }
 
   async firstUpdated() {
     this._data = await getMinis();

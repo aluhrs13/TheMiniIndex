@@ -1,5 +1,6 @@
 import { css } from "lit";
 
+//TODO: Refactor into components
 export const iconStyles = css`
   .icon-container {
     border-style: solid;

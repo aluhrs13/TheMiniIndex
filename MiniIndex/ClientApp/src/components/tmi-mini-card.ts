@@ -1,7 +1,11 @@
+//3rd Party Imports
 import { LitElement, html, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Router } from "@vaadin/router";
 
+//1st Party Imports
+
+//Style and Component Imports
 import { fontStyles } from "../styles/font-styles.js";
 
 @customElement("tmi-mini-card")
@@ -108,6 +112,7 @@ export class TMIMiniCard extends LitElement {
     Router.go(`/Mini/${id}`);
   }
 
+  //TODO: Banner for needs tags.
   override render() {
     console.log(this);
     return html`
@@ -150,54 +155,3 @@ declare global {
     "tmi-mini-card": TMIMiniCard;
   }
 }
-
-/*
-        ${if(this.status == "Pending"){
-
-        }}
-        <div class="mini-banner">This Mini needs tags!</div>
-        } @if(Model.Status == Status.Rejected || Model.Status ==
-        Status.Deleted){
-        <div class="mini-banner style-danger">
-          There is something wrong with this Mini.
-        </div>
-        }
-
-/*
-<div class="card @Model.Status.ToString()" id="@Model.ID">
-    <div>
-        <a href="/Minis/Details?id=@Model.ID">
-            @if (Model.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
-            {
-            <img class="card-thumbnail" src="@Model.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
-            }
-            else{
-            <img class="card-thumbnail" src="@Model.Thumbnail" width="314" height="236" />
-            }
-        </a>
-    </div>
-    @if(Model.Status == Status.Pending){
-    <div class="mini-banner">
-        This Mini needs tags!
-    </div>
-    }
-
-    @if(Model.Status == Status.Rejected || Model.Status == Status.Deleted){
-    <div class="mini-banner style-danger">
-        There is something wrong with this Mini.
-    </div>
-    }
-    <div class="card-text">
-        <div class="mini-name">
-            <h3>@Model.Name</h3>
-            @if(Model.Creator != null){
-                <h4>
-                by <a style="color:var(--app-primary-color)" href="/Creators/Details/?id=@Model.Creator.ID">@Model.Creator.Name</a>
-                </h4>
-            }
-        </div>
-    </div>
-    <div class="new-tag hidden"><span class="new-tag-span">New!</span></div>
-    <div class="approved-time">@Model.ApprovedLinuxTime()</div>
-</div>
-*/

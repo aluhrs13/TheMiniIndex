@@ -1,6 +1,6 @@
-﻿import { BeforeEnterObserver, RouterLocation } from "@vaadin/router";
-import { LitElement, html } from "lit";
+﻿import { LitElement, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
+import { BeforeEnterObserver, RouterLocation } from "@vaadin/router";
 
 import authService from "../utils/AuthorizeService.js";
 import { AuthenticationResultStatus } from "../utils/AuthorizeService.js";

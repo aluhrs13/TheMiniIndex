@@ -1,6 +1,6 @@
 import "./pages/tmi-mini-list";
 import authService from "./utils/AuthorizeService";
-import { perfMark, perfMeasure, logMsg } from "./utils/PerformanceMarks";
+import { logMsg } from "./utils/PerformanceMarks";
 
 if (await authService.isAuthenticated()) {
   logMsg("Authenticated:");
@@ -13,9 +13,7 @@ if (await authService.isAuthenticated()) {
 import { LitElement, css, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import { Router } from "@vaadin/router";
-//import './script/pages/app-home';
-//import './script/components/header';
-//import './styles/global.css';
+import "./styles/global.css";
 
 @customElement("app-index")
 export class AppIndex extends LitElement {

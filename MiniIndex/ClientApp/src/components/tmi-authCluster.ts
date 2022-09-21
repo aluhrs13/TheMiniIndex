@@ -1,22 +1,19 @@
-﻿import { LitElement, html, css } from "lit";
+﻿//3rd Party Imports
+import { LitElement, html, css } from "lit";
 import { customElement, state } from "lit/decorators.js";
 
-import { buttonStyles } from "../styles/button-styles.js";
+//1st Party Imports
 import authService from "../utils/AuthorizeService";
 
+//Style and Component Imports
+import { buttonStyles } from "../styles/button-styles.js";
+
+//TODO: Implement most of this, figure out FOUC
 @customElement("tmi-auth-cluster")
 export class TMIAuthCluster extends LitElement {
-  static styles = [
-    buttonStyles,
-    css`
-      :host {
-        border: solid 1px red;
-      }
-    `,
-  ];
+  static styles = [buttonStyles, css``];
 
-  @state()
-  authed = false;
+  @state() _authed = false;
 
   _logout() {
     authService.signOut();
@@ -28,14 +25,14 @@ export class TMIAuthCluster extends LitElement {
 
   firstUpdated() {
     authService.isAuthenticated().then((result: boolean) => {
-      this.authed = result;
+      this._authed = result;
     });
   }
 
-  //Logged In: Profile, Moderator
-  //Logged Out: Register, Login
+  //TODO: Logged In: Profile, Moderator
+  //TODO: Logged Out: Register, Login
   override render() {
-    if (this.authed) {
+    if (this._authed) {
       return html` <div class="center">
         <a @click=${this._logout} class="btn style-primary">Logout</a>
       </div>`;

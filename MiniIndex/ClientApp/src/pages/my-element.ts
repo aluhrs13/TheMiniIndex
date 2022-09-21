@@ -1,25 +1,25 @@
-﻿import { LitElement, html, css } from "lit";
+﻿//3rd Party Imports
+import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
+//1st Party Imports
 import authService from "../utils/AuthorizeService.js";
 import { perfMark, perfMeasure } from "../utils/PerformanceMarks";
+
+//Style and Component Imports
 
 @customElement("my-element")
 export class MyElement extends LitElement {
   static override styles = [
     css`
       :host {
-        display: block;
-        border: solid 1px gray;
-        padding: 16px;
-        max-width: 800px;
-        color: black;
+        border: solid 1px red;
       }
     `,
   ];
 
-  @state() name = "World";
-  @state() data = "";
+  @property() name = "";
+  @state() _data = "";
 
   async _getData() {
     perfMark("tmi-genericGetData-start");
@@ -27,7 +27,7 @@ export class MyElement extends LitElement {
     const response = await fetch("https://localhost:44386/api/minis", {
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     });
-    this.data = await response.json();
+    this._data = await response.json();
     perfMark("tmi-genericGetData-end");
     perfMeasure(
       "tmi-genericGetData",
@@ -41,7 +41,7 @@ export class MyElement extends LitElement {
       <h1>Hello, ${this.name}!</h1>
       <button @click=${this._getData} part="button">Get Data!</button>
       <br />
-      <slot>${this.data}</slot>
+      <slot>${this._data}</slot>
     `;
   }
 }

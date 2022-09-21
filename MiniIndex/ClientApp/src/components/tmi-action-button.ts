@@ -1,8 +1,12 @@
+//3rd Party Imports
 import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
+//1st Party Imports
 import authService from "../utils/AuthorizeService.js";
 import { perfMark, perfMeasure, logError } from "../utils/PerformanceMarks";
+
+//Style and Component Imports
 import { buttonStyles } from "../styles/button-styles.js";
 
 @customElement("tmi-action-button")
@@ -15,6 +19,7 @@ export class TMIActionButton extends LitElement {
   @property() authRequired = false;
   @property() block = false;
   @property() text = "";
+
   @state() _loading = false;
   @state() _data = "";
   @state() _error = "";

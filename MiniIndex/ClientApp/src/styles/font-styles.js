@@ -1,5 +1,6 @@
 import { css } from "lit";
 
+//TODO: Figure out how to make global?
 export const fontStyles = css`
   h3 {
     font-size: 1.25em;

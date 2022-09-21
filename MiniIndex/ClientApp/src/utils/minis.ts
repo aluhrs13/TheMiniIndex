@@ -1,7 +1,7 @@
 import authService from "../utils/AuthorizeService.js";
 import { perfMark, perfMeasure } from "../utils/PerformanceMarks";
 
-export async function getMinis(initLoad?: boolean): Promise<Mini[]> {
+export async function getMinis(): Promise<Mini[]> {
   perfMark("tmi-getMiniList-start");
   const token = await authService.getAccessToken();
   const response = await fetch("https://localhost:44386/api/minis", {
@@ -17,7 +17,11 @@ export async function getMinis(initLoad?: boolean): Promise<Mini[]> {
   return data;
 }
 
-export async function getMiniDetail(id: number): Promise<DetailedMini | null> {
+export async function getMiniDetail(
+  id: number | null
+): Promise<DetailedMini | null> {
+  if (id === null) return null;
+
   perfMark("tmi-getMiniDetail-start");
   const token = await authService.getAccessToken();
   const response = await fetch("https://localhost:44386/api/minis/" + id, {

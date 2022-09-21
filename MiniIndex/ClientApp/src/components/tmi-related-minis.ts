@@ -1,10 +1,14 @@
+//3rd Party Imports
 import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
+//1st Party Imports
 import authService from "../utils/AuthorizeService.js";
 import { perfMark, perfMeasure } from "../utils/PerformanceMarks";
-import { miniListStyles } from "../styles/layout-styles.js";
+
+//Style and Component Imports
 import "../components/tmi-mini-card.js";
+import { miniListStyles } from "../styles/layout-styles.js";
 
 @customElement("tmi-related-minis")
 export class TMIRelatedMinis extends LitElement {
