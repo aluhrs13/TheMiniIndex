@@ -6,7 +6,6 @@ body {
 body {
     font-size: 14px;
     font-weight: 400;
-    background-color: var(--app-primary-color);
     padding: 0px;
     margin: 0px;
 }

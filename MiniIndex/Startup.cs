@@ -1,5 +1,6 @@
 using Lamar;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -20,8 +21,7 @@ using WebPWrecover.Services;
 using Hangfire;
 using Hangfire.SqlServer;
 using System;
-using Hangfire.Dashboard;
-using MiniIndex.Models;
+using System.Text.Json.Serialization;
 
 namespace MiniIndex
 {
@@ -52,7 +52,7 @@ namespace MiniIndex
                 options.AddPolicy("SpecificOrigins",
                     builder =>
                     {
-                        builder.WithOrigins("https://tmireact.azurewebsites.net", "https://theminiindex.com", "https://wwww.theminiindex.com", "http://localhost:3000")
+                        builder.WithOrigins("https://tmireact.azurewebsites.net", "https://theminiindex.com", "https://wwww.theminiindex.com", "https://localhost:44410")
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     });
@@ -66,9 +66,17 @@ namespace MiniIndex
 
             services.AddSwaggerGen();
 
+            services.AddDbContext<MiniIndexContext>(ConfigureEntityFramework);
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MiniIndexContext>();
+
+            services.AddIdentityServer()
+                .AddApiAuthorization<IdentityUser, MiniIndexContext>();
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
 
             services.AddHangfire(configuration => configuration
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -87,9 +95,16 @@ namespace MiniIndex
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddRazorOptions(ConfigureRazor);
+                .AddRazorOptions(ConfigureRazor)
+                //Prevent JSON Serialization loops
+                    .AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    });
 
-            services.AddDbContext<MiniIndexContext>(ConfigureEntityFramework);
+            //https://github.com/berhir/AspNetCore.SpaYarp
+            services.AddSpaYarp();
 
             string facebookAppId = Configuration["Authentication:Facebook:AppId"];
             string facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
@@ -146,7 +161,7 @@ namespace MiniIndex
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-
+            app.UseIdentityServer();
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
@@ -156,10 +171,17 @@ namespace MiniIndex
                 Authorization = new[] { new HangFireAuthorizationFilter() }
             });
 
+            //https://github.com/berhir/AspNetCore.SpaYarp
+            app.UseSpaYarpMiddleware();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+
+                //https://github.com/berhir/AspNetCore.SpaYarp
+                endpoints.MapSpaYarp();
+                endpoints.MapFallbackToFile("index.html");
             });
         }
 

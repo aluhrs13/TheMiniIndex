@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ using System.Threading.Tasks;
 namespace MiniIndex.API
 {
     [Route("api/[controller]")]
+    [EnableCors("SpecificOrigins")]
     [ApiController]
     public class MinisController : ControllerBase
     {
@@ -48,6 +50,7 @@ namespace MiniIndex.API
 
         // GET: api/<MinisController>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Get(
             [FromQuery] MiniSearchModel search = null,
             [FromQuery] int pageSize = 21,
@@ -101,9 +104,11 @@ namespace MiniIndex.API
             //TODO: Remove Link, propagate sources
             Mini mini = await _context.Mini.AsNoTracking().TagWith("Minis API View")
                                         .Include(m => m.Creator)
+                                        .Include(m => m.MiniTags)
+                                            .ThenInclude(mt => mt.Tag)
                                         .FirstOrDefaultAsync(m => m.ID == id);
 
-            _telemetry.TrackEvent("ViewedMiniAPI", new Dictionary<string, string> { { "MiniId", mini.ID.ToString() } });
+            _telemetry.TrackEvent("ViewedMiniAPI", new Dictionary<string, string> { { "MiniId", id.ToString() } });
 
             if (mini == null)
             {
