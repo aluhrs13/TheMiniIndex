@@ -20,19 +20,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AgileObjects.AgileMapper" Version="1.8.0" />
-    <PackageReference Include="Anaximander.Linq" Version="4.0.0" />
-    <PackageReference Include="Hangfire" Version="1.7.28" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
-    <PackageReference Include="Hangfire.Core" Version="1.7.28" />
-    <PackageReference Include="Hangfire.Dashboard.Authorization" Version="3.0.0" />
-    <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.39" />
-	  <PackageReference Include="Lamar" Version="7.0.0" />
-    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="7.0.0" />
-	  <PackageReference Include="Google.Cloud.RecaptchaEnterprise.V1" Version="1.6.0" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+    <PackageReference Include="AgileObjects.AgileMapper" Version="1.8.1" />
+    <PackageReference Include="Anaximander.Linq" Version="4.2.2" />
+    <PackageReference Include="Hangfire" Version="1.7.32" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.32" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.32" />
+    <PackageReference Include="Hangfire.Dashboard.Authorization" Version="3.0.1" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.32" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+	  <PackageReference Include="Lamar" Version="10.0.0" />
+    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="10.0.0" />
+	  <PackageReference Include="Google.Cloud.RecaptchaEnterprise.V1" Version="2.3.0" />
+    <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -57,8 +57,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
     <PackageReference Include="OdeToCode.UseNodeModules" Version="3.0.0" />
-    <PackageReference Include="Sendgrid" Version="9.25.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Sendgrid" Version="9.28.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Webpack" Version="4.0.0" />
   </ItemGroup>
 
