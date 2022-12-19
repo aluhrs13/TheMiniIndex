@@ -22,6 +22,7 @@ using Hangfire.SqlServer;
 using System;
 using Hangfire.Dashboard;
 using MiniIndex.Models;
+using System.Threading.Tasks;
 
 namespace MiniIndex
 {
@@ -133,10 +134,24 @@ namespace MiniIndex
                 });
             }
             else
-            {
+            {                
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.Use(async (context, next) =>
+            {
+
+                context.Response.OnStarting(() =>
+                {
+                    context.Response.Headers.Add("Reporting-Endpoints", "main-endpoint=\"https://tmi-reporting-af.azurewebsites.net/api/newreport\", default=\"https://tmi-reporting-af.azurewebsites.net/api/newreport\"");
+                    context.Response.Headers.Add("Report-To", "{ group: \"main-endpoint\", \"max_age\": 86400, \"endpoints\": [ { \"url\": \"https://tmi-reporting-af.azurewebsites.net/api/newreport\" }] }, { group: \"default-endpoint\", \"max_age\": 86400, \"endpoints\": [ { \"url\": \"https://tmi-reporting-af.azurewebsites.net/api/newreport\" }] }");
+                    context.Response.Headers.Add("NEL", "{\"report_to\": \"main-endpoint\", \"max_age\": 86400}");
+                    return Task.FromResult(0);
+                });
+
+                await next();
+            });
 
             //Response Compression - https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-5.0
             app.UseResponseCompression();
