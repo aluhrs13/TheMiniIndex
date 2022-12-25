@@ -164,7 +164,7 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
             public string description { get; set; }
             public int status { get; set; }
             public string status_name { get; set; }
-            public int? size { get; set; }
+            public long? size { get; set; }
             public string thumbnail_url { get; set; }
             public string viewer_url { get; set; }
             public string download_url { get; set; }

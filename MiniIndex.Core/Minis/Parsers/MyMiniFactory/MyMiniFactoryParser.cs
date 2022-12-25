@@ -51,7 +51,7 @@ namespace MiniIndex.Core.Minis.Parsers.MyMiniFactory
                 Name = myModel.designer.username
             };
 
-            MyMiniFactorySource source = new MyMiniFactorySource(creator, myModel.designer.profile_url);
+            MyMiniFactorySource source = new MyMiniFactorySource(creator, myModel.designer.username);
             creator.Sites.Add(source);
 
             int cost = 0;
