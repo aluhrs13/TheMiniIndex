@@ -46,7 +46,7 @@ footer {
 .larger {
     font-size: larger;
     white-space: nowrap;
-    line-height: 0.4em;
+    line-height: 1.5em;
 }
 
 /* Generic Styling for button/badge */

@@ -8,6 +8,13 @@
         "Helvetica Neue", sans-serif;
 }
 
+@font-face {
+    font-family: 'Montserrat';
+    src: url('montserrat-regular-webfont.woff2') format('woff2'), url('montserrat-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 input {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
         "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
