@@ -96,7 +96,6 @@ function RefreshEventListeners() {
         ele.addEventListener("click", function (e) {
             e.preventDefault();
             RefreshTagsStart();
-            console.log("Removing " + this.innerHTML);
 
             var data = {
                 Mini: {
