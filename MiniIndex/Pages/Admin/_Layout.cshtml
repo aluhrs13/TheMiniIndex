@@ -38,5 +38,9 @@
         <script type="module" src="https://miniindex.azureedge.net/admin.entry.js" defer></script>
     </environment>
 
+    <script type="module" src="~/components/miniindex-components/miniindex-components.esm.js" async></script>
+    <script nomodule src="~/components/miniindex-components/miniindex-components.js" async></script>
+    <link rel="stylesheet" href="~/components/miniindex-components/miniindex-components.css" />
+
     @RenderSection("Scripts2", required: false)
 }
