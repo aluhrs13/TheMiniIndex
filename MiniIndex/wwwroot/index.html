@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The Mini Index</title>
+
+        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/images/icons/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/icons/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/icons/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/icons/apple-touch-icon-144x144.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="60x60" href="/images/icons/apple-touch-icon-60x60.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/images/icons/apple-touch-icon-120x120.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/images/icons/apple-touch-icon-76x76.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/images/icons/apple-touch-icon-152x152.png" />
+
+        <link rel="icon" type="image/png" href="/images/icons/favicon-196x196.png" sizes="196x196" />
+        <link rel="icon" type="image/png" href="/images/icons/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/png" href="/images/icons/favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="/images/icons/favicon-16x16.png" sizes="16x16" />
+        <link rel="icon" type="image/png" href="/images/icons/favicon-128.png" sizes="128x128" />
+    
+        <meta name="application-name" content="The Mini Index" />
+        <meta name="msapplication-TileColor" content="#FFFFFF" />
+        <meta name="msapplication-TileImage" content="/images/icons/mstile-144x144.png" />
+        <meta name="msapplication-square70x70logo" content="/images/icons/mstile-70x70.png" />
+        <meta name="msapplication-square150x150logo" content="/images/icons/mstile-150x150.png" />
+        <meta name="msapplication-wide310x150logo" content="/images/icons/mstile-310x150.png" />
+        <meta name="msapplication-square310x310logo" content="/images/icons/mstile-310x310.png" />
+
+        <meta property="og:site_name" content="The Mini Index" />
+        <meta property="og:image" content="https://theminiindex.com/images/banner.png">
+        <meta property="og:title" content="he Mini Index" />
+        <meta property="og:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
+        <meta property="fb:app_id" content="217005809246433" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:image:src" content="https://theminiindex.com/images/banner.png">
+        <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
+        <meta name="twitter:title" content="The Mini Index" />
+
+
+        <script type="text/javascript">
+            !function (T, l, y) { var S = T.location, k = "script", D = "connectionString", C = "ingestionendpoint", I = "disableExceptionTracking", E = "ai.device.", b = "toLowerCase", w = "crossOrigin", N = "POST", e = "appInsightsSDK", t = y.name || "appInsights"; (y.name || T[e]) && (T[e] = t); var n = T[t] || function (d) { var g = !1, f = !1, m = { initialize: !0, queue: [], sv: "5", version: 2, config: d }; function v(e, t) { var n = {}, a = "Browser"; return n[E + "id"] = a[b](), n[E + "type"] = a, n["ai.operation.name"] = S && S.pathname || "_unknown_", n["ai.internal.sdkVersion"] = "javascript:snippet_" + (m.sv || m.version), { time: function () { var e = new Date; function t(e) { var t = "" + e; return 1 === t.length && (t = "0" + t), t } return e.getUTCFullYear() + "-" + t(1 + e.getUTCMonth()) + "-" + t(e.getUTCDate()) + "T" + t(e.getUTCHours()) + ":" + t(e.getUTCMinutes()) + ":" + t(e.getUTCSeconds()) + "." + ((e.getUTCMilliseconds() / 1e3).toFixed(3) + "").slice(2, 5) + "Z" }(), name: "Microsoft.ApplicationInsights." + e.replace(/-/g, "") + "." + t, sampleRate: 100, tags: n, data: { baseData: { ver: 2 } } } } var h = d.url || y.src; if (h) { function a(e) { var t, n, a, i, r, o, s, c, u, p, l; g = !0, m.queue = [], f || (f = !0, t = h, s = function () { var e = {}, t = d.connectionString; if (t) for (var n = t.split(";"), a = 0; a < n.length; a++) { var i = n[a].split("="); 2 === i.length && (e[i[0][b]()] = i[1]) } if (!e[C]) { var r = e.endpointsuffix, o = r ? e.location : null; e[C] = "https://" + (o ? o + "." : "") + "dc." + (r || "services.visualstudio.com") } return e }(), c = s[D] || d[D] || "", u = s[C], p = u ? u + "/v2/track" : d.endpointUrl, (l = []).push((n = "SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details)", a = t, i = p, (o = (r = v(c, "Exception")).data).baseType = "ExceptionData", o.baseData.exceptions = [{ typeName: "SDKLoadFailed", message: n.replace(/\./g, "-"), hasFullStack: !1, stack: n + "\nSnippet failed to load [" + a + "] -- Telemetry is disabled\nHelp Link: https://go.microsoft.com/fwlink/?linkid=2128109\nHost: " + (S && S.pathname || "_unknown_") + "\nEndpoint: " + i, parsedStack: [] }], r)), l.push(function (e, t, n, a) { var i = v(c, "Message"), r = i.data; r.baseType = "MessageData"; var o = r.baseData; return o.message = 'AI (Internal): 99 message:"' + ("SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details) (" + n + ")").replace(/\"/g, "") + '"', o.properties = { endpoint: a }, i }(0, 0, t, p)), function (e, t) { if (JSON) { var n = T.fetch; if (n && !y.useXhr) n(t, { method: N, body: JSON.stringify(e), mode: "cors" }); else if (XMLHttpRequest) { var a = new XMLHttpRequest; a.open(N, t), a.setRequestHeader("Content-type", "application/json"), a.send(JSON.stringify(e)) } } }(l, p)) } function i(e, t) { f || setTimeout(function () { !t && m.core || a() }, 500) } var e = function () { var n = l.createElement(k); n.src = h; var e = y[w]; return !e && "" !== e || "undefined" == n[w] || (n[w] = e), n.onload = i, n.onerror = a, n.onreadystatechange = function (e, t) { "loaded" !== n.readyState && "complete" !== n.readyState || i(0, t) }, n }(); y.ld < 0 ? l.getElementsByTagName("head")[0].appendChild(e) : setTimeout(function () { l.getElementsByTagName(k)[0].parentNode.appendChild(e) }, y.ld || 0) } try { m.cookie = l.cookie } catch (p) { } function t(e) { for (; e.length;)!function (t) { m[t] = function () { var e = arguments; g || m.queue.push(function () { m[t].apply(m, e) }) } }(e.pop()) } var n = "track", r = "TrackPage", o = "TrackEvent"; t([n + "Event", n + "PageView", n + "Exception", n + "Trace", n + "DependencyData", n + "Metric", n + "PageViewPerformance", "start" + r, "stop" + r, "start" + o, "stop" + o, "addTelemetryInitializer", "setAuthenticatedUserContext", "clearAuthenticatedUserContext", "flush"]), m.SeverityLevel = { Verbose: 0, Information: 1, Warning: 2, Error: 3, Critical: 4 }; var s = (d.extensionConfig || {}).ApplicationInsightsAnalytics || {}; if (!0 !== d[I] && !0 !== s[I]) { var c = "onerror"; t(["_" + c]); var u = T[c]; T[c] = function (e, t, n, a, i) { var r = u && u(e, t, n, a, i); return !0 !== r && m["_" + c]({ message: e, url: t, lineNumber: n, columnNumber: a, error: i }), r }, d.autoExceptionInstrumented = !0 } return m }(y.cfg); function a() { y.onInit && y.onInit(n) } (T[t] = n).queue && 0 === n.queue.length ? (n.queue.push(a), n.trackPageView({})) : a() }(window, document, {
+                src: "https://js.monitor.azure.com/scripts/b/ai.2.min.js",
+                crossOrigin: "anonymous", // When supplied this will add the provided value as the cross origin attribute on the script tag
+                cfg: { // Application Insights Configuration
+                    connectionString: "InstrumentationKey=70f322c0-7e67-4ac4-9b55-72cad669d574;IngestionEndpoint=https://westus2-0.in.applicationinsights.azure.com/;LiveEndpoint=https://westus2.livediagnostics.monitor.azure.com/"
+                }
+            });
+        </script>
+
+        <style>
+            :root {
+                --app-primary-color: #18312d;
+                --app-secondary-color: rgb(202, 227, 223);
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+                    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+                    "Helvetica Neue", sans-serif;
+            }
+
+            @font-face {
+                font-family: 'Montserrat';
+                src: url('https://miniindex.azureedge.net/8436a7e0e2466fabb64672ba4674ca7c.woff2') format('woff2');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+
+            h1,h2{
+                font-family: "Montserrat", sans-serif !important;
+                font-weight: 500;
+            }
+            .btn{
+                font-family: "Montserrat", sans-serif !important;
+            }
+            input.full-width{
+                font-family: "Montserrat", sans-serif !important;
+            }
+            .lead{
+                font-family: "Montserrat", sans-serif !important;
+                line-height: 1.4em;
+            }
+
+            #heroContainer {
+                align-items: center;
+                display: flex;
+                justify-content: center;
+                height: 100%;
+                width: 100%;
+                margin-top: 7rem;
+            }
+
+            #hero {
+                width: 100%;
+                padding: 2rem;
+                text-align: center;
+                color: white;
+            }
+
+            #indexButtons {
+                flex-wrap: wrap;
+            }
+
+            @media (min-width: 850px) {
+                #hero {
+                    width: 80%;
+                }
+
+                #indexButtons {
+                    flex-wrap: nowrap;
+                }
+            }
+
+            #whatsNew {
+                list-style-type: none;
+                padding-inline-start: 0px;
+                color: white;
+                text-align: left;
+                border-radius: 4px;
+            }
+
+            .small-badge {
+                display: inline-block;
+                padding: 0.25rem;
+                margin: 0.25rem;
+                margin-right: 1rem;
+                border-radius: 0.25rem;
+            }
+
+            .badge-new {
+                background-color: greenyellow;
+                color: black;
+            }
+
+            .badge-bug {
+                background-color: darkred;
+                color: white;
+            }
+
+            .badge-warning {
+                background-color: yellow;
+                color: black;
+            }
+
+            .stack {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                max-width: 100%;
+            }
+
+            .stack > * {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+
+            .stack > * + * {
+                margin-top: var(--space, 1.5rem);
+            }
+
+            body {
+                font-size: 14px;
+                font-weight: 400;
+                background-color: var(--app-primary-color);
+                padding: 0px;
+                margin: 0px;
+            }
+
+            .btn {
+                font-weight: bolder;
+                display: inline-block;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                user-select: none;
+                border: 1px solid transparent;
+                padding: 0.5rem !important;
+                border-radius: 0.25rem;
+                margin: 4px;
+                text-decoration: none;
+                color: #000;
+                background-color: var(--app-secondary-color);
+            }
+
+            .btn:hover {
+                opacity: 50%;
+            }
+
+            .btn-block {
+                width: 100%;
+            }
+
+            .full-width {
+                width: 100%;
+                margin: 0.5rem;
+            }
+
+            input.full-width {
+                font-size: 1.25rem;
+                width: 100%;
+            }
+
+            .row {
+                display: flex;
+                flex-direction: row;
+                max-width: 100%;
+            }
+
+            .cluster {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--space, 1rem);
+                justify-content: flex-start;
+                align-items: center;
+            }
+
+            #SearchString {
+                height: 42px;
+                margin: 10px 10px 10px 0px;
+                padding: 10px;
+                box-sizing: border-box;
+                border: 0px;
+                border-radius: 4px;
+                background-color: var(--app-secondary-color);
+                color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <img style="position:absolute; left:20px; top: 20px; z-index:-1"width="40" height="40" src="/images/icons/apple-touch-icon-57x57.png"/>
+
+        <div id="heroContainer">
+            <div class="stack" id="hero">
+                <h1>Welcome to <strong>The Mini Index</strong>!</h1>
+
+                <p class="lead">
+                    This is a <strong>crowd-sourced</strong> index of 3d printable files for minis, terrain tiles, and scatter terrain across
+                    different websites for use with tabletop games like Dungeons and Dragons.
+                    We have <b>50,000+ models</b> tagged with the important attributes of the mini in order to make it fast and easy to find exactly what you're looking for.
+                </p>
+
+                <form action="/Minis"style="margin-right:auto; width:100%;">
+                    <div class="row">
+                        <label for="nav-search"></label>
+                        <input type="text" name="SearchString" id="SearchString" placeholder="Search..." class="full-width" style="padding:.5rem; margin-top:0px; margin-bottom:0px;"/>
+                        <input type="submit" value="Search The Index" class="btn style-primary-border"/>
+                    </div>                        
+                </form>
+                <div class="cluster" id="indexButtons">
+                    <a class="btn btn-block style-secondary-border" href="/Minis">Browse the Index</a>
+                    <a class="btn btn-block style-secondary-border" href="/Creators/Browse">Browse Creators</a> 
+                    <a class="btn btn-block style-secondary-border" href="/Minis/Create" >Add a Mini</a>
+                </div>
+
+                <div align="left">
+                    <h2>What's new</h2>
+                    <ul id="whatsNew">
+                    <li><span class="small-badge badge-bug">Bug Fix</span> Fixed a bug that cause some creators to have multiple pages.</li>
+
+
+                        <!--<li><span class="small-badge badge-bug">Bug Fix</span> Fixed a crazy bugs.</li>-->
+                        <!--<li><span class="small-badge badge-warning">Warning</span> Something is broken :(</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

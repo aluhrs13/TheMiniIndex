@@ -87,6 +87,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\images\banner.png" />
+    <Content Remove="wwwroot\index.html" />
   </ItemGroup>
 
   <Target Name="NpmInstall" BeforeTargets="Build" Condition=" !Exists('node_modules') ">

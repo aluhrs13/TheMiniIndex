@@ -158,6 +158,7 @@ namespace MiniIndex
             app.UseStatusCodePages();
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
