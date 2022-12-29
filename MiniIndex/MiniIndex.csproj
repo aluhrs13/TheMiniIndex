@@ -86,6 +86,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\budget.json" />
     <Content Remove="wwwroot\images\banner.png" />
     <Content Remove="wwwroot\index.html" />
   </ItemGroup>

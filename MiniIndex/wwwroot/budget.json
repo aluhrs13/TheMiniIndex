@@ -1,0 +1,32 @@
+﻿[
+  {
+    "path": "/*",
+    "options": {
+      "firstPartyHostnames": [ "*.theminiindex.com", "miniindex.azureedge.net", "miniindexblobcdn.azureedge.net" ]
+    },
+    "timings": [
+      {
+        "metric": "interactive",
+        "budget": 3000
+      },
+      {
+        "metric": "first-meaningful-paint",
+        "budget": 1000
+      }
+    ],
+    "resourceSizes": [
+      {
+        "resourceType": "script",
+        "budget": 150
+      },
+      {
+        "resourceType": "document",
+        "budget":  14
+      }
+      {
+        "resourceType": "total",
+        "budget": 300
+      }
+    ]
+  }
+]

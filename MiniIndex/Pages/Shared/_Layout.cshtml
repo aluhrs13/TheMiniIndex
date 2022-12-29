@@ -35,9 +35,27 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css">
         <link rel="stylesheet" href="~/css/styles.css">
+        <style>
+            @@font-face {
+                font-family: 'Montserrat';
+                src: url('montserrat-regular-webfont.woff2') format('woff2');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+        </style>
     </environment>
 
     <environment include="Production">
+        <style>
+            @@font-face {
+                font-family: 'Montserrat';
+                src: url('https://miniindex.azureedge.net/8436a7e0e2466fabb64672ba4674ca7c.woff2') format('woff2');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+        </style>
         <link rel="preconnect" href="https://miniindex.azureedge.net/">
         <link rel="stylesheet" href="https://miniindex.azureedge.net/site.css">
         <link rel="stylesheet" href="https://miniindex.azureedge.net/styles.css">
