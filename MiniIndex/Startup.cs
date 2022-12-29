@@ -139,6 +139,8 @@ namespace MiniIndex
                 app.UseHsts();
             }
 
+            //TODO: Re-enable. Was causing exceptions. GitHub #234.
+            /*
             app.Use(async (context, next) =>
             {
 
@@ -152,7 +154,7 @@ namespace MiniIndex
 
                 await next();
             });
-
+            */
             //Response Compression - https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-5.0
             app.UseResponseCompression();
             app.UseStatusCodePages();
