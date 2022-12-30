@@ -147,8 +147,8 @@ async function fetchStuff(galleryElement, pageIndex) {
                 let newHTML = `
                     <div class="card ${item.status}" id="${item.id}">
                         <div>
-                            <a href="/Minis/Details?id=${item.id}">
-                                <img class="card-thumbnail" src="${item.thumbnail}" width="314" height="236"/>
+                            <a href="/Minis/Details?id=${item.id}" aria-label="View ${item.name}">
+                                <img class="card-thumbnail" src="${item.thumbnail}" width="314" height="236" alt="Image of ${item.name}"/>
                             </a>
                         </div>`;
                 if (item.status == "Pending") {

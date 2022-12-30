@@ -6,13 +6,13 @@
 <!-- If you edit this, also edit the JS that uses it (latest.js)-->
 <div class="card @Model.Status.ToString()" id="@Model.ID">
     <div>
-        <a href="/Minis/Details?id=@Model.ID">
+        <a href="/Minis/Details?id=@Model.ID" aria-label="@Model.Name">
             @if (Model.Thumbnail.Contains("miniindex.blob.core.windows.net/"))
             {
-            <img class="card-thumbnail" src="@Model.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" />
+            <img class="card-thumbnail" src="@Model.Thumbnail.Replace("miniindex.blob.core.windows.net", Configuration["CDNURL"]+".azureedge.net")" width="314" height="236" alt="Image of @Model.Name" />
             }
             else{
-            <img class="card-thumbnail" src="@Model.Thumbnail" width="314" height="236" />
+                <img class="card-thumbnail" src="@Model.Thumbnail" width="314" height="236" alt="Image of @Model.Name" />
             }
         </a>
     </div>

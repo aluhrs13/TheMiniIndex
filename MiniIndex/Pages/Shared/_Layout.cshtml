@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="minimum-scale=1.0, width=device-width" />
 
     <meta name="application-name" content="The Mini Index" />
     <meta name="msapplication-TileColor" content="#FFFFFF" />
@@ -18,6 +18,7 @@
     <meta property="og:site_name" content="The Mini Index" />
     <meta property="og:image" content="https://theminiindex.com/images/banner.png">
     <meta property="og:title" content="@ViewData["Title"] - The Mini Index" />
+    <meta name="description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta property="og:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta property="fb:app_id" content="217005809246433" />
 
@@ -117,8 +118,8 @@
         <nav>
             <div class="cluster style-primary" style="flex-wrap:nowrap">
                 <div class="row" style="padding-left:10px;">
-                    <a href="/">
-                        <img style="margin-right: .5rem;"width="40" height="40" src="/images/icons/apple-touch-icon-57x57.png" />
+                    <a href="/" aria-label="Return to homepage">
+                        <img style="margin-right: .5rem;" width="40" height="40" src="/images/icons/favicon-96x96.png" alt="The Mini Index Logo - a D12 with TMI written on it." />
                     </a>
 
                     <div class="montserrat" id="logotype">
@@ -146,19 +147,19 @@
                     <div class="center"><a class="btn style-primary" href="/Creators/Browse">Creators</a></div>
                     <div class="center"><a class="btn style-primary" href="/Minis/Create">Add a Mini</a></div>
                     <div class="icon-no-container">
-                        <a href="/Starred/">
+                        <a href="/Starred/" aria-label="Favorited Minis">
                             <div class="icon icon-heart"></div>
                         </a>
                     </div>
                     <div class="icon-no-container">
-                        <a href="/Minis/Help/">
+                        <a href="/Minis/Help/" aria-label="Help out TMI!">
                             <div class="icon icon-random"></div>
                         </a>
                     </div>
                     <partial name="_LoginPartial" />
                 </div>
                 <div class="icon-no-container" style="padding-right:.75rem;">
-                    <a href="#" id="menuBtn" onclick="toggleMobile()">
+                    <a href="#" id="menuBtn" onclick="toggleMobile()" aria-label="Expand Menu">
                         <div class="icon icon-menu"></div>
                     </a>
                 </div>

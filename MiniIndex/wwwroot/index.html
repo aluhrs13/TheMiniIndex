@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport" content="minimum-scale=1.0, width=device-width" />
     <title>The Mini Index</title>
 
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/images/icons/apple-touch-icon-57x57.png" />
@@ -32,6 +32,7 @@
     <meta property="og:site_name" content="The Mini Index" />
     <meta property="og:image" content="https://theminiindex.com/images/banner.png">
     <meta property="og:title" content="he Mini Index" />
+    <meta name="description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta property="og:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta property="fb:app_id" content="217005809246433" />
 
@@ -39,11 +40,6 @@
     <meta name="twitter:image:src" content="https://theminiindex.com/images/banner.png">
     <meta name="twitter:description" content="The Mini Index is a crowd-sourced index of various minis, terrain tiles, and scatter terrain across different websites for use with tabletop games like Dungeons and Dragons." />
     <meta name="twitter:title" content="The Mini Index" />
-
-    <link as="font"
-          rel="preload"
-          href="https://miniindex.azureedge.net/8436a7e0e2466fabb64672ba4674ca7c.woff2"
-          crossorigin />
 
     <link as="style"
           rel="prefetch"
@@ -84,7 +80,7 @@
 
         @font-face {
             font-family: 'Montserrat';
-            src: url('https://miniindex.azureedge.net/8436a7e0e2466fabb64672ba4674ca7c.woff2') format('woff2');
+            src: url('/dist/8436a7e0e2466fabb64672ba4674ca7c.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
@@ -104,7 +100,7 @@
         }
 
         .lead {
-            font-family: "Montserrat", sans-serif !important;
+            font-size: 12pt;
             line-height: 1.4em;
         }
 
@@ -254,7 +250,7 @@
     </style>
 </head>
     <body>
-        <img style="position:absolute; left:20px; top: 20px; z-index:-1"width="40" height="40" src="/images/icons/apple-touch-icon-57x57.png"/>
+        <img style="position:absolute; left:20px; top: 20px; z-index:-1"width="40" height="40" src="/images/icons/favicon-96x96.png" alt="The Mini Index Logo - a D12 with TMI written on it."/>
 
         <div id="heroContainer">
             <div class="stack" id="hero">
