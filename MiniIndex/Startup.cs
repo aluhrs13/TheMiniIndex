@@ -23,6 +23,7 @@ using System;
 using Hangfire.Dashboard;
 using MiniIndex.Models;
 using System.Threading.Tasks;
+using StackExchange.Profiling.Storage;
 
 namespace MiniIndex
 {
@@ -115,6 +116,17 @@ namespace MiniIndex
 
             services.IncludeRegistry<CoreServices>();
             services.IncludeRegistry<WebAppServices>();
+
+            services.AddMiniProfiler(options =>
+            {
+                (options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(10);
+                options.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+                options.TrackConnectionOpenClose = true;
+                //options.EnableServerTimingHeader = true;
+                options.IgnoredPaths.Add("/Admin");
+                options.IgnoredPaths.Add("/Creators");
+                options.IgnoredPaths.Add("/Identity");
+            }).AddEntityFramework();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -123,11 +135,7 @@ namespace MiniIndex
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-                
                 app.UseSwagger();
-
-                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-                // specifying the Swagger JSON endpoint.
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
@@ -138,6 +146,7 @@ namespace MiniIndex
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            app.UseMiniProfiler();
 
             //TODO: Re-enable. Was causing exceptions. GitHub #234.
             /*

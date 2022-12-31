@@ -211,5 +211,9 @@
     </div>
 
     @RenderSection("Scripts", required: false)
+    @if (User.IsInRole("Administrator"))
+    {
+        <mini-profiler />
+    }
 </body>
 </html>
