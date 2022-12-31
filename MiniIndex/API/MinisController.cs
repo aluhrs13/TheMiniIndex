@@ -295,13 +295,8 @@ namespace MiniIndex.API
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] string url)
         {
-            IdentityUser user = await _userManager.GetUserAsync(User);
-
-            if (user == null)
-            {
-                user = await _userManager.Users.FirstAsync(u => u.Email == "admin@theminiindex.com");
-            }
-
+            //TODO - If I ever have others calling this API, look up the user.
+            IdentityUser user = await _userManager.Users.FirstAsync(u => u.Email == "admin@theminiindex.com");
             Mini mini = await _mediator.Send(new MiniSubmissionRequest(new Uri(url), user, false));
 
             if (mini != null)

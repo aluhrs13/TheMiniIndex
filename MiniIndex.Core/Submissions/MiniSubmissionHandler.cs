@@ -31,21 +31,24 @@ namespace MiniIndex.Core.Submissions
         private readonly IEnumerable<IParser> _parsers;
         private readonly HttpClient _httpClient;
 
+        //TODO - This should look at MiniSourceSite, not m.Link.
+        //TODO - Log unsupported URLs
         public async Task<Mini> Handle(MiniSubmissionRequest request, CancellationToken cancellationToken)
         {
-            //TODO - This should look at MiniSourceSite, not m.Link.
-            Mini mini = await _context.Mini.TagWith("MiniSubmissionHandler.cs 1").FirstOrDefaultAsync(m => m.Link == request.Url.ToString(), cancellationToken);
+            string originalLink = request.Url.ToString();
             IParser parser = _parsers.FirstOrDefault(p => p.CanParse(request.Url));
 
             if (parser is null)
             {
                 //valid URL, but not currently supported
-                //TODO: log when this happens?
                 return null;
             }
 
-            if (mini != null)
+            //TODO: Merge thumbnail replacement logic
+            if (await _context.Mini.AsNoTracking().TagWith("MiniSubmissionHandler.cs 1").AnyAsync(m => m.Link == originalLink, cancellationToken))
             {
+                Mini mini = await _context.Mini.TagWith("MiniSubmissionHandler.cs 2").FirstOrDefaultAsync(m => m.Link == originalLink, cancellationToken);
+
                 if (request.JustThumbnail)
                 {
                     Mini updatedMini = await parser.ParseFromUrl(request.Url);
@@ -56,40 +59,39 @@ namespace MiniIndex.Core.Submissions
                 return mini;
             }
 
-            mini = await parser.ParseFromUrl(request.Url);
+            Mini parsedMini = await parser.ParseFromUrl(request.Url);
 
-            //TODO - This should look at MiniSourceSite, not m.Link.
             //Now that we've parsed it, check if the parsed URL is different from the original URL and if we have that.
-            Mini checkDupe = await _context.Mini.FirstOrDefaultAsync(m => m.Link == mini.Link, cancellationToken);
-
-            if (checkDupe != null)
+            if(parsedMini.Link != originalLink)
             {
-                if (request.JustThumbnail)
+                Mini checkDupe = await _context.Mini.TagWith("MiniSubmissionHandler.cs 3").FirstOrDefaultAsync(m => m.Link == parsedMini.Link, cancellationToken);
+
+                if (checkDupe != null)
                 {
-                    checkDupe.Thumbnail = mini.Thumbnail;
-                    _context.Attach(mini).State = EntityState.Modified;
-                    await UploadThumbnail(checkDupe);
+                    if (request.JustThumbnail)
+                    {
+                        checkDupe.Thumbnail = parsedMini.Thumbnail;
+                        _context.Attach(parsedMini).State = EntityState.Modified;
+                        await UploadThumbnail(checkDupe);
+                    }
+                    return checkDupe;
                 }
-                return checkDupe;
             }
 
             if (!request.JustThumbnail)
             {
-                mini.User = request.User;
-                mini.Status = Status.Unindexed;
+                parsedMini.User = request.User;
+                parsedMini.Status = Status.Unindexed;
 
-                _context.Add(mini);
+                _context.Add(parsedMini);
 
-                await CorrectMiniCreator(mini, cancellationToken);
-
-                //TODO - Another dupe check here based on name and creator
-
+                await CorrectMiniCreator(parsedMini, cancellationToken);
                 await _context.SaveChangesAsync();
             }
 
-            await UploadThumbnail(mini);
+            await UploadThumbnail(parsedMini);
 
-            return mini;
+            return parsedMini;
         }
 
         private async Task CorrectMiniCreator(Mini mini, CancellationToken cancellationToken)
@@ -97,7 +99,7 @@ namespace MiniIndex.Core.Submissions
             MiniSourceSite currentSource = mini.Sources.Single();
 
             //Find a SourceSite that has both the same UserName and SiteName as the Mini's current
-            SourceSite matchingSource = await _context.Set<SourceSite>().TagWith("MiniSubmissionHandler.cs 2")
+            SourceSite matchingSource = await _context.Set<SourceSite>().TagWith("MiniSubmissionHandler.cs 4")
                 .Include(s => s.Creator).ThenInclude(c => c.Sites)
                 .FirstOrDefaultAsync((s => s.CreatorUserName == currentSource.Site.CreatorUserName && s.SiteName == currentSource.Site.SiteName), cancellationToken);
 
@@ -115,7 +117,7 @@ namespace MiniIndex.Core.Submissions
             }
 
             //If we didn't find a "perfect" match, try matching just off of the creator's names
-            foundCreator = await _context.Set<Creator>().TagWith("MiniSubmissionHandler.cs 3")
+            foundCreator = await _context.Set<Creator>().TagWith("MiniSubmissionHandler.cs 5")
                 .Include(c => c.Sites)
                 .FirstOrDefaultAsync(c => c.Name == mini.Creator.Name, cancellationToken);
 
