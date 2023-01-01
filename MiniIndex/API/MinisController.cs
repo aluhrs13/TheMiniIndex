@@ -309,6 +309,21 @@ namespace MiniIndex.API
             }
         }
 
+        // POST api/<MinisController>/Check
+
+        [HttpPost("Check")]
+        public async Task<IActionResult> CheckURL([FromBody] string url)
+        {
+            if (await _context.Mini.AnyAsync(m=>m.Link == url))
+            {
+                return Ok();
+            }
+            else
+            {
+                return new StatusCodeResult(404);
+            }
+        }
+
         // PATCH api/<MinisController>/
         [HttpPatch]
         [Authorize(Roles = "Moderator")]
