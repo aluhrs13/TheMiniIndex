@@ -42,8 +42,6 @@ namespace Supporting.ProfileParsing
                 await ParseURLAsync(log, new Uri(url));
                 return new OkObjectResult($"Scanned {url}");
             }
-
-
         }
 
         public static async Task ParseURLAsync(ILogger log, Uri url)
@@ -121,7 +119,7 @@ namespace Supporting.ProfileParsing
                             Uri foundUrl = new Uri("https://gumroad.com/l/" + itemID);
 
                             log.LogInformation("[Gumroad Parsing] Found URL - " + foundUrl.ToString());
-                            SubmitLinkAsync(log, foundUrl);
+                            await SubmitLinkAsync(log, foundUrl);
                         }
                     }
                 }
@@ -174,7 +172,7 @@ namespace Supporting.ProfileParsing
                                 Uri foundUrl = new Uri(item.public_url);
 
                                 log.LogInformation("[Thingiverse Parsing] Found URL - " + foundUrl.ToString());
-                                SubmitLinkAsync(log, foundUrl);
+                                await SubmitLinkAsync(log, foundUrl);
                             }
 
                         }
@@ -232,7 +230,7 @@ namespace Supporting.ProfileParsing
                                 Uri foundUrl = new Uri(item.url);
 
                                 log.LogInformation("[MyMiniFactory Parsing] Found URL - " + foundUrl.ToString());
-                                SubmitLinkAsync(log, foundUrl);
+                                await SubmitLinkAsync(log, foundUrl);
                             }
                         }
                         catch (Exception ex)
@@ -251,12 +249,12 @@ namespace Supporting.ProfileParsing
             }
         }
 
-        public static async Task SubmitLinkAsync(ILogger log, Uri url)
+        public static async Task<bool> CheckLinkAsync(ILogger log, Uri url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.theminiindex.com/api/Minis");
-            log.LogInformation("[Mini Submission] Looking at - " + url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.theminiindex.com/api/Minis/Check");
+            log.LogInformation("[Mini Checking] Looking at - " + url);
 
-            string postData = "\""+url+"\"";
+            string postData = "\"" + url + "\"";
             ASCIIEncoding encoding = new ASCIIEncoding();
             byte[] byte1 = encoding.GetBytes(postData);
 
@@ -268,18 +266,54 @@ namespace Supporting.ProfileParsing
 
             newStream.Write(byte1, 0, byte1.Length);
 
-            try
+            using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
             {
-                using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
+                string result = await reader.ReadToEndAsync();
+                if (result == "unindexed")
                 {
-                    log.LogInformation("[Mini Submission] Completed (" + response.StatusCode  + ") Mini URL - " + await reader.ReadToEndAsync());
+                    log.LogInformation("[Mini Checking] Need to submit - " + url);
+                    return true;
                 }
             }
-            catch (Exception ex)
+
+            return false;
+        }
+
+        public static async Task SubmitLinkAsync(ILogger log, Uri url)
+        {
+            log.LogInformation("[Mini Submission] Looking at - " + url);
+            if (await CheckLinkAsync(log, url))
             {
-                log.LogError("[Mini Submission] Exception (" + url + ") - " + ex.Message);
+                log.LogInformation("[Mini Submission] Not found! Submitting - " + url);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.theminiindex.com/api/Minis");
+
+                string postData = "\"" + url + "\"";
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                byte[] byte1 = encoding.GetBytes(postData);
+
+                // Set the content length of the string being posted.
+                request.ContentType = "application/json";
+                request.ContentLength = byte1.Length;
+                request.Method = "POST";
+                Stream newStream = request.GetRequestStream();
+
+                newStream.Write(byte1, 0, byte1.Length);
+
+                try
+                {
+                    using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+                    using (Stream stream = response.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        log.LogInformation("[Mini Submission] Completed (" + response.StatusCode + ") Mini URL - " + await reader.ReadToEndAsync());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.LogError("[Mini Submission] Submitting Exception (" + url + ") - " + ex.Message);
+                }
             }
         }
 

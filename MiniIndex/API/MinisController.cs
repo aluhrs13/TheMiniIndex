@@ -314,13 +314,13 @@ namespace MiniIndex.API
         [HttpPost("Check")]
         public async Task<IActionResult> CheckURL([FromBody] string url)
         {
-            if (await _context.Mini.AnyAsync(m=>m.Link == url))
+            if (await _context.Mini.AnyAsync(m => m.Link == url.Replace("\"", "")))
             {
-                return Ok();
+                return Ok("indexed");
             }
             else
             {
-                return new StatusCodeResult(404);
+                return Ok("unindexed");
             }
         }
 
