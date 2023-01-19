@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     RefreshTagsStart();
     RefreshTagsEnd();
 });
@@ -19,11 +19,19 @@ document.getElementById("tagSearch").addEventListener("input", function (e) {
     let addTagBtns = document.querySelectorAll(".add-tag");
     let addTagBtnsArray = Array.prototype.slice.call(addTagBtns);
     addTagBtnsArray.forEach(function (ele) {
-        if (ele.innerText.toLocaleLowerCase().indexOf(tagFilter) >= 0) {
+        hideEle(ele);
+    });
+    addTagBtnsArray.forEach(function (ele) {
+        if(tagFilter.length > 0){
+            if (ele.innerText.toLocaleLowerCase().indexOf(tagFilter) >= 0) {
+                showEle(ele);
+                showEle(ele.parentNode);
+            } else {
+                hideEle(ele);
+            }
+        }else{
             showEle(ele);
             showEle(ele.parentNode);
-        } else {
-            hideEle(ele);
         }
     });
     return false;
